@@ -1,6 +1,6 @@
 # Oresto - Online booking app for restaurant
 
-![Screenshot of Oresto](https://github.com/xavierc90/mon-projet-perso/blob/main/public/img/preview.png?raw=true)
+![Screenshot of Oresto](https://github.com/xavierc90/mon-projet-perso/blob/main/public/img/preview-oresto.png?raw=true)
 
 ## Description
 
