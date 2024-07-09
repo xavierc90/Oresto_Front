@@ -1,25 +1,30 @@
-# Oresto - Online booking app for restaurant
+# React + TypeScript + Vite
 
-![Screenshot of Oresto](https://github.com/xavierc90/mon-projet-perso/blob/main/public/img/preview-app-oresto.png?raw=true)
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-## Description
+Currently, two official plugins are available:
 
-Oresto is a sleek modern web application designed for managing bookings and users in restaurants.  
-Experience simplicity with my app, featuring a website widget and a comprehensive React interface for management.
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-### Technologies used
+## Expanding the ESLint configuration
 
-- React
-- Vite Js (Front)
-- Express Js (Back)
-- Mongodb
-- Docker
-- Tailwind CSS
+If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
 
-## Prerequisites
+- Configure the top-level `parserOptions` property like this:
 
-No prerequisites for the moment
+```js
+export default {
+  // other rules...
+  parserOptions: {
+    ecmaVersion: 'latest',
+    sourceType: 'module',
+    project: ['./tsconfig.json', './tsconfig.node.json'],
+    tsconfigRootDir: __dirname,
+  },
+}
+```
 
-## Setup
-
-npm install
+- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
+- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
+- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
