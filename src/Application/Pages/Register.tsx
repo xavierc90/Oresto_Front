@@ -12,7 +12,6 @@ export const Register = () => {
         <RegisterForm />
       </div>
       <div className='cover-login w-6/12'>
-      mllkml
       </div>
     </div>
   )

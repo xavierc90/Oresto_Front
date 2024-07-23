@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+a {
+    text-decoration: underline;
+}
+
 .cover-login {
     background-image: url('../public//img/cover-login.jpg');
     background-repeat: no-repeat;

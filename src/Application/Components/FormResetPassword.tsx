@@ -5,7 +5,9 @@ export const FormResetPassword = () => {
 
   return (
     <div className="flex flex-col items-center justify-center items-center h-screen">
-      <img src="../../../public/img/logo-oresto-red.png" width="350px" alt="Logo Oresto" />
+            <a href="/login">
+        <img src="../../../public/img/logo-oresto-red.png" width="300px" alt="Logo Oresto" />
+      </a>
       <form className="flex flex-col w-80 mt-10">
         <label className="text-lg font-bold mb-4">Adresse mail ou identifiant</label>
         <input type="text" name="login" placeholder="Saisissez votre email ou identifiant" className="border-2 border-gray-300 p-2 mb-6 font-bold" />

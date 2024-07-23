@@ -1,4 +1,5 @@
 import { useState, ChangeEvent, FormEvent } from 'react';
+import { NavLink } from 'react-router-dom';
 
 export const RegisterForm = () => {
   // États pour les champs de formulaire
@@ -129,7 +130,7 @@ export const RegisterForm = () => {
               onChange={handleCheckboxChange}
             />
             J'accepte les{' '}
-            <a href="/rgpd" className="text-black font-bold">
+            <a href="/conditions" target='_blank' className="text-black font-bold">
               conditions générales d'utilisation
             </a>
           </div>
@@ -145,6 +146,8 @@ export const RegisterForm = () => {
           </button>
         </div>
       </form>
+    <div className="pt-4">
+      <NavLink to="/login">Déjà un compte ? Connectez-vous</NavLink></div>
     </div>
   );
 };
