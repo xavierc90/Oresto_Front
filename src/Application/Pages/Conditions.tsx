@@ -1,4 +1,10 @@
+import { useEffect } from 'react';
+
 export const Conditions = () => {
+  useEffect(() => {
+    document.title = 'Oresto - Conditions d\'utilisations';
+  }, []);
+
   return (
     <div className="flex flex-col items-center mt-6">      
       <div className="flex flex-col">

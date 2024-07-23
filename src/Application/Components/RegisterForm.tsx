@@ -131,7 +131,7 @@ export const RegisterForm = () => {
             />
             J'accepte les{' '}
             <a href="/conditions" target='_blank' className="text-black font-bold">
-              conditions générales d'utilisation
+              conditions d'utilisation
             </a>
           </div>
 
