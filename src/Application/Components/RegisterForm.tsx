@@ -4,10 +4,10 @@ import { NavLink, useNavigate } from 'react-router-dom';
 export const RegisterForm = () => {
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen">
+    <div className="flex flex-col items-center items-center h-screen">
       
       <a href="/login">
-        <img src="../../../public/img/logo-oresto-red.png" width="400px" alt="Logo Oresto" />
+        <img src="../../../public/img/logo-oresto-red.png" width="300px" alt="Logo Oresto" />
       </a>
         <form className="flex flex-col mt-10">
         <div className='flex gap-4'>
@@ -25,8 +25,11 @@ export const RegisterForm = () => {
       <label className="text-lg font-bold mb-2">Mot de passe</label>
         <input type="password" name="password" placeholder="Mot de passe" className="border-2 border-gray-300 p-2 mb-4 font-bold" />
         <label className="text-lg font-bold mb-2">Confirmer le mot de passe</label>
-        <input type="password" name="password" placeholder="Mot de passe" className="border-2 border-gray-300 p-2 mb-10 font-bold" />
-        <div className="flex items-center justify-center">
+        <input type="password" name="password" placeholder="Mot de passe" className="border-2 border-gray-300 p-2 mb-2 font-bold" />
+        <div className="flex flex-col items-center justify-center items-center">
+        <div className='my-4 '>
+        <input type="checkbox" name="cgu" id="cgu" className="mr-2" />J'accepte les <a href="/rgpd" className="text-black font-bold">conditions générales d'utilisation</a>
+        </div>
         <button type="submit" className="bg-black text-white p-4 rounded-lg w-2/4 font-bold uppercase">Terminer l'inscription</button>
         </div></form>
     </div>
