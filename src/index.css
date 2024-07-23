@@ -8,6 +8,12 @@
     background-size: cover;
 }
 
+.bg-home {
+    height: 100vh;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.1) 90%), url('/public/img/bg-home-2400.jpg') center center / cover no-repeat;
+    background-attachment: fixed;
+}
+
 input::placeholder {
     font-weight: normal;
 }

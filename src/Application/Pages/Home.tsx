@@ -5,8 +5,10 @@ export const Home = () => {
   useEffect(() => {
     document.title = 'La belle assiette - Restaurant traditionnel';
   }, []);
-  
+
   return (
-    <App />
+    <div className='bg-home'>
+      Site du restaurant
+    </div>
   )
 }
