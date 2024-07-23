@@ -4,7 +4,7 @@ import { NavLink, useNavigate } from 'react-router-dom';
 export const LoginForm = () => {
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen">
+    <div className="flex flex-col items-center justify-center items-center h-screen">
       <img src="../../../public/img/logo-oresto-red.png" width="400px" alt="Logo Oresto" />
       <form className="flex flex-col w-80 mt-10">
         <label className="text-xl font-bold mb-4">Adresse mail ou identifiant</label>
