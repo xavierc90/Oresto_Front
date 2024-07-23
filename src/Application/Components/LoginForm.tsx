@@ -15,6 +15,9 @@ export const LoginForm = () => {
         <button type="submit" className="bg-red-500 text-white p-4 rounded-lg w-2/4 font-bold uppercase">Se connecter</button>
         <NavLink to="/register" className="bg-black text-white text-center p-4 rounded-lg w-2/4 font-bold uppercase">S'inscrire</NavLink>
         </div></form>
+        <div className='mt-10'>
+          <NavLink to="/lostpassword">J'ai oublié mon mot de passe</NavLink></div>
+        <div className='mt-4'><a href="/rgpd" target='_blank'>Conditions générales d'utilisation</a></div>
     </div>
   )
 }
