@@ -4,13 +4,12 @@ export const DashboardNav = () => {
   return (
     <div className='bg-light w-80 h-screen flex flex-col items-center shadow-2xl'>
       <div>
-      <img src="../../../public/img/logo-oresto-red.png" width="230px" alt="Logo Oresto" />
+      <img src="../../../public/img/logo-oresto-red.png" width="240px" alt="Logo Oresto" />
       </div>
       
       {/* Recherche par date */}
-      <div>
-    <h2 className="text-lg font-bold mt-7 text-left">Recherche par date</h2>
-    <img src="../../../public/img/calendar.png" width="220px" alt="" />
+      <div className="mt-8">
+    <img src="../../../public/img/calendar.png" width="230px" alt="" />
     </div>
 
       {/* Recherche par nom */}
