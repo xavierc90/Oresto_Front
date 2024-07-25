@@ -27,3 +27,52 @@ a {
 input::placeholder {
     font-weight: normal;
 }
+
+/* Calendrier */
+
+.rdp-focused {
+    font-weight: bold;
+}
+
+.rdp-month_caption {
+    padding-left: 5px;
+    text-transform: capitalize;
+}
+
+.rdp-day_button {
+    border-radius: 10px;
+}
+
+.rdp-root {
+    position: relative;
+    }
+
+.rdp-nav {
+    position: absolute;
+    right: 18px;
+}
+
+.bg-primary {
+  background-color: #3b82f6; /* Example primary color */
+}
+
+.text-primary-foreground {
+  color: #ffffff; /* Example text color */
+  font-weight: bold;
+}
+
+.bg-accent {
+  background-color: #e5e7eb; /* Example accent color */
+}
+
+.text-accent-foreground {
+  color: #374151; /* Example accent text color */
+  font-weight: bold;
+}
+
+.opacity-50 {
+  opacity: 0.5;
+}
+
+/* Add any missing styles */
+

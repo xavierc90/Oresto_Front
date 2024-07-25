@@ -17,19 +17,22 @@ function CalendarShadcn({
         <DayPicker
             showOutsideDays={showOutsideDays}
             locale={fr}
+            mode="single"
             className={cn("p-3", className)}
             classNames={{
-                months: "flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0",
+                months: "flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0 text-sm",
                 month: "space-y-4",
                 caption: "flex justify-center pt-1 relative items-center",
                 caption_label: "text-sm font-medium",
-                nav: "space-x-1 flex items-center",
+                selected: "bg-red-500 text-primary-foreground",
+                // nav: "absolute right-0",
                 nav_button: cn(
                     buttonVariants({ variant: "outline" }),
                     "h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100"
                 ),
                 nav_button_previous: "absolute left-1",
                 nav_button_next: "absolute right-1",
+                weekdays: "flex justify-around",
                 table: "w-full border-collapse space-y-1",
                 head_row: "flex",
                 head_cell:
