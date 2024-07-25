@@ -12,7 +12,6 @@ export const LostPassword = () => {
         <FormResetPassword />
       </div>
       <div className='cover-login w-6/12'>
-      mllkml
       </div>
     </div>
   )
