@@ -1,3 +1,5 @@
+import { FaSort } from "react-icons/fa";
+
 export const BookingList = () => {
   return (
     <div className="bg-light w-full">
@@ -11,11 +13,11 @@ export const BookingList = () => {
             <table className="mt-8 ml-12 table-auto">
                 <thead>
                     <tr>
-                        <th className="text-left min-w-[100px]">Heure</th>
+                        <th className="text-left min-w-[100px] flex items-center gap-1">Heure <FaSort /></th>
                         <th className="text-left min-w-[150px]">Nom</th>
                         <th className="text-left min-w-[150px]">Couverts</th>
                         <th className="text-left min-w-[150px]">N° de table</th>
-                        <th className="text-left min-w-[150px]">Status</th>
+                        <th className="text-left min-w-[150px] flex items-center gap-1">Status <FaSort /></th>
                         <th className="text-left min-w-[150px]">Actions</th>
                     </tr>
                 </thead>
