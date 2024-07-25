@@ -18,5 +18,6 @@ export const DashboardNav = () => {
     <label className="text-lg font-bold px-12 mb-2">Recherche par nom</label>
     <input type="text" name="search" placeholder="Saisissez le nom du client" className="border-2 border-gray-300 p-2 mb-6 font-bold w-8/12 mx-12" />
     </div>
+  </div>
   )
 }
