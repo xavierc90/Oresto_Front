@@ -87,6 +87,13 @@ input::placeholder {
   opacity: 0.5;
 }
 
+/* Booking list style */
+
+.booking-list {
+    border-collapse: collapse;
+    width: 100%;
+}
+
 /* Text color */
 
 .nav-manager {

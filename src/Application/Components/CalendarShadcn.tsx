@@ -18,7 +18,7 @@ function CalendarShadcn({
             showOutsideDays={showOutsideDays}
             locale={fr}
             mode="single"
-            className={cn("p-3 calendar", className)}
+            className={cn("calendar", className)}
             classNames={{
                 months: "flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0 text-sm",
                 month: "space-y-4",

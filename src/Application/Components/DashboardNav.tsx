@@ -21,7 +21,7 @@ export const DashboardNav = () => {
   
   
   return (
-    <div className='bg-light w-80 h-screen flex flex-col items-center shadow-2xl'>
+    <div className='bg-light w-96 h-screen flex flex-col items-center shadow-2xl'>
       <div className="mt-12">
       <img src="../../../public/img/logo-oresto-red.png" width="230px" alt="Logo Oresto" />
       </div>
