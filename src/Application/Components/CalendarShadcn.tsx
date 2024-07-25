@@ -24,7 +24,7 @@ function CalendarShadcn({
                 month: "space-y-4",
                 caption: "flex justify-center pt-1 relative items-center",
                 caption_label: "text-sm font-medium",
-                selected: "bg-red-500 text-primary-foreground",
+                selected: "bg-red-500 text-primary-foreground border-rounded-sm",
                 // nav: "absolute right-0",
                 nav_button: cn(
                     buttonVariants({ variant: "outline" }),

@@ -35,17 +35,25 @@ input::placeholder {
 }
 
 .rdp-month_caption {
-    padding-left: 5px;
+    padding-left: 9px;
     text-transform: capitalize;
 }
 
 .rdp-day_button {
     border-radius: 10px;
+    font-weight: ;
 }
 
 .rdp-root {
     position: relative;
-    }
+}
+
+.rdp-root td {
+    border-radius: 50px;
+    width: 30px;
+    height: 30px;
+    margin: 2px;
+}
 
 .rdp-nav {
     position: absolute;
