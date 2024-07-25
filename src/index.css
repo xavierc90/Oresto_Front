@@ -8,8 +8,8 @@
     font-family: 'Montserrat', sans-serif; /* Ajoutez 'sans-serif' comme police de secours */
 }
 
-a {
-    text-decoration: underline;
+a:hover {
+    color: #FF5959;
 }
 
 .cover-login {
@@ -29,6 +29,12 @@ input::placeholder {
 }
 
 /* Calendrier */
+
+.calendar {
+    height: 260px;
+    overflow: hidden; /* Pour éviter tout débordement */
+    padding: 0;
+}
 
 .rdp-focused {
     font-weight: bold;
@@ -56,7 +62,7 @@ input::placeholder {
 
 .rdp-nav {
     position: absolute;
-    right: 18px;
+    right: 0px;
 }
 
 .bg-primary {
@@ -81,5 +87,14 @@ input::placeholder {
   opacity: 0.5;
 }
 
-/* Add any missing styles */
+/* Text color */
+
+.nav-manager {
+    color: #7f7f7f;
+    font-weight: bold;
+}
+
+.active {
+    color: #FF5959;
+}
 
