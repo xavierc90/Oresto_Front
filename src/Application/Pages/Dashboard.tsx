@@ -1,14 +1,7 @@
 import { DashboardNav } from '../Components/DashboardNav'
-import {useEffect, useState} from 'react';
-import {CalendarShadcn} from "../Components/CalendarShadcn.tsx";
+import {useEffect} from 'react';
 
 export const Dashboard = () => {
-  const [dateSelected, setDateSelected] = useState<Date>(new Date())
-  
-  useEffect(() => {
-      console.log(dateSelected.toLocaleDateString())
-    // requete api avec la date selectionnée
-  }, [dateSelected]);
   
   useEffect(() => {
     document.title = 'Oresto - Gestion des réservations';
@@ -17,7 +10,6 @@ export const Dashboard = () => {
   return (
       <div className={"flex"}>
         <DashboardNav />
-        <CalendarShadcn mode={"single"} selected={dateSelected} onSelect={setDateSelected} required/>
       </div>
   )
 }

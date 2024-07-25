@@ -1,6 +1,17 @@
 import { BsListCheck } from "react-icons/bs";
+import {CalendarShadcn} from "../Components/CalendarShadcn.tsx";
+import {useEffect, useState} from 'react';
+
 
 export const DashboardNav = () => {
+
+  const [dateSelected, setDateSelected] = useState<Date>(new Date())
+  
+  useEffect(() => {
+      console.log(dateSelected.toLocaleDateString())
+    // requete api avec la date selectionnée
+  }, [dateSelected]);
+  
   
   return (
     <div className='bg-light w-80 h-screen flex flex-col items-center shadow-2xl'>
@@ -10,7 +21,7 @@ export const DashboardNav = () => {
       
       {/* Recherche par date */}
       <div className="mt-8">
-    <img src="../../../public/img/calendar.png" width="230px" alt="" />
+      <CalendarShadcn mode={"single"} selected={dateSelected} onSelect={setDateSelected} required/>
     </div>
 
       {/* Recherche par nom */}
