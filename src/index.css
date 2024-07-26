@@ -1,15 +1,45 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Seaweed+Script&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 * {
+    box-sizing: border-box;
+    scroll-behavior: smooth;
     font-family: 'Montserrat', sans-serif; /* Ajoutez 'sans-serif' comme police de secours */
 }
 
 a:hover {
     color: #FF5959;
+}
+
+.main-title {
+    font-family: 'Bebas Neue', cursive;
+    font-size: 5rem;
+}
+
+.main-subtitle {
+    font-family: 'Seaweed Script', cursive;
+    font-size: 3.4rem;
+}
+
+/* Buttons */
+
+.btn-green {
+    background-color: #267D48;
+    color: white;
+    font-weight: bold;
+    padding: 15px 10px;
+}
+
+.btn-light {
+    background-color: #ffffff;
+    color: black;
+    font-weight: bold;
+    padding: 13px 10px;
 }
 
 .cover-login {
@@ -18,7 +48,7 @@ a:hover {
     background-size: cover;
 }
 
-.bg-home {
+header {
     height: 100vh;
     background: linear-gradient(180deg, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.1) 90%), url('/public/img/bg-home-2400.jpg') center center / cover no-repeat;
     background-attachment: fixed;
