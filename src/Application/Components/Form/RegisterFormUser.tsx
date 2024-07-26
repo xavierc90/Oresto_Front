@@ -54,7 +54,7 @@ export const RegisterFormUser: React.FC<{setIsLoging: Dispatch<React.SetStateAct
                             "PHONE NUMBER => ", phoneNumber
                         )
                           setIsPassword(true)
-                      }} type="button" className="bg-black rounded-lg text-white py-2 w-3/4 mt-6 mb-4 font-bold">Créer un mot de passe</button>
+                      }} type="button" className="bg-black rounded-lg text-white py-2 px-5 w-4/4 mt-6 mb-4 font-bold text-sm">Créer un mot de passe</button>
                   </form>
               <div className="w-3/4 text-center">
               <button onClick={() => setIsLoging(true)} className="hover:text-black hover:underline">Vous avez déjà un compte ? Connectez-vous</button>
