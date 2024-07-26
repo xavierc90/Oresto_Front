@@ -2,8 +2,11 @@ import { LoginFormUser } from './LoginFormUser';
 import { RegisterFormUser } from './RegisterFormUser';
 import { RxCross1 } from "react-icons/rx";
 import { IoIosArrowDown } from "react-icons/io";
+import {useState} from "react";
 
 export const Widget = () => {
+    const [isLoging, setIsLoging] = useState(true)
+    
   return (
     <div 
     className="border-1 shadow-2xl border-gray-300 fixed bottom-0 
@@ -18,10 +21,7 @@ export const Widget = () => {
               <a href="" className='hover:text-white'><RxCross1 size={20} /></a>
           </div>
               </div>
-              <LoginFormUser />
-              {/* <RegisterFormUser /> */}
-
-
+          { isLoging ? <LoginFormUser setIsLoging={setIsLoging} /> : <RegisterFormUser setIsLoging={setIsLoging} /> }
       </div>
     </div>
   );
