@@ -1,4 +1,4 @@
-import { RegisterForm } from '../Components/RegisterForm'
+import { RegisterForm } from '../Components/Form/RegisterForm'
 import { useEffect } from 'react';
 
 export const RegisterPage = () => {

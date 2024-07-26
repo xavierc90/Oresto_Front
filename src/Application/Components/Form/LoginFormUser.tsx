@@ -21,7 +21,7 @@ export const LoginFormUser: React.FC<{setIsLoging: Dispatch<React.SetStateAction
             onClick={() => setIsLoging(false)}>Créer un compte
         </button>
         
-        <div>bonjour ...</div>
+        {/* <div>bonjour ...</div> */}
 </div>
   )
 }

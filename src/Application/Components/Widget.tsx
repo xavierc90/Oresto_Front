@@ -1,5 +1,5 @@
-import { LoginFormUser } from './LoginFormUser';
-import { RegisterFormUser } from './RegisterFormUser';
+import { LoginFormUser } from './Form/LoginFormUser';
+import { RegisterFormUser } from './Form/RegisterFormUser';
 import { RxCross1 } from "react-icons/rx";
 import { IoIosArrowDown } from "react-icons/io";
 import {useState} from "react";

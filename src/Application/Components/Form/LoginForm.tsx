@@ -11,8 +11,8 @@ export const LoginForm = () => {
         <label className="text-xl font-bold mb-4">Mot de passe</label>
         <input type="password" name="password" placeholder="Saisissez votre mot de passe" className="border-2 border-gray-300 p-2 mb-10 font-bold" />
         <div className="flex gap-2">
-        <NavLink to="/dashboard" className="bg-black text-white p-4 rounded-lg font-bold uppercase hover:text-white">Se connecter</NavLink>
-        <NavLink to="/register" className="bg-red-500 text-white text-center p-4 rounded-lg font-bold uppercase hover:text-white">Créer un compte</NavLink>
+        <button type="submit" className="bg-black text-white p-4 rounded-lg font-bold uppercase">Se connecter</button>
+        <NavLink to="/register" className="bg-red-500 text-white text-center p-4 rounded-lg font-bold uppercase no-underline">Créer un compte</NavLink>
         </div></form>
         <div className='mt-10'>
           <NavLink to="/lostpassword">J'ai oublié mon mot de passe</NavLink></div>

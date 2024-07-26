@@ -1,4 +1,4 @@
-import { FormResetPassword } from '../Components/FormResetPassword';
+import { FormResetPassword } from '../Components/Form/FormResetPassword';
 import { useEffect } from 'react';
 
 export const LostPasswordPage = () => {
