@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { useEffect } from 'react';
 import { Navbar } from '../Components/Navbar';
-import { Widget } from '../Components/Widget';
+import { Widget } from '../Components/Widget/Widget';
 
-export const Home = () => {
+export const HomePage = () => {
 
   const [showWidget, setShowWidget] = useState(false);
   

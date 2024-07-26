@@ -6,7 +6,7 @@ import { LuLayoutDashboard } from "react-icons/lu";
 import { MdLogout } from "react-icons/md";
 import { NavLink } from 'react-router-dom';
 
-import {CalendarShadcn} from "../Components/CalendarShadcn.tsx";
+import {CalendarShadcn} from "./CalendarShadcn";
 import {useEffect, useState} from 'react';
 
 

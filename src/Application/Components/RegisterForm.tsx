@@ -137,7 +137,7 @@ export const RegisterForm = () => {
 
           <button
             type="submit"
-            className={`bg-black text-white p-4 rounded-lg w-2/4 font-bold uppercase ${
+            className={`bg-black text-white py-4 rounded-lg w-2/3 font-bold uppercase ${
               isFormValid ? 'cursor-pointer' : 'cursor-not-allowed opacity-50'
             }`}
             disabled={!isFormValid}

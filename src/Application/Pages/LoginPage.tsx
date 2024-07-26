@@ -1,17 +1,18 @@
-import { RegisterForm } from '../Components/RegisterForm'
+import { LoginForm } from '../Components/LoginForm'
 import { useEffect } from 'react';
 
-export const Register = () => {
+export const LoginPage = () => {
   useEffect(() => {
-    document.title = 'Oresto - Créer un compte professionnel'; 
+    document.title = 'Oresto - Se connecter'; 
   }, []); 
   
   return (
     <div className='w-full h-screen flex'>
       <div className='w-6/12 bg-light'>
-        <RegisterForm />
+        <LoginForm />
       </div>
       <div className='cover-login w-6/12'>
+      mllkml
       </div>
     </div>
   )

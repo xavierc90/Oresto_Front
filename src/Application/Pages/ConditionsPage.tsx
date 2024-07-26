@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-export const Conditions = () => {
+export const ConditionsPage = () => {
   useEffect(() => {
     document.title = 'Oresto - Conditions d\'utilisations';
   }, []);

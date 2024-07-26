@@ -1,34 +1,46 @@
 import { createBrowserRouter } from "react-router-dom";
-import { Login } from "../../Application/Pages/Login";
-import { Home } from "../../Application/Pages/Home"
-import { Register } from "../../Application/Pages/Register";
-import { LostPassword } from "../../Application/Pages/LostPassword";
-import { Dashboard } from "../../Application/Pages/Dashboard";
-import { Conditions } from "../../Application/Pages/Conditions";
+import { LoginPage } from "../../Application/Pages/LoginPage";
+import { HomePage } from "../../Application/Pages/HomePage"
+import { RegisterPage } from "../../Application/Pages/RegisterPage";
+import { LoginFormUser } from "../../Application/Components/Widget/LoginFormUser";
+import { RegisterFormUser } from "../../Application/Components/Widget/RegisterFormUser";
+import { LostPasswordPage } from "../../Application/Pages/LostPasswordPage";
+import { DashboardPage } from "../../Application/Pages/DashboardPage";
+import { ConditionsPage } from "../../Application/Pages/ConditionsPage";
 
 export const router = createBrowserRouter([
 {
     path: "/",
-    element: <Home />,
+    element: <HomePage />,
 },
 {
     path: "/login",
-    element: <Login />,
+    element: <LoginPage />,
 },
 {
     path: "/register",
-    element: <Register />
+    element: <RegisterPage />
 },
 {
     path: "/lostpassword",
-    element: <LostPassword />
+    element: <LostPasswordPage />
 },
 {
     path: "/conditions",
-    element: <Conditions />
+    element: <ConditionsPage />
 },
 {
     path: "/dashboard",
-    element: <Dashboard />
-}
+    element: <DashboardPage />
+},
+{
+    path: "/loginuser",
+    element: <LoginFormUser />,
+    children: [
+      {
+        path: "registeruser",
+        element: <RegisterFormUser />,
+      },
+    ],
+  },
 ]);

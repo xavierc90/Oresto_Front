@@ -1,7 +1,7 @@
 import { FormResetPassword } from '../Components/FormResetPassword';
 import { useEffect } from 'react';
 
-export const LostPassword = () => {
+export const LostPasswordPage = () => {
   useEffect(() => {
     document.title = 'Oresto - Mot de passe perdu'; 
   }, []); 
