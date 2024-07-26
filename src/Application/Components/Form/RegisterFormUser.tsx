@@ -9,7 +9,7 @@ export const RegisterFormUser: React.FC<{setIsLoging: Dispatch<React.SetStateAct
     const [isPassword, setIsPassword] = useState(false)
     
     return (
-      <div className="flex flex-col justify-center items-center pt-5 pb-5 bg-white">
+      <div className="flex flex-col justify-center items-center pt-5 pb-5 bg-white w-80">
           {
               !isPassword
               ? <> <h1 className="text-center text-xl font-bold">Inscription rapide</h1>

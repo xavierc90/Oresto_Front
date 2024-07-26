@@ -14,7 +14,7 @@ export const Widget = () => {
     ">
       <div>
         <div 
-        className='flex justify-between items-center bg-green-800 top-0 w-auto text-white py-3 pl-4 rounded-t-xl'>
+        className='flex justify-between items-center bg-green-800 top-0 w-80 text-white py-3 pl-4 rounded-t-xl'>
           Réserver en ligne
           <div className='flex gap-2 mr-4'>
               <a href="" className='hover:text-white'><IoIosArrowDown size={20} /></a>
