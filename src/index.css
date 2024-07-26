@@ -26,6 +26,10 @@ a:hover {
     font-size: 3.4rem;
 }
 
+.bebas {
+    font-family: 'Bebas Neue', cursive;
+}
+
 /* Buttons */
 
 .btn-green {

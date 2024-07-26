@@ -19,12 +19,13 @@ export const HomePage = () => {
     <div>
     <header className='flex flex-col justify-center items-center'>
   
-    <nav className="flex items-center justify-center fixed top-0 w-full bg-black py-7">
+    <nav className="flex items-center justify-center fixed top-0 w-full bg-black py-8">
 
-      <h1 className='absolute left-0 text-white uppercase ml-10 font-bold text-xl'>
-        <a href="#" className='hover:text-white'>La belle assiette</a></h1>
-      
-        <ul className="text-white text-xl font-bold uppercase flex justify-center gap-10">
+      <div className='absolute left-10 text-white text-center'>
+      <a href="#" className='hover:text-white'><h1 className='bebas uppercase font-bold text-2xl'>
+        La belle assiette</h1></a></div>
+
+        <ul className="text-white text-lg font-bold uppercase flex justify-center gap-10">
             <li><a href="#about" className="hover:text-white">Le restaurant</a></li>
             <li><a href="#menu" className="hover:text-white">La carte</a></li>
             <li><a onClick={openWidget} className="hover:text-white cursor-pointer">Réserver</a></li>
