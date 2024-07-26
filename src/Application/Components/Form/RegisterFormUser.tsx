@@ -30,7 +30,7 @@ export const RegisterFormUser: React.FC<{setIsLoging: Dispatch<React.SetStateAct
                       
                       <div className="flex flex-col w-4/4">
                           <label htmlFor="phone_number" className="font-bold">N° de téléphone :</label>
-                          <input value={phoneNumber} onChange={(e) => setPhoneNumber(e.currentTarget.value)} type="number" id="phone_number" name="phone_number" placeholder="Exemple : 0102030405" className="border-2 border-gray-300 rounded-lg w-4/4 p-2 mt-2 mb-4 font-bold"/>
+                          <input value={phoneNumber} onChange={(e) => setPhoneNumber(e.currentTarget.value)} type="tel" id="phone_number" name="phone_number" placeholder="Exemple : 0102030405" className="border-2 border-gray-300 rounded-lg w-4/4 p-2 mt-2 mb-4 font-bold"/>
                       </div>
                       
                       <div className="w-3/4 text-center">
@@ -41,7 +41,7 @@ export const RegisterFormUser: React.FC<{setIsLoging: Dispatch<React.SetStateAct
                               className="mr-2"
                           />
                           J'accepte les{' '}
-                          <a href="/conditions" target='_blank' className="text-black font-bold">
+                          <a href="/conditions" target='_blank' className="text-black font-bold hover:text-green-700">
                               conditions d'utilisation
                           </a>
                       </div>

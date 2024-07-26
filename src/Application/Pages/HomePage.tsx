@@ -18,13 +18,17 @@ export const HomePage = () => {
     <div>
     <header className='flex flex-col justify-center items-center'>
   
-    <div className="fixed top-0 w-full bg-black py-7">
-        <ul className="text-white text-xl font-bold uppercase flex gap-12 justify-center">
-            <li><a href="#about" className="hover:text-white">Notre restaurant</a></li>
+    <nav className="flex items-center justify-center fixed top-0 w-full bg-black py-7">
+
+      <h1 className='absolute left-0 text-white uppercase ml-10 font-bold text-xl'>
+        <a href="#" className='hover:text-white'>La belle assiette</a></h1>
+      
+        <ul className="text-white text-xl font-bold uppercase flex justify-center gap-10">
+            <li><a href="#about" className="hover:text-white">Le restaurant</a></li>
             <li><a href="#menu" className="hover:text-white">Le menu</a></li>
-            <li>Contact</li>
+            <li><a href="#contact" className="hover:text-white">Contact</a></li>
         </ul>
-    </div>
+    </nav>
 
       <div>
         <h1 className="main-title text-center text-white uppercase">La Belle Assiette</h1>
@@ -42,6 +46,10 @@ export const HomePage = () => {
 
     <div id="menu" className='h-screen bg-white text-black flex justify-center items-center'>
         <h1 className='text-black text-4xl uppercase'>Le menu</h1>
+    </div>
+
+    <div id="contact" className='h-screen bg-black text-black flex justify-center items-center'>
+        <h1 className='text-white text-4xl uppercase'>Contact</h1>
     </div>
 
     {showWidget && (
