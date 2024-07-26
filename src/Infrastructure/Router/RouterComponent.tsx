@@ -2,7 +2,7 @@ import {LoginFormUser} from "../../Application/Components/Widget/LoginFormUser";
 import {RegisterFormUser} from "../../Application/Components/Widget/RegisterFormUser";
 import React, {Dispatch, useState} from "react";
 
-export const InternalRouter: 
+export const RouterComponent: 
 React.FC<{setNextComponent: Dispatch<React.SetStateAction<boolean>>}> = ({setNextComponent}) => {
     const [changeComponent, setChangeComponent] = useState(0)
     return (

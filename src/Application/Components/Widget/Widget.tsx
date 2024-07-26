@@ -1,5 +1,5 @@
 import { LoginFormUser } from './LoginFormUser';
-// import { RegisterFormUser } from './RegisterFormUser';
+import { RegisterFormUser } from './RegisterFormUser';
 import { RxCross1 } from "react-icons/rx";
 import { IoIosArrowDown } from "react-icons/io";
 
@@ -18,8 +18,10 @@ export const Widget = () => {
               <a href="" className='hover:text-white'><RxCross1 size={20} /></a>
           </div>
               </div>
-            <LoginFormUser />
-            {/* <RegisterFormUser /> */}
+              <LoginFormUser />
+              {/* <RegisterFormUser /> */}
+
+
       </div>
     </div>
   );
