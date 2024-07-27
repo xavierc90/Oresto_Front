@@ -49,7 +49,7 @@ export const FormResetPassword: React.FC<FormResetPasswordProps> = ({
         <a
           href="#"
           onClick={handleSignUpClick}
-          className="hover:text-black hover:underline cursor-pointer text-center"
+          className="hover:text-black hover:underline cursor-pointer text-center text-sm w-3/4"
         >
           Vous n'avez pas de compte ? Inscrivez-vous
         </a>
@@ -57,7 +57,7 @@ export const FormResetPassword: React.FC<FormResetPasswordProps> = ({
         <a
           href="#"
           onClick={handleBackToLogin}
-          className="hover:text-black hover:underline cursor-pointer mt-4"
+          className="hover:text-black hover:underline cursor-pointer mt-4 text-sm"
         >
           Retour à l'accueil
         </a>

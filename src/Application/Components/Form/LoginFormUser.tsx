@@ -35,7 +35,7 @@ export const LoginFormUser: React.FC<{
         <a 
           href="#" 
           onClick={handleForgotPasswordClick} 
-          className="hover:text-black"
+          className="hover:text-black text-sm"
         >
           J'ai oublié mon mot de passe
         </a>
