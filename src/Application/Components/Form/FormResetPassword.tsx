@@ -1,17 +1,67 @@
-import { NavLink } from 'react-router-dom';
+import React, { Dispatch } from 'react';
 
-export const FormResetPassword = () => {
+type FormResetPasswordProps = {
+  setIsLostPassword: Dispatch<React.SetStateAction<boolean>>;
+  setIsLoging: Dispatch<React.SetStateAction<boolean>>;
+};
+
+export const FormResetPassword: React.FC<FormResetPasswordProps> = ({
+  setIsLostPassword,
+  setIsLoging,
+}) => {
+  const handleBackToLogin = (event: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>) => {
+    event.preventDefault();
+    setIsLostPassword(false); // Retourne à l'écran de connexion
+  };
+
+  const handleSignUpClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    event.preventDefault();
+    setIsLostPassword(false); // Assurez-vous que l'écran de réinitialisation de mot de passe est caché
+    setIsLoging(false); // Affiche le formulaire d'inscription
+  };
 
   return (
-    <div className="flex flex-col items-center justify-center items-center h-screen">
-            <a href="/login">
-        <img src="../../../public/img/logo-oresto-red.png" width="300px" alt="Logo Oresto" />
-      </a>
-      <form className="flex flex-col w-80 mt-10">
-        <label className="text-xl font-bold mb-4">Adresse mail ou identifiant</label>
-        <input type="text" name="login" placeholder="Saisissez votre email ou identifiant" className="border-2 border-gray-300 p-2 mb-6 font-bold" />
-        <button type="submit" className="bg-black text-white p-4 rounded-lg w-4/4 font-bold uppercase">Récupérer le mot de passe</button>
-        </form>
-        <NavLink to="/login" className="pt-10">Retour à la page de connexion</NavLink></div>
-  )
-}
+    <div className="flex flex-col justify-center items-center pt-5 pb-5 px-6 bg-white w-80">
+      <h1 className="text-center text-xl font-bold">Mot de passe perdu ?</h1>
+      <h2 className="w-full text-center text-sm pt-5">
+        Renseignez votre adresse pour recevoir un mail et réinitialiser votre mot de passe
+      </h2>
+      <form className="flex flex-col justify-center items-center mt-4">
+        <div className="flex flex-col w-full">
+          <label htmlFor="email" className="font-bold items-left">
+            Adresse mail
+          </label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            placeholder="Saisissez votre adresse mail"
+            className="border-2 border-gray-300 rounded-lg w-full p-2 mt-2 mb-4 font-bold"
+          />
+        </div>
+        <button
+          type="submit"
+          className="bg-black rounded-lg text-white py-2 px-4 mt-2 mb-4 font-bold text-sm"
+        >
+          Réinitialiser le mot de passe
+        </button>
+
+        <a
+          href="#"
+          onClick={handleSignUpClick}
+          className="hover:text-black hover:underline cursor-pointer text-center"
+        >
+          Vous n'avez pas de compte ? Inscrivez-vous
+        </a>
+
+        <a
+          href="#"
+          onClick={handleBackToLogin}
+          className="hover:text-black hover:underline cursor-pointer mt-4"
+        >
+          Retour à l'accueil
+        </a>
+      </form>
+    </div>
+  );
+};
