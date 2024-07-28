@@ -1,7 +1,6 @@
-import { DashboardNav } from '../Components/Dashboard/DashboardNav'
-import { BookingList } from '../Components/Dashboard/BookingList'
 import { useEffect } from 'react';
-import { ManagerLine } from '../Components/Dashboard/ManagerLine'
+import { Outlet, Link } from 'react-router-dom';
+import { DashboardNav } from '../Components/Dashboard/DashboardNav';
 
 export const DashboardPage = () => {
   useEffect(() => {
@@ -10,9 +9,10 @@ export const DashboardPage = () => {
 
   return (
     <div className='flex'>
-    <DashboardNav />
-    <BookingList />
-    <ManagerLine />
+      <DashboardNav />
+      <div className="content">
+        <Outlet />
+      </div>
     </div>
-  )
-}
+  );
+};

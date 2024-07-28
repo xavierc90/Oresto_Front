@@ -8,6 +8,9 @@ import { BookingsPage } from "../../Application/Pages/BookingsPage"; // Assurez-
 import { ClientsPage } from "../../Application/Pages/ClientsPage"; // Assurez-vous d'importer ces composants
 import { useAuth } from "../../Module/Auth/auth.hook"; // Importez votre hook d'authentification
 import { ReactNode } from 'react'; // Import ReactNode
+import { LayoutPage } from "../../Application/Pages/LayoutPage";
+import { AnalyticsPage } from "../../Application/Pages/AnalyticsPage";
+import { SettingsPage } from "../../Application/Pages/SettingsPage";
 
 type ProtectedRouteProps = {
   element: ReactNode;
@@ -45,9 +48,21 @@ export const router = createBrowserRouter([
         element: <ProtectedRoute element={<BookingsPage />} />,
       },
       {
+        path: "layouts",
+        element: <ProtectedRoute element={<LayoutPage />} />,
+      },
+      {
         path: "clients",
         element: <ProtectedRoute element={<ClientsPage />} />,
       },
+      {
+        path: "analytics",
+        element: <ProtectedRoute element={<AnalyticsPage />} />,
+      },
+      {
+        path: "settings",
+        element: <ProtectedRoute element={<SettingsPage />} />,
+      }    
     ],
   },
 ]);

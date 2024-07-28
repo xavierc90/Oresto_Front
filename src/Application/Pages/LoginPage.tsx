@@ -27,7 +27,7 @@ export const LoginPage = () => {
       loginUser(token);
 
       // Redirigez l'utilisateur vers le tableau de bord
-      navigate('/dashboard');
+      navigate('/dashboard/bookings');
     } catch (error: unknown) {
       console.error('Erreur de connexion:', error);
 
