@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useEffect } from 'react';
-import { Widget } from '../Components/Widget';
+import { Widget } from '../Components/Widget/Widget';
 import { IoIosArrowDown } from "react-icons/io";
 
 export const HomePage = () => {
