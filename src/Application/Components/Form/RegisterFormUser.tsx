@@ -247,7 +247,7 @@ export const RegisterFormUser: React.FC<RegisterFormUserProps> = ({
                   ) : (
                     <FaTimesCircle className="text-gray-300 mr-2" />
                   )}
-                  Un chiffre
+                  Un chiffre entre 0 et 9
                 </li>
                 <li className="flex items-center">
                   {hasSpecialChar ? (
