@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { BsListCheck } from "react-icons/bs";
 import { FaUsers } from "react-icons/fa";
 import { IoMdStats } from "react-icons/io";
@@ -11,17 +11,21 @@ import { CalendarShadcn } from "./CalendarShadcn";
 export const DashboardNav = () => {
   const [dateSelected, setDateSelected] = useState<Date>(new Date());
   const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
+    const formattedDate = dateSelected.toLocaleDateString('fr-FR').replace(/\//g, '');
     console.log(dateSelected.toLocaleDateString())
-    // requête API avec la date sélectionnée
-  }, [dateSelected]);
+    navigate(`/dashboard/bookings?dayselected=${formattedDate}`);
+  }, [dateSelected, navigate]);
 
   const getLinkClass = (path: string) => {
-    return location.pathname === path
+    return location.pathname.startsWith(path)
       ? 'flex flex-col items-center text-red-500 transition duration-300'
       : 'flex flex-col items-center text-gray-600 hover:text-red-500 transition duration-300';
   };
+
+  const formattedDate = dateSelected.toLocaleDateString('fr-FR').replace(/\//g, '');
 
   return (
     <div className='bg-light w-96 h-screen flex flex-col items-center shadow-2xl'>
@@ -43,7 +47,7 @@ export const DashboardNav = () => {
       <div className="grid grid-cols-2 gap-6 justify-items-center mt-4">
         {/* Premier Élément */}
         <Link
-          to="/dashboard/bookings"
+          to={`/dashboard/bookings?dayselected=${formattedDate}`}
           className={getLinkClass('/dashboard/bookings')}>
           <BsListCheck size={30} className="mb-1" />
           <h2 className="text-xs font-bold">Réservations</h2>
