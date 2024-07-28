@@ -123,6 +123,13 @@ input::placeholder {
 
 /* Tableau de clients et réservervation */
 
+.scrollable-container {
+    margin-top: 20px;
+    width: 75vw;
+    height: 280px; /* hauteur fixe */
+    overflow-y: auto; /* ajout de la barre de défilement verticale */
+  }
+  
 .bookinglist tr {
     height: 2.2rem;
 }

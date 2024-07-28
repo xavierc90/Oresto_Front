@@ -2,7 +2,7 @@ import { FaSort } from "react-icons/fa";
 
 export const BookingList = () => {
   return (
-        <div>
+        <div className="scrollable-container">
             <table className="mt-8 ml-12 table-auto">
                 <thead>
                     <tr>
@@ -54,7 +54,32 @@ export const BookingList = () => {
                         <td className="text-center">12</td>
                         <td>En attente</td>
                         <td className="text-center">Modifier | Annuler</td>
-                    </tr>                    <tr className="hover:bg-gray-200 hover:cursor-pointer">
+                    </tr>                    
+                    <tr className="hover:bg-gray-200 hover:cursor-pointer">
+                        <td>12:00</td>
+                        <td className="text-center">John Doe</td>
+                        <td className="text-center">4 personnes</td>
+                        <td className="text-center">12</td>
+                        <td>En attente</td>
+                        <td className="text-center">Modifier | Annuler</td>
+                    </tr>
+                    <tr className="hover:bg-gray-200 hover:cursor-pointer">
+                        <td>12:00</td>
+                        <td className="text-center">John Doe</td>
+                        <td className="text-center">4 personnes</td>
+                        <td className="text-center">12</td>
+                        <td>En attente</td>
+                        <td className="text-center">Modifier | Annuler</td>
+                    </tr>
+                    <tr className="hover:bg-gray-200 hover:cursor-pointer">
+                        <td>12:00</td>
+                        <td className="text-center">John Doe</td>
+                        <td className="text-center">4 personnes</td>
+                        <td className="text-center">12</td>
+                        <td>En attente</td>
+                        <td className="text-center">Modifier | Annuler</td>
+                    </tr>
+                    <tr className="hover:bg-gray-200 hover:cursor-pointer">
                         <td>12:00</td>
                         <td className="text-center">John Doe</td>
                         <td className="text-center">4 personnes</td>
