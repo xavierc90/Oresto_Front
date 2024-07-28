@@ -1,4 +1,5 @@
 import { ClientList } from "../Components/Dashboard/ClientList";
+import { ClientInfos } from "../Components/Dashboard/ClientInfos";
 
 export const ClientsPage = () => {
   return (
@@ -9,6 +10,7 @@ export const ClientsPage = () => {
         | <span className="font-bold text-red-500">14</span> réservations
     </h2>
     <ClientList />
+    <ClientInfos />
 </div>
   )
 }

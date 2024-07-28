@@ -95,6 +95,7 @@ export const DashboardNav = () => {
           <h2 className="text-xs font-bold">Se déconnecter</h2>
         </Link>
       </div>
+          <h3 className='text-xs text-center my-8'>Version 1.0</h3>      
     </div>
   );
 };
