@@ -121,6 +121,16 @@ input::placeholder {
   opacity: 0.5;
 }
 
+/* Tableau de clients et réservervation */
+
+.bookinglist tr {
+    height: 2.2rem;
+}
+
+.clientlist tr {
+    height: 2.2rem;
+}
+
 /* Booking list style */
 
 .booking-list {
