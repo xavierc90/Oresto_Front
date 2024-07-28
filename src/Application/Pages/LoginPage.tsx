@@ -47,8 +47,8 @@ export const LoginPage = () => {
       <div className='w-6/12 bg-light'>
         <div className="flex flex-col w-400 items-center justify-center h-screen">
           <img src="../../../public/img/logo-oresto-red.png" width="350px" alt="Logo Oresto" />
-          <form className="flex flex-col mt-10" onSubmit={handleSubmit}>
-          {error && <div className="text-red-500 mb-4 text-center font-bold">{error}</div>} {/* Affichage du message d'erreur */}
+          <form className="flex flex-col mt-8" onSubmit={handleSubmit}>
+          {error && <div className="text-red-500 mb-8 text-center font-bold">{error}</div>}
             <label className="text-xl font-bold mb-4">Adresse mail</label>
             <input 
               type="email" 

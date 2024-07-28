@@ -41,8 +41,8 @@ export const DashboardNav = () => {
       {/* Recherche par nom */}
       
          <form action="clients" className="flex flex-col justify-center mt-4">
-          <label htmlFor="search" className="text-base font-bold px-10 mb-4">Recherche par nom</label>
-          <input type="text" name="name" id="search" placeholder="Saisir le nom du client" className="border-2 border-gray-300 p-1 mb-6 font-bold w-60 mx-7" />
+          <label htmlFor="search" className="text-base font-bold mb-4">Recherche par nom</label>
+          <input type="text" name="name" id="search" placeholder="Saisir le nom du client" className="border-2 border-gray-300 p-1 mb-6 font-bold w-60" />
          </form>
       
     
