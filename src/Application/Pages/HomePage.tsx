@@ -28,8 +28,8 @@ export const HomePage = () => {
         <ul className="text-white text-lg font-bold uppercase flex justify-center gap-10">
             <li><a href="#about" className="hover:text-white">Le restaurant</a></li>
             <li><a href="#menu" className="hover:text-white">La carte</a></li>
-            <li><a onClick={openWidget} className="hover:text-white cursor-pointer">Réserver</a></li>
             <li><a href="#contact" className="hover:text-white">Contact</a></li>
+            <li><a onClick={openWidget} className="hover:text-white cursor-pointer">Réserver</a></li>
         </ul>
 
         <div className='absolute right-10 flex gap-2'>
