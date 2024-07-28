@@ -2,13 +2,6 @@ import { FaSort } from "react-icons/fa";
 
 export const BookingList = () => {
   return (
-    <div className="bg-light w-full">
-        <h1 className="text-2xl font-bold pt-12 pl-12">Vendredi 26 juillet 2024</h1>
-        <h2 className="text-lg pl-12 pt-2">
-            <span className="font-bold text-red-500">6</span> réservations | 
-            <span className="font-bold text-red-500 ml-2">12</span> couverts
-        </h2>
-
         <div>
             <table className="mt-8 ml-12 table-auto">
                 <thead>
@@ -70,6 +63,5 @@ export const BookingList = () => {
                 </tbody>
             </table>
         </div>
-    </div>
-  )
+   )
 }

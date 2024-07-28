@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { BsListCheck } from "react-icons/bs";
 import { FaUsers } from "react-icons/fa";
@@ -30,7 +30,7 @@ export const DashboardNav = () => {
   return (
     <div className='bg-light w-96 h-screen flex flex-col items-center shadow-2xl'>
       <div className="mt-12">
-        <img src="../../../public/img/logo-oresto-red.png" width="230px" alt="Logo Oresto" />
+        <img src="../../../public/img/logo-oresto-red.png" width="270px" alt="Logo Oresto" />
       </div>
       
       {/* Recherche par date */}
@@ -39,10 +39,12 @@ export const DashboardNav = () => {
       </div>
 
       {/* Recherche par nom */}
-      <div className="flex flex-col justify-center mt-8">
-        <label className="text-sm font-bold px-12 mb-4">Recherche par nom</label>
-        <input type="text" name="search" placeholder="Saisir le nom du client" className="border-2 border-gray-300 p-2 mb-6 font-bold w-60 mx-12" />
-      </div>
+      
+         <form action="clients" className="flex flex-col justify-center mt-4">
+          <label htmlFor="search" className="text-base font-bold px-10 mb-4">Recherche par nom</label>
+          <input type="text" name="name" id="search" placeholder="Saisir le nom du client" className="border-2 border-gray-300 p-1 mb-6 font-bold w-60 mx-7" />
+         </form>
+      
     
       <div className="grid grid-cols-2 gap-6 justify-items-center mt-4">
         {/* Premier Élément */}

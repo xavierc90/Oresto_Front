@@ -9,6 +9,7 @@ export const DashboardPage = () => {
 
   return (
     <div className='flex'>
+      <div className='absolute right-12 top-10 mr-10 mt-5 text-base'>John Doe</div>
       <DashboardNav />
       <div>
         <Outlet />
