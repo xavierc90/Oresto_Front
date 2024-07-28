@@ -10,7 +10,7 @@ export const DashboardPage = () => {
   return (
     <div className='flex'>
       <DashboardNav />
-      <div className="content">
+      <div>
         <Outlet />
       </div>
     </div>
