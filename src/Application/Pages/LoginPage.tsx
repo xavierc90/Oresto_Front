@@ -6,25 +6,24 @@ import { useAuth } from '../../Module/Auth/auth.hook';
 export const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState(''); // État pour stocker le message d'erreur
+  const [error, setError] = useState(''); 
   const { login: loginUser } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
     document.title = 'Oresto - Se connecter'; 
+    if (localStorage.getItem('token')) {
+      navigate('/dashboard/bookings');}
   }, []); 
-  
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    
-    console.log({ email, password });
-
     try {
       const response = await http.post('/login', { email, password });
-      const { token } = response.data;
-
-      // Enregistrez le token et mettez à jour l'état d'authentification
-      loginUser(token);
+      const { token } = response.data
+      if (token) {
+        loginUser(token);
+      }    
 
       // Redirigez l'utilisateur vers le tableau de bord
       navigate('/dashboard/bookings');
@@ -51,7 +50,7 @@ export const LoginPage = () => {
           {error && <div className="text-red-500 mb-8 text-center font-bold">{error}</div>}
             <label className="text-xl font-bold mb-4">Adresse mail</label>
             <input 
-              type="email" 
+              type="text" 
               name="email" 
               placeholder="Saisissez votre email" 
               className="border-2 border-gray-300 p-2 mb-6 font-bold" 

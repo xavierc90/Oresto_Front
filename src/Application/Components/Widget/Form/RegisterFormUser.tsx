@@ -82,7 +82,7 @@ export const RegisterFormUser: React.FC<RegisterFormUserProps> = ({
       {step === 1 && (
         <>
           <h1 className="text-center text-xl font-bold">Inscription rapide</h1>
-          <h2 className="text-center text-sm pt-5 w-3/4">
+          <h2 className="text-center text-sm pt-5 w-3/4 hidden">
             Créer un compte vous permet de réserver facilement une table dans
             votre restaurant
           </h2>

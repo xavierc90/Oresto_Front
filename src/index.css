@@ -26,8 +26,11 @@ a:hover {
     font-size: 3.4rem;
 }
 
-.bebas {
-    font-family: 'Bebas Neue', cursive;
+.scrollable-container {
+    margin-top: 30px;
+    width: 1150px;
+    height: 260px;
+    overflow-y: auto;
 }
 
 /* Buttons */
@@ -121,23 +124,6 @@ input::placeholder {
   opacity: 0.5;
 }
 
-/* Tableau de clients et réservervation */
-
-.scrollable-container {
-    margin-top: 20px;
-    width: 75vw;
-    height: 280px; /* hauteur fixe */
-    overflow-y: auto; /* ajout de la barre de défilement verticale */
-  }
-  
-.bookinglist tr {
-    height: 2.2rem;
-}
-
-.clientlist tr {
-    height: 2.0rem;
-}
-
 /* Booking list style */
 
 .booking-list {
@@ -154,6 +140,12 @@ input::placeholder {
 
 .active {
     color: #FF5959;
+}
+
+/* Font Family */
+
+.bebas {
+    font-family: 'Bebas Neue', cursive;
 }
 
 /* Version responsive */
@@ -187,7 +179,8 @@ input::placeholder {
 
     .widget-container {
         height: 100vh;
-        width: 100%;    }
+        width: 100%;    
+    }
     
 }
 
