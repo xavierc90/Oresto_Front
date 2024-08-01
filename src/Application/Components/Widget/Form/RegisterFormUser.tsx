@@ -1,5 +1,6 @@
 import React, { Dispatch, useState } from "react";
 import { FaEye, FaEyeSlash, FaCheckCircle, FaTimesCircle } from "react-icons/fa";
+import useRegister from "../../../../Module/Auth/register.hook"; // Assurez-vous d'importer le hook correctement
 
 // Définitions des types pour les props
 type RegisterFormUserProps = {
@@ -22,9 +23,14 @@ export const RegisterFormUser: React.FC<RegisterFormUserProps> = ({
   // État pour suivre l'étape actuelle
   const [step, setStep] = useState(1);
 
+  // État pour suivre l'état de l'inscription
+  const [registrationSuccess, setRegistrationSuccess] = useState(false);
+
+  // Utilisation du hook d'inscription
+  const { register, isRegistering, error, successMessage } = useRegister();
+
   // Fonction pour gérer le passage à l'étape suivante
   const handleNextStep = () => {
-    // Vérifiez que les champs nécessaires sont remplis avant de passer à l'étape suivante
     if (firstname && lastname && email && phoneNumber) {
       setStep(2);
     } else {
@@ -33,32 +39,37 @@ export const RegisterFormUser: React.FC<RegisterFormUserProps> = ({
   };
 
   // Fonction pour gérer la soumission du formulaire final
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (password !== confirmPassword) {
       alert("Les mots de passe ne correspondent pas.");
       return;
     }
 
-    // Simulez une requête d'inscription ici
-    console.log("Inscription:", {
-      firstname,
-      lastname,
+    const result = await register({
+      firstName: firstname,
+      lastName: lastname,
       email,
       phoneNumber,
       password,
+      confirmPassword,
     });
 
-    // Réinitialisez le formulaire après l'inscription
-    setFirstname("");
-    setLastname("");
-    setEmail("");
-    setPhoneNumber("");
-    setPassword("");
-    setConfirmPassword("");
-    setStep(1);
+    // Affichage du résultat dans la console
+    console.log('Résultat de l\'inscription:', result);
 
-    alert("Inscription réussie !");
-    setIsLoging(true); // Retour à la connexion après l'inscription
+    if (result.success) {
+      // Pas de connexion automatique après l'inscription
+      setFirstname("");
+      setLastname("");
+      setEmail("");
+      setPhoneNumber("");
+      setPassword("");
+      setConfirmPassword("");
+      setRegistrationSuccess(true);
+    } else {
+      // Si l'inscription échoue, vous pouvez afficher un message d'erreur ici
+      setRegistrationSuccess(false);
+    }
   };
 
   // Gestion de la visibilité des mots de passe
@@ -87,7 +98,7 @@ export const RegisterFormUser: React.FC<RegisterFormUserProps> = ({
             votre restaurant
           </h2>
           <form className="flex flex-col justify-center items-center mt-8">
-            <div className="flex flex-col w-4/4">
+            <div className="flex flex-col w-full">
               <label htmlFor="firstName" className="font-bold items-left">
                 Prénom :
               </label>
@@ -98,10 +109,10 @@ export const RegisterFormUser: React.FC<RegisterFormUserProps> = ({
                 id="firstName"
                 name="firstName"
                 placeholder="François"
-                className="border-2 border-gray-300 rounded-lg w-4/4 p-2 mt-2 mb-4 font-bold"
+                className="border-2 border-gray-300 rounded-lg w-full p-2 mt-2 mb-4 font-bold"
               />
             </div>
-            <div className="flex flex-col w-4/4">
+            <div className="flex flex-col w-full">
               <label htmlFor="lastName" className="font-bold">
                 Nom :
               </label>
@@ -112,11 +123,11 @@ export const RegisterFormUser: React.FC<RegisterFormUserProps> = ({
                 id="lastName"
                 name="lastName"
                 placeholder="Dupont"
-                className="border-2 border-gray-300 rounded-lg w-4/4 p-2 mt-2 mb-4 font-bold"
+                className="border-2 border-gray-300 rounded-lg w-full p-2 mt-2 mb-4 font-bold"
               />
             </div>
 
-            <div className="flex flex-col w-4/4">
+            <div className="flex flex-col w-full">
               <label htmlFor="email" className="font-bold">
                 Adresse mail :
               </label>
@@ -127,11 +138,11 @@ export const RegisterFormUser: React.FC<RegisterFormUserProps> = ({
                 id="email"
                 name="email"
                 placeholder="f.dupont@gmail.com"
-                className="border-2 border-gray-300 rounded-lg w-4/4 p-2 mt-2 mb-4 font-bold"
+                className="border-2 border-gray-300 rounded-lg w-full p-2 mt-2 mb-4 font-bold"
               />
             </div>
 
-            <div className="flex flex-col w-4/4">
+            <div className="flex flex-col w-full">
               <label htmlFor="phone_number" className="font-bold">
                 N° de téléphone :
               </label>
@@ -142,11 +153,11 @@ export const RegisterFormUser: React.FC<RegisterFormUserProps> = ({
                 id="phone_number"
                 name="phone_number"
                 placeholder="Exemple : 0102030405"
-                className="border-2 border-gray-300 rounded-lg w-4/4 p-2 mt-2 mb-4 font-bold"
+                className="border-2 border-gray-300 rounded-lg w-full p-2 mt-2 mb-4 font-bold"
               />
             </div>
 
-            <div className="w-3/4 text-center">
+            <div className="w-full text-center">
               <input type="checkbox" name="cgu" id="cgu" className="mr-2" />
               <span className="text-sm">
                 J'accepte les{" "}
@@ -163,12 +174,12 @@ export const RegisterFormUser: React.FC<RegisterFormUserProps> = ({
             <button
               onClick={handleNextStep}
               type="button"
-              className="bg-black rounded-lg text-white py-2 px-5 w-4/4 mt-6 mb-4 font-bold text-sm"
+              className="bg-black rounded-lg text-white py-2 px-5 w-full mt-6 mb-4 font-bold text-sm"
             >
               Créer un mot de passe
             </button>
           </form>
-          <div className="w-3/4 text-center">
+          <div className="w-full text-center">
             <button
               onClick={() => setIsLoging(true)}
               className="hover:text-black hover:underline text-sm"
@@ -179,14 +190,14 @@ export const RegisterFormUser: React.FC<RegisterFormUserProps> = ({
         </>
       )}
 
-      {step === 2 && (
+      {step === 2 && !registrationSuccess && (
         <>
           <h1 className="text-center text-xl font-bold">Créez votre mot de passe</h1>
           <h2 className="text-center text-sm pt-5 w-3/4">
             Assurez-vous que le mot de passe saisi respecte les conditions mentionnées plus bas
           </h2>
           <form className="flex flex-col justify-center items-center mt-8">
-            <div className="flex flex-col w-4/4 relative">
+            <div className="flex flex-col w-full relative">
               <label htmlFor="password" className="font-bold items-left mb-1">
                 Mot de passe
               </label>
@@ -202,13 +213,13 @@ export const RegisterFormUser: React.FC<RegisterFormUserProps> = ({
               <button
                 type="button"
                 onClick={togglePasswordVisibility}
-                className="absolute right-2 top-11"
+                className="absolute right-2 top-2"
               >
                 {showPassword ? <FaEyeSlash /> : <FaEye />}
               </button>
             </div>
 
-            <div className="flex flex-col w-4/4 relative">
+            <div className="flex flex-col w-full relative">
               <label htmlFor="confirmPassword" className="font-bold mb-1 mt-3">
                 Confirmez le mot de passe
               </label>
@@ -224,7 +235,7 @@ export const RegisterFormUser: React.FC<RegisterFormUserProps> = ({
               <button
                 type="button"
                 onClick={toggleConfirmPasswordVisibility}
-                className="absolute right-2 top-14"
+                className="absolute right-2 top-2"
               >
                 {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
               </button>
@@ -268,6 +279,17 @@ export const RegisterFormUser: React.FC<RegisterFormUserProps> = ({
               </ul>
             </div>
 
+            {error && (
+              <div className="w-full text-center text-red-600 mb-4">
+                {error}
+              </div>
+            )}
+            {successMessage && (
+              <div className="w-full text-center text-green-600 font-bold mb-4">
+                {successMessage}
+              </div>
+            )}
+
             <button
               onClick={handleSubmit}
               type="button"
@@ -276,19 +298,21 @@ export const RegisterFormUser: React.FC<RegisterFormUserProps> = ({
                 !hasNumber ||
                 !hasSpecialChar ||
                 !hasUpperCase ||
-                !passwordsMatch
+                !passwordsMatch ||
+                isRegistering
               }
               className={`${
                 isLongEnough &&
                 hasNumber &&
                 hasSpecialChar &&
                 hasUpperCase &&
-                passwordsMatch
+                passwordsMatch &&
+                !isRegistering
                   ? "bg-black text-white"
                   : "bg-gray-300 text-gray-400 cursor-not-allowed"
-              } rounded-lg py-2 px-5 w-3/4 mt-4 font-bold text-sm`}
+              } rounded-lg py-2 px-5 w-full mt-4 font-bold text-sm`}
             >
-              Terminer l'inscription
+              {isRegistering ? "Enregistrement en cours..." : "Terminer l'inscription"}
             </button>
           </form>
           <div className="w-full text-center mt-4">
@@ -300,6 +324,22 @@ export const RegisterFormUser: React.FC<RegisterFormUserProps> = ({
             </button>
           </div>
         </>
+      )}
+
+      {registrationSuccess && (
+        <div className="flex flex-col justify-center items-center pt-5 pb-5 px-6 bg-white w-80">
+          <img src="../../../public/img/logo-oresto-orange.png" width="250px" alt="Logo Oresto" />
+          <p className="text-green-800 font-bold text-base mt-8">Inscription réussie !</p>
+          <h2 className="w-full text-center pt-5">
+            Connectez-vous ou inscrivez-vous, c'est simple et rapide.
+          </h2>
+          <button
+            onClick={() => setIsLoging(true)} // Si vous souhaitez rediriger vers la connexion après succès
+            className="hover:text-black hover:underline text-sm"
+          >
+            Vous pouvez vous connecter maintenant
+          </button>
+        </div>
       )}
     </div>
   );

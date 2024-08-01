@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FormEvent, useState } from 'react'
+import { ChangeEvent, FormEvent, useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import { useEffect } from 'react';
 
@@ -6,7 +6,7 @@ export const RegisterPage = () => {
   useEffect(() => {
     document.title = 'Oresto - Créer un compte professionnel'; 
   }, []); 
-
+  
     // États pour les champs de formulaire
     const [firstName, setFirstName] = useState<string>('');
     const [lastName, setLastName] = useState<string>('');
