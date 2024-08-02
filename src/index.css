@@ -1,15 +1,52 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Seaweed+Script&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 * {
+    box-sizing: border-box;
+    scroll-behavior: smooth;
     font-family: 'Montserrat', sans-serif; /* Ajoutez 'sans-serif' comme police de secours */
 }
 
-a {
-    text-decoration: underline;
+a:hover {
+    color: #FF5959;
+}
+
+.main-title {
+    font-family: 'Bebas Neue', cursive;
+    font-size: 5rem;
+}
+
+.main-subtitle {
+    font-family: 'Seaweed Script', cursive;
+    font-size: 3.4rem;
+}
+
+.scrollable-container {
+    margin-top: 30px;
+    width: 1150px;
+    height: 260px;
+    overflow-y: auto;
+}
+
+/* Buttons */
+
+.btn-green {
+    background-color: #267D48;
+    color: white;
+    font-weight: bold;
+    padding: 15px 10px;
+}
+
+.btn-light {
+    background-color: #ffffff;
+    color: black;
+    font-weight: bold;
+    padding: 13px 10px;
 }
 
 .cover-login {
@@ -18,7 +55,7 @@ a {
     background-size: cover;
 }
 
-.bg-home {
+header {
     height: 100vh;
     background: linear-gradient(180deg, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.1) 90%), url('/public/img/bg-home-2400.jpg') center center / cover no-repeat;
     background-attachment: fixed;
@@ -27,3 +64,123 @@ a {
 input::placeholder {
     font-weight: normal;
 }
+
+/* Calendrier */
+
+.calendar {
+    height: 260px;
+    overflow: hidden; /* Pour éviter tout débordement */
+    padding: 0;
+}
+
+.rdp-focused {
+    font-weight: bold;
+}
+
+.rdp-month_caption {
+    padding-left: 9px;
+    text-transform: capitalize;
+}
+
+.rdp-day_button {
+    border-radius: 10px;
+}
+
+.rdp-root {
+    position: relative;
+}
+
+.rdp-root td {
+    border-radius: 50px;
+    width: 30px;
+    height: 30px;
+    margin: 2px;
+}
+
+.rdp-nav {
+    position: absolute;
+    right: 0px;
+}
+
+.bg-primary {
+  background-color: #3b82f6; /* Example primary color */
+}
+
+.text-primary-foreground {
+  color: #ffffff; /* Example text color */
+  font-weight: bold;
+}
+
+.bg-accent {
+  background-color: #e5e7eb; /* Example accent color */
+}
+
+.text-accent-foreground {
+  color: #374151; /* Example accent text color */
+  font-weight: bold;
+}
+
+.opacity-50 {
+  opacity: 0.5;
+}
+
+/* Booking list style */
+
+.booking-list {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+/* Text color */
+
+.nav-manager {
+    color: #7f7f7f;
+    font-weight: bold;
+}
+
+.active {
+    color: #FF5959;
+}
+
+/* Font Family */
+
+.bebas {
+    font-family: 'Bebas Neue', cursive;
+}
+
+/* Version responsive */
+
+@media screen and (max-width: 768px) {
+    .main-title {
+        font-size: 3.5rem;
+    }
+
+    .main-subtitle {
+        font-size: 2.4rem;
+    }
+
+    .btn-green {
+        padding: 10px 5px;
+    }
+
+    .btn-light {
+        padding: 8px 5px;
+    }
+
+    .calendar {
+        height: 200px;
+    }
+
+    .rdp-root td {
+        width: 20px;
+        height: 20px;
+        margin: 1px;
+    }
+
+    .widget-container {
+        height: 100vh;
+        width: 100%;    
+    }
+    
+}
+

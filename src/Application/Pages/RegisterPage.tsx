@@ -1,52 +1,60 @@
-import { useState, ChangeEvent, FormEvent } from 'react';
-import { NavLink } from 'react-router-dom';
+import { ChangeEvent, FormEvent, useState } from 'react'
+import { NavLink } from 'react-router-dom'
+import { useEffect } from 'react';
 
-export const RegisterForm = () => {
-  // États pour les champs de formulaire
-  const [firstName, setFirstName] = useState<string>('');
-  const [lastName, setLastName] = useState<string>('');
-  const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
-  const [confirmPassword, setConfirmPassword] = useState<string>('');
-  const [isCheckboxChecked, setIsCheckboxChecked] = useState<boolean>(false);
-
-  // Gestionnaire d'événement pour la case à cocher
-  const handleCheckboxChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setIsCheckboxChecked(event.target.checked);
-  };
-
-  // Vérification si tous les champs sont remplis
-  const isFormValid =
-    firstName.trim() !== '' &&
-    lastName.trim() !== '' &&
-    email.trim() !== '' &&
-    password.trim() !== '' &&
-    confirmPassword.trim() !== '' &&
-    password === confirmPassword &&
-    isCheckboxChecked;
-
-  // Fonction pour gérer le changement des champs d'entrée
-  const handleInputChange = (
-    event: ChangeEvent<HTMLInputElement>,
-    setState: React.Dispatch<React.SetStateAction<string>>
-  ) => {
-    setState(event.target.value);
-  };
-
-  // Gestionnaire de soumission du formulaire
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    if (!isFormValid) {
-      alert('Veuillez remplir tous les champs correctement.');
-      return;
-    }
-
-    alert('Inscription réussie !');
-    // Vous pouvez envoyer les données du formulaire au serveur ici
-  };
-
+export const RegisterPage = () => {
+  useEffect(() => {
+    document.title = 'Oresto - Créer un compte professionnel'; 
+  }, []); 
+  
+    // États pour les champs de formulaire
+    const [firstName, setFirstName] = useState<string>('');
+    const [lastName, setLastName] = useState<string>('');
+    const [email, setEmail] = useState<string>('');
+    const [password, setPassword] = useState<string>('');
+    const [confirmPassword, setConfirmPassword] = useState<string>('');
+    const [isCheckboxChecked, setIsCheckboxChecked] = useState<boolean>(false);
+  
+    // Gestionnaire d'événement pour la case à cocher
+    const handleCheckboxChange = (event: ChangeEvent<HTMLInputElement>) => {
+      setIsCheckboxChecked(event.target.checked);
+    };
+  
+    // Vérification si tous les champs sont remplis
+    const isFormValid =
+      firstName.trim() !== '' &&
+      lastName.trim() !== '' &&
+      email.trim() !== '' &&
+      password.trim() !== '' &&
+      confirmPassword.trim() !== '' &&
+      password === confirmPassword &&
+      isCheckboxChecked;
+  
+    // Fonction pour gérer le changement des champs d'entrée
+    const handleInputChange = (
+      event: ChangeEvent<HTMLInputElement>,
+      setState: React.Dispatch<React.SetStateAction<string>>
+    ) => {
+      setState(event.target.value);
+    };
+  
+    // Gestionnaire de soumission du formulaire
+    const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+      if (!isFormValid) {
+        alert('Veuillez remplir tous les champs correctement.');
+        return;
+      }
+  
+      alert('Inscription réussie !');
+      // Vous pouvez envoyer les données du formulaire au serveur ici
+    };
+  
   return (
-    <div className="flex flex-col items-center justify-center h-screen">
+    <div className='w-full h-screen flex'>
+      <div className='w-6/12 bg-light'>
+        
+      <div className="flex flex-col items-center justify-center h-screen">
       <a href="/login">
         <img src="../../../public/img/logo-oresto-red.png" width="300px" alt="Logo Oresto" />
       </a>
@@ -137,7 +145,7 @@ export const RegisterForm = () => {
 
           <button
             type="submit"
-            className={`bg-black text-white p-4 rounded-lg w-2/4 font-bold uppercase ${
+            className={`bg-black text-white py-4 rounded-lg w-2/3 font-bold uppercase ${
               isFormValid ? 'cursor-pointer' : 'cursor-not-allowed opacity-50'
             }`}
             disabled={!isFormValid}
@@ -149,6 +157,10 @@ export const RegisterForm = () => {
     <div className="pt-4">
       <NavLink to="/login">Déjà un compte ? Connectez-vous</NavLink></div>
     </div>
-  );
-};
 
+      </div>
+      <div className='cover-login w-6/12'>
+      </div>
+    </div>
+  )
+}
