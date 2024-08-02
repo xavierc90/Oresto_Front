@@ -39,6 +39,41 @@ a:hover {
     height: 0;
   }
 
+/* Alertes de notification */
+.success-message, .error-message {
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 20px; /* Ajout d'un padding à droite pour l'espace de la croix */
+    border-radius: 10px;
+    opacity: 0;
+    transition: opacity 1s ease-in-out, top 0.7s ease-in-out;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-weight: 600;
+  }
+  
+  .success-message {
+    background-color: rgb(21, 169, 73);
+    color: white;
+  }
+  
+  .error-message {
+    background-color: red;
+    color: white;
+  }
+  
+  .show {
+    opacity: 1;
+    top: 20px; /* Déplacement vers le bas pour l'effet d'apparition */
+  }
+  
+    
+  /* Couleur de sélection d'une forme de table */
+
   .filter-green {
     filter: brightness(75%) saturate(40%) invert(0%) sepia(100%) saturate(100%) hue-rotate(100deg) brightness(100%) contrast(100%);
   }

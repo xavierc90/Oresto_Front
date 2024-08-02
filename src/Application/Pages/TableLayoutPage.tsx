@@ -1,4 +1,4 @@
-import { TableForm, TableData } from '../Components/Dashboard/TableLayout/TableForm'; // Assurez-vous que les chemins d'importation sont corrects
+import TableData, { TableForm } from '../Components/Dashboard/TableLayout/TableForm'; // Assurez-vous que les chemins d'importation sont corrects
 
 export const TableLayoutPage = () => {
   const handleAddTable = (table: TableData) => {
