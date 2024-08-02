@@ -7,36 +7,50 @@ export const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(''); 
-  const { login: loginUser } = useAuth();
+  const { login: loginManager } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
     document.title = 'Oresto - Se connecter'; 
     if (localStorage.getItem('token')) {
-      navigate('/dashboard/bookings');}
+      navigate('/dashboard/bookings');
+    }
   }, []); 
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
-      const response = await http.post('/login', { email, password });
-      const { token } = response.data
+      const response = await http.post('/login_manager', { email, password });
+      const { token } = response.data;
       if (token) {
-        loginUser(token);
-      }    
-
-      // Redirigez l'utilisateur vers le tableau de bord
-      navigate('/dashboard/bookings');
+        loginManager(token);
+        navigate('/dashboard/bookings');
+      }
     } catch (error: unknown) {
       console.error('Erreur de connexion:', error);
 
       if (error instanceof Error) {
-        // Si l'erreur est une instance d'Error, vérifiez si elle contient une réponse HTTP
-        if ((error as any).response && (error as any).response.data && (error as any).response.data.type_error === 'no-valid-login') {
-          setError('Identifiant ou mot de passe incorrect');
+        // Vérifiez si l'erreur contient une réponse HTTP
+        const response = (error as any).response;
+        if (!response) {
+          // Si aucune réponse n'est reçue, il s'agit probablement d'une erreur réseau
+          setError(`Une erreur est survenue.<br/>Veuillez vérifier votre connexion ou réessayer plus tard.`);
+        } else if (response.data) {
+          const { type_error } = response.data;
+          if (type_error === 'no-found' || type_error === 'no-account') {
+            setError(`Compte inexistant<br/>Veuillez saisir une adresse mail valide`);
+          } else if (type_error === 'no-comparaison') {
+            setError('Identifiant ou mot de passe incorrect');
+          } else if (type_error === 'not-authorized') {
+            setError('Vous n\'êtes pas autorisé à vous connecter');
+          } else {
+            setError(`Une erreur est survenue.<br/>Veuillez vous reconnecter`);
+          }
         } else {
-          setError('Une erreur est survenue. Veuillez réessayer.');
+          setError(`Une erreur est survenue.<br/>Veuillez vérifier votre connexion ou réessayer plus tard.`);
         }
+      } else {
+        setError(`Une erreur est survenue.<br/>Veuillez vérifier votre connexion ou réessayer plus tard.`);
       }
     }
   };
@@ -45,9 +59,14 @@ export const LoginPage = () => {
     <div className='w-full h-screen flex'>
       <div className='w-6/12 bg-light'>
         <div className="flex flex-col w-400 items-center justify-center h-screen">
-          <img src="../../../public/img/logo-oresto-red.png" width="350px" alt="Logo Oresto" />
-          <form className="flex flex-col mt-8" onSubmit={handleSubmit}>
-          {error && <div className="text-red-500 mb-8 text-center font-bold">{error}</div>}
+          <img src="../../../public/img/logo-oresto-red.png" width="350px" alt="Logo Oresto" className='mb-10' />
+          {error && (
+            <div 
+              className="text-red-500 mb-8 text-center font-bold"
+              dangerouslySetInnerHTML={{ __html: error }}
+            />
+          )}
+          <form className="flex flex-col" onSubmit={handleSubmit}>
             <label className="text-xl font-bold mb-4">Adresse mail</label>
             <input 
               type="text" 

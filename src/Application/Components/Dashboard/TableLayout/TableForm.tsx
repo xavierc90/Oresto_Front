@@ -94,7 +94,7 @@ export const TableForm: React.FC<TableFormProps> = ({ onSubmit }) => {
           ))}
         </div>
       </div>
-      <button type="submit" className="mt-4 p-2 bg-black text-white w-[150px]"> Ajouter la table</button>
+      <button type="submit" className="mt-4 p-2 bg-black text-white text-xs w-[130px] font-bold"> Ajouter la table</button>
     </form>
   );
 };

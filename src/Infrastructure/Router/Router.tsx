@@ -28,11 +28,11 @@ export const router = createBrowserRouter([
     element: <HomePage />,
   },
   {
-    path: "/login",
+    path: "/login", // Connexion Manager
     element: <LoginPage />,
   },
   {
-    path: "/register",
+    path: "/register", // Inscription Manager
     element: <RegisterPage />,
   },
   {
