@@ -16,6 +16,34 @@ a:hover {
     color: #FF5959;
 }
 
+.handle {
+    padding: 10px;
+    background-color: #ccc;
+    border: 1px solid #333;
+    cursor: grab; /* style de curseur pour indiquer qu'il est déplaçable */
+    text-align: center;
+  }
+
+  #droppable-zone {
+    background-color: #f8f9fa; /* Couleur de fond légère */
+    border: 2px dashed #ccc; /* Bordure en pointillé pour indiquer que c'est déposable */
+    padding: 20px; /* Espacement interne */
+    min-height: 1000px; /* Hauteur minimale pour que la zone soit visible même vide */
+  }
+
+  .invisible-radio {
+    appearance: none; /* Pour éliminer tout style de système d'opération */
+    position: absolute; /* Déplacez hors du flux normal, réduit l'espace */
+    opacity: 0; /* Rend le bouton totalement transparent */
+    width: 0;
+    height: 0;
+  }
+
+  .filter-green {
+    filter: brightness(75%) saturate(40%) invert(0%) sepia(100%) saturate(100%) hue-rotate(100deg) brightness(100%) contrast(100%);
+  }
+  
+
 .main-title {
     font-family: 'Bebas Neue', cursive;
     font-size: 5rem;
