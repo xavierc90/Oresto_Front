@@ -3,7 +3,7 @@ import { FaSort } from "react-icons/fa";
 export const ClientList = () => {
   return (
     <div className="scrollable-container">
-            <table className="ml-12">
+            <table className="ml-12 table-auto">
                 <thead>
                     <tr>
                         <th className="text-left min-w-[130px] flex items-center gap-1">Nom <FaSort /></th>

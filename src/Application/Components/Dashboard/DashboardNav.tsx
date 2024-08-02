@@ -31,18 +31,19 @@ export const DashboardNav = () => {
     <div className='bg-light w-80 h-screen flex flex-col items-center shadow-2xl mt-2'>
       <div>
         <img src="../../../public/img/logo-oresto-red.png" width="240px" alt="Logo Oresto" />
+        <h2 className='text-center my-6 text-base font-bold'>La belle assiette</h2>
       </div>
       
       {/* Recherche par date */}
-      <div className="mt-10">
+      <div>
         <CalendarShadcn mode={"single"} selected={dateSelected} onSelect={setDateSelected} required />
       </div>
 
       {/* Recherche par nom */}
       
          <form action="clients" className="flex flex-col mb-2 justify-center">
-          <label htmlFor="search" className="text-base font-bold mb-4">Recherche par nom</label>
-          <input type="text" name="name" id="search" placeholder="Saisir le nom du client" className="border-2 border-gray-300 p-1 mb-4 font-bold w-60" />
+          <label htmlFor="search" className="text-sm font-bold mb-2 mt-4">Recherche par nom</label>
+          <input type="text" name="name" id="search" placeholder="Saisir le nom du client" className="border-2 border-gray-300 p-1 mb-2 font-bold w-60" />
          </form>
       
     
@@ -51,7 +52,7 @@ export const DashboardNav = () => {
         <Link
           to={`/dashboard/bookings?dayselected=${formattedDate}`}
           className={getLinkClass('/dashboard/bookings')}>
-          <BsListCheck size={28} className="mb-1" />
+          <BsListCheck size={25} className="mb-1" />
           <h2 className="text-xs font-bold">Réservations</h2>
         </Link>
 
@@ -59,7 +60,7 @@ export const DashboardNav = () => {
         <Link
           to="/dashboard/layouts"
           className={getLinkClass('/dashboard/layouts')}>
-          <LuLayoutDashboard size={28} className="mb-1" />
+          <LuLayoutDashboard size={25} className="mb-1" />
           <h2 className="text-xs font-bold">Plan de tables</h2>
         </Link>
 
@@ -67,7 +68,7 @@ export const DashboardNav = () => {
         <Link
           to="/dashboard/clients"
           className={getLinkClass('/dashboard/clients')}>
-          <FaUsers size={28} className="mb-1" />
+          <FaUsers size={25} className="mb-1" />
           <h2 className="text-xs font-bold">Gestion clients</h2>
         </Link>
 
@@ -75,7 +76,7 @@ export const DashboardNav = () => {
         <Link
           to="/dashboard/analytics"
           className={getLinkClass('/dashboard/analytics')}>
-          <IoMdStats size={28} className="mb-1" />
+          <IoMdStats size={25} className="mb-1" />
           <h2 className="text-xs font-bold">Statistiques</h2>
         </Link>
 
@@ -83,7 +84,7 @@ export const DashboardNav = () => {
         <Link
           to="/dashboard/settings"
           className={getLinkClass('/dashboard/settings')}>
-          <FaGear size={28} className="mb-1" />
+          <FaGear size={25} className="mb-1" />
           <h2 className="text-xs font-bold">Paramètres</h2>
         </Link>
 
@@ -92,7 +93,7 @@ export const DashboardNav = () => {
           to="/login"
           onClick={() => localStorage.removeItem('token')}
           className="flex flex-col items-center text-gray-600 hover:text-red-500 focus:text-red-500 transition duration-300">
-          <MdLogout size={28} className="mb-1" />
+          <MdLogout size={25} className="mb-1" />
           <h2 className="text-xs font-bold">Se déconnecter</h2>
         </Link>
       </div>

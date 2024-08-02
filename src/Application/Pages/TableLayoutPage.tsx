@@ -1,3 +1,4 @@
+import { TableArea } from '../Components/Dashboard/TableLayout/TableArea';
 import TableData, { TableForm } from '../Components/Dashboard/TableLayout/TableForm'; // Assurez-vous que les chemins d'importation sont corrects
 
 export const TableLayoutPage = () => {
@@ -13,6 +14,7 @@ export const TableLayoutPage = () => {
         | <span className="font-bold text-red-500">0</span> couvert
       </h2>
       <TableForm onSubmit={handleAddTable} />
+      <TableArea />
     </div>
   );
 };

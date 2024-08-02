@@ -1,4 +1,5 @@
 import { BookingList } from '../Components/Dashboard/BookingList';
+import { TableArea } from '../Components/Dashboard/TableLayout/TableArea';
 
 export const BookingsPage = () => {
 
@@ -10,6 +11,7 @@ export const BookingsPage = () => {
             | <span className="font-bold text-red-500">12</span> couverts
         </h2>
         <BookingList />
+        <TableArea />
     </div>
   );
 };

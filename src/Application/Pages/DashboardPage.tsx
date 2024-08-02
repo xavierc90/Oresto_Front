@@ -11,7 +11,7 @@ export const DashboardPage = () => {
     <div className='flex'>
       <div className='absolute right-12 top-6 mr-10 text-base'>John Doe</div>
       <DashboardNav />
-      <div>
+      <div className='w-9/12'>
         <Outlet />
       </div>
     </div>

@@ -81,7 +81,7 @@ export const TableForm: React.FC<TableFormProps> = ({ onSubmit }) => {
       setShowErrorMessage(false);
       setShowSuccessMessage(false);
       setTimeout(() => setShowErrorMessage(true), 0);
-      setTimeout(() => setShowErrorMessage(false), 5000); 
+      setTimeout(() => setShowErrorMessage(false), 3500); 
       return;
     }
     onSubmit(tableData);
@@ -117,19 +117,19 @@ export const TableForm: React.FC<TableFormProps> = ({ onSubmit }) => {
           <input type="text" name="number" className='border-2 border-gray-300 ml-5 w-14 text-center' value={tableData.number} onChange={handleChange} required />
         </label>
         <div className="mt-4">
-          Sélectionnez un modèle de table :
+          Modèle de table :
           <div className="flex gap-4 ml-4">
             {tableShapes.map(({ shape, capacity, svg }) => (
               <label key={shape} className="flex items-center space-x-2 my-4">
                 <input type="radio" name="shape" value={shape} checked={tableData.shape === shape} 
                 onChange={() => handleShapeChange(shape, capacity)}
                 className='invisible-radio' />
-                <img src={svg} alt={shape} className={tableData.shape === shape ? "filter-green" : ""} style={{ height: 70 }} />
+                <img src={svg} alt={shape} className={tableData.shape === shape ? "filter-green" : ""} style={{ height: 60 }} />
               </label>
             ))}
           </div>
         </div>
-        <button type="submit" className="mt-4 p-2 bg-black text-white text-sm w-[130px] font-bold"> Ajouter la table</button>
+        <button type="submit" className="mt-4 mb-2 p-2 bg-black text-white text-sm w-[130px] font-bold"> Ajouter la table</button>
       </form>
     </div>
   );
