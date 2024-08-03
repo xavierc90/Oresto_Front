@@ -34,7 +34,7 @@ export const LoginPage = () => {
         const response = (error as any).response;
         if (!response) {
           // Si aucune réponse n'est reçue, il s'agit probablement d'une erreur réseau
-          setError(`Une erreur est survenue.<br/>Veuillez vérifier votre connexion ou réessayer plus tard.`);
+          setError(`Une erreur est survenue.<br/>Vérifiez votre connexion ou réessayez plus tard.`);
         } else if (response.data) {
           const { type_error } = response.data;
           if (type_error === 'no-found' || type_error === 'no-account') {

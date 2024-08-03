@@ -39,6 +39,12 @@ a:hover {
     height: 0;
   }
 
+  .bookinglist tr {
+    height: 30px;
+  }
+
+  
+
 /* Alertes de notification */
 .success-message, .error-message {
     position: fixed;
@@ -57,12 +63,12 @@ a:hover {
   }
   
   .success-message {
-    background-color: rgb(21, 169, 73);
+    background-color: #17b855;
     color: white;
   }
   
   .error-message {
-    background-color: red;
+    background-color: rgb(249, 79, 79);
     color: white;
   }
   
@@ -78,7 +84,6 @@ a:hover {
     filter: brightness(75%) saturate(40%) invert(0%) sepia(100%) saturate(100%) hue-rotate(100deg) brightness(100%) contrast(100%);
   }
   
-
 .main-title {
     font-family: 'Bebas Neue', cursive;
     font-size: 5rem;

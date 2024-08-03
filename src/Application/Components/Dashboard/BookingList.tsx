@@ -20,15 +20,15 @@ export const BookingList = () => {
                         <td className="text-center">John Doe</td>
                         <td className="text-center">4 personnes</td>
                         <td className="text-center">12</td>
-                        <td>En attente</td>
+                        <td ><span className="bg-green-600 text-white px-7 py-1 text-sm font-semibold">Validée</span></td>
                         <td className="text-center">Modifier | Annuler</td>
                     </tr>
-                    <tr className="hover:bg-gray-200 hover:cursor-pointer">
+                    {/* <tr className="hover:bg-gray-200 hover:cursor-pointer">
                         <td>12:00</td>
                         <td className="text-center">John Doe</td>
                         <td className="text-center">4 personnes</td>
                         <td className="text-center">12</td>
-                        <td>En attente</td>
+                        <td><span className="bg-green-600 text-white px-7 py-1 text-sm font-semibold">Validée</span></td>
                         <td className="text-center">Modifier | Annuler</td>
 
                     </tr>                    
@@ -37,7 +37,7 @@ export const BookingList = () => {
                         <td className="text-center">John Doe</td>
                         <td className="text-center">4 personnes</td>
                         <td className="text-center">12</td>
-                        <td>En attente</td>
+                        <td><span className="bg-green-600 text-white px-7 py-1 text-sm font-semibold">Validée</span></td>
                         <td className="text-center">Modifier | Annuler</td>
                     </tr>                    
                     <tr className="hover:bg-gray-200 hover:cursor-pointer">
@@ -45,14 +45,14 @@ export const BookingList = () => {
                         <td className="text-center">John Doe</td>
                         <td className="text-center">4 personnes</td>
                         <td className="text-center">12</td>
-                        <td>En attente</td>
+                        <td><span className="bg-amber-500 text-white px-4 py-1 text-sm font-semibold">En attente</span></td>
                         <td className="text-center">Modifier | Annuler</td>
                     </tr>                    <tr className="hover:bg-gray-200 hover:cursor-pointer">
                         <td>12:00</td>
                         <td className="text-center">John Doe</td>
                         <td className="text-center">4 personnes</td>
                         <td className="text-center">12</td>
-                        <td>En attente</td>
+                        <td><span className="bg-green-600 text-white px-7 py-1 text-sm font-semibold">Validée</span></td>
                         <td className="text-center">Modifier | Annuler</td>
                     </tr>                    
                     <tr className="hover:bg-gray-200 hover:cursor-pointer">
@@ -60,7 +60,7 @@ export const BookingList = () => {
                         <td className="text-center">John Doe</td>
                         <td className="text-center">4 personnes</td>
                         <td className="text-center">12</td>
-                        <td>En attente</td>
+                        <td><span className="bg-green-600 text-white px-7 py-1 text-sm font-semibold">Validée</span></td>
                         <td className="text-center">Modifier | Annuler</td>
                     </tr>
                     <tr className="hover:bg-gray-200 hover:cursor-pointer">
@@ -68,7 +68,7 @@ export const BookingList = () => {
                         <td className="text-center">John Doe</td>
                         <td className="text-center">4 personnes</td>
                         <td className="text-center">12</td>
-                        <td>En attente</td>
+                        <td><span className="bg-green-600 text-white px-7 py-1 text-sm font-semibold">Validée</span></td>
                         <td className="text-center">Modifier | Annuler</td>
                     </tr>
                     <tr className="hover:bg-gray-200 hover:cursor-pointer">
@@ -76,7 +76,7 @@ export const BookingList = () => {
                         <td className="text-center">John Doe</td>
                         <td className="text-center">4 personnes</td>
                         <td className="text-center">12</td>
-                        <td>En attente</td>
+                        <td><span className="bg-green-600 text-white px-7 py-1 text-sm font-semibold">Validée</span></td>
                         <td className="text-center">Modifier | Annuler</td>
                     </tr>
                     <tr className="hover:bg-gray-200 hover:cursor-pointer">
@@ -84,9 +84,9 @@ export const BookingList = () => {
                         <td className="text-center">John Doe</td>
                         <td className="text-center">4 personnes</td>
                         <td className="text-center">12</td>
-                        <td>En attente</td>
+                        <td><span className="bg-green-600 text-white px-7 py-1 text-sm font-semibold">Validée</span></td>
                         <td className="text-center">Modifier | Annuler</td>
-                    </tr>
+                    </tr> */}
                 </tbody>
             </table>
         </div>

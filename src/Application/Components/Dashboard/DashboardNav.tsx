@@ -7,9 +7,12 @@ import { FaGear } from "react-icons/fa6";
 import { LuLayoutDashboard } from "react-icons/lu";
 import { MdLogout } from "react-icons/md";
 import { CalendarShadcn } from "./CalendarShadcn";
+import { Company } from "../../../Module/Types/company.type";
+import { http } from "../../../Infrastructure/Http/axios.instance";
 
 export const DashboardNav = () => {
   const [dateSelected, setDateSelected] = useState<Date>(new Date());
+  const [company, setCompany] =  useState<Company | null>(null);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -18,6 +21,23 @@ export const DashboardNav = () => {
     console.log(dateSelected.toLocaleDateString())
     navigate(`/dashboard/bookings?dayselected=${formattedDate}`);
   }, [dateSelected, navigate]);
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await http.get('/find_company/66a96e3dd320416be1b2ab7f');
+        if (response.data) {
+          setCompany(response.data);
+        } else {
+          console.error('Données utilisateur manquantes:', response.data);
+        }
+      } catch (error) {
+        console.error('Erreur lors de la récupération des données utilisateur:', error);
+      }
+    };
+
+    fetchUserData();
+  }, []);
 
   const getLinkClass = (path: string) => {
     return location.pathname.startsWith(path)
@@ -30,8 +50,12 @@ export const DashboardNav = () => {
   return (
     <div className='bg-light w-80 h-screen flex flex-col items-center shadow-2xl mt-2'>
       <div>
-        <img src="../../../public/img/logo-oresto-red.png" width="240px" alt="Logo Oresto" />
-        <h2 className='text-center my-6 text-base font-bold'>La belle assiette</h2>
+      <Link
+          to={`/dashboard/bookings?dayselected=${formattedDate}`}
+          className={getLinkClass('/dashboard/bookings')}>
+            <img src="../../../public/img/logo-oresto-red.png" width="240px" alt="Logo Oresto" />
+            </Link>
+        <h2 className='text-center my-6 text-base font-bold'>{company ? `${company.name}` : 'Chargement...'}</h2>
       </div>
       
       {/* Recherche par date */}

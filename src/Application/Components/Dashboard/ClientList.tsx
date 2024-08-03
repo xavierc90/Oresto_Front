@@ -7,7 +7,7 @@ export const ClientList = () => {
                 <thead>
                     <tr>
                         <th className="text-left min-w-[130px] flex items-center gap-1">Nom <FaSort /></th>
-                        <th className="text-left min-w-[130px]">Prénom</th>
+                        <th className="text-left min-w-[120px]">Prénom</th>
                         <th className="text-left min-w-[280px]">Email</th>
                         <th className="text-left min-w-[320px]">Date / Heure de réservation</th>
                         <th className="text-left min-w-[120px]">Status</th>
