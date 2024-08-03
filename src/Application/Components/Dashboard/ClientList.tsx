@@ -71,7 +71,7 @@ export const ClientList = () => {
                         <td>En attente</td>
                         <td className="text-center">1</td>
                     </tr>                    
-                    <tr className="hover:bg-gray-200 hover:cursor-pointer">
+                    {/* <tr className="hover:bg-gray-200 hover:cursor-pointer">
                         <td>Denisot</td>
                         <td>Julien</td>
                         <td>jdenisot@gmail.com</td>
@@ -102,7 +102,7 @@ export const ClientList = () => {
                         <td>Samedi 1 septembre 2024</td>
                         <td>En attente</td>
                         <td className="text-center">1</td>
-                    </tr>
+                    </tr> */}
                 </tbody>
             </table>
         </div>

@@ -13,7 +13,10 @@ export const DashboardPage = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await http.get('/find_user/66acfb516a708a694873e851');
+        console.log(localStorage.getItem('token'))
+        console.log(localStorage.getItem('userId'))
+        console.log(localStorage.getItem('company_id'))
+        const response = await http.get(`find_user/${localStorage.getItem('userId')}`); // Assurez-vous que l'URL est correcte
         if (response.data) {
           setUser(response.data);
         } else {

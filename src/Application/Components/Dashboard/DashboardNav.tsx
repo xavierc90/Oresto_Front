@@ -7,37 +7,48 @@ import { FaGear } from "react-icons/fa6";
 import { LuLayoutDashboard } from "react-icons/lu";
 import { MdLogout } from "react-icons/md";
 import { CalendarShadcn } from "./CalendarShadcn";
-import { Company } from "../../../Module/Types/company.type";
+import { User } from "../../../Module/Types/user.type";
 import { http } from "../../../Infrastructure/Http/axios.instance";
 
 export const DashboardNav = () => {
   const [dateSelected, setDateSelected] = useState<Date>(new Date());
-  const [company, setCompany] =  useState<Company | null>(null);
+  const [user, setUser] = useState<User | null>(null);
+  const [company, setCompany] = useState<any>(null); // Remplacez `any` par le type approprié si vous avez une définition
+  const [loading, setLoading] = useState<boolean>(true);
   const location = useLocation();
   const navigate = useNavigate();
 
   useEffect(() => {
-    const formattedDate = dateSelected.toLocaleDateString('fr-FR').replace(/\//g, '');
-    console.log(dateSelected.toLocaleDateString())
-    navigate(`/dashboard/bookings?dayselected=${formattedDate}`);
-  }, [dateSelected, navigate]);
-
-  useEffect(() => {
-    const fetchUserData = async () => {
+    const fetchData = async () => {
       try {
-        const response = await http.get('/find_company/66a96e3dd320416be1b2ab7f');
-        if (response.data) {
-          setCompany(response.data);
+        // Récupérer les données utilisateur
+        const userResponse = await http.get(`find_user/${localStorage.getItem('userId')}`);
+        if (userResponse.data) {
+          setUser(userResponse.data);
+
+          // Récupérer les données de la société
+          if (userResponse.data.company_id) {
+            const companyResponse = await http.get(`find_company/${userResponse.data.company_id}`);
+            setCompany(companyResponse.data);
+          }
         } else {
-          console.error('Données utilisateur manquantes:', response.data);
+          console.error('Données utilisateur manquantes:', userResponse.data);
         }
       } catch (error) {
-        console.error('Erreur lors de la récupération des données utilisateur:', error);
+        console.error('Erreur lors de la récupération des données:', error);
+      } finally {
+        setLoading(false); // Assurez-vous de désactiver le loader même en cas d'erreur
       }
     };
 
-    fetchUserData();
+    fetchData();
   }, []);
+
+  useEffect(() => {
+    const formattedDate = dateSelected.toLocaleDateString('fr-FR').replace(/\//g, '');
+    console.log(dateSelected.toLocaleDateString());
+    navigate(`/dashboard/bookings?dayselected=${formattedDate}`);
+  }, [dateSelected, navigate]);
 
   const getLinkClass = (path: string) => {
     return location.pathname.startsWith(path)
@@ -49,78 +60,84 @@ export const DashboardNav = () => {
 
   return (
     <div className='bg-light w-80 h-screen flex flex-col items-center shadow-2xl mt-2'>
-      <div>
-      <Link
-          to={`/dashboard/bookings?dayselected=${formattedDate}`}
-          className={getLinkClass('/dashboard/bookings')}>
-            <img src="../../../public/img/logo-oresto-red.png" width="240px" alt="Logo Oresto" />
+      {loading ? (
+        <div className="spinner">Loading...</div> // Remplacez ceci par un vrai spinner ou loader
+      ) : (
+        <>
+          <div>
+            <Link
+              to={`/dashboard/bookings?dayselected=${formattedDate}`}
+              className={getLinkClass('/dashboard/bookings')}>
+              <img src="../../../public/img/logo-oresto-red.png" width="240px" alt="Logo Oresto" />
             </Link>
-        <h2 className='text-center my-6 text-base font-bold'>{company ? `${company.name}` : 'Chargement...'}</h2>
-      </div>
-      
-      {/* Recherche par date */}
-      <div>
-        <CalendarShadcn mode={"single"} selected={dateSelected} onSelect={setDateSelected} required />
-      </div>
+            <h2 className='text-center my-6 text-base font-bold'>
+              {user ? (company ? company.name : 'Chargement société...') : 'Chargement utilisateur...'}
+            </h2>
+          </div>
 
-      {/* Recherche par nom */}
-      
-         <form action="clients" className="flex flex-col mb-2 justify-center">
-          <label htmlFor="search" className="text-sm font-bold mb-2 mt-4">Recherche par nom</label>
-          <input type="text" name="name" id="search" placeholder="Saisir le nom du client" className="border-2 border-gray-300 p-1 mb-2 font-bold w-60" />
-         </form>
-      
-    
-      <div className="grid grid-cols-2 gap-6 justify-items-center">
-        {/* Premier Élément */}
-        <Link
-          to={`/dashboard/bookings?dayselected=${formattedDate}`}
-          className={getLinkClass('/dashboard/bookings')}>
-          <BsListCheck size={25} className="mb-1" />
-          <h2 className="text-xs font-bold">Réservations</h2>
-        </Link>
+          {/* Recherche par date */}
+          <div>
+            <CalendarShadcn mode={"single"} selected={dateSelected} onSelect={setDateSelected} required />
+          </div>
 
-        {/* Deuxième Élément */}
-        <Link
-          to="/dashboard/layouts"
-          className={getLinkClass('/dashboard/layouts')}>
-          <LuLayoutDashboard size={25} className="mb-1" />
-          <h2 className="text-xs font-bold">Plan de tables</h2>
-        </Link>
+          {/* Recherche par nom */}
+          <form action="clients" className="flex flex-col mb-2 justify-center">
+            <label htmlFor="search" className="text-sm font-bold mb-2 mt-4">Recherche par nom</label>
+            <input type="text" name="name" id="search" placeholder="Saisir le nom du client" className="border-2 border-gray-300 p-1 mb-2 font-bold w-60" />
+          </form>
 
-        {/* Troisième Élément */}
-        <Link
-          to="/dashboard/clients"
-          className={getLinkClass('/dashboard/clients')}>
-          <FaUsers size={25} className="mb-1" />
-          <h2 className="text-xs font-bold">Gestion clients</h2>
-        </Link>
+          <div className="grid grid-cols-2 gap-6 justify-items-center">
+            {/* Premier Élément */}
+            <Link
+              to={`/dashboard/bookings?dayselected=${formattedDate}`}
+              className={getLinkClass('/dashboard/bookings')}>
+              <BsListCheck size={25} className="mb-1" />
+              <h2 className="text-xs font-bold">Réservations</h2>
+            </Link>
 
-        {/* Quatrième Élément */}
-        <Link
-          to="/dashboard/analytics"
-          className={getLinkClass('/dashboard/analytics')}>
-          <IoMdStats size={25} className="mb-1" />
-          <h2 className="text-xs font-bold">Statistiques</h2>
-        </Link>
+            {/* Deuxième Élément */}
+            <Link
+              to="/dashboard/layouts"
+              className={getLinkClass('/dashboard/layouts')}>
+              <LuLayoutDashboard size={25} className="mb-1" />
+              <h2 className="text-xs font-bold">Plan de tables</h2>
+            </Link>
 
-        {/* Cinquième Élément */}
-        <Link
-          to="/dashboard/settings"
-          className={getLinkClass('/dashboard/settings')}>
-          <FaGear size={25} className="mb-1" />
-          <h2 className="text-xs font-bold">Paramètres</h2>
-        </Link>
+            {/* Troisième Élément */}
+            <Link
+              to="/dashboard/clients"
+              className={getLinkClass('/dashboard/clients')}>
+              <FaUsers size={25} className="mb-1" />
+              <h2 className="text-xs font-bold">Gestion clients</h2>
+            </Link>
 
-        {/* Sixième Élément */}
-        <Link
-          to="/login"
-          onClick={() => localStorage.removeItem('token')}
-          className="flex flex-col items-center text-gray-600 hover:text-red-500 focus:text-red-500 transition duration-300">
-          <MdLogout size={25} className="mb-1" />
-          <h2 className="text-xs font-bold">Se déconnecter</h2>
-        </Link>
-      </div>
+            {/* Quatrième Élément */}
+            <Link
+              to="/dashboard/analytics"
+              className={getLinkClass('/dashboard/analytics')}>
+              <IoMdStats size={25} className="mb-1" />
+              <h2 className="text-xs font-bold">Statistiques</h2>
+            </Link>
+
+            {/* Cinquième Élément */}
+            <Link
+              to="/dashboard/settings"
+              className={getLinkClass('/dashboard/settings')}>
+              <FaGear size={25} className="mb-1" />
+              <h2 className="text-xs font-bold">Paramètres</h2>
+            </Link>
+
+            {/* Sixième Élément */}
+            <Link
+              to="/login"
+              onClick={() => localStorage.removeItem('token')}
+              className="flex flex-col items-center text-gray-600 hover:text-red-500 focus:text-red-500 transition duration-300">
+              <MdLogout size={25} className="mb-1" />
+              <h2 className="text-xs font-bold">Se déconnecter</h2>
+            </Link>
+          </div>
+        </>
+      )}
     </div>
   );
 };

@@ -15,25 +15,25 @@ export const LoginPage = () => {
     if (localStorage.getItem('token')) {
       navigate('/dashboard/bookings');
     }
-  }, []); 
+  }, [navigate]); 
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
       const response = await http.post('/login_manager', { email, password });
-      const { token } = response.data;
-      if (token) {
-        loginManager(token);
+      const { token, _id} = response.data; // Assurez-vous que l'ID utilisateur est inclus dans la réponse
+      if (token && _id) {
+        loginManager(token, _id);
+        localStorage.setItem('token', token);
+        localStorage.setItem('_Id', _id);
         navigate('/dashboard/bookings');
       }
     } catch (error: unknown) {
       console.error('Erreur de connexion:', error);
 
       if (error instanceof Error) {
-        // Vérifiez si l'erreur contient une réponse HTTP
         const response = (error as any).response;
         if (!response) {
-          // Si aucune réponse n'est reçue, il s'agit probablement d'une erreur réseau
           setError(`Une erreur est survenue.<br/>Vérifiez votre connexion ou réessayez plus tard.`);
         } else if (response.data) {
           const { type_error } = response.data;

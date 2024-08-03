@@ -6,5 +6,6 @@ export type Company = {
     country: string;
     phone_number: string;
     email: string;
-
+    created_at: Date;
+    user_id: string;
 };
