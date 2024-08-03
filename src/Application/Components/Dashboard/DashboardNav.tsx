@@ -14,7 +14,6 @@ export const DashboardNav = () => {
   const [dateSelected, setDateSelected] = useState<Date>(new Date());
   const [user, setUser] = useState<User | null>(null);
   const [company, setCompany] = useState<any>(null); // Remplacez `any` par le type approprié si vous avez une définition
-  const [loading, setLoading] = useState<boolean>(true);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -36,8 +35,6 @@ export const DashboardNav = () => {
         }
       } catch (error) {
         console.error('Erreur lors de la récupération des données:', error);
-      } finally {
-        setLoading(false); // Assurez-vous de désactiver le loader même en cas d'erreur
       }
     };
 
@@ -59,16 +56,13 @@ export const DashboardNav = () => {
   const formattedDate = dateSelected.toLocaleDateString('fr-FR').replace(/\//g, '');
 
   return (
-    <div className='bg-light w-80 h-screen flex flex-col items-center shadow-2xl mt-2'>
-      {loading ? (
-        <div className="spinner">Loading...</div> // Remplacez ceci par un vrai spinner ou loader
-      ) : (
-        <>
+    <div className='bg-light w-80 h-screen flex flex-col items-center shadow-2xl pt-2'>
+      
           <div>
             <Link
               to={`/dashboard/bookings?dayselected=${formattedDate}`}
               className={getLinkClass('/dashboard/bookings')}>
-              <img src="../../../public/img/logo-oresto-red.png" width="240px" alt="Logo Oresto" />
+              <img src="../../../public/img/logo-oresto-red.png" width="220px" alt="Logo Oresto" className='pt-4' />
             </Link>
             <h2 className='text-center my-6 text-base font-bold'>
               {user ? (company ? company.name : 'Chargement société...') : 'Chargement utilisateur...'}
@@ -91,7 +85,7 @@ export const DashboardNav = () => {
             <Link
               to={`/dashboard/bookings?dayselected=${formattedDate}`}
               className={getLinkClass('/dashboard/bookings')}>
-              <BsListCheck size={25} className="mb-1" />
+              <BsListCheck size={20} className="mb-1" />
               <h2 className="text-xs font-bold">Réservations</h2>
             </Link>
 
@@ -99,7 +93,7 @@ export const DashboardNav = () => {
             <Link
               to="/dashboard/layouts"
               className={getLinkClass('/dashboard/layouts')}>
-              <LuLayoutDashboard size={25} className="mb-1" />
+              <LuLayoutDashboard size={20} className="mb-1" />
               <h2 className="text-xs font-bold">Plan de tables</h2>
             </Link>
 
@@ -107,7 +101,7 @@ export const DashboardNav = () => {
             <Link
               to="/dashboard/clients"
               className={getLinkClass('/dashboard/clients')}>
-              <FaUsers size={25} className="mb-1" />
+              <FaUsers size={20} className="mb-1" />
               <h2 className="text-xs font-bold">Gestion clients</h2>
             </Link>
 
@@ -115,7 +109,7 @@ export const DashboardNav = () => {
             <Link
               to="/dashboard/analytics"
               className={getLinkClass('/dashboard/analytics')}>
-              <IoMdStats size={25} className="mb-1" />
+              <IoMdStats size={20} className="mb-1" />
               <h2 className="text-xs font-bold">Statistiques</h2>
             </Link>
 
@@ -123,7 +117,7 @@ export const DashboardNav = () => {
             <Link
               to="/dashboard/settings"
               className={getLinkClass('/dashboard/settings')}>
-              <FaGear size={25} className="mb-1" />
+              <FaGear size={20} className="mb-1" />
               <h2 className="text-xs font-bold">Paramètres</h2>
             </Link>
 
@@ -132,12 +126,10 @@ export const DashboardNav = () => {
               to="/login"
               onClick={() => localStorage.removeItem('token')}
               className="flex flex-col items-center text-gray-600 hover:text-red-500 focus:text-red-500 transition duration-300">
-              <MdLogout size={25} className="mb-1" />
+              <MdLogout size={20} className="mb-1" />
               <h2 className="text-xs font-bold">Se déconnecter</h2>
             </Link>
           </div>
-        </>
-      )}
     </div>
   );
-};
+}
