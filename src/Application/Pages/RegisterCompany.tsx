@@ -71,15 +71,16 @@ export const RegisterCompany = () => {
             <img src="../../../public/img/logo-oresto-red.png" width="300px" alt="Logo Oresto" />
           </a>
           <form method="POST" className="flex flex-col mt-10" onSubmit={handleCompanyCreation}>
-            <div className="flex gap-4">
+          <h1 className='text-2xl font-bold mb-10'>Enregistrez votre restaurant</h1>
+          <div className="flex gap-4">
               <div className="flex flex-col">
-                <label className="text-lg font-bold mb-2">Nom de l'entreprise :</label>
+                <label className="text-lg font-bold mb-2">Nom du restaurant :</label>
                 <input
                   type="text"
-                  placeholder="Nom de l'entreprise"
+                  placeholder="Exemple : La belle assiette"
                   value={formData.companyName}
                   onChange={(e) => handleInputChange(e, 'companyName')}
-                  className={`border-2 p-2 mb-6 font-bold ${formData.companyName.trim() !== '' ? 'border-green-500' : 'border-gray-300'}`}
+                  className={`border-2 w-auto p-2 mb-6 font-bold ${formData.companyName.trim() !== '' ? 'border-green-500' : 'border-gray-300'}`}
                 />
               </div>
             </div>
@@ -91,7 +92,8 @@ export const RegisterCompany = () => {
               onChange={(e) => handleInputChange(e, 'companyAddress')}
               className={`border-2 p-2 mb-6 font-bold ${formData.companyAddress.trim() !== '' ? 'border-green-500' : 'border-gray-300'}`}
             />
-
+            <div className='flex items-center justify-center gap-4'>
+                <div className='flex flex-col'>
             <label className="text-lg font-bold mb-2">Code postal :</label>
             <input
               type="text"
@@ -100,7 +102,8 @@ export const RegisterCompany = () => {
               onChange={(e) => handleInputChange(e, 'companyPostalCode')}
               className={`border-2 p-2 mb-6 font-bold ${formData.companyPostalCode.trim() !== '' ? 'border-green-500' : 'border-gray-300'}`}
             />
-
+                </div>
+            <div className='flex flex-col'>
             <label className="text-lg font-bold mb-2">Ville :</label>
             <input
               type="text"
@@ -109,7 +112,8 @@ export const RegisterCompany = () => {
               onChange={(e) => handleInputChange(e, 'companyCity')}
               className={`border-2 p-2 mb-6 font-bold ${formData.companyCity.trim() !== '' ? 'border-green-500' : 'border-gray-300'}`}
             />
-
+                </div>
+            </div>
             <label className="text-lg font-bold mb-2">Pays :</label>
             <input
               type="text"
