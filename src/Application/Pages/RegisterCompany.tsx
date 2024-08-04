@@ -15,9 +15,7 @@ export const RegisterCompany = () => {
     companyAddress: '',
     companyPostalCode: '',
     companyCity: '',
-    companyCountry: '',
-    companyPhoneNumber: '',
-    companyEmail: '',
+    companyCountry: ''
   });
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
@@ -36,8 +34,6 @@ export const RegisterCompany = () => {
       postal_code: formData.companyPostalCode,
       city: formData.companyCity,
       country: formData.companyCountry,
-      phone_number: formData.companyPhoneNumber,
-      email: formData.companyEmail,
       user_id: userId
     };
 
@@ -123,24 +119,6 @@ export const RegisterCompany = () => {
               className={`border-2 p-2 mb-6 font-bold ${formData.companyCountry.trim() !== '' ? 'border-green-500' : 'border-gray-300'}`}
             />
 
-            <label className="text-lg font-bold mb-2">Numéro de téléphone :</label>
-            <input
-              type="text"
-              placeholder="Numéro de téléphone"
-              value={formData.companyPhoneNumber}
-              onChange={(e) => handleInputChange(e, 'companyPhoneNumber')}
-              className={`border-2 p-2 mb-6 font-bold ${formData.companyPhoneNumber.trim() !== '' ? 'border-green-500' : 'border-gray-300'}`}
-            />
-
-            <label className="text-lg font-bold mb-2">Email :</label>
-            <input
-              type="email"
-              placeholder="Email"
-              value={formData.companyEmail}
-              onChange={(e) => handleInputChange(e, 'companyEmail')}
-              className={`border-2 p-2 mb-6 font-bold ${formData.companyEmail.trim() !== '' ? 'border-green-500' : 'border-gray-300'}`}
-            />
-
             <div className="flex flex-col items-center justify-center">
               {errorMessage && (
                 <div className="text-red-500 text-center mb-4">
@@ -154,9 +132,7 @@ export const RegisterCompany = () => {
                   formData.companyAddress.trim() !== '' &&
                   formData.companyPostalCode.trim() !== '' &&
                   formData.companyCity.trim() !== '' &&
-                  formData.companyCountry.trim() !== '' &&
-                  formData.companyPhoneNumber.trim() !== '' &&
-                  formData.companyEmail.trim() !== '' 
+                  formData.companyCountry.trim() !== ''
                   ? 'cursor-pointer' : 'cursor-not-allowed opacity-50'
                 }`}
                 disabled={
@@ -165,13 +141,11 @@ export const RegisterCompany = () => {
                     formData.companyAddress.trim() !== '' &&
                     formData.companyPostalCode.trim() !== '' &&
                     formData.companyCity.trim() !== '' &&
-                    formData.companyCountry.trim() !== '' &&
-                    formData.companyPhoneNumber.trim() !== '' &&
-                    formData.companyEmail.trim() !== ''
+                    formData.companyCountry.trim() !== ''
                   )
                 }
               >
-                Créer l'entreprise
+                Accéder à mon espace
               </button>
             </div>
           </form>
