@@ -9,7 +9,7 @@ type ArrowButtonProps = {
 const ArrowButton: React.FC<ArrowButtonProps> = ({ isContentVisible, onClick }) => {
   return (
     <button onClick={onClick} className='hover:text-white'>
-      {isContentVisible ? <IoIosArrowUp size={20} /> : <IoIosArrowDown size={20} />}
+      {isContentVisible ? <IoIosArrowDown size={20} /> : <IoIosArrowUp size={20} />}
     </button>
   );
 };

@@ -51,7 +51,7 @@ export const LoginFormUser: React.FC<LoginFormUserProps> = ({
         />
       </div>
       <img src="../../../public/img/logo-oresto-orange.png" width="250px" alt="Logo Oresto" />
-      <h2 className='text-center py-8 w-[218px]'>Connectez-vous ou inscrivez-vous c'est simple et rapide.</h2>
+      <h2 className='text-center py-8 w-[218px] lg:hidden'>Connectez-vous ou inscrivez-vous c'est simple et rapide.</h2>
       <form className="flex flex-col justify-center items-center mt-4" onSubmit={handleLoginSubmit}>
         <div className="flex flex-col w-full ">
           <label htmlFor="email" className="font-bold items-left text-left">Adresse mail</label>
@@ -62,8 +62,8 @@ export const LoginFormUser: React.FC<LoginFormUserProps> = ({
           <input type="password" id="password" name="password" placeholder="Votre mot de passe" className="border-2 border-gray-300 rounded-lg w-full p-2 mt-2 font-bold" />
         </div>
 
-        <div className='flex items-center gap-5 py-5'>
-          <button type="submit" className="bg-black rounded-lg text-white py-2 px-4 mt-6 mb-4 font-bold text-sm">Se connecter</button>
+        <div className='flex items-center gap-5 py-3'>
+          <button type="submit" className="bg-black rounded-lg text-white py-2 px-2 mt-6 mb-4 font-bold text-sm">Se connecter</button>
           <button
             type="button"
             className="bg-green-900 rounded-lg text-white py-2 px-4 mt-6 mb-4 font-bold text-sm"

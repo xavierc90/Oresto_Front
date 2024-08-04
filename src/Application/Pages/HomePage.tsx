@@ -7,24 +7,14 @@ export const HomePage = () => {
   const [isWidgetContentVisible, setIsWidgetContentVisible] = useState(false); // Masquer le contenu du widget par défaut
   const [isMenuVisible, setIsMenuVisible] = useState(false); // État pour la visibilité du menu
 
-  // Ouvre le widget avec animation
   const openWidget = () => {
     setShowWidget(true);
-    setTimeout(() => setIsWidgetContentVisible(true), 10); // Délai pour déclencher l'animation
   };
 
-  // Ferme le widget avec animation
-  const closeWidget = () => {
-    setIsWidgetContentVisible(false);
-    setTimeout(() => setShowWidget(false), 300); // Délai pour que l'animation de fermeture se termine
-  };
-
-  // Bascule la visibilité du menu et désactive le défilement
   const toggleMenuVisibility = () => {
     setIsMenuVisible(!isMenuVisible);
   };
 
-  // Ferme le menu
   const closeMenu = () => {
     setIsMenuVisible(false);
   };
@@ -42,9 +32,9 @@ export const HomePage = () => {
     <div>
       <header className='flex flex-col justify-center items-center'>
         <nav className="fixed flex items-center justify-between top-0 w-full bg-black py-8 px-5 lg:px-10">
-          <div className='text-white'>
+          <div className='text-white absolute'>
             <a href="#" className='hover:text-white'>
-              <h1 className='bebas uppercase font-bold text-sm text-xl lg:w-[150px] lg:text-center'>La belle assiette</h1>
+              <h1 className='bebas uppercase font-bold text-2xl lg:text-center'>La belle assiette</h1>
             </a>
           </div>
           <ul className={`fixed z-50 top-12 mt-5 right-0 w-full h-full flex flex-col justify-center items-center text-2xl font-bold uppercase bg-black text-white lg:static lg:mt-0 lg:flex-row lg:bg-transparent lg:gap-10 lg:items-center lg:justify-center lg:text-sm   transition-transform duration-300 ${isMenuVisible ? 'translate-x-0' : 'translate-x-full lg:translate-x-0 translate-none ransform-none'}`}>
@@ -53,7 +43,7 @@ export const HomePage = () => {
             <li className="p-4 lg:p-0"><a href="#contact" className="hover:text-white block lg:inline" onClick={closeMenu}>Contact</a></li>
             <li className="p-4 lg:p-0"><a onClick={() => { openWidget(); closeMenu(); }} className="hover:text-white block lg:inline cursor-pointer">Réserver</a></li>
           </ul>
-          <div className="lg:hidden text-white z-50">
+          <div className="absolute right-5 lg:hidden text-white z-50">
             {isMenuVisible ? (
               <RxCross1 className="w-8 h-8 cursor-pointer" onClick={toggleMenuVisibility} />
             ) : (

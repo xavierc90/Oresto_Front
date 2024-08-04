@@ -107,7 +107,7 @@ export const RegisterFormUser: React.FC<RegisterFormUserProps> = ({
 
   return (
     <div className="flex flex-col justify-center items-center pt-5 pb-5 bg-white w-full h-screen lg:w-auto lg:h-auto transition-all duration-500">
-      <div className='fixed flex top-5 right-4 mr-2 gap-2 hover:black'>
+      <div className='fixed flex top-5 right-4 mr-2 gap-2 lg:hidden'>
         <ArrowButton 
           isContentVisible={isContentVisible} 
           onClick={toggleContentVisibility} 
@@ -116,7 +116,6 @@ export const RegisterFormUser: React.FC<RegisterFormUserProps> = ({
           onClick={handleClose} 
         />
       </div>
-
       {step === 1 && (
         <>
           <h1 className="text-center text-xl font-bold">Inscription rapide</h1>
@@ -211,7 +210,7 @@ export const RegisterFormUser: React.FC<RegisterFormUserProps> = ({
               onClick={() => setIsLoging(true)}
               className="hover:text-black hover:underline text-sm"
             >
-              Vous avez déjà un compte ? Connectez-vous
+              Déjà un compte ? Connectez-vous
             </button>
           </div>
         </>

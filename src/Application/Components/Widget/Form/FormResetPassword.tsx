@@ -48,7 +48,7 @@ export const FormResetPassword: React.FC<FormResetPasswordProps> = ({
   };
 
   return (
-    <div className="flex flex-col justify-center items-center pt-5 pb-5 px-6 bg-white w-full h-screen">
+    <div className="flex flex-col justify-center items-center pt-5 pb-5 px-6 bg-white w-full h-screen lg:h-auto">
       <div className='fixed flex top-5 right-4 mr-2 gap-2'>
         <ArrowButton 
           isContentVisible={isContentVisible} 
