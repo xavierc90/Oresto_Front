@@ -40,8 +40,8 @@ export const LoginFormUser: React.FC<LoginFormUserProps> = ({
   };
 
   return (
-    <div className="flex flex-col z-50 justify-center items-center pt-5 pb-5 px-6 bg-white w-full h-screen">
-      <div className='fixed flex top-5 right-4 mr-2 gap-2'>
+    <div className="flex flex-col z-50 justify-center items-center pt-5 pb-5 px-6 bg-white w-full h-screen lg:h-auto">
+      <div className='fixed flex top-5 right-4 mr-2 gap-2 lg:hidden'>
         <ArrowButton 
           isContentVisible={isContentVisible} 
           onClick={toggleContentVisibility} 
@@ -51,14 +51,14 @@ export const LoginFormUser: React.FC<LoginFormUserProps> = ({
         />
       </div>
       <img src="../../../public/img/logo-oresto-orange.png" width="250px" alt="Logo Oresto" />
-      <h2 className='w-full text-center py-8 w-[218px]'>Connectez-vous ou inscrivez-vous c'est simple et rapide.</h2>
+      <h2 className='text-center py-8 w-[218px]'>Connectez-vous ou inscrivez-vous c'est simple et rapide.</h2>
       <form className="flex flex-col justify-center items-center mt-4" onSubmit={handleLoginSubmit}>
-        <div className="flex flex-col w-full">
-          <label htmlFor="email" className="font-bold items-left">Adresse mail</label>
+        <div className="flex flex-col w-full ">
+          <label htmlFor="email" className="font-bold items-left text-left">Adresse mail</label>
           <input type="email" id="email" name="email" placeholder="john.doe@gmail.com" className="border-2 border-gray-300 rounded-lg w-full p-2 mt-2 mb-4 font-bold" />
         </div>
         <div className="flex flex-col w-full">
-          <label htmlFor="password" className="font-bold">Mot de passe</label>
+          <label htmlFor="password" className="font-bold text-left">Mot de passe</label>
           <input type="password" id="password" name="password" placeholder="Votre mot de passe" className="border-2 border-gray-300 rounded-lg w-full p-2 mt-2 font-bold" />
         </div>
 

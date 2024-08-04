@@ -106,8 +106,8 @@ export const RegisterFormUser: React.FC<RegisterFormUserProps> = ({
   };
 
   return (
-    <div className="flex flex-col justify-center items-center pt-5 pb-5 bg-white w-full h-screen transition-all duration-500">
-      <div className='fixed flex top-5 right-4 mr-2 gap-2'>
+    <div className="flex flex-col justify-center items-center pt-5 pb-5 bg-white w-full h-screen lg:w-auto lg:h-auto transition-all duration-500">
+      <div className='fixed flex top-5 right-4 mr-2 gap-2 hover:black'>
         <ArrowButton 
           isContentVisible={isContentVisible} 
           onClick={toggleContentVisibility} 
@@ -126,7 +126,7 @@ export const RegisterFormUser: React.FC<RegisterFormUserProps> = ({
           </h2>
           <form className="flex flex-col justify-center items-center mt-8">
             <div className="flex flex-col w-full">
-              <label htmlFor="firstName" className="font-bold items-left">
+              <label htmlFor="firstName" className="font-bold items-left text-left">
                 Prénom :
               </label>
               <input
@@ -140,7 +140,7 @@ export const RegisterFormUser: React.FC<RegisterFormUserProps> = ({
               />
             </div>
             <div className="flex flex-col w-full">
-              <label htmlFor="lastName" className="font-bold">
+              <label htmlFor="lastName" className="font-bold text-left">
                 Nom :
               </label>
               <input
@@ -155,7 +155,7 @@ export const RegisterFormUser: React.FC<RegisterFormUserProps> = ({
             </div>
 
             <div className="flex flex-col w-full">
-              <label htmlFor="email" className="font-bold">
+              <label htmlFor="email" className="font-bold text-left">
                 Adresse mail :
               </label>
               <input
@@ -170,7 +170,7 @@ export const RegisterFormUser: React.FC<RegisterFormUserProps> = ({
             </div>
 
             <div className="flex flex-col w-full">
-              <label htmlFor="phone_number" className="font-bold">
+              <label htmlFor="phone_number" className="font-bold text-left">
                 N° de téléphone :
               </label>
               <input

@@ -3,27 +3,23 @@ import { Widget } from '../Components/Widget/Widget';
 import { RxHamburgerMenu, RxCross1 } from "react-icons/rx"; // Importer les icônes
 
 export const HomePage = () => {
-  const [showWidget, setShowWidget] = useState(true); // Afficher le widget par défaut
+  const [showWidget, setShowWidget] = useState(false); // Masquer le widget par défaut
   const [isWidgetContentVisible, setIsWidgetContentVisible] = useState(false); // Masquer le contenu du widget par défaut
   const [isMenuVisible, setIsMenuVisible] = useState(false); // État pour la visibilité du menu
 
-  // Ouvre le widget et réinitialise la visibilité du contenu
+  // Ouvre le widget avec animation
   const openWidget = () => {
     setShowWidget(true);
-    setIsWidgetContentVisible(true);
+    setTimeout(() => setIsWidgetContentVisible(true), 10); // Délai pour déclencher l'animation
   };
 
-  // Bascule la visibilité du contenu du widget
-  const toggleWidgetContentVisibility = () => {
-    setIsWidgetContentVisible(!isWidgetContentVisible);
+  // Ferme le widget avec animation
+  const closeWidget = () => {
+    setIsWidgetContentVisible(false);
+    setTimeout(() => setShowWidget(false), 300); // Délai pour que l'animation de fermeture se termine
   };
 
-  // Met à jour le titre de la page
-  useEffect(() => {
-    document.title = 'La belle assiette - Restaurant traditionnel';
-  }, []);
-
-  // Bascule la visibilité du menu
+  // Bascule la visibilité du menu et désactive le défilement
   const toggleMenuVisibility = () => {
     setIsMenuVisible(!isMenuVisible);
   };
@@ -33,20 +29,29 @@ export const HomePage = () => {
     setIsMenuVisible(false);
   };
 
+  // Ajoute ou enlève la classe 'overflow-hidden' au body pour désactiver le défilement
+  useEffect(() => {
+    if (isMenuVisible) {
+      document.body.classList.add('overflow-hidden');
+    } else {
+      document.body.classList.remove('overflow-hidden');
+    }
+  }, [isMenuVisible]);
+
   return (
     <div>
       <header className='flex flex-col justify-center items-center'>
         <nav className="fixed flex items-center justify-between top-0 w-full bg-black py-8 px-5 lg:px-10">
           <div className='text-white'>
             <a href="#" className='hover:text-white'>
-              <h1 className='bebas uppercase font-bold lg:text-2xl text-xl'>La belle assiette</h1>
+              <h1 className='bebas uppercase font-bold text-sm text-xl lg:w-[150px] lg:text-center'>La belle assiette</h1>
             </a>
           </div>
-          <ul className={`fixed z-50 top-12 mt-5 right-0 w-full h-full flex flex-col justify-center items-center text-2xl font-bold uppercase bg-black text-white lg:static lg:flex lg:bg-transparent lg:gap-10 transition-transform duration-300 ${isMenuVisible ? 'translate-x-0' : 'translate-x-full lg:translate-x-0'}`}>
+          <ul className={`fixed z-50 top-12 mt-5 right-0 w-full h-full flex flex-col justify-center items-center text-2xl font-bold uppercase bg-black text-white lg:static lg:mt-0 lg:flex-row lg:bg-transparent lg:gap-10 lg:items-center lg:justify-center lg:text-sm   transition-transform duration-300 ${isMenuVisible ? 'translate-x-0' : 'translate-x-full lg:translate-x-0 translate-none ransform-none'}`}>
             <li className="p-4 lg:p-0"><a href="#about" className="hover:text-white block lg:inline" onClick={closeMenu}>Le restaurant</a></li>
             <li className="p-4 lg:p-0"><a href="#menu" className="hover:text-white block lg:inline" onClick={closeMenu}>La carte</a></li>
             <li className="p-4 lg:p-0"><a href="#contact" className="hover:text-white block lg:inline" onClick={closeMenu}>Contact</a></li>
-            <li className="hidden p-4 lg:p-0"><a onClick={() => { openWidget(); closeMenu(); }} className="hover:text-white block lg:inline cursor-pointer">Réserver</a></li>
+            <li className="p-4 lg:p-0"><a onClick={() => { openWidget(); closeMenu(); }} className="hover:text-white block lg:inline cursor-pointer">Réserver</a></li>
           </ul>
           <div className="lg:hidden text-white z-50">
             {isMenuVisible ? (
@@ -72,7 +77,7 @@ export const HomePage = () => {
       </div>
 
       <div id="menu" className='h-screen bg-white text-black flex justify-center items-center'>
-        <h1 className='text-black text-2xl uppercase'>Découvrez notre carte</h1>
+        <h1 className='text-black text-2xl uppercase'>Découvrez notre menu</h1>
       </div>
 
       <div id="contact" className='h-screen bg-black text-black flex justify-center items-center'>
@@ -80,7 +85,7 @@ export const HomePage = () => {
       </div>
 
       {showWidget && (
-        <div className='widget-container z-40'>
+        <div className={`widget-container z-40 ${isWidgetContentVisible ? 'widget-enter-active' : 'widget-exit-active'}`}>
           <Widget 
             setShowWidget={setShowWidget} 
             isContentVisible={isWidgetContentVisible}
@@ -90,7 +95,7 @@ export const HomePage = () => {
       )}
 
       <footer className="footer bottom-0 bg-black text-white p-4 w-full">
-        <p className="text-center text-white">Site créé par &nbsp;
+        <p className="text-center text-white text-sm">Site créé par &nbsp;
           <a href="mailto:xavier.colombel@google.com?subject=Oresto%20-%20Contacter le développeur"
             className='font-bold hover:no-underline hover:text-white'>
             Xavier Colombel</a>
