@@ -3,12 +3,17 @@ import { Widget } from '../Components/Widget/Widget';
 import { RxHamburgerMenu, RxCross1 } from "react-icons/rx"; // Importer les icônes
 
 export const HomePage = () => {
-  const [showWidget, setShowWidget] = useState(false); // Masquer le widget par défaut
+  const [showWidget, setShowWidget] = useState(true); // Masquer le widget par défaut
   const [isWidgetContentVisible, setIsWidgetContentVisible] = useState(false); // Masquer le contenu du widget par défaut
   const [isMenuVisible, setIsMenuVisible] = useState(false); // État pour la visibilité du menu
 
   const openWidget = () => {
     setShowWidget(true);
+    setIsWidgetContentVisible(true);
+  };
+
+   const toggleWidgetContentVisibility = () => {
+    setIsWidgetContentVisible(!isWidgetContentVisible);
   };
 
   const toggleMenuVisibility = () => {
@@ -75,7 +80,7 @@ export const HomePage = () => {
       </div>
 
       {showWidget && (
-        <div className={`widget-container z-40 ${isWidgetContentVisible ? 'widget-enter-active' : 'widget-exit-active'}`}>
+        <div className='widget-container'>
           <Widget 
             setShowWidget={setShowWidget} 
             isContentVisible={isWidgetContentVisible}
