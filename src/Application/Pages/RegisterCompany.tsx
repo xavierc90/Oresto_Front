@@ -1,5 +1,5 @@
 import { ChangeEvent, FormEvent, useState, useEffect } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { http } from '../../Infrastructure/Http/axios.instance';
 import { useAuth } from '../../Module/Auth/auth.hook';
 
@@ -61,73 +61,80 @@ export const RegisterCompany = () => {
 
   return (
     <div className='w-full h-screen flex'>
+      <div className='cover-company w-6/12'>
+      </div>
       <div className='w-6/12 bg-light'>
         <div className="flex flex-col items-center justify-center h-screen">
           <a href="/login">
             <img src="../../../public/img/logo-oresto-red.png" width="300px" alt="Logo Oresto" />
           </a>
           <form method="POST" className="flex flex-col mt-10" onSubmit={handleCompanyCreation}>
-          <h1 className='text-2xl font-bold mb-10'>Enregistrez votre restaurant</h1>
-          <div className="flex gap-4">
+          <div className='flex flex-col w-[390px] justify-center items-center'>
+            {/* <h1 className='text-2xl font-bold mb-4 text-center'>Finaliser l'inscription</h1> */}
+            <h2 className='text-center mb-10'>Renseignez les informations de votre restaurant
+              pour accéder à votre espace restaurateur et gérer vos réservations.
+            </h2>
+          </div>
+            <div className="flex gap-4">
               <div className="flex flex-col">
-                <label className="text-lg font-bold mb-2">Nom du restaurant :</label>
+                <label className="text-lg font-bold mb-2 text-sm">Nom du restaurant :</label>
                 <input
                   type="text"
                   placeholder="Exemple : La belle assiette"
                   value={formData.companyName}
                   onChange={(e) => handleInputChange(e, 'companyName')}
-                  className={`border-2 w-auto p-2 mb-6 font-bold ${formData.companyName.trim() !== '' ? 'border-green-500' : 'border-gray-300'}`}
+                  className={`border-2 w-[300px] p-2 mb-6 text-sm font-bold ${formData.companyName.trim() !== '' ? 'border-green-500' : 'border-gray-300'}`}
                 />
               </div>
             </div>
-            <label className="text-lg font-bold mb-2">Adresse :</label>
+            <label className="text-lg font-bold mb-2 text-sm">Adresse :</label>
             <input
               type="text"
               placeholder="Adresse"
               value={formData.companyAddress}
               onChange={(e) => handleInputChange(e, 'companyAddress')}
-              className={`border-2 p-2 mb-6 font-bold ${formData.companyAddress.trim() !== '' ? 'border-green-500' : 'border-gray-300'}`}
+              className={`border-2 p-2 mb-6 text-sm w-[360px] font-bold ${formData.companyAddress.trim() !== '' ? 'border-green-500' : 'border-gray-300'}`}
             />
-            <div className='flex items-center justify-center gap-4'>
+            <div className='flex items-center justify-left gap-4'>
                 <div className='flex flex-col'>
-            <label className="text-lg font-bold mb-2">Code postal :</label>
+            <label className="text-lg font-bold mb-2 text-sm">Code postal :</label>
             <input
               type="text"
               placeholder="Code postal"
               value={formData.companyPostalCode}
               onChange={(e) => handleInputChange(e, 'companyPostalCode')}
-              className={`border-2 p-2 mb-6 font-bold ${formData.companyPostalCode.trim() !== '' ? 'border-green-500' : 'border-gray-300'}`}
+              className={`border-2 p-2 mb-6 w-[120px] text-sm font-bold ${formData.companyPostalCode.trim() !== '' ? 'border-green-500' : 'border-gray-300'}`}
             />
                 </div>
             <div className='flex flex-col'>
-            <label className="text-lg font-bold mb-2">Ville :</label>
+            <label className="text-lg font-bold mb-2 text-sm">Ville :</label>
             <input
               type="text"
               placeholder="Ville"
               value={formData.companyCity}
               onChange={(e) => handleInputChange(e, 'companyCity')}
-              className={`border-2 p-2 mb-6 font-bold ${formData.companyCity.trim() !== '' ? 'border-green-500' : 'border-gray-300'}`}
+              className={`border-2 p-2 mb-6 text-sm font-bold ${formData.companyCity.trim() !== '' ? 'border-green-500' : 'border-gray-300'}`}
             />
                 </div>
             </div>
-            <label className="text-lg font-bold mb-2">Pays :</label>
+            <label className="text-lg font-bold mb-2 text-sm">Pays :</label>
             <input
               type="text"
               placeholder="Pays"
               value={formData.companyCountry}
               onChange={(e) => handleInputChange(e, 'companyCountry')}
-              className={`border-2 p-2 mb-6 font-bold ${formData.companyCountry.trim() !== '' ? 'border-green-500' : 'border-gray-300'}`}
+              className={`border-2 p-2 mb-6 text- w-[200px] sm font-bold ${formData.companyCountry.trim() !== '' ? 'border-green-500' : 'border-gray-300'}`}
             />
 
             <div className="flex flex-col items-center justify-center">
               {errorMessage && (
-                <div className="text-red-500 text-center mb-4">
+                <div className="text-red-500 text-center">
                   {errorMessage}
                 </div>
               )}
               <button
                 type="submit"
-                className={`bg-black text-white py-4 rounded-lg w-2/3 font-bold uppercase ${
+                className={`bg-black text-white py-4 rounded-lg w-2/3 mt-5 font-bold uppercase ${
                   formData.companyName.trim() !== '' &&
                   formData.companyAddress.trim() !== '' &&
                   formData.companyPostalCode.trim() !== '' &&
@@ -145,14 +152,12 @@ export const RegisterCompany = () => {
                   )
                 }
               >
-                Accéder à mon espace
+                Valider l'inscription
               </button>
             </div>
           </form>
         </div>
       </div>
-      <div className='cover-login w-6/12'>
       </div>
-    </div>
   );
 };

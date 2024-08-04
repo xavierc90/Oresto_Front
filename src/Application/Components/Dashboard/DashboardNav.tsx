@@ -59,8 +59,8 @@ export const DashboardNav = () => {
   useEffect(() => {
     const formattedDate = dateSelected.toLocaleDateString('fr-FR').replace(/\//g, '');
     console.log(dateSelected.toLocaleDateString());
-    navigate(`/dashboard/bookings?dayselected=${formattedDate}`);
-  }, [dateSelected, navigate]);
+    navigate(`/dashboard/bookings?dayselected=${formattedDate}`, { replace: true }); // Ajout de replace: true pour éviter l'historique inutile
+  }, [dateSelected]); // Retirer navigate du tableau de dépendances
 
   const getLinkClass = (path: string) => {
     return location.pathname.startsWith(path)

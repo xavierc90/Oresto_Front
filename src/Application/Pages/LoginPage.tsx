@@ -16,7 +16,7 @@ export const LoginPage = () => {
     if (token) {
       navigate('/dashboard/bookings');
     }
-  }, []); // Retirer navigate du tableau de dépendances
+  }, [navigate]); // Ajoutez navigate comme dépendance pour éviter les boucles infinies
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -26,7 +26,7 @@ export const LoginPage = () => {
       if (token && _id) {
         loginManager(token, _id);
         localStorage.setItem('token', token);
-        localStorage.setItem('_Id', _id);
+        localStorage.setItem('userId', _id); // Correction ici
         navigate('/dashboard/bookings');
       }
     } catch (error: unknown) {

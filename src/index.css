@@ -123,6 +123,18 @@ a:hover {
     background-size: cover;
 }
 
+.cover-register {
+    background-image: url('../public//img/cover-register.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.cover-company {
+    background-image: url('../public//img/cover-company.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
 header {
     height: 100vh;
     background: linear-gradient(180deg, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.1) 90%), url('/public/img/bg-home-2400.jpg') center center / cover no-repeat;

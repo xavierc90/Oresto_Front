@@ -65,7 +65,7 @@ export const RegisterPage = () => {
         },
       });
 
-      if (registerResponse.status === 201) {
+      if (registerResponse.status === 201) { // Modifié pour vérifier le statut 201
         // Connexion automatique après l'inscription
         const loginResponse = await http.post('/login_manager', {
           email: email,
@@ -108,86 +108,94 @@ export const RegisterPage = () => {
 
   return (
     <div className='w-full h-screen flex'>
+      <div className='cover-register w-6/12'>
+      </div>
       <div className='w-6/12 bg-light'>
         <div className="flex flex-col items-center justify-center h-screen">
           <a href="/login">
             <img src="../../../public/img/logo-oresto-red.png" width="300px" alt="Logo Oresto" />
           </a>
+          
+          {errorMessage && (
+                <div className="text-red-500 text-center pt-4">
+                  {errorMessage}
+                </div>
+              )}
 
-          <form method="POST" className="flex flex-col mt-10" onSubmit={handleSubmit}>
-            <div className="flex gap-4">
+          <form method="POST" className="flex flex-col" onSubmit={handleSubmit}>
+            <div className="flex gap-4 pt-10">
               <div className="flex flex-col">
-                <label className="text-lg font-bold mb-2">Prénom :</label>
+                <label className="text-lg font-bold mb-2 text-sm">Prénom :</label>
                 <input
                   type="text"
                   name="firstName"
                   placeholder="Exemple : John"
                   value={firstName}
                   onChange={(e) => handleInputChange(e, setFirstName)}
-                  className={`border-2 p-2 mb-6 font-bold ${
+                  className={`border-2 p-2 mb-6 font-bold text-sm ${
                     firstName.trim() !== '' ? 'border-green-500' : 'border-gray-300'
                   }`}
                 />
               </div>
               <div className="flex flex-col">
-                <label className="text-lg font-bold mb-2">Nom :</label>
+                <label className="text-lg font-bold mb-2 text-sm">Nom :</label>
                 <input
                   type="text"
                   name="lastName"
                   placeholder="Exemple : Doe"
                   value={lastName}
                   onChange={(e) => handleInputChange(e, setLastName)}
-                  className={`border-2 p-2 mb-6 font-bold ${
+                  className={`border-2 p-2 mb-6 font-bold text-sm ${
                     lastName.trim() !== '' ? 'border-green-500' : 'border-gray-300'
                   }`}
                 />
               </div>
             </div>
 
-            <label className="text-lg font-bold mb-2">Adresse mail</label>
+            <label className="text-lg font-bold mb-2 text-sm">Adresse mail</label>
             <input
               type="email"
               name="email"
               placeholder="Exemple : mail@monrestaurant.fr"
               value={email}
               onChange={(e) => handleInputChange(e, setEmail)}
-              className={`border-2 p-2 mb-6 font-bold ${
+              className={`border-2 p-2 mb-6 font-bold text-sm ${
                 email.trim() !== '' ? 'border-green-500' : 'border-gray-300'
               }`}
             />
 
-            <label className="text-lg font-bold mb-2">Numéro de téléphone</label>
+            <label className="text-lg font-bold mb-2 text-sm">Numéro de téléphone</label>
             <input
               type="tel"
               name="phoneNumber"
               placeholder="Exemple : 0612345678"
               value={phoneNumber}
               onChange={(e) => handleInputChange(e, setPhoneNumber)}
-              className={`border-2 p-2 mb-6 font-bold ${
+              className={`border-2 p-2 mb-6 font-bold text-sm ${
                 phoneNumber.trim() !== '' ? 'border-green-500' : 'border-gray-300'
               }`}
             />
 
-            <label className="text-lg font-bold mb-2">Mot de passe</label>
+            <label className="text-lg font-bold mb-2 text-sm">Mot de passe</label>
             <input
               type="password"
               name="password"
               placeholder="Saisissez un mot de passe"
               value={password}
               onChange={(e) => handleInputChange(e, setPassword)}
-              className={`border-2 p-2 mb-4 font-bold ${
+              className={`border-2 p-2 mb-4 font-bold text-sm ${
                 password.trim() !== '' ? 'border-green-500' : 'border-gray-300'
               }`}
             />
 
-            <label className="text-lg font-bold mb-2">Confirmer le mot de passe</label>
+            <label className="text-lg font-bold mb-2 text-sm">Confirmer le mot de passe</label>
             <input
               type="password"
               name="confirmPassword"
               placeholder="Confirmez le mot de passe"
               value={confirmPassword}
               onChange={(e) => handleInputChange(e, setConfirmPassword)}
-              className={`border-2 p-2 mb-2 font-bold ${
+              className={`border-2 p-2 mb-2 font-bold text-sm ${
                 confirmPassword.trim() !== '' && password === confirmPassword
                   ? 'border-green-500'
                   : 'border-gray-300'
@@ -210,20 +218,14 @@ export const RegisterPage = () => {
                 </a>
               </div>
 
-              {errorMessage && (
-                <div className="text-red-500 text-center mb-4">
-                  {errorMessage}
-                </div>
-              )}
-
               <button
                 type="submit"
-                className={`bg-black text-white py-4 rounded-lg w-2/3 font-bold uppercase ${
+                className={`bg-black text-white py-4 rounded-lg px-5 font-bold uppercase ${
                   isFormValid ? 'cursor-pointer' : 'cursor-not-allowed opacity-50'
                 }`}
                 disabled={!isFormValid}
               >
-                Terminer l'inscription
+                Continuer l'inscription
               </button>
             </div>
           </form>
@@ -231,8 +233,6 @@ export const RegisterPage = () => {
             <NavLink to="/login">Déjà un compte ? Connectez-vous</NavLink>
           </div>
         </div>
-      </div>
-      <div className='cover-login w-6/12'>
       </div>
     </div>
   );
