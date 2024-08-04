@@ -46,7 +46,7 @@ export const HomePage = () => {
             <li className="p-4 lg:p-0"><a href="#about" className="hover:text-white block lg:inline" onClick={closeMenu}>Le restaurant</a></li>
             <li className="p-4 lg:p-0"><a href="#menu" className="hover:text-white block lg:inline" onClick={closeMenu}>La carte</a></li>
             <li className="p-4 lg:p-0"><a href="#contact" className="hover:text-white block lg:inline" onClick={closeMenu}>Contact</a></li>
-            <li className="p-4 lg:p-0"><a onClick={() => { openWidget(); closeMenu(); }} className="hover:text-white block lg:inline cursor-pointer">Réserver</a></li>
+            <li className="hidden p-4 lg:p-0"><a onClick={() => { openWidget(); closeMenu(); }} className="hover:text-white block lg:inline cursor-pointer">Réserver</a></li>
           </ul>
           <div className="lg:hidden text-white z-50">
             {isMenuVisible ? (
@@ -72,7 +72,7 @@ export const HomePage = () => {
       </div>
 
       <div id="menu" className='h-screen bg-white text-black flex justify-center items-center'>
-        <h1 className='text-black text-2xl uppercase'>Découvrez notre menu</h1>
+        <h1 className='text-black text-2xl uppercase'>Découvrez notre carte</h1>
       </div>
 
       <div id="contact" className='h-screen bg-black text-black flex justify-center items-center'>
@@ -89,7 +89,7 @@ export const HomePage = () => {
         </div>
       )}
 
-      <footer className="footer bottom-0 bg-green-900 text-white p-4 w-full">
+      <footer className="footer bottom-0 bg-black text-white p-4 w-full">
         <p className="text-center text-white">Site créé par &nbsp;
           <a href="mailto:xavier.colombel@google.com?subject=Oresto%20-%20Contacter le développeur"
             className='font-bold hover:no-underline hover:text-white'>

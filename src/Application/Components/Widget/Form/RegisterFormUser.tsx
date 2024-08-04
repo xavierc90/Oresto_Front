@@ -247,7 +247,7 @@ export const RegisterFormUser: React.FC<RegisterFormUserProps> = ({
             </div>
 
             <div className="flex flex-col w-full relative">
-              <label htmlFor="confirmPassword" className="font-bold mb-1 mt-3">
+              <label htmlFor="confirmPassword" className="font-bold mb-1 mt-8">
                 Confirmez le mot de passe
               </label>
               <input
@@ -262,13 +262,13 @@ export const RegisterFormUser: React.FC<RegisterFormUserProps> = ({
               <button
                 type="button"
                 onClick={toggleConfirmPasswordVisibility}
-                className="absolute right-4 top-12 pt-1"
+                className="absolute right-4 top-12 pt-7"
               >
                 {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
               </button>
             </div>
 
-            <div className="text-left mb-4">
+            <div className="text-left mb-4 mt-5">
               <p className="font-bold mb-1 mt-4">Le mot de passe doit contenir :</p>
               <ul className="text-sm">
                 <li className="flex items-center">
@@ -342,7 +342,7 @@ export const RegisterFormUser: React.FC<RegisterFormUserProps> = ({
               {isRegistering ? "Enregistrement en cours..." : "Terminer l'inscription"}
             </button>
           </form>
-          <div className="w-full text-center mt-4">
+          <div className="w-full text-center mt-8">
             <button
               onClick={() => setStep(1)} // Permet de revenir à l'étape précédente
               className="hover:text-black hover:underline text-sm"
@@ -354,7 +354,7 @@ export const RegisterFormUser: React.FC<RegisterFormUserProps> = ({
       )}
 
       {registrationSuccess && (
-        <div className="flex flex-col justify-center items-center pt-5 pb-5 px-6 bg-white w-80">
+        <div className="flex flex-col justify-center items-center pt-5 pb-5 px-6 bg-white w-full h-screen">
           <img src="../../../public/img/logo-oresto-orange.png" width="250px" alt="Logo Oresto" />
           <p className="text-green-800 font-bold text-base mt-8">Inscription réussie !</p>
           <h2 className="w-full text-center pt-5">
