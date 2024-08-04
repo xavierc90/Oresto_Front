@@ -54,15 +54,15 @@ export const LoginFormUser: React.FC<LoginFormUserProps> = ({
       <h2 className='text-center py-8 w-[218px] lg:hidden'>Connectez-vous ou inscrivez-vous c'est simple et rapide.</h2>
       <form className="flex flex-col justify-center items-center mt-4" onSubmit={handleLoginSubmit}>
         <div className="flex flex-col w-full ">
-          <label htmlFor="email" className="font-bold items-left text-left">Adresse mail</label>
+          <label htmlFor="email" className="font-bold items-left text-left lg:text-sm">Adresse mail</label>
           <input type="email" id="email" name="email" placeholder="john.doe@gmail.com" className="border-2 border-gray-300 rounded-lg w-full p-2 mt-2 mb-4 font-bold" />
         </div>
         <div className="flex flex-col w-full">
-          <label htmlFor="password" className="font-bold text-left">Mot de passe</label>
+          <label htmlFor="password" className="font-bold text-left lg:text-sm">Mot de passe</label>
           <input type="password" id="password" name="password" placeholder="Votre mot de passe" className="border-2 border-gray-300 rounded-lg w-full p-2 mt-2 font-bold" />
         </div>
 
-        <div className='flex items-center gap-5 py-3'>
+        <div className='flex items-center gap-3'>
           <button type="submit" className="bg-black rounded-lg text-white py-2 px-2 mt-6 mb-4 font-bold text-sm">Se connecter</button>
           <button
             type="button"
@@ -73,7 +73,7 @@ export const LoginFormUser: React.FC<LoginFormUserProps> = ({
         <a 
           href="#" 
           onClick={handleForgotPasswordClick} 
-          className="hover:text-black text-sm"
+          className="hover:text-black text-sm lg:py-3"
         >
           J'ai oublié mon mot de passe
         </a>

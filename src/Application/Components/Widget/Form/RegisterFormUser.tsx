@@ -125,7 +125,7 @@ export const RegisterFormUser: React.FC<RegisterFormUserProps> = ({
           </h2>
           <form className="flex flex-col justify-center items-center mt-8">
             <div className="flex flex-col w-full">
-              <label htmlFor="firstName" className="font-bold items-left text-left">
+              <label htmlFor="firstName" className="font-bold items-left text-left lg:text-sm">
                 Prénom :
               </label>
               <input
@@ -135,11 +135,11 @@ export const RegisterFormUser: React.FC<RegisterFormUserProps> = ({
                 id="firstName"
                 name="firstName"
                 placeholder="François"
-                className="border-2 border-gray-300 rounded-lg w-full p-2 mt-2 mb-4 font-bold"
+                className="border-2 border-gray-300 rounded-lg w-full p-2 mt-1 mb-4 font-bold text-sm"  
               />
             </div>
             <div className="flex flex-col w-full">
-              <label htmlFor="lastName" className="font-bold text-left">
+              <label htmlFor="lastName" className="font-bold text-left lg:text-sm">
                 Nom :
               </label>
               <input
@@ -149,12 +149,12 @@ export const RegisterFormUser: React.FC<RegisterFormUserProps> = ({
                 id="lastName"
                 name="lastName"
                 placeholder="Dupont"
-                className="border-2 border-gray-300 rounded-lg w-full p-2 mt-2 mb-4 font-bold"
+                className="border-2 border-gray-300 rounded-lg w-full p-2 mt-2 mb-4 font-bold lg:text-sm"
               />
             </div>
 
             <div className="flex flex-col w-full">
-              <label htmlFor="email" className="font-bold text-left">
+              <label htmlFor="email" className="font-bold text-left lg:text-sm">
                 Adresse mail :
               </label>
               <input
@@ -164,12 +164,12 @@ export const RegisterFormUser: React.FC<RegisterFormUserProps> = ({
                 id="email"
                 name="email"
                 placeholder="f.dupont@gmail.com"
-                className="border-2 border-gray-300 rounded-lg w-full p-2 mt-2 mb-4 font-bold"
+                className="border-2 border-gray-300 rounded-lg w-full p-2 mt-2 mb-4 font-bold lg:text-sm"
               />
             </div>
 
             <div className="flex flex-col w-full">
-              <label htmlFor="phone_number" className="font-bold text-left">
+              <label htmlFor="phone_number" className="font-bold text-left lg:text-sm">
                 N° de téléphone :
               </label>
               <input
@@ -179,7 +179,7 @@ export const RegisterFormUser: React.FC<RegisterFormUserProps> = ({
                 id="phone_number"
                 name="phone_number"
                 placeholder="Exemple : 0102030405"
-                className="border-2 border-gray-300 rounded-lg w-full p-2 mt-2 mb-4 font-bold"
+                className="border-2 border-gray-300 rounded-lg w-full p-2 mt-2 mb-4 font-bold lg:text-sm"
               />
             </div>
 
