@@ -64,8 +64,8 @@ export const FormResetPassword: React.FC<FormResetPasswordProps> = ({
       </h2>
       <form className="flex flex-col justify-center items-center mt-4" onSubmit={handleSubmit}>
         <div className="flex flex-col w-full">
-          <label htmlFor="email" className="font-bold items-left">
-            Adresse mail
+          <label htmlFor="email" className="font-bold items-left text-left">
+            Votre adresse mail
           </label>
           <input
             type="email"
@@ -88,7 +88,7 @@ export const FormResetPassword: React.FC<FormResetPasswordProps> = ({
         <a
           href="#"
           onClick={handleSignUpClick}
-          className="hover:text-black hover:underline cursor-pointer text-center text-sm w-3/4"
+          className="hover:text-black hover:underline cursor-pointer text-center text-sm w-4/4"
         >
           Vous n'avez pas de compte ? Inscrivez-vous
         </a>

@@ -8,38 +8,53 @@ import { LuLayoutDashboard } from "react-icons/lu";
 import { MdLogout } from "react-icons/md";
 import { CalendarShadcn } from "./CalendarShadcn";
 import { User } from "../../../Module/Types/user.type";
+import { Company } from "../../../Module/Types/company.type";
 import { http } from "../../../Infrastructure/Http/axios.instance";
 
 export const DashboardNav = () => {
   const [dateSelected, setDateSelected] = useState<Date>(new Date());
   const [user, setUser] = useState<User | null>(null);
-  const [company, setCompany] = useState<any>(null); // Remplacez `any` par le type approprié si vous avez une définition
+  const [company, setCompany] = useState<Company | null>(null);
   const location = useLocation();
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
+        const userId = localStorage.getItem('userId');
+        const token = localStorage.getItem('token');
+        const companyId = localStorage.getItem('companyId');
+        if (!userId || !token) {
+          throw new Error('User ID or token is not available in localStorage');
+        }
         // Récupérer les données utilisateur
-        const userResponse = await http.get(`find_user/${localStorage.getItem('userId')}`);
+        const userResponse = await http.get(`find_user/${userId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
         if (userResponse.data) {
           setUser(userResponse.data);
 
           // Récupérer les données de la société
-          if (userResponse.data.company_id) {
-            const companyResponse = await http.get(`find_company/${userResponse.data.company_id}`);
+          if (companyId) {
+            const companyResponse = await http.get(`find_company/${companyId}`, {
+              headers: {
+                Authorization: `Bearer ${token}`
+              }
+            });
             setCompany(companyResponse.data);
           }
         } else {
           console.error('Données utilisateur manquantes:', userResponse.data);
         }
       } catch (error) {
-        console.error('Erreur lors de la récupération des données:', error);
+        console.error('Erreur lors de la récupération des données utilisateur:', error);
       }
     };
 
     fetchData();
-  }, []);
+  }, []); // Ajoutez un tableau de dépendances vide pour s'assurer que l'effet ne se déclenche qu'une fois
 
   useEffect(() => {
     const formattedDate = dateSelected.toLocaleDateString('fr-FR').replace(/\//g, '');
@@ -51,6 +66,27 @@ export const DashboardNav = () => {
     return location.pathname.startsWith(path)
       ? 'flex flex-col items-center text-red-500 transition duration-300'
       : 'flex flex-col items-center text-gray-600 hover:text-red-500 transition duration-300';
+  };
+
+  const handleLogout = async () => {
+    try {
+      // Appel à la route de déconnexion backend
+      await http.post('/logout');
+    } catch (error) {
+      console.error('Erreur lors de la déconnexion:', error);
+    } finally {
+      // Effacer les informations d'authentification actuelles
+      localStorage.removeItem('token');
+      localStorage.removeItem('userId');
+      localStorage.removeItem('companyId'); // Effacer l'ID de la société
+      // Forcer la réinitialisation de l'état local
+      setUser(null);
+      setCompany(null);
+      // Vérification et redirection
+      if (!localStorage.getItem('token') && !localStorage.getItem('userId')) {
+        navigate('/login');
+      }
+    }
   };
 
   const formattedDate = dateSelected.toLocaleDateString('fr-FR').replace(/\//g, '');
@@ -124,7 +160,7 @@ export const DashboardNav = () => {
             {/* Sixième Élément */}
             <Link
               to="/login"
-              onClick={() => localStorage.removeItem('token')}
+              onClick={handleLogout}
               className="flex flex-col items-center text-gray-600 hover:text-red-500 focus:text-red-500 transition duration-300">
               <MdLogout size={20} className="mb-1" />
               <h2 className="text-xs font-bold">Se déconnecter</h2>

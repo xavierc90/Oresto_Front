@@ -1,8 +1,9 @@
 import { useState, useEffect, useContext, createContext, ReactNode } from 'react';
+import {jwtDecode} from 'jwt-decode';
 
 type AuthContextType = {
   isAuthenticated: boolean;
-  userId: string | null;  // Ajout de l'ID utilisateur
+  userId: string | null;
   login: (token: string, userId: string) => void;
   logout: () => void;
 };
@@ -20,8 +21,23 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   useEffect(() => {
     const token = localStorage.getItem('token');
     const storedUserId = localStorage.getItem('userId');
-    if (token && storedUserId) {
-      setIsAuthenticated(true);
+    if (token) {
+      try {
+        const decodedToken: { userId: string; exp: number } = jwtDecode(token);
+        if (decodedToken.exp * 1000 > Date.now()) {
+          setIsAuthenticated(true);
+          setUserId(decodedToken.userId);
+        } else {
+          localStorage.removeItem('token');
+          localStorage.removeItem('userId');
+        }
+      } catch (error) {
+        console.error('Invalid token:', error);
+        localStorage.removeItem('token');
+        localStorage.removeItem('userId');
+      }
+    }
+    if (storedUserId) {
       setUserId(storedUserId);
     }
   }, []);

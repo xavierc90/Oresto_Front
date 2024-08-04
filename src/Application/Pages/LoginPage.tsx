@@ -16,7 +16,7 @@ export const LoginPage = () => {
     if (token) {
       navigate('/dashboard/bookings');
     }
-  }, [navigate]);
+  }, []); // Retirer navigate du tableau de dépendances
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();

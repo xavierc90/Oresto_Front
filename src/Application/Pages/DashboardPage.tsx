@@ -8,15 +8,27 @@ import { User } from '../../Module/Types/user.type'
 
 export const DashboardPage = () => {
   const [user, setUser] =  useState<User | null>(null);
-  
 
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        console.log(localStorage.getItem('token'))
-        console.log(localStorage.getItem('userId'))
-        console.log(localStorage.getItem('company_id'))
-        const response = await http.get(`find_user/${localStorage.getItem('userId')}`); // Assurez-vous que l'URL est correcte
+        const token = localStorage.getItem('token');
+        const userId = localStorage.getItem('userId');
+        
+        if (!token || !userId) {
+          console.error('Token ou User ID manquant');
+          return;
+        }
+
+        console.log('Token:', token);
+        console.log('User ID:', userId);
+
+        const response = await http.get(`find_user/${userId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
         if (response.data) {
           setUser(response.data);
         } else {

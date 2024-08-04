@@ -11,6 +11,7 @@ import { useAuth } from "../../Module/Auth/auth.hook";
 import { TableLayoutPage } from "../../Application/Pages/TableLayoutPage";
 import { AnalyticsPage } from "../../Application/Pages/AnalyticsPage";
 import { SettingsPage } from "../../Application/Pages/SettingsPage";
+import { RegisterCompany } from "../../Application/Pages/RegisterCompany";
 
 type ProtectedRouteProps = {
   element: ReactNode;
@@ -64,5 +65,9 @@ export const router = createBrowserRouter([
         element: <ProtectedRoute element={<SettingsPage />} />,
       }    
     ],
+  },
+  {
+    path: "/register_company", // Création de l'entreprise
+    element: <ProtectedRoute element={<RegisterCompany />} />,
   },
 ]);
