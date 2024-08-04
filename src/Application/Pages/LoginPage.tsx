@@ -6,22 +6,23 @@ import { useAuth } from '../../Module/Auth/auth.hook';
 export const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState(''); 
+  const [error, setError] = useState('');
   const { login: loginManager } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
-    document.title = 'Oresto - Se connecter'; 
-    if (localStorage.getItem('token')) {
+    document.title = 'Oresto - Se connecter';
+    const token = localStorage.getItem('token');
+    if (token) {
       navigate('/dashboard/bookings');
     }
-  }, [navigate]); 
+  }, [navigate]);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
       const response = await http.post('/login_manager', { email, password });
-      const { token, _id} = response.data; // Assurez-vous que l'ID utilisateur est inclus dans la réponse
+      const { token, _id } = response.data;
       if (token && _id) {
         loginManager(token, _id);
         localStorage.setItem('token', token);
@@ -31,27 +32,28 @@ export const LoginPage = () => {
     } catch (error: unknown) {
       console.error('Erreur de connexion:', error);
 
+      let errorMessage = 'Une erreur est survenue.<br/>Veuillez vérifier votre connexion ou réessayer plus tard.';
       if (error instanceof Error) {
         const response = (error as any).response;
-        if (!response) {
-          setError(`Une erreur est survenue.<br/>Vérifiez votre connexion ou réessayez plus tard.`);
-        } else if (response.data) {
+        if (response && response.data) {
           const { type_error } = response.data;
-          if (type_error === 'no-found' || type_error === 'no-account') {
-            setError(`Compte inexistant<br/>Veuillez saisir une adresse mail valide`);
-          } else if (type_error === 'no-comparaison') {
-            setError('Identifiant ou mot de passe incorrect');
-          } else if (type_error === 'not-authorized') {
-            setError('Vous n\'êtes pas autorisé à vous connecter');
-          } else {
-            setError(`Une erreur est survenue.<br/>Veuillez vous reconnecter`);
+          switch (type_error) {
+            case 'no-found':
+            case 'no-account':
+              errorMessage = 'Compte inexistant<br/>Veuillez saisir une adresse mail valide';
+              break;
+            case 'no-comparaison':
+              errorMessage = 'Identifiant ou mot de passe incorrect';
+              break;
+            case 'not-authorized':
+              errorMessage = 'Vous n\'êtes pas autorisé à vous connecter';
+              break;
+            default:
+              errorMessage = 'Une erreur est survenue.<br/>Veuillez vous reconnecter';
           }
-        } else {
-          setError(`Une erreur est survenue.<br/>Veuillez vérifier votre connexion ou réessayer plus tard.`);
         }
-      } else {
-        setError(`Une erreur est survenue.<br/>Veuillez vérifier votre connexion ou réessayer plus tard.`);
       }
+      setError(errorMessage);
     }
   };
 
@@ -61,27 +63,27 @@ export const LoginPage = () => {
         <div className="flex flex-col w-400 items-center justify-center h-screen">
           <img src="../../../public/img/logo-oresto-red.png" width="350px" alt="Logo Oresto" className='mb-10' />
           {error && (
-            <div 
+            <div
               className="text-red-500 mb-8 text-center font-bold"
               dangerouslySetInnerHTML={{ __html: error }}
             />
           )}
           <form className="flex flex-col" onSubmit={handleSubmit}>
             <label className="text-xl font-bold mb-4">Adresse mail</label>
-            <input 
-              type="text" 
-              name="email" 
-              placeholder="Saisissez votre email" 
-              className="border-2 border-gray-300 p-2 mb-6 font-bold" 
+            <input
+              type="text"
+              name="email"
+              placeholder="Saisissez votre email"
+              className="border-2 border-gray-300 p-2 mb-6 font-bold"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
             <label className="text-xl font-bold mb-4">Mot de passe</label>
-            <input 
-              type="password" 
-              name="password" 
-              placeholder="Saisissez votre mot de passe" 
-              className="border-2 border-gray-300 p-2 mb-10 font-bold" 
+            <input
+              type="password"
+              name="password"
+              placeholder="Saisissez votre mot de passe"
+              className="border-2 border-gray-300 p-2 mb-10 font-bold"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />

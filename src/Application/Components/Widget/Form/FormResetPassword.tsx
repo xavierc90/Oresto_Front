@@ -1,13 +1,21 @@
 import React, { Dispatch, useState } from 'react';
+import ArrowButton from './ArrowButton';
+import CloseButton from './CloseButton';
 
 type FormResetPasswordProps = {
   setIsLostPassword: Dispatch<React.SetStateAction<boolean>>;
   setIsLoging: Dispatch<React.SetStateAction<boolean>>;
+  isContentVisible: boolean;
+  setIsContentVisible: (visible: boolean) => void;
+  setShowWidget: (visible: boolean) => void;
 };
 
 export const FormResetPassword: React.FC<FormResetPasswordProps> = ({
   setIsLostPassword,
   setIsLoging,
+  isContentVisible,
+  setIsContentVisible,
+  setShowWidget,
 }) => {
   const [email, setEmail] = useState('');
 
@@ -31,8 +39,25 @@ export const FormResetPassword: React.FC<FormResetPasswordProps> = ({
     console.log(email); // Affiche l'adresse email dans la console
   };
 
+  const handleClose = () => {
+    setShowWidget(false); // Masquer le widget en mettant à jour l'état dans HomePage
+  };
+
+  const toggleContentVisibility = () => {
+    setIsContentVisible(!isContentVisible); // Bascule la visibilité du contenu
+  };
+
   return (
-    <div className="flex flex-col justify-center items-center pt-5 pb-5 px-6 bg-white w-80">
+    <div className="flex flex-col justify-center items-center pt-5 pb-5 px-6 bg-white w-full h-screen">
+      <div className='fixed flex top-5 right-4 mr-2 gap-2'>
+        <ArrowButton 
+          isContentVisible={isContentVisible} 
+          onClick={toggleContentVisibility} 
+        />
+        <CloseButton 
+          onClick={handleClose} 
+        />
+      </div>
       <h1 className="text-center text-xl font-bold">Mot de passe perdu ?</h1>
       <h2 className="w-full text-center text-sm pt-5">
         Renseignez votre adresse pour recevoir un mail et réinitialiser votre mot de passe

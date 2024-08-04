@@ -1,14 +1,22 @@
 import React, { Dispatch, useState } from "react";
 import { FaEye, FaEyeSlash, FaCheckCircle, FaTimesCircle } from "react-icons/fa";
 import useRegister from "../../../../Module/Auth/register.hook"; // Assurez-vous d'importer le hook correctement
+import ArrowButton from './ArrowButton';
+import CloseButton from './CloseButton';
 
 // Définitions des types pour les props
 type RegisterFormUserProps = {
   setIsLoging: Dispatch<React.SetStateAction<boolean>>;
+  isContentVisible: boolean;
+  setIsContentVisible: (visible: boolean) => void;
+  setShowWidget: (visible: boolean) => void;
 };
 
 export const RegisterFormUser: React.FC<RegisterFormUserProps> = ({
   setIsLoging,
+  isContentVisible,
+  setIsContentVisible,
+  setShowWidget
 }) => {
   // États pour stocker les valeurs du formulaire
   const [firstname, setFirstname] = useState("");
@@ -88,12 +96,31 @@ export const RegisterFormUser: React.FC<RegisterFormUserProps> = ({
   const hasUpperCase = /[A-Z]/.test(password);
   const passwordsMatch = password === confirmPassword;
 
+  // Fonctions pour gérer la visibilité et la fermeture du widget
+  const handleClose = () => {
+    setShowWidget(false); // Masquer le widget en mettant à jour l'état dans HomePage
+  };
+
+  const toggleContentVisibility = () => {
+    setIsContentVisible(!isContentVisible); // Bascule la visibilité du contenu
+  };
+
   return (
-    <div className="flex flex-col justify-center items-center pt-5 pb-5 bg-white w-80 transition-all duration-500">
+    <div className="flex flex-col justify-center items-center pt-5 pb-5 bg-white w-full h-screen transition-all duration-500">
+      <div className='fixed flex top-5 right-4 mr-2 gap-2'>
+        <ArrowButton 
+          isContentVisible={isContentVisible} 
+          onClick={toggleContentVisibility} 
+        />
+        <CloseButton 
+          onClick={handleClose} 
+        />
+      </div>
+
       {step === 1 && (
         <>
           <h1 className="text-center text-xl font-bold">Inscription rapide</h1>
-          <h2 className="text-center text-sm pt-5 w-3/4 hidden">
+          <h2 className="text-center text-sm pt-5 w-3/4 sm:hidden">
             Créer un compte vous permet de réserver facilement une table dans
             votre restaurant
           </h2>
@@ -213,7 +240,7 @@ export const RegisterFormUser: React.FC<RegisterFormUserProps> = ({
               <button
                 type="button"
                 onClick={togglePasswordVisibility}
-                className="absolute right-2 top-2"
+                className="absolute right-4 top-11"
               >
                 {showPassword ? <FaEyeSlash /> : <FaEye />}
               </button>
@@ -235,7 +262,7 @@ export const RegisterFormUser: React.FC<RegisterFormUserProps> = ({
               <button
                 type="button"
                 onClick={toggleConfirmPasswordVisibility}
-                className="absolute right-2 top-2"
+                className="absolute right-4 top-12 pt-1"
               >
                 {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
               </button>

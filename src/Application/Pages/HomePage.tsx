@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Widget } from '../Components/Widget/Widget';
-import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
+import { RxHamburgerMenu } from "react-icons/rx";
 
 export const HomePage = () => {
   const [showWidget, setShowWidget] = useState(true); // Afficher le widget par défaut
@@ -12,11 +12,6 @@ export const HomePage = () => {
     setIsWidgetContentVisible(true);
   };
 
-  // Bascule la visibilité du contenu du widget
-  const toggleWidgetContentVisibility = () => {
-    setIsWidgetContentVisible(!isWidgetContentVisible);
-  };
-
   // Met à jour le titre de la page
   useEffect(() => {
     document.title = 'La belle assiette - Restaurant traditionnel';
@@ -25,18 +20,21 @@ export const HomePage = () => {
   return (
     <div>
       <header className='flex flex-col justify-center items-center'>
-        <nav className="flex items-center justify-center fixed top-0 w-full bg-black py-8">
-          <div className='absolute left-10 text-white text-center'>
+        <nav className="flex lg:items-center items-start justify-start lg:justify-center fixed top-0 w-full bg-black py-8">
+          <div className='absolute left-5 lg:left-10 text-white text-center'>
             <a href="#" className='hover:text-white'>
-              <h1 className='bebas uppercase font-bold text-2xl'>La belle assiette</h1>
+              <h1 className='bebas uppercase font-bold lg:text-2xl text-xl pl-5'>La belle assiette</h1>
             </a>
           </div>
-          <ul className="text-white text-lg font-bold uppercase flex justify-center gap-10">
+          <ul className="text-white hidden mg:hidden lg:block lg:flex text-lg font-bold uppercase lg:justify-center gap-10">
             <li><a href="#about" className="hover:text-white">Le restaurant</a></li>
             <li><a href="#menu" className="hover:text-white">La carte</a></li>
             <li><a href="#contact" className="hover:text-white">Contact</a></li>
             <li><a onClick={openWidget} className="hover:text-white cursor-pointer">Réserver</a></li>
           </ul>
+          <div className="absolute lg:hidden right-5 lg:right-10 text-white">
+            <RxHamburgerMenu className="w-8 h-8 cursor-pointer" />
+          </div>
         </nav>
 
         <div>

@@ -1,9 +1,9 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { LoginFormUser } from './Form/LoginFormUser';
 import { RegisterFormUser } from './Form/RegisterFormUser';
 import { FormResetPassword } from './Form/FormResetPassword';
-import { RxCross1 } from "react-icons/rx";
-import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
+import ArrowButton from './Form/ArrowButton';
+import CloseButton from './Form/CloseButton';
 
 type WidgetProps = {
   setShowWidget: (visible: boolean) => void;
@@ -24,43 +24,51 @@ export const Widget: React.FC<WidgetProps> = ({ setShowWidget, isContentVisible,
   };
 
   const toggleContentVisibility = () => {
-    setIsContentVisible(!isContentVisible); // Bascule la visibilité du contenu
+    setIsContentVisible(!isContentVisible);
   };
 
   return (
-    <div className="border-1 shadow-2xl border-gray-300 fixed bottom-0 right-10 bottom-0 flex items-center justify-center">
+    <div className="fixed w-full bottom-0">
       <div>
-        <div className='flex justify-between items-center bg-green-800 top-0 w-80 text-white py-3 pl-4 rounded-t-xl'>
+        <div className='flex justify-between items-center bg-green-800 top-10 w-full text-white py-3 pl-4 z-50 rounded-t-xl'>
           Réserver en ligne
           <div className='flex gap-2 mr-4'>
-            <button 
-              onClick={toggleContentVisibility} // Gérer le clic sur la flèche
-              className='hover:text-white'
-            >
-              {isContentVisible ? <IoIosArrowUp size={20} /> : <IoIosArrowDown size={20} />}
-            </button>
-            <button 
-              onClick={handleClose} // Utiliser un bouton pour gérer le clic sur la croix
-              className='hover:text-white'
-            >
-              <RxCross1 size={20} />
-            </button>
+            <ArrowButton 
+              isContentVisible={isContentVisible} 
+              onClick={toggleContentVisibility} 
+            />
+            <CloseButton 
+              onClick={handleClose} 
+            />
           </div>
         </div>
 
         {isContentVisible && ( // Utiliser l'état pour décider d'afficher ou non le contenu
           <>
             {isLostPassword ? (
-              <FormResetPassword setIsLostPassword={setIsLostPassword} setIsLoging={setIsLoging} />
+              <FormResetPassword 
+                setIsLostPassword={setIsLostPassword} 
+                isContentVisible={isContentVisible}
+                setIsContentVisible={setIsContentVisible}
+                setShowWidget={setShowWidget}
+                setIsLoging={setIsLoging} />
             ) : (
               isLoging ? (
                 <LoginFormUser 
                   setIsLoging={setIsLoging} 
                   setIsLostPassword={setIsLostPassword} 
                   onLogin={handleLogin}
+                  isContentVisible={isContentVisible}
+                  setIsContentVisible={setIsContentVisible}
+                  setShowWidget={setShowWidget}
                 />
               ) : (
-                <RegisterFormUser setIsLoging={setIsLoging} />
+                <RegisterFormUser 
+                  setIsLoging={setIsLoging} 
+                  isContentVisible={isContentVisible}
+                  setIsContentVisible={setIsContentVisible}
+                  setShowWidget={setShowWidget}
+                />
               )
             )}
           </>
