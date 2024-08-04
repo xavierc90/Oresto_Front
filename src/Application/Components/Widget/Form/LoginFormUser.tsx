@@ -40,7 +40,7 @@ export const LoginFormUser: React.FC<LoginFormUserProps> = ({
   };
 
   return (
-    <div className="flex flex-col justify-center items-center pt-5 pb-5 px-6 bg-white w-full h-screen">
+    <div className="flex flex-col z-50 justify-center items-center pt-5 pb-5 px-6 bg-white w-full h-screen">
       <div className='fixed flex top-5 right-4 mr-2 gap-2'>
         <ArrowButton 
           isContentVisible={isContentVisible} 
@@ -51,7 +51,7 @@ export const LoginFormUser: React.FC<LoginFormUserProps> = ({
         />
       </div>
       <img src="../../../public/img/logo-oresto-orange.png" width="250px" alt="Logo Oresto" />
-      <h2 className='w-full text-center py-8'>Connectez-vous ou inscrivez-vous c'est simple et rapide.</h2>
+      <h2 className='w-full text-center py-8 w-[218px]'>Connectez-vous ou inscrivez-vous c'est simple et rapide.</h2>
       <form className="flex flex-col justify-center items-center mt-4" onSubmit={handleLoginSubmit}>
         <div className="flex flex-col w-full">
           <label htmlFor="email" className="font-bold items-left">Adresse mail</label>

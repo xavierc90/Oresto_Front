@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
 import { Widget } from '../Components/Widget/Widget';
-import { RxHamburgerMenu } from "react-icons/rx";
+import { RxHamburgerMenu, RxCross1 } from "react-icons/rx"; // Importer les icônes
 
 export const HomePage = () => {
   const [showWidget, setShowWidget] = useState(true); // Afficher le widget par défaut
   const [isWidgetContentVisible, setIsWidgetContentVisible] = useState(false); // Masquer le contenu du widget par défaut
+  const [isMenuVisible, setIsMenuVisible] = useState(false); // État pour la visibilité du menu
 
   // Ouvre le widget et réinitialise la visibilité du contenu
   const openWidget = () => {
@@ -12,55 +13,74 @@ export const HomePage = () => {
     setIsWidgetContentVisible(true);
   };
 
+  // Bascule la visibilité du contenu du widget
+  const toggleWidgetContentVisibility = () => {
+    setIsWidgetContentVisible(!isWidgetContentVisible);
+  };
+
   // Met à jour le titre de la page
   useEffect(() => {
     document.title = 'La belle assiette - Restaurant traditionnel';
   }, []);
 
+  // Bascule la visibilité du menu
+  const toggleMenuVisibility = () => {
+    setIsMenuVisible(!isMenuVisible);
+  };
+
+  // Ferme le menu
+  const closeMenu = () => {
+    setIsMenuVisible(false);
+  };
+
   return (
     <div>
       <header className='flex flex-col justify-center items-center'>
-        <nav className="flex lg:items-center items-start justify-start lg:justify-center fixed top-0 w-full bg-black py-8">
-          <div className='absolute left-5 lg:left-10 text-white text-center'>
+        <nav className="fixed flex items-center justify-between top-0 w-full bg-black py-8 px-5 lg:px-10">
+          <div className='text-white'>
             <a href="#" className='hover:text-white'>
-              <h1 className='bebas uppercase font-bold lg:text-2xl text-xl pl-5'>La belle assiette</h1>
+              <h1 className='bebas uppercase font-bold lg:text-2xl text-xl'>La belle assiette</h1>
             </a>
           </div>
-          <ul className="text-white hidden mg:hidden lg:block lg:flex text-lg font-bold uppercase lg:justify-center gap-10">
-            <li><a href="#about" className="hover:text-white">Le restaurant</a></li>
-            <li><a href="#menu" className="hover:text-white">La carte</a></li>
-            <li><a href="#contact" className="hover:text-white">Contact</a></li>
-            <li><a onClick={openWidget} className="hover:text-white cursor-pointer">Réserver</a></li>
+          <ul className={`fixed z-50 top-12 mt-5 right-0 w-full h-full flex flex-col justify-center items-center text-2xl font-bold uppercase bg-black text-white lg:static lg:flex lg:bg-transparent lg:gap-10 transition-transform duration-300 ${isMenuVisible ? 'translate-x-0' : 'translate-x-full lg:translate-x-0'}`}>
+            <li className="p-4 lg:p-0"><a href="#about" className="hover:text-white block lg:inline" onClick={closeMenu}>Le restaurant</a></li>
+            <li className="p-4 lg:p-0"><a href="#menu" className="hover:text-white block lg:inline" onClick={closeMenu}>La carte</a></li>
+            <li className="p-4 lg:p-0"><a href="#contact" className="hover:text-white block lg:inline" onClick={closeMenu}>Contact</a></li>
+            <li className="p-4 lg:p-0"><a onClick={() => { openWidget(); closeMenu(); }} className="hover:text-white block lg:inline cursor-pointer">Réserver</a></li>
           </ul>
-          <div className="absolute lg:hidden right-5 lg:right-10 text-white">
-            <RxHamburgerMenu className="w-8 h-8 cursor-pointer" />
+          <div className="lg:hidden text-white z-50">
+            {isMenuVisible ? (
+              <RxCross1 className="w-8 h-8 cursor-pointer" onClick={toggleMenuVisibility} />
+            ) : (
+              <RxHamburgerMenu className="w-8 h-8 cursor-pointer" onClick={toggleMenuVisibility} />
+            )}
           </div>
         </nav>
 
-        <div>
+        <div className="mt-20 lg:mt-0">
           <h1 className="main-title text-center text-white uppercase">La Belle Assiette</h1>
           <p className="main-subtitle text-white text-center">Restaurant traditionnel</p>
           <div className="flex gap-4 justify-center items-center mt-8">
-            <button><a href="#menu" className='btn-green uppercase hover:text-white'>Voir la carte</a></button>
-            <button><a onClick={openWidget} className='btn-light uppercase hover:text-black cursor-pointer'>Réserver en ligne</a></button>
+            <button><a href="#menu" className='btn-green uppercase hover:text-white text-sm'>Voir la carte</a></button>
+            <button><a onClick={openWidget} className='btn-light uppercase text-sm hover:text-black cursor-pointer'>Réserver en ligne</a></button>
           </div>
         </div>
       </header>
 
       <div id="about" className='h-screen bg-black flex justify-center items-center'>
-        <h1 className='text-white text-4xl uppercase'>Notre restaurant</h1>
+        <h1 className='text-white text-2xl uppercase'>Notre restaurant</h1>
       </div>
 
       <div id="menu" className='h-screen bg-white text-black flex justify-center items-center'>
-        <h1 className='text-black text-4xl uppercase'>Découvrez notre carte</h1>
+        <h1 className='text-black text-2xl uppercase'>Découvrez notre menu</h1>
       </div>
 
       <div id="contact" className='h-screen bg-black text-black flex justify-center items-center'>
-        <h1 className='text-white text-4xl uppercase'>Contact</h1>
+        <h1 className='text-white text-2xl uppercase'>Nous contacter</h1>
       </div>
 
       {showWidget && (
-        <div className='widget-container'>
+        <div className='widget-container z-40'>
           <Widget 
             setShowWidget={setShowWidget} 
             isContentVisible={isWidgetContentVisible}

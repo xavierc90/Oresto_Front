@@ -28,9 +28,9 @@ export const Widget: React.FC<WidgetProps> = ({ setShowWidget, isContentVisible,
   };
 
   return (
-    <div className="fixed w-full bottom-0">
+    <div className="fixed w-full bottom-0 z-10">
       <div>
-        <div className='flex justify-between items-center bg-green-800 top-10 w-full text-white py-3 pl-4 z-50 rounded-t-xl'>
+        <div className='flex justify-between items-center bg-green-800 top-10 w-full text-white py-3 pl-4 rounded-t-xl z-10'>
           Réserver en ligne
           <div className='flex gap-2 mr-4'>
             <ArrowButton 
