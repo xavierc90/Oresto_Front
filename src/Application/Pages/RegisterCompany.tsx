@@ -9,7 +9,6 @@ export const RegisterCompany = () => {
   }, []);
 
   const { userId } = useAuth();
-  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     companyName: '',
     companyAddress: '',
@@ -25,6 +24,8 @@ export const RegisterCompany = () => {
   ) => {
     setFormData({ ...formData, [field]: event.target.value });
   };
+
+  const navigate = useNavigate();
 
   const handleCompanyCreation = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -49,6 +50,7 @@ export const RegisterCompany = () => {
       if (response.status === 201) {
         const companyId = response.data._id; // Assurez-vous que l'ID de la société est bien renvoyé dans la réponse
         localStorage.setItem('companyId', companyId); // Stocker l'ID de la société
+        console.log('Company ID:', companyId); // Afficher l'ID de la société dans la console
         alert('Entreprise créée avec succès !');
         navigate('/dashboard');
       } else {
@@ -61,20 +63,16 @@ export const RegisterCompany = () => {
 
   return (
     <div className='w-full h-screen flex'>
-      <div className='cover-company w-6/12'>
-      </div>
+      <div className='cover-company w-6/12'></div>
       <div className='w-6/12 bg-light'>
         <div className="flex flex-col items-center justify-center h-screen">
           <a href="/login">
             <img src="../../../public/img/logo-oresto-red.png" width="300px" alt="Logo Oresto" />
           </a>
           <form method="POST" className="flex flex-col mt-10" onSubmit={handleCompanyCreation}>
-          <div className='flex flex-col w-[390px] justify-center items-center'>
-            {/* <h1 className='text-2xl font-bold mb-4 text-center'>Finaliser l'inscription</h1> */}
-            <h2 className='text-center mb-10'>Renseignez les informations de votre restaurant
-              pour accéder à votre espace restaurateur et gérer vos réservations.
-            </h2>
-          </div>
+            <div className='flex flex-col w-[390px] justify-center items-center'>
+              <h2 className='text-center mb-10'>Renseignez les informations de votre restaurant pour accéder à votre espace restaurateur et gérer vos réservations.</h2>
+            </div>
             <div className="flex gap-4">
               <div className="flex flex-col">
                 <label className="text-lg font-bold mb-2 text-sm">Nom du restaurant :</label>
@@ -96,26 +94,26 @@ export const RegisterCompany = () => {
               className={`border-2 p-2 mb-6 text-sm w-[360px] font-bold ${formData.companyAddress.trim() !== '' ? 'border-green-500' : 'border-gray-300'}`}
             />
             <div className='flex items-center justify-left gap-4'>
-                <div className='flex flex-col'>
-            <label className="text-lg font-bold mb-2 text-sm">Code postal :</label>
-            <input
-              type="text"
-              placeholder="Code postal"
-              value={formData.companyPostalCode}
-              onChange={(e) => handleInputChange(e, 'companyPostalCode')}
-              className={`border-2 p-2 mb-6 w-[120px] text-sm font-bold ${formData.companyPostalCode.trim() !== '' ? 'border-green-500' : 'border-gray-300'}`}
-            />
-                </div>
-            <div className='flex flex-col'>
-            <label className="text-lg font-bold mb-2 text-sm">Ville :</label>
-            <input
-              type="text"
-              placeholder="Ville"
-              value={formData.companyCity}
-              onChange={(e) => handleInputChange(e, 'companyCity')}
-              className={`border-2 p-2 mb-6 text-sm font-bold ${formData.companyCity.trim() !== '' ? 'border-green-500' : 'border-gray-300'}`}
-            />
-                </div>
+              <div className='flex flex-col'>
+                <label className="text-lg font-bold mb-2 text-sm">Code postal :</label>
+                <input
+                  type="text"
+                  placeholder="Code postal"
+                  value={formData.companyPostalCode}
+                  onChange={(e) => handleInputChange(e, 'companyPostalCode')}
+                  className={`border-2 p-2 mb-6 w-[120px] text-sm font-bold ${formData.companyPostalCode.trim() !== '' ? 'border-green-500' : 'border-gray-300'}`}
+                />
+              </div>
+              <div className='flex flex-col'>
+                <label className="text-lg font-bold mb-2 text-sm">Ville :</label>
+                <input
+                  type="text"
+                  placeholder="Ville"
+                  value={formData.companyCity}
+                  onChange={(e) => handleInputChange(e, 'companyCity')}
+                  className={`border-2 p-2 mb-6 text-sm font-bold ${formData.companyCity.trim() !== '' ? 'border-green-500' : 'border-gray-300'}`}
+                />
+              </div>
             </div>
             <label className="text-lg font-bold mb-2 text-sm">Pays :</label>
             <input
@@ -125,7 +123,6 @@ export const RegisterCompany = () => {
               onChange={(e) => handleInputChange(e, 'companyCountry')}
               className={`border-2 p-2 mb-6 text- w-[200px] sm font-bold ${formData.companyCountry.trim() !== '' ? 'border-green-500' : 'border-gray-300'}`}
             />
-
             <div className="flex flex-col items-center justify-center">
               {errorMessage && (
                 <div className="text-red-500 text-center">
@@ -140,7 +137,7 @@ export const RegisterCompany = () => {
                   formData.companyPostalCode.trim() !== '' &&
                   formData.companyCity.trim() !== '' &&
                   formData.companyCountry.trim() !== ''
-                  ? 'cursor-pointer' : 'cursor-not-allowed opacity-50'
+                    ? 'cursor-pointer' : 'cursor-not-allowed opacity-50'
                 }`}
                 disabled={
                   !(
@@ -158,6 +155,6 @@ export const RegisterCompany = () => {
           </form>
         </div>
       </div>
-      </div>
+    </div>
   );
 };

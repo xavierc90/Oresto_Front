@@ -12,13 +12,13 @@ export const LoginPage = () => {
 
   useEffect(() => {
     document.title = 'Oresto - Se connecter';
+  }); 
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     const token = localStorage.getItem('token');
     if (token) {
       navigate('/dashboard/bookings');
     }
-  }, [navigate]); // Ajoutez navigate comme dépendance pour éviter les boucles infinies
-
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
       const response = await http.post('/login_manager', { email, password });

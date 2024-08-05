@@ -14,6 +14,7 @@ export const DashboardPage = () => {
       try {
         const token = localStorage.getItem('token');
         const userId = localStorage.getItem('userId');
+        const componyId = localStorage.getItem('companyId');
         
         if (!token || !userId) {
           console.error('Token ou User ID manquant');
@@ -22,6 +23,7 @@ export const DashboardPage = () => {
 
         console.log('Token:', token);
         console.log('User ID:', userId);
+        console.log('Company ID:', componyId);
 
         const response = await http.get(`find_user/${userId}`, {
           headers: {
