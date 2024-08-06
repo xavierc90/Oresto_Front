@@ -1,9 +1,14 @@
 import { useState, useEffect, useContext, createContext, ReactNode } from 'react';
 import {jwtDecode} from 'jwt-decode';
+import { User } from '../../Module/Types/user.type';
+import { Company } from '../../Module/Types/company.type';
+import { http } from '../../Infrastructure/Http/axios.instance';
 
 type AuthContextType = {
   isAuthenticated: boolean;
   userId: string | null;
+  user: User | null;
+  company: Company | null;
   login: (token: string, userId: string) => void;
   logout: () => void;
 };
@@ -17,6 +22,8 @@ type AuthProviderProps = {
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userId, setUserId] = useState<string | null>(null);
+  const [user, setUser] = useState<User | null>(null);
+  const [company, setCompany] = useState<Company | null>(null);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -42,6 +49,32 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     }
   }, []);
 
+  useEffect(() => {
+    const fetchUserData = async () => {
+      if (isAuthenticated && userId) {
+        const token = localStorage.getItem('token');
+        try {
+          const userResponse = await http.get(`find_user/${userId}`, {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+
+          if (userResponse.data) {
+            setUser(userResponse.data);
+            // Vérifiez si la compagnie est incluse dans la réponse utilisateur
+            if (userResponse.data.company && userResponse.data.company.length > 0) {
+              setCompany(userResponse.data.company[0]); // Prendre la première compagnie de la liste
+            }
+          }
+        } catch (error) {
+          console.error('Erreur lors de la récupération des données:', error);
+          logout();
+        }
+      }
+    };
+
+    fetchUserData();
+  }, [isAuthenticated, userId]);
+
   const login = (token: string, userId: string) => {
     localStorage.setItem('token', token);
     localStorage.setItem('userId', userId);
@@ -54,10 +87,12 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     localStorage.removeItem('userId');
     setIsAuthenticated(false);
     setUserId(null);
+    setUser(null);
+    setCompany(null);
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, userId, login, logout }}>
+    <AuthContext.Provider value={{ isAuthenticated, userId, user, company, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
