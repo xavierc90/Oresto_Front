@@ -1,15 +1,14 @@
-import { useState, useEffect, useContext } from 'react';
-import { NavLink } from 'react-router-dom';
+import { useState } from 'react';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { http } from '../../Infrastructure/Http/axios.instance';
 import { useAuth } from '../../Module/Auth/auth.hook';
-import { DashboardPage } from './DashboardPage';
 
 export const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const { login: loginManager } = useAuth();
+  const navigate = useNavigate();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -20,17 +19,13 @@ export const LoginPage = () => {
         loginManager(token, _id);
         localStorage.setItem('token', token);
         localStorage.setItem('userId', _id);
-        setIsAuthenticated(true); // Définissez l'état à vrai pour authentifier l'utilisateur
+        navigate('/dashboard/bookings'); // Rediriger l'utilisateur après une connexion réussie
       }
     } catch (error: unknown) {
       console.error('Erreur de connexion:', error);
       setError('Identifiant ou mot de passe incorrect. Veuillez réessayer.');
     }
   };
-
-  if (isAuthenticated) {
-    return <DashboardPage />; // Affiche le tableau de bord si authentifié
-  }
 
   return (
     <div className='w-full h-screen flex'>

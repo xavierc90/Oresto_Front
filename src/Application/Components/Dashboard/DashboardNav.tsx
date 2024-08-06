@@ -30,11 +30,11 @@ export const DashboardNav: React.FC<DashboardNavProps> = ({ company }) => {
     <div className='bg-light w-80 h-screen flex flex-col items-center shadow-2xl mt-2'>
       <div>
         <img src="../../../public/img/logo-oresto-red.png" width="240px" alt="Logo Oresto" />
-        {company && <h1>{company.name} {company.address}</h1>}
+        {company && <h1 className='text-center pt-5 font-bold'>{company.name}</h1>}
       </div>
       
       {/* Sélecteur de date */}
-      <div className="mt-10">
+      <div className="mt-5">
         <CalendarShadcn mode="single" selected={dateSelected} onSelect={setDateSelected} required />
       </div>
 

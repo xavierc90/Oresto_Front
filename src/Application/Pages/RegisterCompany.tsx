@@ -52,7 +52,7 @@ export const RegisterCompany = () => {
         localStorage.setItem('companyId', companyId); // Stocker l'ID de la société
         console.log('Company ID:', companyId); // Afficher l'ID de la société dans la console
         alert('Entreprise créée avec succès !');
-        navigate('/dashboard');
+        navigate('/dashboard/bookings'); // Rediriger l'utilisateur vers dashboard/bookings
       } else {
         setErrorMessage('Une erreur est survenue lors de la création de l\'entreprise.');
       }

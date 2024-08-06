@@ -50,7 +50,6 @@ export const DashboardPage = () => {
         <IoIosNotifications size={25} />
         <div className="flex gap-3 justify-center items-center">
           <h2>{user ? `${user.firstname} ${user.lastname}` : 'Chargement...'}</h2>
-          <h2>{company ? `${company.name}` : 'Chargement...'}</h2>
           <IoIosArrowDown size={20} />
         </div>
       </div>
