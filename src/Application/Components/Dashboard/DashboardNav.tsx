@@ -77,7 +77,6 @@ export const DashboardNav = () => {
     } finally {
       // Effacer les informations d'authentification actuelles
       localStorage.removeItem('token');
-      localStorage.removeItem('userId');
       localStorage.removeItem('companyId'); // Effacer l'ID de la société
       // Forcer la réinitialisation de l'état local
       setUser(null);
