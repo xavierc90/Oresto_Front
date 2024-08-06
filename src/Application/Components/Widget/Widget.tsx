@@ -47,7 +47,7 @@ export const Widget: React.FC<WidgetProps> = ({ setShowWidget, isContentVisible,
           </div>
         </div>
 
-        {isContentVisible && ( // Utiliser l'état pour décider d'afficher ou non le contenu
+        {isContentVisible && ( 
           <div className='w-full bg-white p-4 lg:w-80 lg:h-auto'>
             {isLostPassword ? (
               <FormResetPassword 

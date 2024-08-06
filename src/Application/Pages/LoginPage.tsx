@@ -26,7 +26,7 @@ export const LoginPage = () => {
       if (token && _id) {
         loginManager(token, _id);
         localStorage.setItem('token', token);
-        localStorage.setItem('userId', _id); // Correction ici
+        localStorage.setItem('userId', _id);
         navigate('/dashboard/bookings');
       }
     } catch (error: unknown) {
