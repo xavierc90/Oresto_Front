@@ -17,7 +17,7 @@ export const ClientsPage = () => {
     const fetchUsers = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await http.get('/users_by_filters', {
+        const response = await http.get('/clients_by_filters', {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (response.data.results) {
@@ -46,7 +46,8 @@ export const ClientsPage = () => {
     <div className="bg-light w-full">
       <h1 className="text-xl font-bold pt-8 pl-12">Liste des utilisateurs</h1>
       <h2 className="text-lg pl-12 mt-1 mb-8">
-        <span className="font-bold text-red-500">{users.length}</span> utilisateurs enregistrés 
+        <span className="font-bold text-red-500">{users.length}</span> client(s) enregistré(s) 
+        | <span className="font-bold text-red-500">0</span> réservation(s)
       </h2>
       <ClientList users={users} />
       <ClientInfos />
