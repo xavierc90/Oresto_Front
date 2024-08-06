@@ -1,24 +1,17 @@
-import { useNavigate, NavLink } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
+import { NavLink } from 'react-router-dom';
 import { http } from '../../Infrastructure/Http/axios.instance';
 import { useAuth } from '../../Module/Auth/auth.hook';
+import { DashboardPage } from './DashboardPage';
 
 export const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const { login: loginManager } = useAuth();
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    document.title = 'Oresto - Se connecter';
-  }); 
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      navigate('/dashboard/bookings');
-    }
     event.preventDefault();
     try {
       const response = await http.post('/login_manager', { email, password });
@@ -27,35 +20,17 @@ export const LoginPage = () => {
         loginManager(token, _id);
         localStorage.setItem('token', token);
         localStorage.setItem('userId', _id);
-        navigate('/dashboard/bookings');
+        setIsAuthenticated(true); // Définissez l'état à vrai pour authentifier l'utilisateur
       }
     } catch (error: unknown) {
       console.error('Erreur de connexion:', error);
-
-      let errorMessage = 'Une erreur est survenue.<br/>Veuillez vérifier votre connexion ou réessayer plus tard.';
-      if (error instanceof Error) {
-        const response = (error as any).response;
-        if (response && response.data) {
-          const { type_error } = response.data;
-          switch (type_error) {
-            case 'no-found':
-            case 'no-account':
-              errorMessage = 'Compte inexistant<br/>Veuillez saisir une adresse mail valide';
-              break;
-            case 'no-comparaison':
-              errorMessage = 'Identifiant ou mot de passe incorrect';
-              break;
-            case 'not-authorized':
-              errorMessage = 'Vous n\'êtes pas autorisé à vous connecter';
-              break;
-            default:
-              errorMessage = 'Une erreur est survenue.<br/>Veuillez vous reconnecter';
-          }
-        }
-      }
-      setError(errorMessage);
+      setError('Identifiant ou mot de passe incorrect. Veuillez réessayer.');
     }
   };
+
+  if (isAuthenticated) {
+    return <DashboardPage />; // Affiche le tableau de bord si authentifié
+  }
 
   return (
     <div className='w-full h-screen flex'>

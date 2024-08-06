@@ -1,52 +1,48 @@
 import { useEffect, useState } from 'react';
 import { Outlet } from 'react-router-dom';
-import { DashboardNav } from '../Components/Dashboard/DashboardNav';
-import { IoIosNotifications } from "react-icons/io";
-import { IoIosArrowDown } from "react-icons/io";
-import { http } from '../../Infrastructure/Http/axios.instance'; // Assurez-vous que le chemin est correct
-import { User } from '../../Module/Types/user.type'
+import {DashboardNav} from '../Components/Dashboard/DashboardNav';
+import { IoIosNotifications, IoIosArrowDown } from "react-icons/io";
+import { http } from '../../Infrastructure/Http/axios.instance';
+import { Company } from '../../Module/Types/company.type';
+import { User } from '../../Module/Types/user.type';
 
 export const DashboardPage = () => {
-  const [user, setUser] =  useState<User | null>(null);
+  const [user, setUser] = useState<User | null>(null);
+  const [company, setCompany] = useState<Company | null>(null);
 
   useEffect(() => {
-    const fetchUserData = async () => {
+    const token = localStorage.getItem('token');
+    const userId = localStorage.getItem('userId');
+    
+    if (!token || !userId) {
+      console.error('Token ou User ID manquant');
+      return;
+    }
+
+    async function fetchData() {
       try {
-        const token = localStorage.getItem('token');
-        const userId = localStorage.getItem('userId');
-        const componyId = localStorage.getItem('companyId');
-        
-        if (!token || !userId) {
-          console.error('Token ou User ID manquant');
-          return;
-        }
-
-        console.log('Token:', token);
-        console.log('User ID:', userId);
-        console.log('Company ID:', componyId);
-
-        const response = await http.get(`find_user/${userId}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+        const userResponse = await http.get(`find_user/${userId}`, {
+          headers: { Authorization: `Bearer ${token}` },
         });
 
-        if (response.data) {
-          setUser(response.data);
-        } else {
-          console.error('Données utilisateur manquantes:', response.data);
+        if (userResponse.data) {
+          setUser(userResponse.data);
+          // Vérifiez si la compagnie est incluse dans la réponse utilisateur
+          if (userResponse.data.company && userResponse.data.company.length > 0) {
+            setCompany(userResponse.data.company[0]); // Prendre la première compagnie de la liste
+          }
         }
       } catch (error) {
-        console.error('Erreur lors de la récupération des données utilisateur:', error);
+        console.error('Erreur lors de la récupération des données:', error);
       }
-    };
+    }
 
-    fetchUserData();
+    fetchData();
   }, []);
 
   return (
     <div className='flex'>
-      <DashboardNav />
+      <DashboardNav company={company} />
       <div className='w-9/12'>
         <Outlet />
       </div>
@@ -54,6 +50,7 @@ export const DashboardPage = () => {
         <IoIosNotifications size={25} />
         <div className="flex gap-3 justify-center items-center">
           <h2>{user ? `${user.firstname} ${user.lastname}` : 'Chargement...'}</h2>
+          <h2>{company ? `${company.name}` : 'Chargement...'}</h2>
           <IoIosArrowDown size={20} />
         </div>
       </div>
