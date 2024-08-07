@@ -10,7 +10,7 @@ import { useAuth } from '../../Module/Auth/auth.hook';
 export const DashboardPage = () => {
   const [user, setUser] = useState<User | null>(null);
   const [company, setCompany] = useState<Company | null>(null);
-  const { isAuthenticated, userId, logout } = useAuth();
+  const { isAuthenticated, userId } = useAuth();  // Enlevez 'logout' de la déstructuration ici
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -22,8 +22,7 @@ export const DashboardPage = () => {
     const fetchData = async () => {
       const token = localStorage.getItem('token');
       if (!token) {
-        logout();
-        navigate('/login');
+        navigate('/login');  // Redirigez directement sans appeler logout
         return;
       }
 
@@ -40,13 +39,12 @@ export const DashboardPage = () => {
         }
       } catch (error) {
         console.error('Erreur lors de la récupération des données:', error);
-        logout();
-        navigate('/login');
+        navigate('/login');  // Simplifiez en supprimant l'appel à logout ici
       }
     };
 
     fetchData();
-  }, [isAuthenticated, userId, logout, navigate]);
+  }, [isAuthenticated, userId, navigate]);  // Enlevez 'logout' des dépendances
 
   return (
     <div className='flex'>

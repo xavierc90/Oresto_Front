@@ -1,8 +1,14 @@
 import { useState, useEffect, useContext, createContext, ReactNode } from 'react';
-import {jwtDecode} from 'jwt-decode';
+import {jwtDecode} from 'jwt-decode';  // Import correct selon la bibliothèque standard
 import { User } from '../../Module/Types/user.type';
 import { Company } from '../../Module/Types/company.type';
 import { http } from '../../Infrastructure/Http/axios.instance';
+
+// Définition du type pour le token décodé
+interface DecodedToken {
+  userId: string;
+  exp: number;
+}
 
 type AuthContextType = {
   isAuthenticated: boolean;
@@ -30,7 +36,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     const storedUserId = localStorage.getItem('userId');
     if (token) {
       try {
-        const decodedToken: { userId: string; exp: number } = jwtDecode(token);
+        const decodedToken: DecodedToken = jwtDecode(token);  // Utilisation de l'interface
         if (decodedToken.exp * 1000 > Date.now()) {
           setIsAuthenticated(true);
           setUserId(decodedToken.userId);
@@ -60,9 +66,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
           if (userResponse.data) {
             setUser(userResponse.data);
-            // Vérifiez si la compagnie est incluse dans la réponse utilisateur
             if (userResponse.data.company && userResponse.data.company.length > 0) {
-              setCompany(userResponse.data.company[0]); // Prendre la première compagnie de la liste
+              setCompany(userResponse.data.company[0]);
             }
           }
         } catch (error) {
@@ -83,12 +88,18 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   };
 
   const logout = () => {
+    console.log('Déconnexion en cours...');
+    console.log('Suppression des données de localStorage:', {
+      token: localStorage.getItem('token'),
+      userId: localStorage.getItem('userId'),
+    });
     localStorage.removeItem('token');
     localStorage.removeItem('userId');
     setIsAuthenticated(false);
     setUserId(null);
     setUser(null);
     setCompany(null);
+    console.log('Utilisateur déconnecté. Les données ont été réinitialisées.');
   };
 
   return (

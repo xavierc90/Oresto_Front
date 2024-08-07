@@ -19,6 +19,12 @@ export const LoginPage = () => {
         loginManager(token, _id);
         localStorage.setItem('token', token);
         localStorage.setItem('userId', _id);
+
+        // Vérifications après connexion
+        console.log('Connexion réussie');
+        console.log('token', token)  
+        console.log('UserId', _id)  
+
         navigate('/dashboard/bookings'); // Rediriger l'utilisateur après une connexion réussie
       }
     } catch (error: unknown) {

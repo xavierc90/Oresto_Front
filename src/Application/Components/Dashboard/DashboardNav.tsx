@@ -8,6 +8,7 @@ import { LuLayoutDashboard } from "react-icons/lu";
 import { MdLogout } from "react-icons/md";
 import { CalendarShadcn } from "./CalendarShadcn";
 import { Company } from '../../../Module/Types/company.type'; // Assurez-vous que le chemin est correct
+import { useAuth } from '../../../Module/Auth/auth.hook'; // Assurez-vous que le chemin est correct
 
 // Définir les props attendues avec leur type
 interface DashboardNavProps {
@@ -18,6 +19,7 @@ export const DashboardNav: React.FC<DashboardNavProps> = ({ company }) => {
   const [dateSelected, setDateSelected] = useState<Date>(new Date());
   const location = useLocation();
   const navigate = useNavigate();
+  const { logout } = useAuth(); 
 
   useEffect(() => {
     const formattedDate = dateSelected.toLocaleDateString('fr-FR').replace(/\//g, '');
@@ -30,6 +32,11 @@ export const DashboardNav: React.FC<DashboardNavProps> = ({ company }) => {
     return location.pathname.startsWith(path)
       ? 'flex flex-col items-center text-red-500 transition duration-300'
       : 'flex flex-col items-center text-gray-600 hover:text-red-500 transition duration-300';
+  };
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
   };
 
   return (
@@ -79,7 +86,7 @@ export const DashboardNav: React.FC<DashboardNavProps> = ({ company }) => {
           <h2 className="text-xs font-bold">Paramètres</h2>
         </Link>
 
-        <Link to="/login" onClick={() => localStorage.removeItem('token')} className="flex flex-col items-center text-gray-600 hover:text-red-500 focus:text-red-500 transition duration-300">
+        <Link to="/login"  onClick={handleLogout} className="flex flex-col items-center text-gray-600 hover:text-red-500 focus:text-red-500 transition duration-300">
           <MdLogout size={23} className="mb-1" />
           <h2 className="text-xs font-bold">Se déconnecter</h2>
         </Link>

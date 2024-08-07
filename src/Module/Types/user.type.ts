@@ -5,19 +5,7 @@ export type User = {
     email: string;
     role: string;
     phone_number: string;
-    allergies: string;
+    allergens: string;
     created_at: Date;
     company_id: string;
 };
-
-export type Client = {
-    userId: string;
-    firstname: string;
-    lastname: string;
-    email: string;
-    role: string;
-    phone_number: string;
-    allergies: string;
-    created_at: Date;
-    company_id: string;
-}

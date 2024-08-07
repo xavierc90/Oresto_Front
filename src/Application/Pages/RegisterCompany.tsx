@@ -37,10 +37,6 @@ export const RegisterCompany = () => {
       country: formData.companyCountry,
       user_id: userId
     };
-
-    console.log('Token:', localStorage.getItem('token'));
-    console.log('User ID:', userId);
-
     try {
       const response = await http.post('/add_company', companyData, {
         headers: {
@@ -51,6 +47,12 @@ export const RegisterCompany = () => {
         const companyId = response.data._id; // Assurez-vous que l'ID de la société est bien renvoyé dans la réponse
         localStorage.setItem('companyId', companyId); // Stocker l'ID de la société
         console.log('Company ID:', companyId); // Afficher l'ID de la société dans la console
+        
+  console.log('Résultat après création du restaurant :');
+  console.log('Token:', localStorage.getItem('token'));
+  console.log('userId:', localStorage.getItem('userId'));
+  console.log('companyId:', localStorage.getItem('companyId'));
+
         alert('Entreprise créée avec succès !');
         navigate('/dashboard/bookings'); // Rediriger l'utilisateur vers dashboard/bookings
       } else {

@@ -1,49 +1,48 @@
 import { ChangeEvent, FormEvent, useState, useEffect } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { useAuth } from '../../Module/Auth/auth.hook'; // Ensure you import useAuth properly
 import { http } from '../../Infrastructure/Http/axios.instance';
+import { AxiosError } from 'axios';
 
 export const RegisterPage = () => {
-  useEffect(() => {
-    document.title = 'Oresto - Créer un compte professionnel';
-  }, []);
-
+  
+  const { login } = useAuth();
   const navigate = useNavigate();
 
-  const [firstName, setFirstName] = useState<string>('');
-  const [lastName, setLastName] = useState<string>('');
-  const [email, setEmail] = useState<string>('');
-  const [phoneNumber, setPhoneNumber] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
-  const [confirmPassword, setConfirmPassword] = useState<string>('');
-  const [isCheckboxChecked, setIsCheckboxChecked] = useState<boolean>(false);
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [isCheckboxChecked, setIsCheckboxChecked] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const handleCheckboxChange = (event: ChangeEvent<HTMLInputElement>) => {
     setIsCheckboxChecked(event.target.checked);
   };
 
-  const isFormValid =
-    firstName.trim() !== '' &&
-    lastName.trim() !== '' &&
-    email.trim() !== '' &&
-    phoneNumber.trim() !== '' &&
-    password.trim() !== '' &&
-    confirmPassword.trim() !== '' &&
-    password === confirmPassword &&
-    isCheckboxChecked;
+  interface ErrorResponse {
+    message: string;
+  }
 
-  const handleInputChange = (
-    event: ChangeEvent<HTMLInputElement>,
-    setState: React.Dispatch<React.SetStateAction<string>>
-  ) => {
+  const isFormValid = firstName.trim() !== '' &&
+                      lastName.trim() !== '' &&
+                      email.trim() !== '' &&
+                      phoneNumber.trim() !== '' &&
+                      password.trim() !== '' &&
+                      confirmPassword.trim() !== '' &&
+                      password === confirmPassword &&
+                      isCheckboxChecked;
+
+  const handleInputChange = (event: ChangeEvent<HTMLInputElement>, setState: React.Dispatch<React.SetStateAction<string>>) => {
     setState(event.target.value);
   };
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!isFormValid) {
-      setErrorMessage('Veuillez remplir tous les champs correctement.');
+      setErrorMessage("Veuillez remplir tous les champs correctement.");
       return;
     }
 
@@ -56,60 +55,33 @@ export const RegisterPage = () => {
     };
 
     try {
-      // Ajouter le manager
-      const registerResponse = await http.post('/register_manager', managerData, {
-        headers: {
-          'Cache-Control': 'no-cache',
-          'Pragma': 'no-cache',
-          'Expires': '0',
-        },
-      });
-
-      if (registerResponse.status === 201) { // Modifié pour vérifier le statut 201
-        // Connexion automatique après l'inscription
-        const loginResponse = await http.post('/login_manager', {
-          email: email,
-          password: password,
-        }, {
-          headers: {
-            'Cache-Control': 'no-cache',
-            'Pragma': 'no-cache',
-            'Expires': '0',
-          },
-        });
-
-        if (loginResponse.status === 200) {
-          // Enregistrer le token et rediriger
-          localStorage.setItem('token', loginResponse.data.token);
-          localStorage.setItem('userId', loginResponse.data._id); // Stocker l'ID utilisateur
+      const registerResponse = await http.post('/register_manager', managerData);
+      if (registerResponse.status === 201) {
+        const loginResponse = await http.post('/login_manager', { email, password });
+        if (loginResponse.status === 200 && loginResponse.data.token) {
+          login(loginResponse.data.token, loginResponse.data._id); // Handling login
           alert('Inscription et connexion réussies !');
-          navigate('/register_company'); // Redirige vers la page de création d'entreprise
+          navigate('/register_company');
         } else {
           setErrorMessage('Une erreur est survenue lors de la connexion.');
         }
       } else {
-        setErrorMessage('Une erreur est survenue lors de l\'inscription.');
+        setErrorMessage('Une erreur est survenue lors de l\'inscription');
       }
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        if (error.response?.status === 405 && error.response.data.type_error === "duplicate") {
-          setErrorMessage('L\'adresse e-mail est déjà utilisée.');
-        } else if (error.response?.status === 405 && error.response.data.type_error === "validator") {
-          setErrorMessage('Veuillez remplir tous les champs correctement.');
-        } else {
-          setErrorMessage('Une erreur est survenue lors de l\'inscription ou de la connexion.');
-        }
+    } catch (error: unknown) {
+      const e = error as AxiosError<ErrorResponse>; // Spécification du type de données attendues dans la réponse
+      if (e.response && e.response.data) {
+        setErrorMessage(e.response.data.message || 'Une erreur réseau est survenue');
       } else {
-        setErrorMessage('Une erreur est survenue lors de l\'inscription ou de la connexion.');
+        setErrorMessage("Erreur réseau ou serveur non atteignable");
       }
-      console.error('Erreur lors de l\'inscription ou de la connexion:', error);
+      console.error('Erreur lors de l\'inscription ou de la connexion:', e);
     }
-  };
+  }
 
   return (
     <div className='w-full h-screen flex'>
-      <div className='cover-register w-6/12'>
-      </div>
+      <div className='cover-register w-6/12'></div>
       <div className='w-6/12 bg-light'>
         <div className="flex flex-col items-center justify-center h-screen">
           <a href="/login">
@@ -117,10 +89,8 @@ export const RegisterPage = () => {
           </a>
           
           {errorMessage && (
-                <div className="text-red-500 text-center pt-4">
-                  {errorMessage}
-                </div>
-              )}
+            <div className="text-red-500 text-center pt-4">{errorMessage}</div>
+          )}
 
           <form method="POST" className="flex flex-col" onSubmit={handleSubmit}>
             <div className="flex gap-4 pt-10">
@@ -196,9 +166,7 @@ export const RegisterPage = () => {
               value={confirmPassword}
               onChange={(e) => handleInputChange(e, setConfirmPassword)}
               className={`border-2 p-2 mb-2 font-bold text-sm ${
-                confirmPassword.trim() !== '' && password === confirmPassword
-                  ? 'border-green-500'
-                  : 'border-gray-300'
+                confirmPassword.trim() !== '' && password === confirmPassword ? 'border-green-500' : 'border-gray-300'
               }`}
             />
 
