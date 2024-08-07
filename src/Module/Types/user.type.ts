@@ -6,6 +6,6 @@ export type User = {
     role: string;
     phone_number: string;
     allergens: string;
-    created_at: Date;
+    created_at: string;
     company_id: string;
 };

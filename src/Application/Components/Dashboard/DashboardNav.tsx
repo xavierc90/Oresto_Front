@@ -7,27 +7,33 @@ import { FaGear } from "react-icons/fa6";
 import { LuLayoutDashboard } from "react-icons/lu";
 import { MdLogout } from "react-icons/md";
 import { CalendarShadcn } from "./CalendarShadcn";
-import { Company } from '../../../Module/Types/company.type'; // Assurez-vous que le chemin est correct
-import { useAuth } from '../../../Module/Auth/auth.hook'; // Assurez-vous que le chemin est correct
+import { Company } from '../../../Module/Types/company.type';
+import { useAuth } from '../../../Module/Auth/auth.hook';
+import { dateService } from '../../../Module/Utils/dateService';
+import { searchService } from '../../../Module/Utils/searchService';
 
-// Définir les props attendues avec leur type
 interface DashboardNavProps {
   company: Company | null;
 }
 
 export const DashboardNav: React.FC<DashboardNavProps> = ({ company }) => {
   const [dateSelected, setDateSelected] = useState<Date>(new Date());
+  const [searchTerm, setSearchTerm] = useState<string>('');
   const location = useLocation();
   const navigate = useNavigate();
-  const { logout } = useAuth(); 
+  const { logout } = useAuth();
 
   useEffect(() => {
-    const formattedDate = dateSelected.toLocaleDateString('fr-FR').replace(/\//g, '');
-    console.log(dateSelected.toLocaleDateString())
-    navigate(`/dashboard/bookings?dayselected=${formattedDate}`);
-  }, [dateSelected, navigate]);
+    const subscription = dateService.getDate().subscribe(date => {
+      setDateSelected(date);
+      const formattedDate = date.toLocaleDateString('fr-FR').replace(/\//g, '');
+      console.log(date.toLocaleDateString());
+      navigate(`/dashboard/bookings?dayselected=${formattedDate}`);
+    });
 
-  // Fonction pour déterminer la classe CSS en fonction du chemin actuel
+    return () => subscription.unsubscribe();
+  }, [navigate]);
+
   const getLinkClass = (path: string) => {
     return location.pathname.startsWith(path)
       ? 'flex flex-col items-center text-red-500 transition duration-300'
@@ -39,6 +45,19 @@ export const DashboardNav: React.FC<DashboardNavProps> = ({ company }) => {
     navigate('/login');
   };
 
+  const handleDateSelect = (date: Date) => {
+    dateService.setDate(date);
+  };
+
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+    setSearchTerm(value);
+    searchService.setSearch(value);
+    if (value.length > 0) {
+      navigate('/dashboard/clients');
+    }
+  };
+
   return (
     <div className='bg-light w-80 h-screen flex flex-col items-center shadow-2xl mt-2'>
       <div>
@@ -46,20 +65,15 @@ export const DashboardNav: React.FC<DashboardNavProps> = ({ company }) => {
         {company && <h1 className='text-center pt-5 font-bold'>{company.name}</h1>}
       </div>
       
-      {/* Sélecteur de date */}
       <div className="mt-5">
-        <CalendarShadcn mode="single" selected={dateSelected} onSelect={setDateSelected} required />
+        <CalendarShadcn mode="single" selected={dateSelected} onSelect={handleDateSelect} required />
       </div>
 
-
-      {/* Formulaire de recherche par nom */}
       <form className="flex flex-col mb-2 justify-center">
-        <label htmlFor="search" className="text-base font-bold mb-4 pt-4
-        ">Recherche par nom</label>
-        <input type="text" name="name" id="search" placeholder="Saisir le nom du client" className="border-2 border-gray-300 p-1 mb-4 font-bold w-[215px]" />
+        <label htmlFor="search" className="text-base font-bold mb-4 pt-4">Recherche par nom</label>
+        <input type="text" name="name" id="search" placeholder="Saisir le nom du client" value={searchTerm} onChange={handleSearchChange} className="border-2 border-gray-300 p-1 mb-4 font-bold w-[215px]" />
       </form>
       
-      {/* Liens de navigation */}
       <div className="grid grid-cols-2 gap-6 justify-items-center">
         <Link to={`/dashboard/bookings?dayselected=${dateSelected.toLocaleDateString('fr-FR').replace(/\//g, '')}`} className={getLinkClass('/dashboard/bookings')}>
           <BsListCheck size={23} className="mb-1" />
@@ -86,7 +100,7 @@ export const DashboardNav: React.FC<DashboardNavProps> = ({ company }) => {
           <h2 className="text-xs font-bold">Paramètres</h2>
         </Link>
 
-        <Link to="/login"  onClick={handleLogout} className="flex flex-col items-center text-gray-600 hover:text-red-500 focus:text-red-500 transition duration-300">
+        <Link to="/login" onClick={handleLogout} className="flex flex-col items-center text-gray-600 hover:text-red-500 focus:text-red-500 transition duration-300">
           <MdLogout size={23} className="mb-1" />
           <h2 className="text-xs font-bold">Se déconnecter</h2>
         </Link>

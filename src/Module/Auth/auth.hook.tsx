@@ -43,11 +43,13 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         } else {
           localStorage.removeItem('token');
           localStorage.removeItem('userId');
+          localStorage.removeItem('companyId');
         }
       } catch (error) {
         console.error('Invalid token:', error);
         localStorage.removeItem('token');
         localStorage.removeItem('userId');
+        localStorage.removeItem('companyId');
       }
     }
     if (storedUserId) {
@@ -92,9 +94,11 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     console.log('Suppression des données de localStorage:', {
       token: localStorage.getItem('token'),
       userId: localStorage.getItem('userId'),
+      companyId: localStorage.getItem('companyId'),
     });
     localStorage.removeItem('token');
     localStorage.removeItem('userId');
+    localStorage.removeItem('companyId');
     setIsAuthenticated(false);
     setUserId(null);
     setUser(null);
