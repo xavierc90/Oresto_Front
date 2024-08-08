@@ -19,11 +19,17 @@ interface DashboardNavProps {
 export const DashboardNav: React.FC<DashboardNavProps> = ({ company }) => {
   const [dateSelected, setDateSelected] = useState<Date>(new Date());
   const [searchTerm, setSearchTerm] = useState<string>('');
+  const [darkMode, setDarkMode] = useState<boolean>(false);
   const location = useLocation();
   const navigate = useNavigate();
   const { logout } = useAuth();
 
   useEffect(() => {
+    const savedTheme = localStorage.getItem('darkMode');
+    if (savedTheme) {
+      setDarkMode(JSON.parse(savedTheme));
+    }
+
     const subscription = dateService.getDate().subscribe(date => {
       setDateSelected(date);
       const formattedDate = date.toLocaleDateString('fr-FR').replace(/\//g, '');
@@ -34,10 +40,18 @@ export const DashboardNav: React.FC<DashboardNavProps> = ({ company }) => {
     return () => subscription.unsubscribe();
   }, [navigate]);
 
+  useEffect(() => {
+    if (darkMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [darkMode]);
+
   const getLinkClass = (path: string) => {
     return location.pathname.startsWith(path)
-      ? 'flex flex-col items-center text-red-500 transition duration-300'
-      : 'flex flex-col items-center text-gray-600 hover:text-red-500 transition duration-300';
+      ? 'flex flex-col items-center text-red-500 dark:text-white transition duration-300'
+      : 'flex flex-col items-center text-gray-600 hover:text-red-500 dark:hover:text-white transition duration-300';
   };
 
   const handleLogout = () => {
@@ -58,10 +72,22 @@ export const DashboardNav: React.FC<DashboardNavProps> = ({ company }) => {
     }
   };
 
+  const toggleDarkMode = () => {
+    setDarkMode(prevMode => {
+      const newMode = !prevMode;
+      localStorage.setItem('darkMode', JSON.stringify(newMode));
+      return newMode;
+    });
+  };
+  const logoSrc = darkMode 
+  ? "../../../../public/img/logo-oresto-white.png" 
+  : "../../../../public/img/logo-oresto-red.png";
+
+
   return (
-    <div className='bg-light w-80 h-screen flex flex-col items-center shadow-2xl mt-2'>
-      <div>
-        <img src="../../../public/img/logo-oresto-red.png" width="240px" alt="Logo Oresto" />
+    <div className='bg-light dark:bg-dark-900 dark:text-white w-80 h-screen flex flex-col items-center shadow-2xl mt-2'>
+      <div className='mt-6'>
+      <img src={logoSrc} width="240px" alt="Logo Oresto" />
         {company && <h1 className='text-center pt-5 font-bold'>{company.name}</h1>}
       </div>
       
@@ -71,7 +97,7 @@ export const DashboardNav: React.FC<DashboardNavProps> = ({ company }) => {
 
       <form className="flex flex-col mb-2 justify-center">
         <label htmlFor="search" className="text-base font-bold mb-4 pt-4">Recherche par nom</label>
-        <input type="text" name="name" id="search" placeholder="Saisir le nom du client" value={searchTerm} onChange={handleSearchChange} className="border-2 border-gray-300 p-1 mb-4 font-bold w-[215px]" />
+        <input type="text" name="name" id="search" placeholder="Saisir le nom du client" value={searchTerm} onChange={handleSearchChange} className="border-2 border-gray-300 p-1 mb-4 font-bold w-[215px] dark:text-white dark:bg-dark-800 dark:border-2 dark:border-dark-800" />
       </form>
       
       <div className="grid grid-cols-2 gap-6 justify-items-center">
@@ -82,7 +108,7 @@ export const DashboardNav: React.FC<DashboardNavProps> = ({ company }) => {
 
         <Link to="/dashboard/layouts" className={getLinkClass('/dashboard/layouts')}>
           <LuLayoutDashboard size={23} className="mb-1" />
-          <h2 className="text-xs font-bold">Plan de tables</h2>
+          <h2 className="text-xs font-bold dark:text">Plan de tables</h2>
         </Link>
 
         <Link to="/dashboard/clients" className={getLinkClass('/dashboard/clients')}>
@@ -100,7 +126,7 @@ export const DashboardNav: React.FC<DashboardNavProps> = ({ company }) => {
           <h2 className="text-xs font-bold">Paramètres</h2>
         </Link>
 
-        <Link to="/login" onClick={handleLogout} className="flex flex-col items-center text-gray-600 hover:text-red-500 focus:text-red-500 transition duration-300">
+        <Link to="/login" onClick={handleLogout} className="flex flex-col items-center text-gray-600 hover:text-red-500 focus:text-red-500 transition duration-300 dark:hover:text-white">
           <MdLogout size={23} className="mb-1" />
           <h2 className="text-xs font-bold">Se déconnecter</h2>
         </Link>

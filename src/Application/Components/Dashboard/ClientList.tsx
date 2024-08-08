@@ -1,7 +1,7 @@
 import { FaSort } from "react-icons/fa";
 import { useState } from 'react';
 import { User } from '../../../Module/Types/user.type';
-import {formatDateToFrench} from '../../../Module/Utils/dateFormatter';
+import { formatDateToFrench } from '../../../Module/Utils/dateFormatter';
 
 interface ClientListProps {
   users: User[];
@@ -11,7 +11,7 @@ export const ClientList = ({ users }: ClientListProps) => {
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
 
   const handleSortToggle = () => {
-    setSortOrder(prevOrder => prevOrder === 'asc' ? 'desc' : 'asc');
+    setSortOrder(prevOrder => (prevOrder === 'asc' ? 'desc' : 'asc'));
   };
 
   const sortedUsers = [...users].sort((a, b) => {
@@ -31,12 +31,11 @@ export const ClientList = ({ users }: ClientListProps) => {
           <thead>
             <tr>
               <th className="text-left flex items-center gap-1 w-1/12">
-                Nom 
-                <FaSort onClick={handleSortToggle} className="cursor-pointer" />
+                <span>Nom</span>
+                <span><FaSort onClick={handleSortToggle} className="cursor-pointer" /></span>
               </th>
               <th className="text-left w-2/12">Prénom</th>
-              {/* <th className="text-left">Email</th> */
-              <th className="text-left w-2/12">N° de téléphone</th> }
+              <th className="text-left w-2/12">N° de téléphone</th>
               <th className="text-left w-3/12">Date / heure de réservation</th>
               <th className="text-left w-1/12">Status</th>
               <th className="text-left">Nbr rés</th>
@@ -44,11 +43,13 @@ export const ClientList = ({ users }: ClientListProps) => {
           </thead>
           <tbody className="clientlist">
             {sortedUsers.map((user: User) => (
-              <tr key={user.userId} className="hover:bg-gray-200 hover:cursor-pointer">
+              <tr
+                key={user.userId}
+                className="hover:bg-gray-200 hover:cursor-pointer dark:hover:bg-dark-900 dark:hover:text-white"
+              >
                 <td className="">{user.lastname}</td>
                 <td className="">{user.firstname}</td>
-                {/* <td className="border py-2">{user.email}</td>*/}
-                <td className="py-2">{user.phone_number}</td> 
+                <td className="py-2">{user.phone_number}</td>
                 <td className="">{formatDateToFrench(user.created_at)}</td>
                 <td className="">Validée</td>
                 <td className="py-2">1</td>

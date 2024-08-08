@@ -70,8 +70,8 @@ export const ClientsPage = () => {
     <div className="bg-light w-full">
       <h1 className="text-xl font-bold pt-8 pl-12">Gestion des clients</h1>
       <h2 className="text-lg pl-12 mt-1 mb-8">
-        <span className="font-bold text-red-500">{clientsCount}</span> {searchTerm.length > 0 ? clientsText : registeredText}
-        &nbsp;| <span className="font-bold text-red-500"> 0</span> réservation
+        <span className="font-bold text-red-500 dark:text-white">{clientsCount}</span> {searchTerm.length > 0 ? clientsText : registeredText}
+        &nbsp;| <span className="font-bold text-red-500 dark:text-white"> 0</span> réservation
       </h2>
       <ClientList users={filteredUsers} />
       <ClientInfos />

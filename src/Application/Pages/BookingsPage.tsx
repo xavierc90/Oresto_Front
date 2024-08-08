@@ -21,8 +21,8 @@ export const BookingsPage = () => {
           {selectedDate ? formatDateWithoutTime(selectedDate.toISOString()) : 'Sélectionnez une date'}
         </h1>
         <h2 className="text-lg pl-12 mt-1">
-            <span className="font-bold text-red-500">0</span> réservation 
-            | <span className="font-bold text-red-500">0</span> couvert
+            <span className="font-bold text-red-500 dark:text-white">0</span> réservation 
+            | <span className="font-bold text-red-500 dark:text-white">0</span> couvert
         </h2>
         <BookingList />
         <TableArea />

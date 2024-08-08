@@ -10,7 +10,7 @@ import { useAuth } from '../../Module/Auth/auth.hook';
 export const DashboardPage = () => {
   const [user, setUser] = useState<User | null>(null);
   const [company, setCompany] = useState<Company | null>(null);
-  const { isAuthenticated, userId } = useAuth();  // Enlevez 'logout' de la déstructuration ici
+  const { isAuthenticated, userId } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -22,7 +22,7 @@ export const DashboardPage = () => {
     const fetchData = async () => {
       const token = localStorage.getItem('token');
       if (!token) {
-        navigate('/login');  // Redirigez directement sans appeler logout
+        navigate('/login');
         return;
       }
 
@@ -39,18 +39,18 @@ export const DashboardPage = () => {
         }
       } catch (error) {
         console.error('Erreur lors de la récupération des données:', error);
-        navigate('/login');  // Simplifiez en supprimant l'appel à logout ici
+        navigate('/login');
       }
     };
 
     fetchData();
-  }, [isAuthenticated, userId, navigate]);  // Enlevez 'logout' des dépendances
+  }, [isAuthenticated, userId, navigate]);
 
   return (
-    <div className='flex'>
+    <div className='flex dark:bg-dark-800 dark:text-white'>
       <DashboardNav company={company} />
       <div className='w-9/12'>
-        <Outlet context={{ user, company }} /> {/* Fournir les données via le contexte de l'outlet */}
+        <Outlet context={{ user, company }} />
       </div>
       <div className="flex absolute right-12 mr-4 top-10 gap-2">
         <IoIosNotifications size={25} />

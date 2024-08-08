@@ -44,6 +44,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
           localStorage.removeItem('token');
           localStorage.removeItem('userId');
           localStorage.removeItem('companyId');
+          localStorage.removeItem('darkMode');
+
         }
       } catch (error) {
         console.error('Invalid token:', error);
@@ -99,6 +101,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     localStorage.removeItem('token');
     localStorage.removeItem('userId');
     localStorage.removeItem('companyId');
+    localStorage.removeItem('darkMode');
     setIsAuthenticated(false);
     setUserId(null);
     setUser(null);
