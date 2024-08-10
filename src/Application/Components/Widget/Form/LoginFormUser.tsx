@@ -40,7 +40,7 @@ export const LoginFormUser: React.FC<LoginFormUserProps> = ({
   };
 
   return (
-    <div className="flex flex-col z-50 justify-center items-center pt-5 pb-5 px-6 bg-white w-full h-screen lg:h-auto">
+    <div className="flex flex-col z-50 justify-center items-center pt-5 pb-0 bg-white w-full h-screen lg:h-auto lg-w-auto">
       <div className='fixed flex top-5 right-4 mr-2 gap-2 lg:hidden'>
         <ArrowButton 
           isContentVisible={isContentVisible} 
@@ -50,16 +50,16 @@ export const LoginFormUser: React.FC<LoginFormUserProps> = ({
           onClick={handleClose} 
         />
       </div>
-      <img src="../../../public/img/logo-oresto-orange.png" width="250px" alt="Logo Oresto" />
-      <h2 className='text-center py-8 w-[218px] lg:hidden'>Connectez-vous ou inscrivez-vous c'est simple et rapide.</h2>
+      <img src="../../../public/img/logo-oresto-orange.png" width="230px" alt="Logo Oresto" />
+      <h2 className='text-center pt-4 w-[218px]'>Connectez-vous ou inscrivez-vous c'est simple et rapide.</h2>
       <form className="flex flex-col justify-center items-center mt-4" onSubmit={handleLoginSubmit}>
         <div className="flex flex-col w-full ">
-          <label htmlFor="email" className="font-bold items-left text-left lg:text-sm">Adresse mail</label>
-          <input type="email" id="email" name="email" placeholder="john.doe@gmail.com" className="border-2 border-gray-300 rounded-lg w-full p-2 mt-2 mb-4 font-bold" />
+          <label htmlFor="email" className="font-bold items-left text-left lg:text-sm mt-4">Adresse mail</label>
+          <input type="email" id="email" name="email" placeholder="john.doe@gmail.com" className="border-2 border-gray-300 rounded-lg w-full p-2 mt-2 mb-4 font-bold text-sm" />
         </div>
         <div className="flex flex-col w-full">
           <label htmlFor="password" className="font-bold text-left lg:text-sm">Mot de passe</label>
-          <input type="password" id="password" name="password" placeholder="Votre mot de passe" className="border-2 border-gray-300 rounded-lg w-full p-2 mt-2 font-bold" />
+          <input type="password" id="password" name="password" placeholder="Votre mot de passe" className="border-2 border-gray-300 rounded-lg w-full p-2 mt-2 font-bold text-sm" />
         </div>
 
         <div className='flex items-center gap-3'>

@@ -28,8 +28,8 @@ export const Widget: React.FC<WidgetProps> = ({ setShowWidget, isContentVisible,
   };
 
   return (
-    <div className="fixed text-center w-full bottom-0 lg:w-80 lg:bottom-0 lg:right-10 z-10 ">
-      <div className='flex flex-col lg:flex-row lg:fixed lg:bottom-0 lg:right-10 lg:w-80 lg:flex lg:flex-col lg:shadow-2xl'>
+    <div className="fixed text-center w-full bottom-0 lg:w-auto lg:bottom-0 lg:right-10 z-10 ">
+      <div className='flex flex-col lg:flex-row lg:fixed lg:bottom-0 lg:right-10 lg:w-50 lg:flex lg:flex-col lg:shadow-2xl'>
         <div className='flex justify-center items-center bg-green-800 w-full lg:w-80 lg:h-10 text-white py-3 pl-4 rounded-t-xl lg:rounded-none lg:rounded-tl-xl lg:rounded-tr-xl z-10'>
           <a onClick={toggleContentVisibility} className='cursor-pointer hover:text-white'>Réserver en ligne</a>
           <div className='flex gap-2 ml-auto mr-4 lg:flex lg:gap-8'>

@@ -106,7 +106,7 @@ export const RegisterFormUser: React.FC<RegisterFormUserProps> = ({
   };
 
   return (
-    <div className="flex flex-col justify-center items-center pt-5 pb-5 bg-white w-full h-screen lg:w-auto lg:h-auto transition-all duration-500">
+    <div className="flex flex-col justify-center items-center bg-white w-full h-screen lg:w-auto lg:h-auto transition-all duration-500">
       <div className='fixed flex top-5 right-4 mr-2 gap-2 lg:hidden'>
         <ArrowButton 
           isContentVisible={isContentVisible} 
@@ -118,12 +118,12 @@ export const RegisterFormUser: React.FC<RegisterFormUserProps> = ({
       </div>
       {step === 1 && (
         <>
-          <h1 className="text-center text-xl font-bold">Inscription rapide</h1>
-          <h2 className="text-center text-sm pt-5 w-3/4 sm:hidden">
-            Créer un compte vous permet de réserver facilement une table dans
+          <h1 className="text-center text-lg font-bold pt-8 lg:pt-2">Inscription rapide</h1>
+          <h2 className="text-center text-sm pt-2 w-3/4 ">
+            Créer un compte vous permet de réserver facilement dans
             votre restaurant
           </h2>
-          <form className="flex flex-col justify-center items-center mt-8">
+          <form className="flex flex-col justify-center items-center mt-2">
             <div className="flex flex-col w-full">
               <label htmlFor="firstName" className="font-bold items-left text-left lg:text-sm">
                 Prénom :
@@ -183,7 +183,7 @@ export const RegisterFormUser: React.FC<RegisterFormUserProps> = ({
               />
             </div>
 
-            <div className="w-full text-center">
+            <div className="text-center">
               <input type="checkbox" name="cgu" id="cgu" className="mr-2" />
               <span className="text-sm">
                 J'accepte les{" "}
@@ -200,7 +200,7 @@ export const RegisterFormUser: React.FC<RegisterFormUserProps> = ({
             <button
               onClick={handleNextStep}
               type="button"
-              className="bg-black rounded-lg text-white py-2 px-5 w-full mt-6 mb-4 font-bold text-sm"
+              className="bg-black rounded-lg text-white py-2 px-5 w-full mt-4 mb-4 font-bold text-sm"
             >
               Créer un mot de passe
             </button>
@@ -210,7 +210,7 @@ export const RegisterFormUser: React.FC<RegisterFormUserProps> = ({
               onClick={() => setIsLoging(true)}
               className="hover:text-black hover:underline text-sm"
             >
-              Déjà un compte ? Connectez-vous
+              <div className="w-60">Vous avez déjà un compte ? Connectez-vous</div>
             </button>
           </div>
         </>

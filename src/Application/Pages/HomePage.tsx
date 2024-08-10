@@ -59,7 +59,7 @@ export const HomePage = () => {
 
         <div className="mt-20 lg:mt-0">
           <h1 className="main-title text-center text-white uppercase">La Belle Assiette</h1>
-          <p className="main-subtitle text-white text-center">Restaurant traditionnel</p>
+          <p className="main-subtitle text-white text-center">Restaurant &nbsp;traditionnel</p>
           <div className="flex gap-4 justify-center items-center mt-8">
             <button><a href="#menu" className='btn-green uppercase hover:text-white text-sm'>Voir la carte</a></button>
             <button><a onClick={openWidget} className='btn-light uppercase text-sm hover:text-black cursor-pointer'>Réserver en ligne</a></button>
