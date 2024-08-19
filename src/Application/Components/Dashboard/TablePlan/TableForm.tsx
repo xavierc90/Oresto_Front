@@ -1,16 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import squareSvg from '../../../../../public/svg/square.svg';
 import square4Svg from '../../../../../public/svg/square4.svg';
+import circleSvg from '../../../../../public/svg/rounded.svg';
+import circle4Svg from '../../../../../public/svg/rounded4.svg';
 import rectangleSvg from '../../../../../public/svg/rectangle.svg';
 import rectangle6Svg from '../../../../../public/svg/rectangle6.svg';
 import rectangle8Svg from '../../../../../public/svg/rectangle8.svg';
-import circleSvg from '../../../../../public/svg/rounded.svg';
-import circle4Svg from '../../../../../public/svg/rounded4.svg';
 
-// Définition des types pour la clarté
 interface TableData {
-  number: string;
-  capacity: string;
+  table_number: string;
+  table_size: string;
   shape: string;
 }
 
@@ -18,47 +17,46 @@ interface TableFormProps {
   onSubmit: (table: TableData) => void;
 }
 
-// Options de forme de la table avec capacité et fichiers SVG
 const tableShapes = [
   {
-    shape: "squaretwo",
-    capacity: "2",
+    shape: "square",
+    table_size: "2",
     svg: squareSvg,
   },
   {
-    shape: "circletwo",
-    capacity: "2",
+    shape: "circle",
+    table_size: "2",
     svg: circleSvg,
   },
   {
-    shape: "squarefour",
-    capacity: "4",
+    shape: "square",
+    table_size: "4",
     svg: square4Svg,
   },
   {
-    shape: "circlefour",
-    capacity: "4",
+    shape: "circle",
+    table_size: "4",
     svg: circle4Svg,
   },
   {
-    shape: "rectanglefour",
-    capacity: "4",
+    shape: "rectangle",
+    table_size: "4",
     svg: rectangleSvg,
   },
   {
-    shape: "rectanglesix",
-    capacity: "6",
+    shape: "rectangle",
+    table_size: "6",
     svg: rectangle6Svg,
   },
   {
-    shape: "rectangleeight",
-    capacity: "8",
+    shape: "rectangle",
+    table_size: "8",
     svg: rectangle8Svg,
   }
 ];
 
 export const TableForm: React.FC<TableFormProps> = ({ onSubmit }) => {
-  const [tableData, setTableData] = useState<TableData>({ number: '', capacity: '', shape: '' });
+  const [tableData, setTableData] = useState<TableData>({ table_number: '', table_size: '', shape: '' });
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
@@ -69,13 +67,13 @@ export const TableForm: React.FC<TableFormProps> = ({ onSubmit }) => {
     setTableData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleShapeChange = (shape: string, capacity: string) => {
-    setTableData(prev => ({ ...prev, shape, capacity }));
+  const handleShapeChange = (shape: string, table_size: string) => {
+    setTableData(prev => ({ ...prev, shape, table_size }));
   };
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    if (!tableData.number || !tableData.shape) {
+    if (!tableData.table_number || !tableData.shape || !tableData.table_size) {
       setErrorMessage('Veuillez sélectionner un modèle de table');
       setSuccessMessage(null);
       setShowErrorMessage(false);
@@ -85,18 +83,13 @@ export const TableForm: React.FC<TableFormProps> = ({ onSubmit }) => {
       return;
     }
     onSubmit(tableData);
-    setSuccessMessage(`Table n°${tableData.number} pour ${tableData.capacity} personnes créée avec succès`);
+    setSuccessMessage(`Table n°${tableData.table_number} pour ${tableData.table_size} personnes créée avec succès`);
     setErrorMessage(null);
     setShowSuccessMessage(false);
     setShowErrorMessage(false);
     setTimeout(() => setShowSuccessMessage(true), 0);
-    setTimeout(() => setShowSuccessMessage(false), 5000); // Hide after 4 seconds
-    setTableData({ number: '', capacity: '', shape: '' });
-  };
-
-  const handleClose = () => {
-    setShowSuccessMessage(false);
-    setShowErrorMessage(false);
+    setTimeout(() => setShowSuccessMessage(false), 5000);
+    setTableData({ table_number: '', table_size: '', shape: '' });
   };
 
   return (
@@ -114,25 +107,28 @@ export const TableForm: React.FC<TableFormProps> = ({ onSubmit }) => {
       <form onSubmit={handleSubmit} className='flex flex-col mt-10 ml-12'>
         <label className='flex items-center'>
           N° de la table :
-          <input type="text" name="number" className='border-2 border-gray-300 ml-5 w-14 text-center' value={tableData.number} onChange={handleChange} required />
+          <input type="text" name="table_number" className='border-2 border-gray-300 ml-5 w-14 text-center dark:text-white dark:bg-dark-900 dark:border-2 dark:border-dark-900' value={tableData.table_number} onChange={handleChange} required />
         </label>
         <div className="mt-4">
           Modèle de table :
           <div className="flex gap-4 ml-4">
-            {tableShapes.map(({ shape, capacity, svg }) => (
-              <label key={shape} className="flex items-center space-x-2 my-4">
-                <input type="radio" name="shape" value={shape} checked={tableData.shape === shape} 
-                onChange={() => handleShapeChange(shape, capacity)}
-                className='invisible-radio' />
-                <img src={svg} alt={shape} className={tableData.shape === shape ? "filter-green" : ""} style={{ height: 60 }} />
-              </label>
-            ))}
+            {tableShapes.map(({ shape, table_size, svg }) => {
+              const isSelected = tableData.shape === shape && tableData.table_size === table_size;
+              return (
+                <label key={`${shape}-${table_size}`} className="flex items-center space-x-2 my-4">
+                  <input type="radio" name="shape" value={`${shape}-${table_size}`} checked={isSelected} 
+                  onChange={() => handleShapeChange(shape, table_size)}
+                  className='invisible-radio' />
+                  <img src={svg} alt={shape} className={isSelected ? "filter-green" : ""} style={{ height: 60 }} />
+                </label>
+              );
+            })}
           </div>
         </div>
-        <button type="submit" className="mt-4 mb-2 p-2 bg-black text-white text-sm w-[130px] font-bold"> Ajouter la table</button>
+        <button type="submit" className="mt-4 mb-4 mb-2 p-2 bg-black text-white text-sm w-[130px] "> Ajouter la table</button>
       </form>
     </div>
   );
 };
 
-export default TableData;
+export default TableData

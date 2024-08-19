@@ -86,8 +86,8 @@ export const DashboardNav: React.FC<DashboardNavProps> = ({ company }) => {
 
   return (
     <div className='bg-light dark:bg-dark-900 dark:text-white w-80 h-screen flex flex-col items-center shadow-2xl mt-2'>
-      <div className='mt-6'>
-      <img src={logoSrc} width="240px" alt="Logo Oresto" />
+      <div className='mt-4'>
+      <img src={logoSrc} width="220px" alt="Logo Oresto" />
         {company && <h1 className='text-center pt-5 font-bold'>{company.name}</h1>}
       </div>
       
@@ -106,7 +106,7 @@ export const DashboardNav: React.FC<DashboardNavProps> = ({ company }) => {
           <h2 className="text-xs font-bold">Réservations</h2>
         </Link>
 
-        <Link to="/dashboard/layouts" className={getLinkClass('/dashboard/layouts')}>
+        <Link to="/dashboard/table_plan" className={getLinkClass('/dashboard/table_plan')}>
           <LuLayoutDashboard size={23} className="mb-1" />
           <h2 className="text-xs font-bold dark:text">Plan de tables</h2>
         </Link>

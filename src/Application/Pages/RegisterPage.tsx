@@ -181,9 +181,10 @@ export const RegisterPage = () => {
                   onChange={handleCheckboxChange}
                 />
                 J'accepte les{' '}
-                <a href="/conditions" target='_blank' className="text-black font-bold">
-                  conditions d'utilisation
+                <a href="#" className="text-black font-bold">
+        conditions d'utilisation
                 </a>
+                
               </div>
 
               <button

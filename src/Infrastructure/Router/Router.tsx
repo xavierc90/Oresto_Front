@@ -8,7 +8,7 @@ import { DashboardPage } from "../../Application/Pages/DashboardPage";
 import { BookingsPage } from "../../Application/Pages/BookingsPage"; 
 import { ClientsPage } from "../../Application/Pages/ClientsPage"; 
 import { useAuth } from "../../Module/Auth/auth.hook";
-import { TableLayoutPage } from "../../Application/Pages/TableLayoutPage";
+import { TablePlanPage } from "../../Application/Pages/TablePlanPage";
 import { AnalyticsPage } from "../../Application/Pages/AnalyticsPage";
 import { SettingsPage } from "../../Application/Pages/SettingsPage";
 import { RegisterCompany } from "../../Application/Pages/RegisterCompany";
@@ -49,8 +49,8 @@ export const router = createBrowserRouter([
         element: <ProtectedRoute element={<BookingsPage />} />,
       },
       {
-        path: "layouts",
-        element: <ProtectedRoute element={<TableLayoutPage />} />,
+        path: "table_plan",
+        element: <ProtectedRoute element={<TablePlanPage />} />,
       },
       {
         path: "clients",

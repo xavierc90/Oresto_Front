@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { BookingList } from '../Components/Dashboard/BookingList';
-import { TableArea } from '../Components/Dashboard/TableLayout/TableArea';
+import { TableArea } from '../Components/Dashboard/TablePlan/TableArea';
 import { formatDateWithoutTime } from '../../Module/Utils/dateFormatterWithoutHour';
 import { dateService } from '../../Module/Utils/dateService'; // Importez le service}
 
