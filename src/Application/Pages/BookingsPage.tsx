@@ -22,7 +22,13 @@ export const BookingsPage = () => {
   const fetchBookings = async (date: Date) => {
     const token = localStorage.getItem('token'); // Récupérez le token depuis localStorage ou une autre source
     try {
-      const response = await http.get(`/bookings/${date.toISOString().split('T')[0]}`, {
+      // Normaliser la date à minuit UTC
+      const normalizedDate = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+  
+      // Formater la date au format ISO sans l'heure
+      const formattedDate = normalizedDate.toISOString().split('T')[0];
+  
+      const response = await http.get(`/bookings/${formattedDate}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setBookings(response.data); // TypeScript sait que response.data est de type Booking[]
