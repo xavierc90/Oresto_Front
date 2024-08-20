@@ -24,7 +24,7 @@ const tableShapes = [
     svg: squareSvg,
   },
   {
-    shape: "circle",
+    shape: "round",
     table_size: "2",
     svg: circleSvg,
   },
@@ -34,7 +34,7 @@ const tableShapes = [
     svg: square4Svg,
   },
   {
-    shape: "circle",
+    shape: "round",
     table_size: "4",
     svg: circle4Svg,
   },
