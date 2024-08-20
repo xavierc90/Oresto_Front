@@ -44,7 +44,8 @@ export const ClientList = ({ users }: ClientListProps) => {
           <tbody className="clientlist">
             {sortedUsers.map((user: User) => (
               <tr
-                key={user.userId}
+                key={user.user_id
+                }
                 className="hover:bg-gray-200 hover:cursor-pointer dark:hover:bg-dark-900 dark:hover:text-white"
               >
                 <td className="">{user.lastname}</td>

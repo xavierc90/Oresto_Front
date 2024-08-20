@@ -44,7 +44,7 @@ export const BookingList: React.FC<BookingListProps> = ({ bookings }) => {
         </thead>
         <tbody className="bookinglist">
           {sortedBookings.map((booking) => (
-            <tr key={booking._id} className="hover:bg-gray-200 hover:cursor-pointer">
+            <tr key={booking._id} className="hover:bg-gray-200 hover:cursor-pointer dark:hover:bg-dark-900 dark:hover:text-white">
               <td className="text-left">{booking.time_selected}</td>
               <td className="text-left">{booking.user_id.lastname}</td>
               <td className="text-left">{booking.user_id.firstname}</td>
@@ -55,7 +55,7 @@ export const BookingList: React.FC<BookingListProps> = ({ bookings }) => {
                   booking.status === 'waiting' ? 'bg-orange-500 text-white' :
                   booking.status === 'confirmed' ? 'bg-green-700 text-white' : 
                   booking.status === 'archived' ? 'bg-grey-600 text-white' : 
-                  booking.status === 'canceled' ? 'bg-red-600 text-white' : ''
+                  booking.status === 'canceled' ? 'bg-red-600 text-white px-9' : ''
                 }`}>
                   {booking.status === 'waiting' && 'En attente'}
                   {booking.status === 'confirmed' && 'Confirmée'}
