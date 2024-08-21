@@ -112,7 +112,7 @@ a:hover {
 /* Buttons */
 
 .btn-green {
-    background-color: #267D48;
+    background-color: #0a662d;
     color: white;
     font-weight: bold;
     padding: 15px 10px;
@@ -249,7 +249,7 @@ input::placeholder {
 
 .table-container {
     /* width: 85px; */
-    height: 45px;
+    height: 60px;
     position: relative;
     display: inline-block;
     margin: 5px;
@@ -275,6 +275,13 @@ input::placeholder {
     font-weight: bold;
     font-size: 12px;
     border: 1px solid #fff; /* Optional: adds a border to the circle */
+}
+
+.dark .number-circle {
+    background-color: transparent;
+    color: black;
+    border: 1px solid transparent; /* Optional: adds a border to the circle */
+    font-size: 18px;
 }
   
   .round-table {

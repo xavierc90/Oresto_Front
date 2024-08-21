@@ -44,7 +44,7 @@ export const LostPasswordPage = () => {
               Récupérer le mot de passe
             </button>
           </form>
-          <NavLink to="/login" className="pt-10">Retour à la page de connexion</NavLink>
+          <NavLink to="/login" className="pt-10 underline">Retour à la page de connexion</NavLink>
         </div>
       </div>
       <div className='cover-login w-6/12'>

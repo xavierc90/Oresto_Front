@@ -51,7 +51,7 @@ export const LoginFormUser: React.FC<LoginFormUserProps> = ({
         />
       </div>
       <img src="../../../public/img/logo-oresto-orange.png" width="230px" alt="Logo Oresto" />
-      <h2 className='text-center pt-4 w-[218px]'>Connectez-vous ou inscrivez-vous c'est simple et rapide.</h2>
+      <h2 className='text-center pt-4 w-[218px]'>C'est simple et rapide.</h2>
       <form className="flex flex-col justify-center items-center mt-4" onSubmit={handleLoginSubmit}>
         <div className="flex flex-col w-full ">
           <label htmlFor="email" className="font-bold items-left text-left lg:text-sm mt-4">Adresse mail</label>
@@ -73,7 +73,7 @@ export const LoginFormUser: React.FC<LoginFormUserProps> = ({
         <a 
           href="#" 
           onClick={handleForgotPasswordClick} 
-          className="hover:text-black text-sm lg:py-3"
+          className="hover:text-black text-sm lg:py-3 underline"
         >
           J'ai oublié mon mot de passe
         </a>

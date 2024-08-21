@@ -190,7 +190,7 @@ export const RegisterFormUser: React.FC<RegisterFormUserProps> = ({
                 <a
                   href="/conditions"
                   target="_blank"
-                  className="text-black font-bold hover:text-green-700"
+                  className="text-black font-bold hover:text-green-700 underline"
                 >
                   conditions d'utilisation
                 </a>
@@ -208,7 +208,7 @@ export const RegisterFormUser: React.FC<RegisterFormUserProps> = ({
           <div className="w-full text-center">
             <button
               onClick={() => setIsLoging(true)}
-              className="hover:text-black hover:underline text-sm"
+              className="hover:text-green-700 underline text-sm"
             >
               <div className="w-60">Vous avez déjà un compte ? Connectez-vous</div>
             </button>

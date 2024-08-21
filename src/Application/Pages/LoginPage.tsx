@@ -65,7 +65,7 @@ export const LoginPage = () => {
             />
             <div className="flex gap-2">
               <button type="submit" className="bg-black text-white p-4 rounded-lg font-bold uppercase">Se connecter</button>
-              <NavLink to="/register" className="bg-red-500 text-white text-center p-4 rounded-lg font-bold uppercase no-underline hover:text-white">Créer un compte</NavLink>
+              <NavLink to="/register" className="bg-red-600 text-white text-center p-4 rounded-lg font-bold uppercase no-underline hover:text-white">Créer un compte</NavLink>
             </div>
           </form>
           <div className='mt-10'>

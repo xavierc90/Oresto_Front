@@ -190,7 +190,7 @@ export const RegisterPage = () => {
               <button
                 type="submit"
                 className={`bg-black text-white py-4 rounded-lg px-5 font-bold uppercase ${
-                  isFormValid ? 'cursor-pointer' : 'cursor-not-allowed opacity-50'
+                  isFormValid ? 'cursor-pointer' : 'cursor-not-allowed opacity-70'
                 }`}
                 disabled={!isFormValid}
               >

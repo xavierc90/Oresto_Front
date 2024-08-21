@@ -108,7 +108,7 @@ export const DashboardNav: React.FC<DashboardNavProps> = ({ company }) => {
 
         <Link to="/dashboard/table_plan" className={getLinkClass('/dashboard/table_plan')}>
           <LuLayoutDashboard size={23} className="mb-1" />
-          <h2 className="text-xs font-bold dark:text">Plan de tables</h2>
+          <h2 className="text-xs font-bold dark:text-grey-700">Plan de tables</h2>
         </Link>
 
         <Link to="/dashboard/clients" className={getLinkClass('/dashboard/clients')}>
