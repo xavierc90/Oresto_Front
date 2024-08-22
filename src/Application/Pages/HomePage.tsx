@@ -136,7 +136,7 @@ export const HomePage = () => {
 
 
 <div id="contact" className='min-h-screen bg-black text-white flex flex-col justify-center items-center py-16 px-4'>
-  <h1 className='main-subtitle text-white text-3xl mb-12 pt-10'>Nous contacter</h1>
+  <h1 className='main-subtitle text-white text-3xl mb-12'>Nous contacter</h1>
   <form className='w-full max-w-lg rounded-lg shadow-lg'>
     <div className='flex flex-wrap -mx-3 mb-4'>
       <div className='w-full md:w-1/2 px-3 mb-4 md:mb-0'>
