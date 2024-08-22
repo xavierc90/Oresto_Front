@@ -135,76 +135,107 @@ export const HomePage = () => {
 
 
 
-<div id="contact" className='min-h-screen bg-black text-white flex flex-col justify-center items-center py-16 px-4'>
-  <h1 className='main-subtitle text-white text-3xl mb-12'>Nous contacter</h1>
-  <form className='w-full max-w-lg rounded-lg shadow-lg'>
-    <div className='flex flex-wrap -mx-3 mb-4'>
-      <div className='w-full md:w-1/2 px-3 mb-4 md:mb-0'>
-        <label className='block text-white text-sm font-bold mb-2' htmlFor='prenom'>
-          Prénom
-        </label>
-        <input
-          type='text'
-          id='prenom'
-          name='prenom'
-          className='w-full px-3 py-2 text-black rounded-md'
-          placeholder='Votre prénom'
-          required
-        />
-      </div>
-      <div className='w-full md:w-1/2 px-3'>
-        <label className='block text-white text-sm font-bold mb-2' htmlFor='nom'>
-          Nom
-        </label>
-        <input
-          type='text'
-          id='nom'
-          name='nom'
-          className='w-full px-3 py-2 text-black rounded-md'
-          placeholder='Votre nom'
-          required
-        />
-      </div>
+<div id="contact" className='bg-zinc-900 min-h-screen text-white flex flex-col justify-center items-center py-16 px-4'>
+  <h1 className='main-subtitle text-white text-3xl lg:mt-10 lg:mb-12'>Nous contacter</h1>
+  <div className='w-full max-w-4xl flex flex-wrap'>
+    <div className='w-full bg-zinc-950 flex flex-col justify-center lg:w-1/2 px-4 mt-12 lg:mt-0'>
+      <ul className='list-disc mb-4 list-none lg:pl-10'>
+          <li className='text-lg font-bold'>Nos horaires</li>
+          <li className='text-sm'>Mardi à Vendredi : 12h00 - 14h00 | 20h00 - 23h00</li>
+          <li className='text-sm'>Samedi : 19h00 - 22h30</li>
+          <li className='text-sm'>Dimanche et lundi : Fermé</li>
+      </ul>
+      <ul className='mb-4 lg:pl-10'>
+          <li className='text-lg font-bold'>Méthodes de paiement</li>
+          <li className='text-sm'>Carte de crédit, espèces</li>
+      </ul>
+      <ul className='mb-4 lg:pl-10'>
+          <li className='text-lg font-bold'>N° de téléphone</li>
+          <li className='text-sm'>+33 1 23 45 67 89</li>
+      </ul>
+      <ul className='mb-4 lg:pl-10'>
+          <li className='text-lg font-bold'>Adresse mail</li>
+          <li className='text-sm'>contact@labelleassiette.fr</li>
+      </ul>
+      <ul className='mb-4 lg:pl-10'>
+          <li className='text-lg font-bold'>Adresse</li>
+          <li className='text-sm'>123 rue fictive, 75001 Paris, France</li>
+      </ul>
     </div>
-    <div className='mb-4'>
-      <label className='block text-white text-sm font-bold mb-2' htmlFor='email'>
-        E-mail
-      </label>
-      <input
-        type='email'
-        id='email'
-        name='email'
-        className='w-full px-3 py-2 text-black rounded-md'
-        placeholder='Votre e-mail'
-        required
-      />
+    <div className='w-full bg-black lg:w-1/2 p-8 lg:order-first'>
+      <form className='w-full max-w-lg rounded-lg shadow-lg'>
+      <h2 className='text-lg font-bold'>Envoyer un message</h2>
+      <h3 className='mb-4'>Tous les champs doivent être remplis</h3>
+      <div className='flex flex-wrap -mx-3 mb-4'>
+          <div className='w-full md:w-1/2 px-3 mb-4 md:mb-0'>
+            <label className='block text-white text-sm font-bold mb-2' htmlFor='prenom'>
+              Prénom
+            </label>
+            <input
+              type='text'
+              id='prenom'
+              name='prenom'
+              className='w-full px-3 py-2 text-black rounded-md'
+              placeholder='Votre prénom'
+              required
+            />
+          </div>
+          <div className='w-full md:w-1/2 px-3'>
+            <label className='block text-white text-sm font-bold mb-2' htmlFor='nom'>
+              Nom
+            </label>
+            <input
+              type='text'
+              id='nom'
+              name='nom'
+              className='w-full px-3 py-2 text-black rounded-md'
+              placeholder='Votre nom'
+              required
+            />
+          </div>
+        </div>
+        <div className='mb-4'>
+          <label className='block text-white text-sm font-bold mb-2' htmlFor='email'>
+            E-mail
+          </label>
+          <input
+            type='email'
+            id='email'
+            name='email'
+            className='w-full px-3 py-2 text-black rounded-md'
+            placeholder='Votre e-mail'
+            required
+          />
+        </div>
+        <div className='mb-4'>
+          <label className='block text-white text-sm font-bold mb-2' htmlFor='message'>
+            Message
+          </label>
+          <textarea
+            id='message'
+            name='message'
+            rows={4}
+            className='w-full px-3 py-2 text-black rounded-md'
+            placeholder='Votre message'
+            required
+          ></textarea>
+        </div>
+        <div className='flex justify-center lg:justify-end'>
+          <button
+            type='submit'
+            className='bg-green-800 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline'
+          >
+            Envoyer
+          </button>
+        </div>
+      </form>
     </div>
-    <div className='mb-4'>
-      <label className='block text-white text-sm font-bold mb-2' htmlFor='message'>
-        Message
-      </label>
-      <textarea
-        id='message'
-        name='message'
-        rows={4}
-        className='w-full px-3 py-2 text-black rounded-md'
-        placeholder='Votre message'
-        required
-      ></textarea>
-    </div>
-    <div className='flex justify-center'>
-      <button
-        type='submit'
-        className='bg-green-800 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline'
-      >
-        Envoyer le message
-      </button>
-    </div>
-  </form>
+  </div>
 </div>
+
  
       {showWidget && (
-        <div className='widget-container'>
+        <div className='widget-container max-h-0'>
           <Widget 
             setShowWidget={setShowWidget} 
             isContentVisible={isWidgetContentVisible}
@@ -219,7 +250,7 @@ export const HomePage = () => {
             className='font-bold hover:no-underline hover:text-white'>
             Xavier Colombel</a>
         </p>
-        <ul className='flex justify-center text-sm gap-5 py-2'>
+        <ul className='flex justify-center text-sm gap-4'>
           <li><a href="#" className='underline'>Accessibilité conforme</a></li>
           <li><a href="#" className='underline'>Politique de confidentialité</a></li>
           <li><a href="#" className='underline'>Conditions d'utilisations</a></li>

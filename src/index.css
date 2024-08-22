@@ -127,6 +127,12 @@
     background-size: cover;
 }
 
+.cover-contact {
+    background-image: url('../public/img/cover-contact.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
 .cover-register {
     background-image: url('../public//img/cover-register.png');
     background-repeat: no-repeat;
