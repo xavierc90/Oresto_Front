@@ -95,10 +95,11 @@ export const RegisterPage = () => {
           <form method="POST" className="flex flex-col" onSubmit={handleSubmit}>
             <div className="flex gap-4 pt-10">
               <div className="flex flex-col">
-                <label className="text-lg font-bold mb-2 text-sm">Prénom :</label>
+                <label className="text-lg font-bold mb-2 text-sm" htmlFor='firstname'>Prénom :</label>
                 <input
                   type="text"
-                  name="firstName"
+                  name="firstname"
+                  id='firstname'
                   placeholder="Exemple : John"
                   value={firstName}
                   onChange={(e) => handleInputChange(e, setFirstName)}
@@ -108,10 +109,11 @@ export const RegisterPage = () => {
                 />
               </div>
               <div className="flex flex-col">
-                <label className="text-lg font-bold mb-2 text-sm">Nom :</label>
+                <label className="text-lg font-bold mb-2 text-sm" htmlFor='lastname'>Nom :</label>
                 <input
                   type="text"
-                  name="lastName"
+                  name="lastname"
+                  id='lastname'
                   placeholder="Exemple : Doe"
                   value={lastName}
                   onChange={(e) => handleInputChange(e, setLastName)}
@@ -122,10 +124,11 @@ export const RegisterPage = () => {
               </div>
             </div>
 
-            <label className="text-lg font-bold mb-2 text-sm">Adresse mail</label>
+            <label className="text-lg font-bold mb-2 text-sm" htmlFor='email'>Adresse mail</label>
             <input
               type="email"
               name="email"
+              id='email'
               placeholder="Exemple : mail@monrestaurant.fr"
               value={email}
               onChange={(e) => handleInputChange(e, setEmail)}
@@ -134,10 +137,11 @@ export const RegisterPage = () => {
               }`}
             />
 
-            <label className="text-lg font-bold mb-2 text-sm">Numéro de téléphone</label>
+            <label className="text-lg font-bold mb-2 text-sm" htmlFor='phoneNumber'>Numéro de téléphone</label>
             <input
               type="tel"
               name="phoneNumber"
+              id='phoneNumber'
               placeholder="Exemple : 0612345678"
               value={phoneNumber}
               onChange={(e) => handleInputChange(e, setPhoneNumber)}
@@ -146,10 +150,11 @@ export const RegisterPage = () => {
               }`}
             />
 
-            <label className="text-lg font-bold mb-2 text-sm">Mot de passe</label>
+            <label className="text-lg font-bold mb-2 text-sm" htmlFor='password'>Mot de passe</label>
             <input
               type="password"
               name="password"
+              id='password'
               placeholder="Saisissez un mot de passe"
               value={password}
               onChange={(e) => handleInputChange(e, setPassword)}
@@ -158,10 +163,11 @@ export const RegisterPage = () => {
               }`}
             />
 
-            <label className="text-lg font-bold mb-2 text-sm">Confirmer le mot de passe</label>
+            <label className="text-lg font-bold mb-2 text-sm" htmlFor='confirmPassword'>Confirmer le mot de passe</label>
             <input
               type="password"
               name="confirmPassword"
+              id='confirmPassword'
               placeholder="Confirmez le mot de passe"
               value={confirmPassword}
               onChange={(e) => handleInputChange(e, setConfirmPassword)}
@@ -181,7 +187,7 @@ export const RegisterPage = () => {
                   onChange={handleCheckboxChange}
                 />
                 J'accepte les{' '}
-                <a href="#" className="text-black font-bold">
+                <a href="#" className="text-black font-bold underline hover:text-red-600">
         conditions d'utilisation
                 </a>
                 
@@ -199,7 +205,7 @@ export const RegisterPage = () => {
             </div>
           </form>
           <div className="pt-4">
-            <NavLink to="/login">Déjà un compte ? Connectez-vous</NavLink>
+            <NavLink to="/login" className={'underline'}>Déjà un compte ? Connectez-vous</NavLink>
           </div>
         </div>
       </div>

@@ -36,17 +36,20 @@ export const HomePage = () => {
   return (
     <div>
       <header className='flex flex-col justify-center items-center'>
-        <nav className="fixed flex items-center justify-between top-0 w-full bg-black py-8 px-5 lg:px-10">
+        <nav className="fixed flex items-center justify-between top-0 w-full bg-black py-8 px-5 lg:px-10 z-10"
+        aria-label='Menu principal'>
           <div className='text-white absolute'>
             <a href="#" className='hover:text-white'>
               <h1 className='bebas uppercase font-bold text-2xl lg:text-center'>La belle assiette</h1>
             </a>
           </div>
-          <ul className={`fixed z-50 top-12 mt-5 right-0 w-full h-full flex flex-col justify-center items-center text-2xl font-bold uppercase bg-black text-white lg:static lg:mt-0 lg:flex-row lg:bg-transparent lg:gap-10 lg:items-center lg:justify-center lg:text-sm   transition-transform duration-300 ${isMenuVisible ? 'translate-x-0' : 'translate-x-full lg:translate-x-0 translate-none ransform-none'}`}>
-            <li className="p-4 lg:p-0"><a href="#about" className="hover:text-white block lg:inline" onClick={closeMenu}>Le restaurant</a></li>
-            <li className="p-4 lg:p-0"><a href="#menu" className="hover:text-white block lg:inline" onClick={closeMenu}>La carte</a></li>
-            <li className="p-4 lg:p-0"><a href="#contact" className="hover:text-white block lg:inline" onClick={closeMenu}>Contact</a></li>
-            <li className="p-4 lg:p-0"><a onClick={() => { openWidget(); closeMenu(); }} className="hover:text-white block lg:inline cursor-pointer">Réserver</a></li>
+          <ul className={`fixed z-50 top-0 mt-5 right-0 w-full h-full flex flex-col justify-center items-center text-2xl font-bold bg-black text-white lg:static lg:mt-0 lg:flex-row lg:bg-transparent lg:mt-0 lg:justify-center lg:text-sm transition-transform duration-300 ${isMenuVisible ? 'translate-x-0' : 'translate-x-full lg:translate-x-0 translate-none'}`}>
+            <li><h1 className="pb-6 uppercase drop-shadow-xl lg:hidden"><a href='#' className='main-title text-center text-white hover:text-white' onClick={closeMenu}>La Belle Assiette</a></h1></li>
+            <li className="p-4 lg:p-0"><h2 className='main-subtitle font-normal pb-5 lg:hidden'>Restaurant &nbsp;traditionnel</h2></li>
+            <li className="lg:p-0"><a href="#about" className="hover:text-white block lg:inline uppercase hover:bg-green-800 hover:w-screen text-center py-5 px-5" onClick={closeMenu}>Le restaurant</a></li>
+            <li className="lg:p-0"><a href="#menu" className="hover:text-white block lg:inline uppercase hover:bg-green-800 hover:w-screen text-center py-5 px-5" onClick={closeMenu}>La carte</a></li>
+            <li className="lg:p-0"><a href="#contact" className="hover:text-white block lg:inline uppercase hover:bg-green-800 hover:w-screen text-center py-5 px-5" onClick={closeMenu}>Contact</a></li>
+            <li className="lg:p-0"><a onClick={() => { openWidget(); closeMenu(); }} className="hidden lg:block hover:text-white block lg:inline cursor-pointer uppercase hover:bg-green-800 hover:w-screen text-center py-5 px-5">Réserver</a></li>
           </ul>
           <div className="absolute right-5 lg:hidden text-white z-50">
             {isMenuVisible ? (

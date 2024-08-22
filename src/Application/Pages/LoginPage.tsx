@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { http } from '../../Infrastructure/Http/axios.instance';
 import { useAuth } from '../../Module/Auth/auth.hook';
+import { Underline } from 'lucide-react';
 
 export const LoginPage = () => {
   const [email, setEmail] = useState('');
@@ -45,19 +46,21 @@ export const LoginPage = () => {
             />
           )}
           <form className="flex flex-col" onSubmit={handleSubmit}>
-            <label className="text-xl font-bold mb-4">Adresse mail</label>
+            <label className="text-xl font-bold mb-4" htmlFor='email'>Adresse mail</label>
             <input
               type="text"
               name="email"
+              id='email'
               placeholder="Saisissez votre email"
               className="border-2 border-gray-300 p-2 mb-6 font-bold"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
-            <label className="text-xl font-bold mb-4">Mot de passe</label>
+            <label className="text-xl font-bold mb-4" htmlFor='password'>Mot de passe</label>
             <input
               type="password"
               name="password"
+              id='password'
               placeholder="Saisissez votre mot de passe"
               className="border-2 border-gray-300 p-2 mb-10 font-bold"
               value={password}
@@ -69,10 +72,10 @@ export const LoginPage = () => {
             </div>
           </form>
           <div className='mt-10'>
-            <NavLink to="/lostpassword">J'ai oublié mon mot de passe</NavLink>
+            <NavLink to="/lostpassword" className={'underline'}>J'ai oublié mon mot de passe</NavLink>
           </div>
           <div className='mt-4'>
-            <a href="/conditions" target='_blank'>Conditions générales d'utilisation</a>
+            <a href="/conditions" target='_blank' className='underline'>Conditions générales d'utilisation</a>
           </div>
         </div>
       </div>

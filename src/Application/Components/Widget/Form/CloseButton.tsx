@@ -7,7 +7,7 @@ type CloseButtonProps = {
 
 const CloseButton: React.FC<CloseButtonProps> = ({ onClick }) => {
   return (
-    <button onClick={onClick} className='hover:text-white'>
+    <button onClick={onClick}>
       <RxCross1 size={20} />
     </button>
   );

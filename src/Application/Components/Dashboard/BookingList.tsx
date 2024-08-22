@@ -52,7 +52,7 @@ export const BookingList: React.FC<BookingListProps> = ({ bookings }) => {
               <td className="text-center">4</td>
               <td className="text-center">
                 <span className={`px-7 py-1 text-sm font-semibold ${
-                  booking.status === 'waiting' ? 'bg-orange-400 text-black' :
+                  booking.status === 'waiting' ? 'bg-orange-500 text-white' :
                   booking.status === 'confirmed' ? 'bg-green-700 text-white' : 
                   booking.status === 'archived' ? 'bg-grey-600 text-white' : 
                   booking.status === 'canceled' ? 'bg-red-600 text-white px-9' : ''
