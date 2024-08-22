@@ -12,10 +12,6 @@
     font-family: 'Montserrat', sans-serif; /* Ajoutez 'sans-serif' comme police de secours */
 }
 
-a:hover {
-    color: #FF5959;
-}
-
 .handle {
     padding: 10px;
     background-color: #ccc;
@@ -249,7 +245,7 @@ input::placeholder {
 
 .table-container {
     /* width: 85px; */
-    height: 60px;
+    height: 45px;
     position: relative;
     display: inline-block;
     margin: 5px;

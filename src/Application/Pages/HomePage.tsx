@@ -73,7 +73,7 @@ export const HomePage = () => {
       <div id="about" className='bg-white py-16 px-4 flex flex-col justify-center items-center lg:h-screen'>
         <div className='max-w-7xl mx-auto flex flex-col md:flex-row items-center'>
           <div className='md:w-1/2'>
-            <h2 className='main-subtitle text-3xl text-green-700 mb-8 text-center lg:text-left'>Notre Restaurant</h2>
+            <h2 className='main-subtitle text-3xl text-green-800 mb-8 text-center lg:text-left'>Notre Restaurant</h2>
             <p className='lg:text-xl text-black'>
               A la belle assiette, nous vous proposons une cuisine raffinée, préparée avec des ingrédients frais et de saison. Notre équipe
               dévouée est là pour vous offrir une expérience culinaire inoubliable, que ce soit pour un repas en famille,
@@ -87,7 +87,7 @@ export const HomePage = () => {
       </div>
 
       <div id="menu" className='bg-gray-100 py-16 px-4 flex flex-col justify-center items-center lg:h-screen'>
-  <h1 className='main-subtitle text-black text-2xl mb-12 pt-12 text-green-700'>Découvrez notre carte</h1>
+  <h1 className='main-subtitle text-black text-2xl mb-12 pt-12 text-green-800'>Découvrez notre carte</h1>
   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl w-full">
     
     <div className="rounded-lg shadow-lg bg-white">
@@ -192,7 +192,7 @@ export const HomePage = () => {
         required
       ></textarea>
     </div>
-    <div className='flex justify-end'>
+    <div className='flex justify-center'>
       <button
         type='submit'
         className='bg-green-800 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline'
@@ -214,16 +214,16 @@ export const HomePage = () => {
       )}
 
       <footer className="footer bottom-0 bg-black text-white w-full">
-        <ul className='flex justify-center text-sm gap-5 py-5'>
-          <li><a href="#" className='underline'>Accessibilité conforme</a></li>
-          <li><a href="#" className='underline'>Politique de confidentialité</a></li>
-          <li><a href="#" className='underline'>Conditions d'utilisations</a></li>
-        </ul>
-        <p className="text-center text-white text-sm py-5">Site créé par &nbsp;
+      <p className="text-center text-white text-sm py-2">Site créé par &nbsp;
           <a href="mailto:xavier.colombel@google.com?subject=Oresto%20-%20Contacter le développeur"
             className='font-bold hover:no-underline hover:text-white'>
             Xavier Colombel</a>
         </p>
+        <ul className='flex justify-center text-sm gap-5 py-2'>
+          <li><a href="#" className='underline'>Accessibilité conforme</a></li>
+          <li><a href="#" className='underline'>Politique de confidentialité</a></li>
+          <li><a href="#" className='underline'>Conditions d'utilisations</a></li>
+        </ul>
       </footer>
     </div>
   );

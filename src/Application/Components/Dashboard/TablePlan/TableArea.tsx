@@ -9,7 +9,7 @@ export const TableArea = () => {
     const fetchTables = async () => {
       const token = localStorage.getItem('token');
       try {
-        const response = await http.get('/table_plan/2024-08-24?company_id=66b9b0604478cecc26a5f945', {
+        const response = await http.get('/table_plan/2024-08-24?company_id=66c7914a3bdff8f00a0aeea9', {
           headers: { Authorization: `Bearer ${token}` }
         });
         setTables(response.data.tables);
