@@ -40,7 +40,7 @@ export const HomePage = () => {
         aria-label='Menu principal'>
           <div className='text-white absolute'>
             <a href="#" className='hover:text-white'>
-              <h1 className='bebas uppercase font-bold text-2xl lg:text-center'>La belle assiette</h1>
+              <h1 className='bebas uppercase text-2xl lg:text-center'>La belle assiette</h1>
             </a>
           </div>
           <ul className={`fixed z-50 top-0 mt-5 right-0 w-full h-full flex flex-col justify-center items-center text-2xl font-bold bg-black text-white lg:static lg:mt-0 lg:flex-row lg:bg-transparent lg:mt-0 lg:justify-center lg:text-sm transition-transform duration-300 ${isMenuVisible ? 'translate-x-0' : 'translate-x-full lg:translate-x-0 translate-none'}`}>
@@ -88,7 +88,7 @@ export const HomePage = () => {
 
 
 
-      <div id="menu" className='h-screen bg-white text-black flex justify-center items-center'>
+      <div id="menu" className='h-screen bg-white text-black flex justify-center items-center bg-gray-100'>
         <h1 className='text-black text-2xl uppercase'>Découvrez notre menu</h1>
       </div>
 
