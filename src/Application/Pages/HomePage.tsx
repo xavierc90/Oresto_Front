@@ -12,7 +12,7 @@ export const HomePage = () => {
     setIsWidgetContentVisible(true);
   };
 
-   const toggleWidgetContentVisibility = () => {
+  const toggleWidgetContentVisibility = () => {
     setIsWidgetContentVisible(!isWidgetContentVisible);
   };
 
@@ -70,32 +70,139 @@ export const HomePage = () => {
         </div>
       </header>
 
-      <div id="about" className='bg-white py-16 px-4 h-screen flex flex-col justify-center items-center'>
-  <div className='max-w-7xl mx-auto flex flex-col md:flex-row items-center'>
-    <div className='md:w-1/2'>
-      <h2 className='main-subtitle text-3xl text-green-800 mb-8 text-center lg:text-left'>Notre Restaurant</h2>
-      <p className='lg:text-xl text-black'>
-        A la belle assiette, nous vous proposons une cuisine raffinée, préparée avec des ingrédients frais et de saison. Notre équipe
-        dévouée est là pour vous offrir une expérience culinaire inoubliable, que ce soit pour un repas en famille, 
-        entre amis, ou pour un événement spécial.
-      </p>
+      <div id="about" className='bg-white py-16 px-4 flex flex-col justify-center items-center lg:h-screen'>
+        <div className='max-w-7xl mx-auto flex flex-col md:flex-row items-center'>
+          <div className='md:w-1/2'>
+            <h2 className='main-subtitle text-3xl text-green-700 mb-8 text-center lg:text-left'>Notre Restaurant</h2>
+            <p className='lg:text-xl text-black'>
+              A la belle assiette, nous vous proposons une cuisine raffinée, préparée avec des ingrédients frais et de saison. Notre équipe
+              dévouée est là pour vous offrir une expérience culinaire inoubliable, que ce soit pour un repas en famille,
+              entre amis, ou pour un événement spécial.
+            </p>
+          </div>
+          <div className='md:w-1/2 mt-8 md:mt-0 md:pl-8'>
+            <img src="../../../public/img/cover-about.jpg" alt="Image du restaurant" className='w-full rounded-lg shadow-lg'/>
+          </div>
+        </div>
+      </div>
+
+      <div id="menu" className='bg-gray-100 py-16 px-4 flex flex-col justify-center items-center lg:h-screen'>
+  <h1 className='main-subtitle text-black text-2xl mb-12 pt-12 text-green-700'>Découvrez notre carte</h1>
+  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl w-full">
+    
+    <div className="rounded-lg shadow-lg bg-white">
+      <img src="../../../public/img/entree.jpg" alt="Entrées" className="w-full h-90 object-cover rounded-t-lg mb-4"/>
+      <h2 className='text-xl text-center font-bold mb-4'>Entrées</h2>
+      <ul className='pl-5 pb-8'>
+        <li className='mb-2'>- Salade de chèvre chaud</li>
+        <li className='mb-2'>- Soupe à l'oignon gratinée</li>
+        <li className='mb-2'>- Tartare de saumon</li>
+      </ul>
     </div>
-    <div className='md:w-1/2 mt-8 md:mt-0 md:pl-8'>
-      <img src="../../../public/img/cover-about.jpg" alt="Image du restaurant" className='w-full rounded-lg shadow-lg'/>
+
+    <div className="bg-white rounded-lg shadow-lg">
+      <img src="../../../public/img/plats.jpg" alt="Plats" className="w-full h-50 object-cover rounded-t-lg mb-4"/>
+      <h2 className='text-xl font-bold mb-4 text-center'>Plats</h2>
+      <ul className='pl-5 pb-8'>
+        <li className='mb-2'>- Filet de bœuf sauce au poivre</li>
+        <li className='mb-2'>- Poulet rôti à l'ail et au thym</li>
+        <li className='mb-2'>- Risotto aux champignons</li>
+      </ul>
     </div>
+
+    <div className="bg-white rounded-lg shadow-lg">
+      <img src="../../../public/img/dessert.jpg" alt="Desserts" className="w-full h-[295px] object-cover rounded-t-lg mb-4"/>
+      <h2 className='text-xl font-bold mb-4 text-center'>Desserts</h2>
+      <ul className='pl-5 pb-8'>
+        <li className='mb-2'>- Tarte au citron meringuée</li>
+        <li className='mb-2'>- Fondant au chocolat</li>
+        <li className='mb-2'>- Crème brûlée</li>
+      </ul>
+    </div>
+
+    <div className="bg-white rounded-lg shadow-lg">
+      <img src="../../../public/img/boisson.jpg" alt="Boissons" className="w-full h-[300px] object-cover rounded-t-lg mb-4"/>
+      <h2 className='text-xl font-bold mb-4 text-center'>Boissons</h2>
+      <ul className='pl-5 pb-8'>
+        <li className='mb-2'>- Vin rouge</li>
+        <li className='mb-2'>- Vin blanc</li>
+        <li className='mb-2'>- Jus de fruits</li>
+      </ul>
+    </div>
+
   </div>
 </div>
 
 
 
-      <div id="menu" className='h-screen bg-white text-black flex justify-center items-center bg-gray-100'>
-        <h1 className='text-black text-2xl uppercase'>Découvrez notre menu</h1>
+<div id="contact" className='min-h-screen bg-black text-white flex flex-col justify-center items-center py-16 px-4'>
+  <h1 className='main-subtitle text-white text-3xl mb-12 pt-10'>Nous contacter</h1>
+  <form className='w-full max-w-lg rounded-lg shadow-lg'>
+    <div className='flex flex-wrap -mx-3 mb-4'>
+      <div className='w-full md:w-1/2 px-3 mb-4 md:mb-0'>
+        <label className='block text-white text-sm font-bold mb-2' htmlFor='prenom'>
+          Prénom
+        </label>
+        <input
+          type='text'
+          id='prenom'
+          name='prenom'
+          className='w-full px-3 py-2 text-black rounded-md'
+          placeholder='Votre prénom'
+          required
+        />
       </div>
-
-      <div id="contact" className='h-screen bg-black text-black flex justify-center items-center'>
-        <h1 className='text-white text-2xl uppercase'>Nous contacter</h1>
+      <div className='w-full md:w-1/2 px-3'>
+        <label className='block text-white text-sm font-bold mb-2' htmlFor='nom'>
+          Nom
+        </label>
+        <input
+          type='text'
+          id='nom'
+          name='nom'
+          className='w-full px-3 py-2 text-black rounded-md'
+          placeholder='Votre nom'
+          required
+        />
       </div>
-
+    </div>
+    <div className='mb-4'>
+      <label className='block text-white text-sm font-bold mb-2' htmlFor='email'>
+        E-mail
+      </label>
+      <input
+        type='email'
+        id='email'
+        name='email'
+        className='w-full px-3 py-2 text-black rounded-md'
+        placeholder='Votre e-mail'
+        required
+      />
+    </div>
+    <div className='mb-4'>
+      <label className='block text-white text-sm font-bold mb-2' htmlFor='message'>
+        Message
+      </label>
+      <textarea
+        id='message'
+        name='message'
+        rows={4}
+        className='w-full px-3 py-2 text-black rounded-md'
+        placeholder='Votre message'
+        required
+      ></textarea>
+    </div>
+    <div className='flex justify-end'>
+      <button
+        type='submit'
+        className='bg-green-800 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline'
+      >
+        Envoyer le message
+      </button>
+    </div>
+  </form>
+</div>
+ 
       {showWidget && (
         <div className='widget-container'>
           <Widget 
