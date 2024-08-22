@@ -70,9 +70,23 @@ export const HomePage = () => {
         </div>
       </header>
 
-      <div id="about" className='h-screen bg-black flex justify-center items-center'>
-        <h1 className='text-white text-2xl uppercase'>Notre restaurant</h1>
-      </div>
+      <div id="about" className='bg-white py-16 px-4 h-screen flex flex-col justify-center items-center'>
+  <div className='max-w-7xl mx-auto flex flex-col md:flex-row items-center'>
+    <div className='md:w-1/2'>
+      <h2 className='main-subtitle text-3xl text-green-800 mb-8 text-center lg:text-left'>Notre Restaurant</h2>
+      <p className='lg:text-xl text-black'>
+        A la belle assiette, nous vous proposons une cuisine raffinée, préparée avec des ingrédients frais et de saison. Notre équipe
+        dévouée est là pour vous offrir une expérience culinaire inoubliable, que ce soit pour un repas en famille, 
+        entre amis, ou pour un événement spécial.
+      </p>
+    </div>
+    <div className='md:w-1/2 mt-8 md:mt-0 md:pl-8'>
+      <img src="../../../public/img/cover-about.jpg" alt="Image du restaurant" className='w-full rounded-lg shadow-lg'/>
+    </div>
+  </div>
+</div>
+
+
 
       <div id="menu" className='h-screen bg-white text-black flex justify-center items-center'>
         <h1 className='text-black text-2xl uppercase'>Découvrez notre menu</h1>
@@ -92,8 +106,13 @@ export const HomePage = () => {
         </div>
       )}
 
-      <footer className="footer bottom-0 bg-black text-white p-4 w-full">
-        <p className="text-center text-white text-sm">Site créé par &nbsp;
+      <footer className="footer bottom-0 bg-black text-white w-full">
+        <ul className='flex justify-center text-sm gap-5 py-5'>
+          <li><a href="#" className='underline'>Accessibilité conforme</a></li>
+          <li><a href="#" className='underline'>Politique de confidentialité</a></li>
+          <li><a href="#" className='underline'>Conditions d'utilisations</a></li>
+        </ul>
+        <p className="text-center text-white text-sm py-5">Site créé par &nbsp;
           <a href="mailto:xavier.colombel@google.com?subject=Oresto%20-%20Contacter le développeur"
             className='font-bold hover:no-underline hover:text-white'>
             Xavier Colombel</a>
