@@ -162,9 +162,9 @@ export const HomePage = () => {
           <li className='text-sm'>123 rue fictive, 75001 Paris, France</li>
       </ul>
     </div>
-    <div className='w-full bg-black lg:w-1/2 p-8 lg:order-first'>
+    <div className='w-full bg-black lg:w-1/2 p-12 lg:order-first'>
       <form className='w-full max-w-lg rounded-lg shadow-lg'>
-      <h2 className='text-lg font-bold'>Envoyer un message</h2>
+      <h2 className='text-lg font-bold'>Remplir le formulaire</h2>
       <h3 className='mb-4'>Tous les champs doivent être remplis</h3>
       <div className='flex flex-wrap -mx-3 mb-4'>
           <div className='w-full md:w-1/2 px-3 mb-4 md:mb-0'>
@@ -220,12 +220,12 @@ export const HomePage = () => {
             required
           ></textarea>
         </div>
-        <div className='flex justify-center lg:justify-end'>
+        <div className='flex justify-center lg:justify-center'>
           <button
             type='submit'
             className='bg-green-800 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline'
           >
-            Envoyer
+            Envoyer le message
           </button>
         </div>
       </form>
@@ -235,7 +235,8 @@ export const HomePage = () => {
 
  
       {showWidget && (
-        <div className='widget-container max-h-0'>
+        <div // className='widget-container' //
+        >
           <Widget 
             setShowWidget={setShowWidget} 
             isContentVisible={isWidgetContentVisible}
