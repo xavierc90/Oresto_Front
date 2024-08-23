@@ -40,8 +40,6 @@ export const DashboardProvider: React.FC<{children: ReactNode}> = ({ children })
           const companyResponse = await http.get<Company>(`/find_user/${userResponse.data.company_id}`, { headers });
           setCompany(companyResponse.data);
 
-          const tablesResponse = await http.get<Table[]>(`/find_tables/${companyResponse.data.table_id}`, { headers });
-          setTables(tablesResponse.data);
         }
       } catch (error) {
         console.error('Error fetching data:', error);

@@ -1,6 +1,8 @@
-import React, { Dispatch } from 'react';
+import React, { Dispatch, useState } from 'react';
 import ArrowButton from './ArrowButton';
 import CloseButton from './CloseButton';
+import { http } from '../../../../Infrastructure/Http/axios.instance';
+import { Account } from '../../Widget/Account'; // Import du composant Account
 
 type LoginFormUserProps = {
   setIsLoging: Dispatch<React.SetStateAction<boolean>>,
@@ -9,6 +11,7 @@ type LoginFormUserProps = {
   isContentVisible: boolean,
   setIsContentVisible: (visible: boolean) => void,
   setShowWidget: (visible: boolean) => void,
+  onLoginSuccess: () => void, // Ajoutez cette prop pour gérer le succès de la connexion
 };
 
 export const LoginFormUser: React.FC<LoginFormUserProps> = ({ 
@@ -17,18 +20,14 @@ export const LoginFormUser: React.FC<LoginFormUserProps> = ({
   onLogin, 
   isContentVisible, 
   setIsContentVisible, 
-  setShowWidget 
+  setShowWidget,
+  onLoginSuccess // Passez cette prop
 }) => {
+  const [errorMessage, setErrorMessage] = useState<string | null>(null); // État pour le message d'erreur
 
   const handleForgotPasswordClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
     event.preventDefault();
     setIsLostPassword(true);
-  };
-
-  const handleLoginSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    // Simuler la connexion réussie
-    onLogin(); // Appeler la fonction de connexion passée en prop
   };
 
   const handleClose = () => {
@@ -37,6 +36,34 @@ export const LoginFormUser: React.FC<LoginFormUserProps> = ({
 
   const toggleContentVisibility = () => {
     setIsContentVisible(!isContentVisible); // Bascule la visibilité du contenu
+  };
+
+  const handleLoginSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const form = event.currentTarget as HTMLFormElement;
+    const formData = new FormData(form);
+    const email = formData.get('email') as string;
+    const password = formData.get('password') as string;
+
+    try {
+      const response = await http.post('/login', { email, password });
+      console.log('Login successful:', response.data);
+      onLogin();
+
+      // Appeler la fonction pour afficher le composant Account
+      onLoginSuccess(); 
+    } catch (error: any) {
+      console.error('Error logging in:', error.response ? error.response.data : error.message);
+      
+      // Définir un message d'erreur en fonction de la réponse de l'API
+      if (error.response && error.response.status === 401) {
+        setErrorMessage("Identifiant ou mot de passe incorrect.");
+      } else if (error.response && error.response.status === 404) {
+        setErrorMessage("Vous n'êtes pas inscrit.");
+      } else {
+        setErrorMessage("Une erreur est survenue. Veuillez réessayer.");
+      }
+    }
   };
 
   return (
@@ -51,7 +78,14 @@ export const LoginFormUser: React.FC<LoginFormUserProps> = ({
         />
       </div>
       <img src="../../../public/img/logo-oresto-orange.png" width="230px" alt="Logo Oresto" />
-      <h2 className='text-center pt-4 w-[218px]'>C'est simple et rapide.</h2>
+      {/* <h2 className='text-center pt-4 w-[218px]'>C'est simple et rapide.</h2> */}
+      
+      {errorMessage && (
+        <div className="text-red-600 text-sm mt-5 font-bold">
+          {errorMessage}
+        </div>
+      )}
+
       <form className="flex flex-col justify-center items-center mt-4" onSubmit={handleLoginSubmit}>
         <div className="flex flex-col w-full ">
           <label htmlFor="email" className="font-bold items-left text-left lg:text-sm mt-4">Adresse mail</label>

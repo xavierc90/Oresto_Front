@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { http } from '../../../../Infrastructure/Http/axios.instance';
 import { Table } from '../../../../Module/Types/table.type';
+import { useAuth } from '../../../../Module/Auth/auth.hook';
 
 export const TableArea = () => {
   const [tables, setTables] = useState<Table[]>([]);
@@ -8,8 +9,15 @@ export const TableArea = () => {
   useEffect(() => {
     const fetchTables = async () => {
       const token = localStorage.getItem('token');
+      const companyId = localStorage.getItem('companyId'); // Récupère le companyId depuis le localStorage
+      
+      if (!companyId) {
+        console.error('Company ID not found in localStorage');
+        return;
+      }
+
       try {
-        const response = await http.get('/table_plan/2024-08-24?company_id=66c7914a3bdff8f00a0aeea9', {
+        const response = await http.get(`/table_plan/2024-08-24?company_id=${companyId}`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         setTables(response.data.tables);

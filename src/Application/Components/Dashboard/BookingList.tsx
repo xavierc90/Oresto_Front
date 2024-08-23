@@ -54,12 +54,12 @@ export const BookingList: React.FC<BookingListProps> = ({ bookings }) => {
                 <span className={`px-7 py-1 text-sm font-semibold ${
                   booking.status === 'waiting' ? 'bg-orange-500 text-white' :
                   booking.status === 'confirmed' ? 'bg-green-700 text-white' : 
-                  booking.status === 'archived' ? 'bg-grey-600 text-white' : 
+                  booking.status === 'archived' ? 'bg-gray-200 text-gray-900' : 
                   booking.status === 'canceled' ? 'bg-red-600 text-white px-9' : ''
                 }`}>
                   {booking.status === 'waiting' && 'En attente'}
                   {booking.status === 'confirmed' && 'Confirmée'}
-                  {booking.status === 'archived' && 'Validée'}
+                  {booking.status === 'archived' && 'Archivée'}
                   {booking.status === 'canceled' && 'Annulée'}
                 </span>
               </td>

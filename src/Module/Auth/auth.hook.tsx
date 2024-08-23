@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext, createContext, ReactNode } from 'react';
-import {jwtDecode} from 'jwt-decode';  // Import correct selon la bibliothèque standard
+import { jwtDecode } from 'jwt-decode';
 import { User } from '../../Module/Types/user.type';
 import { Company } from '../../Module/Types/company.type';
 import { http } from '../../Infrastructure/Http/axios.instance';
@@ -45,7 +45,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
           localStorage.removeItem('userId');
           localStorage.removeItem('companyId');
           localStorage.removeItem('darkMode');
-
         }
       } catch (error) {
         console.error('Invalid token:', error);
@@ -71,7 +70,14 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
           if (userResponse.data) {
             setUser(userResponse.data);
             if (userResponse.data.company && userResponse.data.company.length > 0) {
-              setCompany(userResponse.data.company[0]);
+              const firstCompany = userResponse.data.company[0];
+              setCompany(firstCompany);
+
+              // Stocker le company_id dans le localStorage
+              localStorage.setItem('companyId', firstCompany._id);
+
+              // Ajouter un console.log pour afficher le companyId
+              console.log('Company ID:', firstCompany._id);
             }
           }
         } catch (error) {
@@ -89,6 +95,12 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     localStorage.setItem('userId', userId);
     setIsAuthenticated(true);
     setUserId(userId);
+
+    // Ajout du console.log après l'authentification
+    const companyId = localStorage.getItem('companyId');
+    if (companyId) {
+      console.log('User logged in. Company ID:', companyId);
+    }
   };
 
   const logout = () => {
