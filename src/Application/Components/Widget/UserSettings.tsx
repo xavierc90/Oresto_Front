@@ -4,7 +4,7 @@ type UserInfosProps = {
   handleReturnToAccount: () => void;
 };
 
-export const UserInfos: React.FC<UserInfosProps> = ({ handleReturnToAccount }) => {
+export const UserSettings: React.FC<UserInfosProps> = ({ handleReturnToAccount }) => {
   return (
     <div className="flex flex-col items-center justify-center h-full p-6 bg-white">
       <h2 className="text-2xl font-bold mb-4">Gérer mon compte</h2>

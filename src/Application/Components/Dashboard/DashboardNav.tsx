@@ -8,7 +8,7 @@ import { LuLayoutDashboard } from "react-icons/lu";
 import { MdLogout } from "react-icons/md";
 import { CalendarShadcn } from "./CalendarShadcn";
 import { Company } from '../../../Module/Types/company.type';
-import { useAuth } from '../../../Module/Auth/useAuth'; // Utiliser le nouveau useAuth
+import { useAuth } from '../../../Module/Auth/useAuth';
 import { dateService } from '../../../Module/Utils/dateService';
 import { searchService } from '../../../Module/Utils/searchService';
 
@@ -22,7 +22,7 @@ export const DashboardNav: React.FC<DashboardNavProps> = ({ company }) => {
   const [darkMode, setDarkMode] = useState<boolean>(false);
   const location = useLocation();
   const navigate = useNavigate();
-  const { logout } = useAuth(); // Récupération de la fonction de déconnexion
+  const { logout } = useAuth();
 
   useEffect(() => {
     const savedTheme = localStorage.getItem('darkMode');
@@ -33,8 +33,7 @@ export const DashboardNav: React.FC<DashboardNavProps> = ({ company }) => {
     const subscription = dateService.getDate().subscribe(date => {
       setDateSelected(date);
       const formattedDate = date.toLocaleDateString('fr-FR').replace(/\//g, '');
-      console.log(date.toLocaleDateString());
-      navigate(`/dashboard/bookings?dayselected=${formattedDate}`);
+      navigate(`/dashboard/bookings`);
     });
 
     return () => subscription.unsubscribe();
@@ -55,16 +54,19 @@ export const DashboardNav: React.FC<DashboardNavProps> = ({ company }) => {
   };
 
   const handleLogout = () => {
-    logout(); // Appel de la fonction de déconnexion
+    console.log('Logging out');
+    logout();
     navigate('/login');
   };
 
   const handleDateSelect = (date: Date) => {
+    console.log('Date selected:', date);
     dateService.setDate(date);
   };
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
+    console.log('Search term:', value);
     setSearchTerm(value);
     searchService.setSearch(value);
     if (value.length > 0) {
@@ -97,11 +99,22 @@ export const DashboardNav: React.FC<DashboardNavProps> = ({ company }) => {
 
       <form className="flex flex-col mb-2 justify-center">
         <label htmlFor="search" className="text-base font-bold mb-4 pt-4">Recherche par nom</label>
-        <input type="text" name="name" id="search" placeholder="Saisir le nom du client" value={searchTerm} onChange={handleSearchChange} className="border-2 border-gray-300 p-1 mb-4 font-bold w-[215px] dark:text-white dark:bg-dark-800 dark:border-2 dark:border-dark-800" />
+        <input 
+          type="text" 
+          name="name" 
+          id="search" 
+          placeholder="Saisir le nom du client" 
+          value={searchTerm} 
+          onChange={handleSearchChange} 
+          className="border-2 border-gray-300 p-1 mb-4 font-bold w-[215px] dark:text-white dark:bg-dark-800 dark:border-2 dark:border-dark-800" 
+        />
       </form>
       
       <div className="grid grid-cols-2 gap-6 justify-items-center">
-        <Link to={`/dashboard/bookings?dayselected=${dateSelected.toLocaleDateString('fr-FR').replace(/\//g, '')}`} className={getLinkClass('/dashboard/bookings')}>
+        <Link 
+          to={`/dashboard/bookings?dayselected=${dateSelected.toLocaleDateString('fr-FR').replace(/\//g, '')}`} 
+          className={getLinkClass('/dashboard/bookings')}
+        >
           <BsListCheck size={23} className="mb-1" />
           <h2 className="text-xs font-bold">Réservations</h2>
         </Link>

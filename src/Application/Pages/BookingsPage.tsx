@@ -1,26 +1,38 @@
 import { useEffect, useState } from 'react';
+import { useOutletContext } from 'react-router-dom';
 import { BookingList } from '../Components/Dashboard/BookingList';
-import { TableArea } from '../Components/Dashboard/TablePlan/TableArea';
 import { formatDateWithoutTime } from '../../Module/Utils/dateFormatterWithoutHour';
 import { dateService } from '../../Module/Utils/dateService';
 import { http } from '../../Infrastructure/Http/axios.instance';
 import { Booking } from '../../Module/Types/bookng.type';
 
+interface OutletContextType {
+  user: any;
+  company: any;
+  token: string;
+}
+
 export const BookingsPage = () => {
+  const { user, company, token } = useOutletContext<OutletContextType>();
   const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
   const [bookings, setBookings] = useState<Booking[]>([]);
 
   useEffect(() => {
+    if (!token) {
+      console.error("Token manquant. Redirection vers la page de connexion...");
+      // Rediriger ou effectuer une action si le token est manquant
+      return;
+    }
+
     const subscription = dateService.getDate().subscribe(date => {
       setSelectedDate(date);
-      fetchBookings(date);
+      fetchBookings(date, token);
     });
 
     return () => subscription.unsubscribe();
-  }, []);
+  }, [token]);
 
-  const fetchBookings = async (date: Date) => {
-    const token = localStorage.getItem('token');
+  const fetchBookings = async (date: Date, token: string) => {
     try {
       const normalizedDate = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
       const formattedDate = normalizedDate.toISOString().split('T')[0];
@@ -28,18 +40,21 @@ export const BookingsPage = () => {
       const response = await http.get(`/bookings/${formattedDate}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
+      console.log("Réservations récupérées avec succès :", response.data);
       setBookings(response.data);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Erreur lors de la récupération des réservations:', error);
+      if (error.response && error.response.status === 401) {
+        console.error("Non autorisé. Redirection vers la page de connexion...");
+        // Gestion de la redirection
+      }
     }
   };
 
-  // Calcul du nombre total de couverts en excluant les réservations annulées
   const totalCovers = bookings
-    .filter(booking => booking.status !== 'canceled') // Exclure les réservations annulées
+    .filter(booking => booking.status !== 'canceled')
     .reduce((sum, booking) => sum + booking.nbr_persons, 0);
 
-  // Calcul du nombre total de réservations en excluant les réservations annulées
   const validBookings = bookings.filter(booking => booking.status !== 'canceled').length;
 
   return (
@@ -52,7 +67,6 @@ export const BookingsPage = () => {
         | <span className="font-bold text-red-500 dark:text-white">{totalCovers}</span> couvert{totalCovers > 1 ? 's ' : ' '}
       </h2>
       <BookingList bookings={bookings} />
-      <TableArea />
     </div>
   );
 };

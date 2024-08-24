@@ -1,31 +1,40 @@
 import { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { http } from '../../Infrastructure/Http/axios.instance';
-import { useAuth } from '../../Module/Auth/useAuth'; // Assurez-vous que le chemin est correct
+import { useAuth } from '../../Module/Auth/useAuth';
 
 export const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
-  const { login } = useAuth(); // Récupérer la fonction login depuis useAuth
+  const { login } = useAuth(); 
   const navigate = useNavigate();
+
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    console.log('Tentative de connexion avec:', { email, password }); // Log des informations d'identification
+
     try {
       const response = await http.post('/login_manager', { email, password });
+      console.log('Réponse du serveur:', response.data); // Log de la réponse du serveur
+
       const { token, _id } = response.data;
       if (token && _id) {
+        console.log('Token et ID utilisateur reçus:', { token, _id });
+
         login(token, _id); // Connexion de l'utilisateur
         localStorage.setItem('token', token);
         localStorage.setItem('userId', _id);
+        console.log('Stockage du token et ID utilisateur dans le localStorage réussi');
+        console.log(token)
+        console.log(_id)
 
-        // Vérifications après connexion
-        console.log('Connexion réussie');
-        console.log('token', token);
-        console.log('UserId', _id);
-
-        navigate('/dashboard/bookings'); // Rediriger l'utilisateur après une connexion réussie
+        navigate('/dashboard/bookings'); // Redirection après la connexion réussie
+        console.log('Redirection vers /dashboard/bookings');
+      } else {
+        console.error('Le token ou l\'ID utilisateur est manquant dans la réponse du serveur');
+        setError('Erreur lors de la connexion. Veuillez réessayer.');
       }
     } catch (error: unknown) {
       console.error('Erreur de connexion:', error);

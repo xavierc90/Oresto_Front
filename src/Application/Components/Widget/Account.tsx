@@ -3,7 +3,7 @@ import ArrowButton from '../Widget/Form/ArrowButton';
 import CloseButton from '../Widget/Form/CloseButton';
 import { Booking } from '../Widget/Booking';
 import { useAuth } from '../../../Module/Auth/useAuth';
-import { UserInfos } from '../Widget/UserInfos'; // Importer le composant UserInfos
+import { UserSettings } from './UserSettings'; // Importer le composant UserSettings
 
 type AccountProps = {
   setIsLoging: (value: boolean) => void;
@@ -22,7 +22,7 @@ export const Account: React.FC<AccountProps> = ({
 }) => {
   const { user } = useAuth();
   const [showBooking, setShowBooking] = useState(false); // État pour contrôler la visibilité du composant Booking
-  const [showUserInfos, setShowUserInfos] = useState(false); // État pour contrôler la visibilité du composant UserInfos
+  const [showUserSettings, setShowUserSettings] = useState(false); // État pour contrôler la visibilité du composant UserSettings
   const [selectedDate, setSelectedDate] = useState<Date | null>(null); // État pour la date sélectionnée
 
   const handleClose = () => {
@@ -41,7 +41,7 @@ export const Account: React.FC<AccountProps> = ({
   const handleDateSelected = (date: Date) => {
     setSelectedDate(date);
     setShowBooking(true);
-    setShowUserInfos(false);
+    setShowUserSettings(false);
   };
 
   const handleTimeSelected = () => {
@@ -50,13 +50,13 @@ export const Account: React.FC<AccountProps> = ({
   };
 
   const handleManageAccountClick = () => {
-    setShowUserInfos(true);
+    setShowUserSettings(true);
     setShowBooking(false);
   };
 
   const handleReturnToAccount = () => {
     setShowBooking(false);
-    setShowUserInfos(false);
+    setShowUserSettings(false);
   };
 
   return (
@@ -66,7 +66,7 @@ export const Account: React.FC<AccountProps> = ({
         <CloseButton onClick={handleClose} />
       </div>
 
-      {!showBooking && !showUserInfos ? (
+      {!showBooking && !showUserSettings ? (
         <>
           <h1 className="text-center text-xl font-bold pb-2">Bonjour {user?.firstname}</h1>
           <h2 className="text-center mb-4">Comment puis-je vous aider ?</h2>
@@ -78,7 +78,7 @@ export const Account: React.FC<AccountProps> = ({
           </button>
           <button
             className="bg-black text-white text-sm font-bold px-4 py-2 rounded-lg mt-4"
-            onClick={handleManageAccountClick} // Afficher le composant UserInfos
+            onClick={handleManageAccountClick} // Afficher le composant UserSettings
           >
             Je souhaite gérer mon compte
           </button>
@@ -93,7 +93,7 @@ export const Account: React.FC<AccountProps> = ({
           onReturnToAccount={handleReturnToAccount}  // Permettre le retour à l'accueil
         />
       ) : (
-        <UserInfos 
+        <UserSettings 
           handleReturnToAccount={handleReturnToAccount}  // Gérer le retour à l'accueil
         />
       )}

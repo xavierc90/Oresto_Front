@@ -1,23 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { http } from '../../../../Infrastructure/Http/axios.instance';
 import { Table } from '../../../../Module/Types/table.type';
+import { useAuth } from '../../../../Module/Auth/useAuth'; // Importation du hook useAuth
 
 export const TableArea = () => {
   const [tables, setTables] = useState<Table[]>([]);
+  const { user, company } = useAuth(); // Récupération des informations utilisateur et entreprise via useAuth
 
   useEffect(() => {
     const fetchTables = async () => {
-      const token = localStorage.getItem('token');
-      const companyId = localStorage.getItem('companyId'); // Récupère le companyId depuis le localStorage
-      
-      if (!companyId) {
-        console.error('Company ID not found in localStorage');
+      if (!company || !company._id) {
+        console.error('Company ID not found in context');
         return;
       }
 
       try {
-        const response = await http.get(`/table_plan/2024-08-24?company_id=${companyId}`, {
-          headers: { Authorization: `Bearer ${token}` }
+        const response = await http.get(`/table_plan/2024-08-24?company_id=${company._id}`, {
+          headers: { Authorization: `Bearer ${user?.token}` },
         });
         setTables(response.data.tables);
       } catch (error: any) {
@@ -26,7 +25,7 @@ export const TableArea = () => {
     };
 
     fetchTables();
-  }, []);
+  }, [company, user]);
 
   const renderTableSVG = (table: Table) => {
     if (table.shape === 'rectangle') {

@@ -1,8 +1,6 @@
 import { createBrowserRouter, Navigate, Outlet } from "react-router-dom";
 import { HomePage } from "../../Application/Pages/HomePage";
 import { LoginPage } from "../../Application/Pages/LoginPage";
-import { RegisterPage } from "../../Application/Pages/RegisterPage";
-import { LostPasswordPage } from "../../Application/Pages/LostPasswordPage";
 import { DashboardPage } from "../../Application/Pages/DashboardPage";
 import { BookingsPage } from "../../Application/Pages/BookingsPage"; 
 import { ClientsPage } from "../../Application/Pages/ClientsPage"; 
@@ -14,7 +12,6 @@ import { useAuth } from '../../Module/Auth/useAuth';
 
 const ProtectedRoute = () => {
   const { user } = useAuth();
-
   return user ? <Outlet /> : <Navigate to="/login" />;
 };
 
@@ -28,40 +25,32 @@ export const router = createBrowserRouter([
     element: <LoginPage />,
   },
   {
-    path: "/register",
-    element: <RegisterPage />,
-  },
-  {
-    path: "/lostpassword",
-    element: <LostPasswordPage />,
-  },
-  {
     path: "/dashboard",
-    element: <ProtectedRoute />, // Protéger la route dashboard
+    element: <ProtectedRoute />,  // ProtectedRoute encapsule toutes les routes sous /dashboard
     children: [
       {
-        path: "",
-        element: <DashboardPage />, // DashboardPage avec DashboardNav
+        path: "", 
+        element: <DashboardPage />, // Assurez-vous que DashboardPage est bien rendu ici
         children: [
           {
             path: "bookings",
-            element: <BookingsPage />, // Les enfants sont déjà protégés par la route parent
+            element: <BookingsPage />,  // BookingsPage est protégé
           },
           {
             path: "table_plan",
-            element: <TablePlanPage />,
+            element: <TablePlanPage />,  // TablePlanPage est protégé
           },
           {
             path: "clients",
-            element: <ClientsPage />,
+            element: <ClientsPage />,  // ClientsPage est protégé
           },
           {
             path: "analytics",
-            element: <AnalyticsPage />,
+            element: <AnalyticsPage />,  // AnalyticsPage est protégé
           },
           {
             path: "settings",
-            element: <SettingsPage />,
+            element: <SettingsPage />,  // SettingsPage est protégé
           },
         ],
       },
@@ -69,10 +58,10 @@ export const router = createBrowserRouter([
   },
   {
     path: "/register_company",
-    element: <ProtectedRoute />, // Protéger la création d'entreprise
+    element: <ProtectedRoute />, // Protège la création d'entreprise
     children: [
       {
-        path: "",
+        path: "", 
         element: <RegisterCompany />,
       },
     ],
