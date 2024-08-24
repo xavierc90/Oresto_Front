@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { http } from '../../../../Infrastructure/Http/axios.instance';
 import { Table } from '../../../../Module/Types/table.type';
-import { useAuth } from '../../../../Module/Auth/auth.hook';
 
 export const TableArea = () => {
   const [tables, setTables] = useState<Table[]>([]);

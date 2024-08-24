@@ -55,7 +55,12 @@ export const Widget: React.FC<WidgetProps> = ({ setShowWidget, isContentVisible,
         {isContentVisible && ( 
           <div className='w-full bg-white p-4 lg:w-80 lg:h-auto'>
             {isLoggedIn ? ( // Afficher le composant Account si l'utilisateur est connecté
-              <Account />
+              <Account
+                  setIsLoging={setIsLoging} 
+                  onLogin={handleLogin} // Passer la fonction de gestion de la connexion
+                  isContentVisible={isContentVisible}
+                  setIsContentVisible={setIsContentVisible}
+                   />
             ) : isLostPassword ? (
               <FormResetPassword 
                 setIsLostPassword={setIsLostPassword} 
@@ -66,6 +71,7 @@ export const Widget: React.FC<WidgetProps> = ({ setShowWidget, isContentVisible,
             ) : (
               isLoging ? (
                 <LoginFormUser 
+                  onLoginSuccess={handleLogin} // Passer la fonction de gestion du succès de la connexion
                   setIsLoging={setIsLoging} 
                   setIsLostPassword={setIsLostPassword} 
                   onLogin={handleLogin} // Passer la fonction de gestion de la connexion

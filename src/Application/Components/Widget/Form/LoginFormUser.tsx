@@ -2,7 +2,6 @@ import React, { Dispatch, useState } from 'react';
 import ArrowButton from './ArrowButton';
 import CloseButton from './CloseButton';
 import { http } from '../../../../Infrastructure/Http/axios.instance';
-import { Account } from '../../Widget/Account'; // Import du composant Account
 
 type LoginFormUserProps = {
   setIsLoging: Dispatch<React.SetStateAction<boolean>>,
@@ -57,7 +56,7 @@ export const LoginFormUser: React.FC<LoginFormUserProps> = ({
       
       // Définir un message d'erreur en fonction de la réponse de l'API
       if (error.response && error.response.status === 401) {
-        setErrorMessage("Identifiant ou mot de passe incorrect.");
+        setErrorMessage("Adresse mail ou mot de passe incorrect.");
       } else if (error.response && error.response.status === 404) {
         setErrorMessage("Vous n'êtes pas inscrit.");
       } else {

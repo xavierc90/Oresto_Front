@@ -236,7 +236,7 @@ export const HomePage = () => {
  
       {showWidget && (
         <div // className='widget-container' //
-        >
+    >
           <Widget 
             setShowWidget={setShowWidget} 
             isContentVisible={isWidgetContentVisible}
