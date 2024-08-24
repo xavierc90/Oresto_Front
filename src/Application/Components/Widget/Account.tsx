@@ -1,14 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ArrowButton from '../Widget/Form/ArrowButton';
 import CloseButton from '../Widget/Form/CloseButton';
+import { Booking } from '../Widget/Booking';
 import { useAuth } from '../../../Module/Auth/useAuth';
+import { UserInfos } from '../Widget/UserInfos'; // Importer le composant UserInfos
 
 type AccountProps = {
   setIsLoging: (value: boolean) => void;
   isContentVisible: boolean;
   setIsContentVisible: (visible: boolean) => void;
   setShowWidget: (visible: boolean) => void;
-  handleLogout: () => void;  // Ajoutez cette ligne pour passer la fonction de déconnexion
+  handleLogout: () => void;
 };
 
 export const Account: React.FC<AccountProps> = ({
@@ -16,21 +18,45 @@ export const Account: React.FC<AccountProps> = ({
   isContentVisible,
   setIsContentVisible,
   setShowWidget,
-  handleLogout,  // Assurez-vous que handleLogout est accepté comme prop
+  handleLogout,
 }) => {
-  const { user } = useAuth();  // Récupération des informations utilisateur via useAuth
+  const { user } = useAuth();
+  const [showBooking, setShowBooking] = useState(false); // État pour contrôler la visibilité du composant Booking
+  const [showUserInfos, setShowUserInfos] = useState(false); // État pour contrôler la visibilité du composant UserInfos
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null); // État pour la date sélectionnée
 
   const handleClose = () => {
-    setShowWidget(false);  // Masquer le widget
+    setShowWidget(false);
   };
 
   const toggleContentVisibility = () => {
-    setIsContentVisible(!isContentVisible);  // Basculer la visibilité du contenu
+    setIsContentVisible(!isContentVisible);
   };
 
   const handleLogoutClick = () => {
-    handleLogout();  // Appeler la fonction de déconnexion passée en prop
-    setIsLoging(true);  // Assurer que l'état de connexion est mis à jour
+    handleLogout();
+    setIsLoging(true);
+  };
+
+  const handleDateSelected = (date: Date) => {
+    setSelectedDate(date);
+    setShowBooking(true);
+    setShowUserInfos(false);
+  };
+
+  const handleTimeSelected = () => {
+    setShowBooking(false);
+    console.log("Réservation confirmée pour la date", selectedDate);
+  };
+
+  const handleManageAccountClick = () => {
+    setShowUserInfos(true);
+    setShowBooking(false);
+  };
+
+  const handleReturnToAccount = () => {
+    setShowBooking(false);
+    setShowUserInfos(false);
   };
 
   return (
@@ -39,18 +65,38 @@ export const Account: React.FC<AccountProps> = ({
         <ArrowButton isContentVisible={isContentVisible} onClick={toggleContentVisibility} />
         <CloseButton onClick={handleClose} />
       </div>
-      <h1 className="text-center font-bold">Bonjour {user?.firstname}</h1>
-      <h2 className="text-center">Comment puis-je vous aider ?</h2>
-      <button className="bg-green-800 text-white text-sm font-bold px-4 py-2 rounded-lg mt-4">
-        Je souhaite réserver une table
-      </button>
-      <button className="bg-black text-white text-sm font-bold px-4 py-2 rounded-lg mt-4">
-        Je souhaite gérer mon compte
-      </button>
 
-      <p className="pt-7 pb-3">
-        <a href="#" onClick={handleLogoutClick}>Se déconnecter</a>  {/* Utilisation de handleLogoutClick */}
-      </p>
+      {!showBooking && !showUserInfos ? (
+        <>
+          <h1 className="text-center text-xl font-bold pb-2">Bonjour {user?.firstname}</h1>
+          <h2 className="text-center mb-4">Comment puis-je vous aider ?</h2>
+          <button
+            className="bg-green-800 text-white text-sm font-bold px-4 py-2 rounded-lg mt-4"
+            onClick={() => setShowBooking(true)} // Afficher le composant Booking
+          >
+            Je souhaite réserver une table
+          </button>
+          <button
+            className="bg-black text-white text-sm font-bold px-4 py-2 rounded-lg mt-4"
+            onClick={handleManageAccountClick} // Afficher le composant UserInfos
+          >
+            Je souhaite gérer mon compte
+          </button>
+          <p className="pt-7 pb-3">
+            <a href="#" onClick={handleLogoutClick}>Se déconnecter</a>
+          </p>
+        </>
+      ) : showBooking ? (
+        <Booking 
+          selectedDate={selectedDate} 
+          onTimeSelected={handleTimeSelected}
+          onReturnToAccount={handleReturnToAccount}  // Permettre le retour à l'accueil
+        />
+      ) : (
+        <UserInfos 
+          handleReturnToAccount={handleReturnToAccount}  // Gérer le retour à l'accueil
+        />
+      )}
     </div>
   );
 };

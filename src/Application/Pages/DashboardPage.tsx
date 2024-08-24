@@ -3,7 +3,7 @@ import { Outlet, useNavigate } from 'react-router-dom';
 import { DashboardNav } from '../Components/Dashboard/DashboardNav';
 import { IoIosNotifications, IoIosArrowDown } from "react-icons/io";
 import { http } from '../../Infrastructure/Http/axios.instance';
-import { Company } from '../../Module/Auth/company.type';
+import { Company } from '../../Module/Types/company.type';
 import { User } from '../../Module/Auth/user.type';
 import { useAuth } from '../../Module/Auth/useAuth';
 

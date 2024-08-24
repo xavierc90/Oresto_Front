@@ -1,5 +1,5 @@
 import { useOutletContext } from 'react-router-dom';
-import { Company } from '../../Module/Auth/company.type';
+import { Company } from '../../Module/Types/company.type';
 import { useDarkMode } from '../../Module/Utils/darkMode'; // Assurez-vous que le chemin est correct
 
 interface ContextType {

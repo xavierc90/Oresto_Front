@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { authService } from './authService';
-import { Company } from './company.type';
+import { Company } from '../Types/company.type';
 import { User } from './user.type';
 
 export const useAuth = () => {

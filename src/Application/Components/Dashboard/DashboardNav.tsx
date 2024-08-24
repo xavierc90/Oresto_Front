@@ -7,7 +7,7 @@ import { FaGear } from "react-icons/fa6";
 import { LuLayoutDashboard } from "react-icons/lu";
 import { MdLogout } from "react-icons/md";
 import { CalendarShadcn } from "./CalendarShadcn";
-import { Company } from '../../../Module/Auth/company.type';
+import { Company } from '../../../Module/Types/company.type';
 import { useAuth } from '../../../Module/Auth/useAuth'; // Utiliser le nouveau useAuth
 import { dateService } from '../../../Module/Utils/dateService';
 import { searchService } from '../../../Module/Utils/searchService';

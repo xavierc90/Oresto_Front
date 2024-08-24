@@ -5,7 +5,7 @@ import { http } from '../Infrastructure/Http/axios.instance';
 
 // Types
 import { User } from './Auth/user.type';
-import { Company } from './Auth/company.type';
+import { Company } from './Types/company.type';
 import { Table } from '../Module/Types/table.type'; // Assurez-vous que ce type est défini
 
 interface DashboardContextType {

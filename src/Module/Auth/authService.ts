@@ -1,6 +1,6 @@
 import { BehaviorSubject } from 'rxjs';
 import { User } from './user.type';
-import { Company } from './company.type';
+import { Company } from '../Types/company.type';
 
 class AuthService {
   private userSubject = new BehaviorSubject<User | null>(this.loadFromLocalStorage('user'));
