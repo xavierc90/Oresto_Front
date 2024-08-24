@@ -1,6 +1,6 @@
 import { FaSort } from "react-icons/fa";
 import { useState } from 'react';
-import { User } from '../../../Module/Types/user.type';
+import { User } from '../../../Module/Auth/user.type';
 import { formatDateToFrench } from '../../../Module/Utils/dateFormatter';
 
 interface ClientListProps {

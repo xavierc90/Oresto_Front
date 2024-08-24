@@ -1,5 +1,4 @@
-import { ReactNode } from 'react';
-import { createBrowserRouter, Navigate } from "react-router-dom";
+import { createBrowserRouter, Navigate, Outlet } from "react-router-dom";
 import { HomePage } from "../../Application/Pages/HomePage";
 import { LoginPage } from "../../Application/Pages/LoginPage";
 import { RegisterPage } from "../../Application/Pages/RegisterPage";
@@ -7,20 +6,16 @@ import { LostPasswordPage } from "../../Application/Pages/LostPasswordPage";
 import { DashboardPage } from "../../Application/Pages/DashboardPage";
 import { BookingsPage } from "../../Application/Pages/BookingsPage"; 
 import { ClientsPage } from "../../Application/Pages/ClientsPage"; 
-import { useAuth } from "../../Module/Auth/auth.hook";
 import { TablePlanPage } from "../../Application/Pages/TablePlanPage";
 import { AnalyticsPage } from "../../Application/Pages/AnalyticsPage";
 import { SettingsPage } from "../../Application/Pages/SettingsPage";
 import { RegisterCompany } from "../../Application/Pages/RegisterCompany";
+import { useAuth } from '../../Module/Auth/useAuth';
 
-type ProtectedRouteProps = {
-  element: ReactNode;
-};
+const ProtectedRoute = () => {
+  const { user } = useAuth();
 
-const ProtectedRoute = ({ element }: ProtectedRouteProps) => {
-  const { isAuthenticated } = useAuth();
-
-  return isAuthenticated ? element : <Navigate to="/login" />;
+  return user ? <Outlet /> : <Navigate to="/login" />;
 };
 
 export const router = createBrowserRouter([
@@ -29,11 +24,11 @@ export const router = createBrowserRouter([
     element: <HomePage />,
   },
   {
-    path: "/login", // Connexion Manager
+    path: "/login",
     element: <LoginPage />,
   },
   {
-    path: "/register", // Inscription Manager
+    path: "/register",
     element: <RegisterPage />,
   },
   {
@@ -42,32 +37,44 @@ export const router = createBrowserRouter([
   },
   {
     path: "/dashboard",
-    element: <ProtectedRoute element={<DashboardPage />} />,
+    element: <ProtectedRoute />, // Protéger la route dashboard
     children: [
       {
-        path: "bookings",
-        element: <ProtectedRoute element={<BookingsPage />} />,
+        path: "",
+        element: <DashboardPage />, // DashboardPage avec DashboardNav
+        children: [
+          {
+            path: "bookings",
+            element: <BookingsPage />, // Les enfants sont déjà protégés par la route parent
+          },
+          {
+            path: "table_plan",
+            element: <TablePlanPage />,
+          },
+          {
+            path: "clients",
+            element: <ClientsPage />,
+          },
+          {
+            path: "analytics",
+            element: <AnalyticsPage />,
+          },
+          {
+            path: "settings",
+            element: <SettingsPage />,
+          },
+        ],
       },
-      {
-        path: "table_plan",
-        element: <ProtectedRoute element={<TablePlanPage />} />,
-      },
-      {
-        path: "clients",
-        element: <ProtectedRoute element={<ClientsPage />} />,
-      },
-      {
-        path: "analytics",
-        element: <ProtectedRoute element={<AnalyticsPage />} />,
-      },
-      {
-        path: "settings",
-        element: <ProtectedRoute element={<SettingsPage />} />,
-      }    
     ],
   },
   {
-    path: "/register_company", // Création de l'entreprise
-    element: <ProtectedRoute element={<RegisterCompany />} />,
+    path: "/register_company",
+    element: <ProtectedRoute />, // Protéger la création d'entreprise
+    children: [
+      {
+        path: "",
+        element: <RegisterCompany />,
+      },
+    ],
   },
 ]);

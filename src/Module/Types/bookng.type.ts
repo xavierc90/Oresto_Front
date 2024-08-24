@@ -1,4 +1,4 @@
-import { User } from './user.type';
+import { User } from '../Auth/user.type';
 import { Table } from './table.type';
 
 export type Booking = {

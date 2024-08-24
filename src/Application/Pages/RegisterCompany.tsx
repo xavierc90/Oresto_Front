@@ -1,14 +1,14 @@
 import { ChangeEvent, FormEvent, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { http } from '../../Infrastructure/Http/axios.instance';
-import { useAuth } from '../../Module/Auth/auth.hook';
+import { useAuth } from '../../Module/Auth/useAuth';
 
 export const RegisterCompany = () => {
   useEffect(() => {
     document.title = 'Oresto - Créer une entreprise';
   }, []);
 
-  const { userId } = useAuth();
+  const { user } = useAuth();  // Récupérer l'utilisateur actuel à partir du hook useAuth
   const [formData, setFormData] = useState({
     companyName: '',
     companyAddress: '',
@@ -29,29 +29,36 @@ export const RegisterCompany = () => {
 
   const handleCompanyCreation = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (!user) {
+      setErrorMessage("Vous devez être connecté pour créer une entreprise.");
+      return;
+    }
+
     const companyData = {
       name: formData.companyName,
       address: formData.companyAddress,
       postal_code: formData.companyPostalCode,
       city: formData.companyCity,
       country: formData.companyCountry,
-      user_id: userId
+      user_id: user.user_id  // Utiliser l'ID utilisateur provenant du hook useAuth
     };
+    
     try {
       const response = await http.post('/add_company', companyData, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
       });
+      
       if (response.status === 201) {
         const companyId = response.data._id; // Assurez-vous que l'ID de la société est bien renvoyé dans la réponse
         localStorage.setItem('companyId', companyId); // Stocker l'ID de la société
         console.log('Company ID:', companyId); // Afficher l'ID de la société dans la console
-        
-  console.log('Résultat après création du restaurant :');
-  console.log('Token:', localStorage.getItem('token'));
-  console.log('userId:', localStorage.getItem('userId'));
-  console.log('companyId:', localStorage.getItem('companyId'));
+
+        console.log('Résultat après création du restaurant :');
+        console.log('Token:', localStorage.getItem('token'));
+        console.log('userId:', user.user_id);
+        console.log('companyId:', localStorage.getItem('companyId'));
 
         alert('Entreprise créée avec succès !');
         navigate('/dashboard/bookings'); // Rediriger l'utilisateur vers dashboard/bookings

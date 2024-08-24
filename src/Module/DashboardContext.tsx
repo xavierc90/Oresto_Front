@@ -4,8 +4,8 @@ import { useAuth } from '../Module/Auth/auth.hook';
 import { http } from '../Infrastructure/Http/axios.instance';
 
 // Types
-import { User } from '../Module/Types/user.type';
-import { Company } from '../Module/Types/company.type';
+import { User } from './Auth/user.type';
+import { Company } from './Auth/company.type';
 import { Table } from '../Module/Types/table.type'; // Assurez-vous que ce type est défini
 
 interface DashboardContextType {

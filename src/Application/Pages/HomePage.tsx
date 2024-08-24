@@ -12,10 +12,6 @@ export const HomePage = () => {
     setIsWidgetContentVisible(true);
   };
 
-  const toggleWidgetContentVisibility = () => {
-    setIsWidgetContentVisible(!isWidgetContentVisible);
-  };
-
   const toggleMenuVisibility = () => {
     setIsMenuVisible(!isMenuVisible);
   };
@@ -87,47 +83,27 @@ export const HomePage = () => {
       </div>
 
       <div id="menu" className='bg-gray-100 py-16 px-4 flex flex-col justify-center items-center lg:h-screen'>
-  <h1 className='main-subtitle text-black text-2xl mb-12 pt-12 text-green-800'>Découvrez notre carte</h1>
+  <h1 className='main-subtitle text-black text-lg mb-12 pt-12 text-green-800'>Découvrez notre carte</h1>
   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl w-full">
     
     <div className="rounded-lg shadow-lg bg-white">
       <img src="../../../public/img/entree.jpg" alt="Entrées" className="w-full h-90 object-cover rounded-t-lg mb-4"/>
-      <h2 className='text-xl text-center font-bold mb-4'>Entrées</h2>
-      <ul className='pl-5 pb-8'>
-        <li className='mb-2'>- Salade de chèvre chaud</li>
-        <li className='mb-2'>- Soupe à l'oignon gratinée</li>
-        <li className='mb-2'>- Tartare de saumon</li>
-      </ul>
+      <h2 className='text-center font-bold mb-4'>Entrées</h2>
     </div>
 
     <div className="bg-white rounded-lg shadow-lg">
       <img src="../../../public/img/plats.jpg" alt="Plats" className="w-full h-50 object-cover rounded-t-lg mb-4"/>
-      <h2 className='text-xl font-bold mb-4 text-center'>Plats</h2>
-      <ul className='pl-5 pb-8'>
-        <li className='mb-2'>- Filet de bœuf sauce au poivre</li>
-        <li className='mb-2'>- Poulet rôti à l'ail et au thym</li>
-        <li className='mb-2'>- Risotto aux champignons</li>
-      </ul>
+      <h2 className='font-bold mb-4 text-center'>Plats</h2>
     </div>
 
     <div className="bg-white rounded-lg shadow-lg">
       <img src="../../../public/img/dessert.jpg" alt="Desserts" className="w-full h-[295px] object-cover rounded-t-lg mb-4"/>
-      <h2 className='text-xl font-bold mb-4 text-center'>Desserts</h2>
-      <ul className='pl-5 pb-8'>
-        <li className='mb-2'>- Tarte au citron meringuée</li>
-        <li className='mb-2'>- Fondant au chocolat</li>
-        <li className='mb-2'>- Crème brûlée</li>
-      </ul>
+      <h2 className='font-bold mb-4 text-center'>Desserts</h2>
     </div>
 
     <div className="bg-white rounded-lg shadow-lg">
       <img src="../../../public/img/boisson.jpg" alt="Boissons" className="w-full h-[300px] object-cover rounded-t-lg mb-4"/>
-      <h2 className='text-xl font-bold mb-4 text-center'>Boissons</h2>
-      <ul className='pl-5 pb-8'>
-        <li className='mb-2'>- Vin rouge</li>
-        <li className='mb-2'>- Vin blanc</li>
-        <li className='mb-2'>- Jus de fruits</li>
-      </ul>
+      <h2 className='font-bold mb-4 text-center'>Boissons</h2>
     </div>
 
   </div>
@@ -136,7 +112,7 @@ export const HomePage = () => {
 
 
 <div id="contact" className='bg-zinc-900 min-h-screen text-white flex flex-col justify-center items-center py-16 px-4'>
-  <h1 className='main-subtitle text-white text-3xl lg:mt-10 lg:mb-12'>Nous contacter</h1>
+  <h1 className='main-subtitle text-white text-lg lg:mt-10 lg:mb-12'>Nous contacter</h1>
   <div className='w-full max-w-4xl flex flex-wrap'>
     <div className='w-full bg-zinc-950 flex flex-col justify-center lg:w-1/2 px-4 mt-12 lg:mt-0'>
       <ul className='list-disc mb-4 list-none lg:pl-10'>
@@ -162,7 +138,7 @@ export const HomePage = () => {
           <li className='text-sm'>123 rue fictive, 75001 Paris, France</li>
       </ul>
     </div>
-    <div className='w-full bg-black lg:w-1/2 p-12 lg:order-first'>
+    <div className='w-full bg-black lg:w-1/2 p-7 lg:order-first'>
       <form className='w-full max-w-lg rounded-lg shadow-lg'>
       <h2 className='text-lg font-bold'>Remplir le formulaire</h2>
       <h3 className='mb-4'>Tous les champs doivent être remplis</h3>

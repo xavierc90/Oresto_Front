@@ -7,8 +7,8 @@ import { FaGear } from "react-icons/fa6";
 import { LuLayoutDashboard } from "react-icons/lu";
 import { MdLogout } from "react-icons/md";
 import { CalendarShadcn } from "./CalendarShadcn";
-import { Company } from '../../../Module/Types/company.type';
-import { useAuth } from '../../../Module/Auth/auth.hook';
+import { Company } from '../../../Module/Auth/company.type';
+import { useAuth } from '../../../Module/Auth/useAuth'; // Utiliser le nouveau useAuth
 import { dateService } from '../../../Module/Utils/dateService';
 import { searchService } from '../../../Module/Utils/searchService';
 
@@ -22,7 +22,7 @@ export const DashboardNav: React.FC<DashboardNavProps> = ({ company }) => {
   const [darkMode, setDarkMode] = useState<boolean>(false);
   const location = useLocation();
   const navigate = useNavigate();
-  const { logout } = useAuth();
+  const { logout } = useAuth(); // Récupération de la fonction de déconnexion
 
   useEffect(() => {
     const savedTheme = localStorage.getItem('darkMode');
@@ -55,7 +55,7 @@ export const DashboardNav: React.FC<DashboardNavProps> = ({ company }) => {
   };
 
   const handleLogout = () => {
-    logout();
+    logout(); // Appel de la fonction de déconnexion
     navigate('/login');
   };
 
@@ -79,15 +79,15 @@ export const DashboardNav: React.FC<DashboardNavProps> = ({ company }) => {
       return newMode;
     });
   };
+
   const logoSrc = darkMode 
   ? "../../../../public/img/logo-oresto-white.png" 
   : "../../../../public/img/logo-oresto-red.png";
 
-
   return (
     <div className='bg-light dark:bg-dark-900 dark:text-white w-80 h-screen flex flex-col items-center shadow-2xl mt-2'>
       <div className='mt-4'>
-      <img src={logoSrc} width="220px" alt="Logo Oresto" />
+        <img src={logoSrc} width="220px" alt="Logo Oresto" />
         {company && <h1 className='text-center pt-5 font-bold'>{company.name}</h1>}
       </div>
       

@@ -3,18 +3,19 @@ import { Outlet, useNavigate } from 'react-router-dom';
 import { DashboardNav } from '../Components/Dashboard/DashboardNav';
 import { IoIosNotifications, IoIosArrowDown } from "react-icons/io";
 import { http } from '../../Infrastructure/Http/axios.instance';
-import { Company } from '../../Module/Types/company.type';
-import { User } from '../../Module/Types/user.type';
-import { useAuth } from '../../Module/Auth/auth.hook';
+import { Company } from '../../Module/Auth/company.type';
+import { User } from '../../Module/Auth/user.type';
+import { useAuth } from '../../Module/Auth/useAuth';
 
 export const DashboardPage = () => {
   const [user, setUser] = useState<User | null>(null);
   const [company, setCompany] = useState<Company | null>(null);
-  const { isAuthenticated, userId } = useAuth();
+  const { user: authUser, logout } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!isAuthenticated || !userId) {
+    if (!authUser || !authUser.user_id) {
+      logout();
       navigate('/login');
       return;
     }
@@ -22,12 +23,13 @@ export const DashboardPage = () => {
     const fetchData = async () => {
       const token = localStorage.getItem('token');
       if (!token) {
+        logout();
         navigate('/login');
         return;
       }
 
       try {
-        const userResponse = await http.get(`find_user/${userId}`, {
+        const userResponse = await http.get(`find_user/${authUser.user_id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -39,12 +41,17 @@ export const DashboardPage = () => {
         }
       } catch (error) {
         console.error('Erreur lors de la récupération des données:', error);
+        logout();
         navigate('/login');
       }
     };
 
     fetchData();
-  }, [isAuthenticated, userId, navigate]);
+  }, [authUser, navigate, logout]);
+
+  if (!user || !company) {
+    return <div>Chargement...</div>; // Montre un écran de chargement pendant la récupération des données
+  }
 
   return (
     <div className='flex dark:bg-dark-800 dark:text-white'>

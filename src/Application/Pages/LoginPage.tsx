@@ -1,14 +1,13 @@
 import { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { http } from '../../Infrastructure/Http/axios.instance';
-import { useAuth } from '../../Module/Auth/auth.hook';
-import { Underline } from 'lucide-react';
+import { useAuth } from '../../Module/Auth/useAuth'; // Assurez-vous que le chemin est correct
 
 export const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
-  const { login: loginManager } = useAuth();
+  const [error, setError] = useState<string | null>(null);
+  const { login } = useAuth(); // Récupérer la fonction login depuis useAuth
   const navigate = useNavigate();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -17,14 +16,14 @@ export const LoginPage = () => {
       const response = await http.post('/login_manager', { email, password });
       const { token, _id } = response.data;
       if (token && _id) {
-        loginManager(token, _id);
+        login(token, _id); // Connexion de l'utilisateur
         localStorage.setItem('token', token);
         localStorage.setItem('userId', _id);
 
         // Vérifications après connexion
         console.log('Connexion réussie');
-        console.log('token', token)  
-        console.log('UserId', _id)  
+        console.log('token', token);
+        console.log('UserId', _id);
 
         navigate('/dashboard/bookings'); // Rediriger l'utilisateur après une connexion réussie
       }

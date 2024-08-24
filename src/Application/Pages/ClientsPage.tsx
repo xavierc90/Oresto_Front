@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { ClientList } from "../Components/Dashboard/ClientList";
 import { ClientInfos } from "../Components/Dashboard/ClientInfos";
 import { useOutletContext } from 'react-router-dom';
-import { User } from '../../Module/Types/user.type';
+import { User } from '../../Module/Auth/user.type';
 import { http } from '../../Infrastructure/Http/axios.instance';
 import { searchService } from '../../Module/Utils/searchService'; // Importez le service
 

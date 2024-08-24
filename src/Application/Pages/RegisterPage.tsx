@@ -1,11 +1,10 @@
 import { ChangeEvent, FormEvent, useState, useEffect } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { useAuth } from '../../Module/Auth/auth.hook'; // Ensure you import useAuth properly
+import { useAuth } from '../../Module/Auth/useAuth'; // Assurez-vous que le chemin est correct
 import { http } from '../../Infrastructure/Http/axios.instance';
 import { AxiosError } from 'axios';
 
 export const RegisterPage = () => {
-  
   const { login } = useAuth();
   const navigate = useNavigate();
 
@@ -18,13 +17,13 @@ export const RegisterPage = () => {
   const [isCheckboxChecked, setIsCheckboxChecked] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
+  useEffect(() => {
+    document.title = 'Oresto - Inscription';
+  }, []);
+
   const handleCheckboxChange = (event: ChangeEvent<HTMLInputElement>) => {
     setIsCheckboxChecked(event.target.checked);
   };
-
-  interface ErrorResponse {
-    message: string;
-  }
 
   const isFormValid = firstName.trim() !== '' &&
                       lastName.trim() !== '' &&
@@ -55,21 +54,23 @@ export const RegisterPage = () => {
     };
 
     try {
+      // Inscription de l'utilisateur
       const registerResponse = await http.post('/register_manager', managerData);
       if (registerResponse.status === 201) {
+        // Connexion de l'utilisateur après inscription
         const loginResponse = await http.post('/login_manager', { email, password });
         if (loginResponse.status === 200 && loginResponse.data.token) {
-          login(loginResponse.data.token, loginResponse.data._id); // Handling login
+          login(loginResponse.data.token, loginResponse.data._id); // Connexion réussie
           alert('Inscription et connexion réussies !');
-          navigate('/register_company');
+          navigate('/register_company'); // Redirection vers la création de l'entreprise
         } else {
           setErrorMessage('Une erreur est survenue lors de la connexion.');
         }
       } else {
-        setErrorMessage('Une erreur est survenue lors de l\'inscription');
+        setErrorMessage('Une erreur est survenue lors de l\'inscription.');
       }
     } catch (error: unknown) {
-      const e = error as AxiosError<ErrorResponse>; // Spécification du type de données attendues dans la réponse
+      const e = error as AxiosError<{ message: string }>;
       if (e.response && e.response.data) {
         setErrorMessage(e.response.data.message || 'Une erreur réseau est survenue');
       } else {
@@ -77,7 +78,7 @@ export const RegisterPage = () => {
       }
       console.error('Erreur lors de l\'inscription ou de la connexion:', e);
     }
-  }
+  };
 
   return (
     <div className='w-full h-screen flex'>
@@ -188,9 +189,8 @@ export const RegisterPage = () => {
                 />
                 J'accepte les{' '}
                 <a href="#" className="text-black font-bold underline hover:text-red-600">
-        conditions d'utilisation
+                  conditions d'utilisation
                 </a>
-                
               </div>
 
               <button
