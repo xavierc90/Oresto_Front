@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { authService } from './authService';
-import { User } from './user.type';
 import { Company } from './company.type';
+import { User } from './user.type';
 
 export const useAuth = () => {
   const [user, setUser] = useState<User | null>(authService.currentUser);
@@ -19,8 +19,6 @@ export const useAuth = () => {
 
   const login = (user: User, company: Company) => {
     authService.login(user, company);
-    setUser(user);
-    setCompany(company);
   };
 
   const logout = () => {

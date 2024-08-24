@@ -6,7 +6,7 @@ import ArrowButton from './Form/ArrowButton';
 import CloseButton from './Form/CloseButton';
 import { RiDragMove2Fill } from "react-icons/ri";
 import { Account } from './../Widget/Account';
-import { useAuth } from '../../../Module/Auth/useAuth.tsx';
+import { useAuth } from '../../../Module/Auth/useAuth';
 
 type WidgetProps = {
   setShowWidget: (visible: boolean) => void;
@@ -24,7 +24,7 @@ export const Widget: React.FC<WidgetProps> = ({
   const [isLostPassword, setIsLostPassword] = useState(false);
 
   useEffect(() => {
-    console.log("Current user:", user);
+    console.log("Current user in Widget:", user);
     if (user) {
       setIsLoging(false);  // Si l'utilisateur est connecté, mettre à jour l'état
     }

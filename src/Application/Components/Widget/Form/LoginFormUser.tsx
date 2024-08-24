@@ -1,8 +1,8 @@
 import React, { Dispatch, useState } from 'react';
 import ArrowButton from './ArrowButton';
 import CloseButton from './CloseButton';
-import { useAuth } from '../../../../Module/Auth/useAuth';  // Assurez-vous que ce chemin est correct²
-import { http } from '../../../../Infrastructure/Http/axios.instance'
+import { useAuth } from '../../../../Module/Auth/useAuth';
+import { http } from '../../../../Infrastructure/Http/axios.instance';
 
 type LoginFormUserProps = {
   setIsLoging: Dispatch<React.SetStateAction<boolean>>;
@@ -10,7 +10,7 @@ type LoginFormUserProps = {
   isContentVisible: boolean;
   setIsContentVisible: (visible: boolean) => void;
   setShowWidget: (visible: boolean) => void;
-  onLoginSuccess: () => void;  // Ajoutez cette ligne
+  onLoginSuccess: () => void;
 };
 
 export const LoginFormUser: React.FC<LoginFormUserProps> = ({
@@ -19,7 +19,7 @@ export const LoginFormUser: React.FC<LoginFormUserProps> = ({
   isContentVisible,
   setIsContentVisible,
   setShowWidget,
-  onLoginSuccess,  // Assurez-vous que onLoginSuccess est accepté comme prop
+  onLoginSuccess,
 }) => {
   const { login } = useAuth();
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -43,21 +43,32 @@ export const LoginFormUser: React.FC<LoginFormUserProps> = ({
     const formData = new FormData(form);
     const email = formData.get('email') as string;
     const password = formData.get('password') as string;
-  
+
+    console.log('Attempting login with email:', email, 'and password:', password);
+
     try {
       const response = await http.post('/login', { email, password });
-      const user = response.data.user;  // Récupérer les données utilisateur
-      const company = response.data.company;  // Récupérer les données de l'entreprise
-  
-      console.log("User data received:", user);  // Vérifiez que les données sont correctes
-      login(user, company);  // Mettre à jour l'état utilisateur via le hook useAuth
-  
-      onLoginSuccess();  // Appeler onLoginSuccess après une connexion réussie
+      console.log('Login response:', response.data); // Log the entire response data
+
+      const user = response.data; // Assuming user data is directly in the response
+      const company = response.data.company || {}; // Assuming company data might be nested or not present
+
+      console.log('User data received:', user); // Check if user data is correctly received
+      console.log('Company data received:', company); // Check if company data is correctly received
+
+      if (user) {
+        login(user, company); // Update the auth state
+        onLoginSuccess(); // Trigger post-login success actions
+      } else {
+        console.error('Invalid user or company data provided:', { user, company });
+        setErrorMessage('Données utilisateur ou entreprise invalides.');
+      }
     } catch (error: any) {
       console.error('Error logging in:', error.response ? error.response.data : error.message);
       setErrorMessage("Identifiant ou mot de passe incorrect.");
     }
   };
+
   return (
     <div className="flex flex-col z-50 justify-center items-center pt-5 pb-0 bg-white w-full h-screen lg:h-auto lg-w-auto">
       <div className="fixed flex top-5 right-4 mr-2 gap-2 lg:hidden">

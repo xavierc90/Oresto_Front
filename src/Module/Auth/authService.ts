@@ -3,11 +3,24 @@ import { User } from './user.type';
 import { Company } from './company.type';
 
 class AuthService {
-  private userSubject = new BehaviorSubject<User | null>(null);
-  private companySubject = new BehaviorSubject<Company | null>(null);
+  private userSubject = new BehaviorSubject<User | null>(this.loadFromLocalStorage('user'));
+  private companySubject = new BehaviorSubject<Company | null>(this.loadFromLocalStorage('company'));
 
   public user$ = this.userSubject.asObservable();
   public company$ = this.companySubject.asObservable();
+
+  private loadFromLocalStorage(key: string) {
+    const data = localStorage.getItem(key);
+    if (data) {
+      try {
+        return JSON.parse(data);
+      } catch (error) {
+        console.error(`Failed to parse ${key} from localStorage`, error);
+        return null; // Return null if parsing fails
+      }
+    }
+    return null;
+  }
 
   login(user: User, company: Company) {
     this.userSubject.next(user);
@@ -25,23 +38,11 @@ class AuthService {
   }
 
   get currentUser(): User | null {
-    const user = localStorage.getItem('user');
-    try {
-      return user ? JSON.parse(user) : null;
-    } catch (error) {
-      console.error("Failed to parse user from localStorage", error);
-      return null;
-    }
+    return this.userSubject.value;
   }
 
   get currentCompany(): Company | null {
-    const company = localStorage.getItem('company');
-    try {
-      return company ? JSON.parse(company) : null;
-    } catch (error) {
-      console.error("Failed to parse company from localStorage", error);
-      return null;
-    }
+    return this.companySubject.value;
   }
 }
 
