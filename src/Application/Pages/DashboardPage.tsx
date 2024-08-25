@@ -13,7 +13,8 @@ export const DashboardPage = () => {
 
   useEffect(() => {
     if (!user || !token) {
-      navigate('/login'); // Redirige vers la page de login si l'utilisateur ou le token est manquant
+      console.log("User or token missing, redirecting to login.");
+      navigate('/login');
       return;
     }
 
@@ -23,11 +24,8 @@ export const DashboardPage = () => {
           headers: { Authorization: `Bearer ${token}` },
         });
 
-        if (userResponse.data) {
-          // Si l'utilisateur a une ou plusieurs compagnies, on prend la première
-          if (userResponse.data.company && userResponse.data.company.length > 0) {
-            setCompany(userResponse.data.company[0]);
-          }
+        if (userResponse.data && userResponse.data.company) {
+          setCompany(userResponse.data.company[0]); // Assure que la première company est sélectionnée
         }
       } catch (error) {
         console.error('Erreur lors de la récupération des données:', error);
@@ -42,7 +40,7 @@ export const DashboardPage = () => {
     <div className='flex dark:bg-dark-800 dark:text-white'>
       <DashboardNav company={company} />
       <div className='w-9/12'>
-        <Outlet context={{ user, company }} />
+        <Outlet context={{ user, company, token }} />
       </div>
       <div className="flex absolute right-12 mr-4 top-10 gap-2">
         <IoIosNotifications size={25} />

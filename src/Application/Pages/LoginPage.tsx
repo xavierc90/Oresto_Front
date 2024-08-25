@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { http } from '../../Infrastructure/Http/axios.instance';
 import { useAuth } from '../../Module/Auth/useAuth';
-import { User } from '../../Module/Auth/user.type';
 
 export const LoginPage = () => {
   const [email, setEmail] = useState('');
@@ -13,43 +12,31 @@ export const LoginPage = () => {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log('Tentative de connexion avec:', { email, password }); // Log des informations d'identification
 
     try {
       const response = await http.post('/login_manager', { email, password });
-      console.log('Réponse du serveur:', response.data); // Log de la réponse du serveur
 
-      const { token, _id, firstname, lastname, role, phone_number, allergens } = response.data;
-      const company = response.data.company;  // Assurez-vous que `company` est bien présent dans la réponse du serveur
+      if (response.data.token) {
+        const user = response.data; // Contient toutes les informations utilisateur, y compris `company`
+        const companyArray = response.data.company; // Contient les informations de la société (tableau)
+        const token = response.data.token; // Contient le token
 
-      const user: User = {
-        _id,
-        email,
-        firstname,
-        lastname,
-        role,
-        phone_number,
-        allergens,
-        table_id: '',  // Assurez-vous d'ajouter la bonne valeur pour `table_id` si nécessaire
-      };
+        // Vérifier si le tableau company contient au moins un objet avec un `_id`
+        const hasValidCompany = Array.isArray(companyArray) && companyArray.some((company: any) => company._id);
 
-      if (token && _id && company) {
-        console.log('Token, ID utilisateur, et Company reçus:', { token, _id, company });
+        login(user, companyArray, token); // Connexion de l'utilisateur avec toutes les informations nécessaires
 
-        login(user, company, token); // Connexion de l'utilisateur
-        console.log('Stockage des données dans le localStorage réussi');
-        console.log('Token:', token);
-        console.log('User ID:', _id);
-        console.log('Company:', company);
-
-        navigate('/dashboard/bookings'); // Redirection après la connexion réussie
-        console.log('Redirection vers /dashboard/bookings');
+        if (!hasValidCompany) {
+          // Si l'utilisateur n'a pas de société valide, rediriger vers la page de création de société
+          navigate('/register_company');
+        } else {
+          // Sinon, rediriger vers la page des réservations
+          navigate('/dashboard/bookings');
+        }
       } else {
-        console.error('Le token, l\'ID utilisateur ou les informations de la société sont manquants dans la réponse du serveur');
         setError('Erreur lors de la connexion. Veuillez réessayer.');
       }
     } catch (error: unknown) {
-      console.error('Erreur de connexion:', error);
       setError('Identifiant ou mot de passe incorrect. Veuillez réessayer.');
     }
   };

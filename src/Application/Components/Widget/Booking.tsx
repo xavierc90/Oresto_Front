@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { http } from '../../../Infrastructure/Http/axios.instance';
 import { CalendarShadcn } from '../Dashboard/CalendarShadcn';
 import { useAuth } from '../../../Module/Auth/useAuth'; 
 import { AiOutlineCalendar } from 'react-icons/ai';
@@ -10,13 +11,14 @@ type BookingProps = {
 };
 
 export const Booking: React.FC<BookingProps> = ({ selectedDate, onTimeSelected, onReturnToAccount }) => {
-  const { user } = useAuth();
-  const [step, setStep] = useState<'selectDate' | 'selectTime' | 'confirm'>('selectDate');
+  const { user, token } = useAuth();
+  const [step, setStep] = useState<'selectDate' | 'selectTime' | 'confirm' | 'success'>('selectDate');
   const [timeSelected, setTimeSelected] = useState<string | null>(null);
-  const [localDate, setLocalDate] = useState<Date>(selectedDate ?? new Date());  // Utilisation d'une date par défaut si selectedDate est null ou undefined
+  const [localDate, setLocalDate] = useState<Date>(selectedDate ?? new Date());  
   const [nbrPersons, setNbrPersons] = useState(1);
   const [additionalInfo, setAdditionalInfo] = useState<string>(''); 
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [reservationDetails, setReservationDetails] = useState<any>(null); // Pour stocker les détails de la réservation réussie
 
   useEffect(() => {
     if (!selectedDate) {
@@ -33,7 +35,7 @@ export const Booking: React.FC<BookingProps> = ({ selectedDate, onTimeSelected, 
   const handleDateSelect = (date: Date) => {
     setLocalDate(date);
     if (validateDate(date)) {
-      setErrorMessage(null);  // Date valide, pas de message d'erreur
+      setErrorMessage(null);  
     } else {
       setErrorMessage("Date non valide");
     }
@@ -58,9 +60,33 @@ export const Booking: React.FC<BookingProps> = ({ selectedDate, onTimeSelected, 
     }
   };
 
-  const handleFinalConfirmation = () => {
-    onTimeSelected();
-    console.log("Réservation confirmée pour", localDate, "à", timeSelected, "pour", nbrPersons, "personne(s).", "Infos complémentaires:", additionalInfo);
+  const handleFinalConfirmation = async () => {
+    try {
+      const bookingData = {
+        date_selected: localDate.toISOString().split('T')[0],  
+        time_selected: timeSelected,
+        nbr_persons: nbrPersons,
+        user_id: user?._id
+      };
+      console.log("Données envoyées :", bookingData);
+      
+      const response = await http.post('/add_booking', bookingData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.status === 201) {
+        setReservationDetails(response.data);  // Stocker les détails de la réservation
+        setStep('success');  // Passer à l'étape de succès
+      } else {
+        console.log("Erreur lors de la réservation :", response.data);
+        setErrorMessage("Erreur lors de la réservation, veuillez réessayer.");
+      }
+    } catch (error) {
+      console.error("Erreur lors de la requête :", error);
+      setErrorMessage("Erreur lors de la réservation, veuillez réessayer.");
+    }
   };
 
   const incrementNbrPersons = () => setNbrPersons(prev => prev + 1);
@@ -70,14 +96,14 @@ export const Booking: React.FC<BookingProps> = ({ selectedDate, onTimeSelected, 
     <div>
       {step === 'selectDate' && (
         <>
-          <h2 className="text-xl font-bold pb-9">Choisissez la date</h2>
+          <h2 className="text-lg font-bold pb-9">Choisissez la date</h2>
           <CalendarShadcn 
             mode="single" 
-            selected={localDate}  // Assurez-vous que selected est toujours de type Date
+            selected={localDate}
             onSelect={handleDateSelect} 
             required={true}
           />
-                {errorMessage && (
+          {errorMessage && (
             <p className="text-red-600 font-semibold">{errorMessage}</p>
           )}
           <button
@@ -99,8 +125,8 @@ export const Booking: React.FC<BookingProps> = ({ selectedDate, onTimeSelected, 
       
       {step === 'selectTime' && (
         <>
-          <h2 className="text-xl font-bold mb-4">Choisissez l'heure</h2>
-          <div className="flex items-center justify-center text-lg text-green-800 mb-4">
+          <h2 className="text-lg font-bold mb-4">Choisissez l'heure</h2>
+          <div className="flex items-center justify-center text-green-800 mb-4">
             <AiOutlineCalendar 
               className="mr-2 cursor-pointer" onClick={() => setStep('selectDate')}
             />
@@ -202,8 +228,32 @@ export const Booking: React.FC<BookingProps> = ({ selectedDate, onTimeSelected, 
               Confirmer
             </button>
           </div>
+          {errorMessage && <p className="text-red-600 font-semibold mt-4">{errorMessage}</p>}
           <div className="mt-4 text-center">
             <button className="text-black underline" onClick={onReturnToAccount}>
+              Retour à l'accueil
+            </button>
+          </div>
+        </>
+      )}
+
+      {step === 'success' && reservationDetails && (
+        <>
+          <h2 className="text-xl font-bold mb-4">Réservation effectuée</h2>
+          <p className="mb-4">Vous recevrez un mail de confirmation dès que le restaurant aura confirmé la réservation.</p>
+          <div className="mb-4">
+            <p className="font-bold">Nom de réservation:</p>
+            <p>{user?.firstname} {user?.lastname}</p>
+          </div>
+          <div className="mb-4">
+            <p className="font-bold">Date et heure de réservation:</p>
+            <p>{localDate.toLocaleDateString()} à {timeSelected}</p>
+          </div>
+          <div className="mb-4">
+            <p className="font-bold">Nombre de couverts : {nbrPersons}</p>
+          </div>
+          <div className="mt-4 text-center">
+            <button className="bg-black p-2 text-sm font-bold text-white rounded-lg" onClick={onReturnToAccount}>
               Retour à l'accueil
             </button>
           </div>

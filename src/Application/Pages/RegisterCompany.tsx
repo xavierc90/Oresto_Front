@@ -2,13 +2,14 @@ import { ChangeEvent, FormEvent, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { http } from '../../Infrastructure/Http/axios.instance';
 import { useAuth } from '../../Module/Auth/useAuth';
+import { authService } from '../../Module/Auth/authService';
 
 export const RegisterCompany = () => {
   useEffect(() => {
     document.title = 'Oresto - Créer une entreprise';
   }, []);
 
-  const { user } = useAuth();  // Récupérer l'utilisateur actuel à partir du hook useAuth
+  const { user, token } = useAuth();  // Récupérer l'utilisateur actuel et le token
   const [formData, setFormData] = useState({
     companyName: '',
     companyAddress: '',
@@ -30,7 +31,7 @@ export const RegisterCompany = () => {
   const handleCompanyCreation = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (!user || !user.token) {  // Vérifiez si user et user.token sont disponibles
+    if (!user || !token) {  // Vérifiez si user et token sont disponibles
       console.error("Erreur : L'utilisateur n'est pas connecté ou le token est manquant.");
       setErrorMessage("Vous devez être connecté pour créer une entreprise.");
       return;
@@ -50,19 +51,18 @@ export const RegisterCompany = () => {
     try {
       const response = await http.post('/add_company', companyData, {
         headers: {
-          Authorization: `Bearer ${user.token}`,  // Utiliser le token de user
+          Authorization: `Bearer ${token}`,  // Utiliser le token de user
         },
       });
 
       console.log('Réponse du serveur:', response);
 
       if (response.status === 201) {
-        const companyId = response.data._id;
-        localStorage.setItem('companyId', companyId);
-        console.log('Company ID:', companyId);
+        // Rafraîchir les informations de l'utilisateur sans utiliser setUser
+        await authService.refreshUser(token);
 
         alert('Entreprise créée avec succès !');
-        navigate('/dashboard/bookings');
+        navigate('/dashboard/bookings'); // Rediriger vers le tableau de bord après la mise à jour
       } else {
         console.error('Erreur lors de la création de l\'entreprise :', response);
         setErrorMessage('Une erreur est survenue lors de la création de l\'entreprise.');

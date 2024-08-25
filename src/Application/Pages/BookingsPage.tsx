@@ -5,6 +5,7 @@ import { formatDateWithoutTime } from '../../Module/Utils/dateFormatterWithoutHo
 import { dateService } from '../../Module/Utils/dateService';
 import { http } from '../../Infrastructure/Http/axios.instance';
 import { Booking } from '../../Module/Types/bookng.type';
+import { TableArea } from '../Components/Dashboard/TablePlan/TableArea';
 
 interface OutletContextType {
   user: any;
@@ -14,28 +15,41 @@ interface OutletContextType {
 
 export const BookingsPage = () => {
   const { user, company, token } = useOutletContext<OutletContextType>();
+
+  console.log("Token dans useOutletContext:", token);
+  console.log("User dans useOutletContext:", user);
+  console.log("Company dans useOutletContext:", company);
+
   const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
   const [bookings, setBookings] = useState<Booking[]>([]);
 
   useEffect(() => {
+    console.log("UseEffect triggered - Checking token, user, company");
+
     if (!token || !user || !company) {
       console.error("Token, utilisateur ou entreprise manquants. Redirection vers la page de connexion...");
-      // Rediriger ou effectuer une action si le token est manquant
       return;
     }
 
+    console.log("Subscribing to dateService for date updates...");
     const subscription = dateService.getDate().subscribe(date => {
+      console.log("Date received from dateService:", date);
       setSelectedDate(date);
       fetchBookings(date, token, user._id, company._id);
     });
 
-    return () => subscription.unsubscribe();
+    return () => {
+      console.log("Unsubscribing from dateService...");
+      subscription.unsubscribe();
+    };
   }, [token, user, company]);
 
   const fetchBookings = async (date: Date, token: string, userId: string, companyId: string) => {
     try {
+      console.log("Fetching bookings for date:", date);
       const normalizedDate = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
       const formattedDate = normalizedDate.toISOString().split('T')[0];
+      console.log("Formatted date for booking query:", formattedDate);
 
       const response = await http.get(`/bookings/${formattedDate}`, {
         headers: { Authorization: `Bearer ${token}` },
@@ -50,7 +64,6 @@ export const BookingsPage = () => {
       console.error('Erreur lors de la récupération des réservations:', error);
       if (error.response && error.response.status === 401) {
         console.error("Non autorisé. Redirection vers la page de connexion...");
-        // Gestion de la redirection
       }
     }
   };
@@ -60,6 +73,9 @@ export const BookingsPage = () => {
     .reduce((sum, booking) => sum + booking.nbr_persons, 0);
 
   const validBookings = bookings.filter(booking => booking.status !== 'canceled').length;
+
+  console.log("Selected Date:", selectedDate);
+  console.log("Bookings:", bookings);
 
   return (
     <div className="bg-light w-full mb-4">
@@ -71,6 +87,7 @@ export const BookingsPage = () => {
         | <span className="font-bold text-red-500 dark:text-white">{totalCovers}</span> couvert{totalCovers > 1 ? 's ' : ' '}
       </h2>
       <BookingList bookings={bookings} />
+      <TableArea selectedDate={selectedDate} company={company} token={token} />
     </div>
   );
 };

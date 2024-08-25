@@ -5,7 +5,7 @@ import { Company } from '../Types/company.type';
 class AuthService {
   private userSubject = new BehaviorSubject<User | null>(this.loadFromLocalStorage('user'));
   private companySubject = new BehaviorSubject<Company | null>(this.loadFromLocalStorage('company'));
-  private tokenSubject = new BehaviorSubject<string | null>(this.loadFromLocalStorage('token'));
+  private tokenSubject = new BehaviorSubject<string | null>(localStorage.getItem('token'));
 
   public user$ = this.userSubject.asObservable();
   public company$ = this.companySubject.asObservable();
@@ -18,7 +18,7 @@ class AuthService {
         return JSON.parse(data);
       } catch (error) {
         console.error(`Failed to parse ${key} from localStorage`, error);
-        return null; // Return null if parsing fails
+        return null;
       }
     }
     return null;
@@ -52,6 +52,26 @@ class AuthService {
 
   get currentToken(): string | null {
     return this.tokenSubject.value;
+  }
+
+  async refreshUser(token: string): Promise<void> {
+    try {
+      const response = await fetch(`/find_user/${this.currentUser?._id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.ok) {
+        const updatedUser = await response.json();
+        this.userSubject.next(updatedUser);
+        localStorage.setItem('user', JSON.stringify(updatedUser));
+      } else {
+        console.error('Failed to refresh user data');
+      }
+    } catch (error) {
+      console.error('Error refreshing user data:', error);
+    }
   }
 }
 

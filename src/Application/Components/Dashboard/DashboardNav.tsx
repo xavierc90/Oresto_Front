@@ -32,7 +32,8 @@ export const DashboardNav: React.FC<DashboardNavProps> = ({ company }) => {
 
     const subscription = dateService.getDate().subscribe(date => {
       setDateSelected(date);
-      const formattedDate = date.toLocaleDateString('fr-FR').replace(/\//g, '');
+      const formattedDate = date.toISOString().split('T')[0]; // Formate la date en 'YYYY-MM-DD'
+      console.log("DashboardNav - Date selected and formatted:", formattedDate);
       navigate(`/dashboard/bookings?dayselected=${formattedDate}`);
     });
 
@@ -54,19 +55,17 @@ export const DashboardNav: React.FC<DashboardNavProps> = ({ company }) => {
   };
 
   const handleLogout = () => {
-    console.log('Logging out');
     logout();
     navigate('/login');
   };
 
   const handleDateSelect = (date: Date) => {
-    console.log('Date selected:', date);
+    console.log("DashboardNav - Date selected in calendar:", date);
     dateService.setDate(date);
   };
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
-    console.log('Search term:', value);
     setSearchTerm(value);
     searchService.setSearch(value);
     if (value.length > 0) {
@@ -83,8 +82,8 @@ export const DashboardNav: React.FC<DashboardNavProps> = ({ company }) => {
   };
 
   const logoSrc = darkMode 
-  ? "../../../../public/img/logo-oresto-white.png" 
-  : "../../../../public/img/logo-oresto-red.png";
+    ? "../../../../public/img/logo-oresto-white.png" 
+    : "../../../../public/img/logo-oresto-red.png";
 
   return (
     <div className='bg-light dark:bg-dark-900 dark:text-white w-80 h-screen flex flex-col items-center shadow-2xl mt-2'>
@@ -99,22 +98,19 @@ export const DashboardNav: React.FC<DashboardNavProps> = ({ company }) => {
 
       <form className="flex flex-col mb-2 justify-center">
         <label htmlFor="search" className="text-base font-bold mb-4 pt-4">Recherche par nom</label>
-        <input 
-          type="text" 
-          name="name" 
-          id="search" 
-          placeholder="Saisir le nom du client" 
-          value={searchTerm} 
-          onChange={handleSearchChange} 
-          className="border-2 border-gray-300 p-1 mb-4 font-bold w-[215px] dark:text-white dark:bg-dark-800 dark:border-2 dark:border-dark-800" 
+        <input
+          type="text"
+          name="name"
+          id="search"
+          placeholder="Saisir le nom du client"
+          value={searchTerm}
+          onChange={handleSearchChange}
+          className="border-2 border-gray-300 p-1 mb-4 font-bold w-[215px] dark:text-white dark:bg-dark-800 dark:border-2 dark:border-dark-800"
         />
       </form>
       
       <div className="grid grid-cols-2 gap-6 justify-items-center">
-        <Link 
-          to={`/dashboard/bookings?dayselected=${dateSelected.toLocaleDateString('fr-FR').replace(/\//g, '')}`} 
-          className={getLinkClass('/dashboard/bookings')}
-        >
+        <Link to={`/dashboard/bookings?dayselected=${dateSelected.toISOString().split('T')[0]}`} className={getLinkClass('/dashboard/bookings')}>
           <BsListCheck size={23} className="mb-1" />
           <h2 className="text-xs font-bold">Réservations</h2>
         </Link>

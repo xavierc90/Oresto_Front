@@ -6,15 +6,13 @@ import circle4Svg from '../../../../../public/svg/rounded4.svg';
 import rectangleSvg from '../../../../../public/svg/rectangle.svg';
 import rectangle6Svg from '../../../../../public/svg/rectangle6.svg';
 import rectangle8Svg from '../../../../../public/svg/rectangle8.svg';
+import { http } from '../../../../Infrastructure/Http/axios.instance';
+import { useAuth } from '../../../../Module/Auth/useAuth'
 
 interface TableData {
   table_number: string;
   table_size: string;
   shape: string;
-}
-
-interface TableFormProps {
-  onSubmit: (table: TableData) => void;
 }
 
 const tableShapes = [
@@ -55,7 +53,8 @@ const tableShapes = [
   }
 ];
 
-export const TableForm: React.FC<TableFormProps> = ({ onSubmit }) => {
+export const TableForm: React.FC = () => {
+  const { token, company } = useAuth();
   const [tableData, setTableData] = useState<TableData>({ table_number: '', table_size: '', shape: '' });
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -71,7 +70,7 @@ export const TableForm: React.FC<TableFormProps> = ({ onSubmit }) => {
     setTableData(prev => ({ ...prev, shape, table_size }));
   };
 
-  const handleSubmit = (event: React.FormEvent) => {
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     if (!tableData.table_number || !tableData.shape || !tableData.table_size) {
       setErrorMessage('Veuillez sélectionner un modèle de table');
@@ -82,14 +81,30 @@ export const TableForm: React.FC<TableFormProps> = ({ onSubmit }) => {
       setTimeout(() => setShowErrorMessage(false), 3500); 
       return;
     }
-    onSubmit(tableData);
-    setSuccessMessage(`Table n°${tableData.table_number} pour ${tableData.table_size} personnes créée avec succès`);
-    setErrorMessage(null);
-    setShowSuccessMessage(false);
-    setShowErrorMessage(false);
-    setTimeout(() => setShowSuccessMessage(true), 0);
-    setTimeout(() => setShowSuccessMessage(false), 5000);
-    setTableData({ table_number: '', table_size: '', shape: '' });
+
+    if (!token || !company) {
+      setErrorMessage('Token ou Company ID manquant');
+      return;
+    }
+
+    try {
+      const response = await http.post('/add_table', {
+        ...tableData,
+        company_id: company._id,
+      }, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setSuccessMessage(`Table n°${tableData.table_number} pour ${tableData.table_size} personnes créée avec succès`);
+      setErrorMessage(null);
+      setShowSuccessMessage(false);
+      setShowErrorMessage(false);
+      setTimeout(() => setShowSuccessMessage(true), 0);
+      setTimeout(() => setShowSuccessMessage(false), 5000);
+      setTableData({ table_number: '', table_size: '', shape: '' });
+    } catch (error: any) {
+      setErrorMessage('Erreur lors de l’ajout de la table');
+      console.error('Erreur lors de l’ajout de la table:', error.response ? error.response.data : error.message);
+    }
   };
 
   return (
@@ -130,5 +145,3 @@ export const TableForm: React.FC<TableFormProps> = ({ onSubmit }) => {
     </div>
   );
 };
-
-export default TableData

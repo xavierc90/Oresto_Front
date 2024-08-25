@@ -4,32 +4,10 @@ import { Company } from '../Types/company.type';
 import { User } from './user.type';
 
 export const useAuth = () => {
-  // Initialisation des états à partir du localStorage ou des valeurs par défaut du service d'authentification
-  const [user, setUser] = useState<User | null>(() => {
-    try {
-      const storedUser = localStorage.getItem('user');
-      return storedUser ? JSON.parse(storedUser) : authService.currentUser;
-    } catch (error) {
-      console.error("Failed to parse user from localStorage", error);
-      return null;
-    }
-  });
+  const [user, setUser] = useState<User | null>(() => authService.currentUser);
+  const [company, setCompany] = useState<Company | null>(() => authService.currentCompany);
+  const [token, setToken] = useState<string | null>(() => authService.currentToken);
 
-  const [company, setCompany] = useState<Company | null>(() => {
-    try {
-      const storedCompany = localStorage.getItem('company');
-      return storedCompany ? JSON.parse(storedCompany) : authService.currentCompany;
-    } catch (error) {
-      console.error("Failed to parse company from localStorage", error);
-      return null;
-    }
-  });
-
-  const [token, setToken] = useState<string | null>(() => {
-    return localStorage.getItem('token') || authService.currentToken;
-  });
-
-  // Abonnement aux changements de l'utilisateur, de la société et du token
   useEffect(() => {
     const userSubscription = authService.user$.subscribe((newUser) => {
       setUser(newUser);
@@ -57,7 +35,6 @@ export const useAuth = () => {
     };
   }, []);
 
-  // Gestion de la connexion
   const login = (user: User, company: Company, token: string) => {
     authService.login(user, company, token);
     setUser(user);
@@ -65,7 +42,6 @@ export const useAuth = () => {
     setToken(token);
   };
 
-  // Gestion de la déconnexion
   const logout = () => {
     authService.logout();
     setUser(null);

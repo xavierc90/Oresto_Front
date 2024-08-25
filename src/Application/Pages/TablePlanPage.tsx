@@ -1,24 +1,30 @@
+import { useEffect, useState } from 'react';
 import { TableArea } from '../Components/Dashboard/TablePlan/TableArea';
-import TableData  from '../Components/Dashboard/TablePlan/TableForm'; // Assurez-vous que les chemins d'importation sont corrects
-import { http } from '../../Infrastructure/Http/axios.instance'; // Assurez-vous que les chemins d'importation sont corrects
 import { TableForm } from '../Components/Dashboard/TablePlan/TableForm';
+import { dateService } from '../../Module/Utils/dateService';
+import { useAuth } from '../../Module/Auth/useAuth';
 
 export const TablePlanPage = () => {
-  // Assumer que le token est stocké dans le stockage local ou géré par un contexte d'état
-  const token = localStorage.getItem('token');  // Ou utilisez un contexte ou Redux store pour accéder au token
+  const { token, company } = useAuth();
+  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
 
-  // Typage explicite pour tableData
-  const handleAddTable = async (tableData: TableData) => {
-    try {
-      const response = await http.post('/add_table', tableData, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      console.log("Table ajoutée:", response.data);
-    } catch (error: any) {  // Typage pour error en utilisant 'any', ou utilisez 'unknown' et ajoutez des vérifications de type
-      console.error('Erreur lors de l’ajout de la table:', error.response ? error.response.data : error.message);
+  useEffect(() => {
+    console.log("Token in TablePlanPage:", token);
+    console.log("Company in TablePlanPage:", company);
+
+    if (!token || !company) {
+      console.error('Token ou Company ID manquant');
+      return;
     }
-  };
 
+    const subscription = dateService.getDate().subscribe((date) => {
+      setSelectedDate(new Date(date.getTime() - date.getTimezoneOffset() * 60000)); // Ajuste la date pour le fuseau horaire local
+    });
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, [token, company]);
 
   return (
     <div className="bg-light w-full">
@@ -27,8 +33,8 @@ export const TablePlanPage = () => {
         <span className="font-bold text-red-500 dark:text-white">0</span> table enregistrée
         | <span className="font-bold text-red-500 dark:text-white">0</span> couvert
       </h2>
-      <TableForm onSubmit={handleAddTable} />
-      <TableArea />
+      <TableForm />
+      <TableArea selectedDate={selectedDate} company={company[0]} token={token} />
     </div>
   );
 };
