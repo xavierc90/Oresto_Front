@@ -9,6 +9,7 @@ import { AnalyticsPage } from "../../Application/Pages/AnalyticsPage";
 import { SettingsPage } from "../../Application/Pages/SettingsPage";
 import { RegisterCompany } from "../../Application/Pages/RegisterCompany";
 import { useAuth } from '../../Module/Auth/useAuth';
+import { RegisterPage } from "../../Application/Pages/RegisterPage";
 
 const ProtectedRoute = () => {
   const { user } = useAuth();
@@ -23,6 +24,10 @@ export const router = createBrowserRouter([
   {
     path: "/login",
     element: <LoginPage />,
+  },
+  {
+    path: "/register",
+    element: <RegisterPage />,
   },
   {
     path: "/dashboard",

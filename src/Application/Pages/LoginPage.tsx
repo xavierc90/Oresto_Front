@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { http } from '../../Infrastructure/Http/axios.instance';
 import { useAuth } from '../../Module/Auth/useAuth';
+import { User } from '../../Module/Auth/user.type';
 
 export const LoginPage = () => {
   const [email, setEmail] = useState('');
@@ -9,7 +10,6 @@ export const LoginPage = () => {
   const [error, setError] = useState<string | null>(null);
   const { login } = useAuth(); 
   const navigate = useNavigate();
-
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -19,21 +19,33 @@ export const LoginPage = () => {
       const response = await http.post('/login_manager', { email, password });
       console.log('Réponse du serveur:', response.data); // Log de la réponse du serveur
 
-      const { token, _id } = response.data;
-      if (token && _id) {
-        console.log('Token et ID utilisateur reçus:', { token, _id });
+      const { token, _id, firstname, lastname, role, phone_number, allergens } = response.data;
+      const company = response.data.company;  // Assurez-vous que `company` est bien présent dans la réponse du serveur
 
-        login(token, _id); // Connexion de l'utilisateur
-        localStorage.setItem('token', token);
-        localStorage.setItem('userId', _id);
-        console.log('Stockage du token et ID utilisateur dans le localStorage réussi');
-        console.log(token)
-        console.log(_id)
+      const user: User = {
+        _id,
+        email,
+        firstname,
+        lastname,
+        role,
+        phone_number,
+        allergens,
+        table_id: '',  // Assurez-vous d'ajouter la bonne valeur pour `table_id` si nécessaire
+      };
+
+      if (token && _id && company) {
+        console.log('Token, ID utilisateur, et Company reçus:', { token, _id, company });
+
+        login(user, company, token); // Connexion de l'utilisateur
+        console.log('Stockage des données dans le localStorage réussi');
+        console.log('Token:', token);
+        console.log('User ID:', _id);
+        console.log('Company:', company);
 
         navigate('/dashboard/bookings'); // Redirection après la connexion réussie
         console.log('Redirection vers /dashboard/bookings');
       } else {
-        console.error('Le token ou l\'ID utilisateur est manquant dans la réponse du serveur');
+        console.error('Le token, l\'ID utilisateur ou les informations de la société sont manquants dans la réponse du serveur');
         setError('Erreur lors de la connexion. Veuillez réessayer.');
       }
     } catch (error: unknown) {

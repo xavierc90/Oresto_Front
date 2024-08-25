@@ -48,24 +48,26 @@ export const LoginFormUser: React.FC<LoginFormUserProps> = ({
 
     try {
       const response = await http.post('/login', { email, password });
-      console.log('Login response:', response.data); // Log the entire response data
+      console.log('Login response:', response.data);
 
-      const user = response.data; // Assuming user data is directly in the response
+      const user = response.data;
       const company = response.data.company || {}; // Assuming company data might be nested or not present
+      const token = response.data.token; // Extract the token from the response
 
-      console.log('User data received:', user); // Check if user data is correctly received
-      console.log('Company data received:', company); // Check if company data is correctly received
+      console.log('User data received:', user);
+      console.log('Company data received:', company);
+      console.log('Token received:', token);
 
-      if (user) {
-        login(user, company); // Update the auth state
+      if (user && token) {
+        login(user, company, token); // Pass all required arguments to the login function
         onLoginSuccess(); // Trigger post-login success actions
       } else {
-        console.error('Invalid user or company data provided:', { user, company });
-        setErrorMessage('Données utilisateur ou entreprise invalides.');
+        console.error('Invalid user, company, or token data provided:', { user, company, token });
+        setErrorMessage('Données utilisateur, entreprise, ou jeton invalides.');
       }
     } catch (error: any) {
       console.error('Error logging in:', error.response ? error.response.data : error.message);
-      setErrorMessage("Identifiant ou mot de passe incorrect.");
+      setErrorMessage('Identifiant ou mot de passe incorrect.');
     }
   };
 

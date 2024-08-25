@@ -18,27 +18,31 @@ export const BookingsPage = () => {
   const [bookings, setBookings] = useState<Booking[]>([]);
 
   useEffect(() => {
-    if (!token) {
-      console.error("Token manquant. Redirection vers la page de connexion...");
+    if (!token || !user || !company) {
+      console.error("Token, utilisateur ou entreprise manquants. Redirection vers la page de connexion...");
       // Rediriger ou effectuer une action si le token est manquant
       return;
     }
 
     const subscription = dateService.getDate().subscribe(date => {
       setSelectedDate(date);
-      fetchBookings(date, token);
+      fetchBookings(date, token, user._id, company._id);
     });
 
     return () => subscription.unsubscribe();
-  }, [token]);
+  }, [token, user, company]);
 
-  const fetchBookings = async (date: Date, token: string) => {
+  const fetchBookings = async (date: Date, token: string, userId: string, companyId: string) => {
     try {
       const normalizedDate = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
       const formattedDate = normalizedDate.toISOString().split('T')[0];
 
       const response = await http.get(`/bookings/${formattedDate}`, {
-        headers: { Authorization: `Bearer ${token}` }
+        headers: { Authorization: `Bearer ${token}` },
+        params: {
+          userId,
+          companyId
+        }
       });
       console.log("Réservations récupérées avec succès :", response.data);
       setBookings(response.data);

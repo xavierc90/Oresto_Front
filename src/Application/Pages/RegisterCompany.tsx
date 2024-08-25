@@ -29,7 +29,9 @@ export const RegisterCompany = () => {
 
   const handleCompanyCreation = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (!user) {
+
+    if (!user || !user.token) {  // Vérifiez si user et user.token sont disponibles
+      console.error("Erreur : L'utilisateur n'est pas connecté ou le token est manquant.");
       setErrorMessage("Vous devez être connecté pour créer une entreprise.");
       return;
     }
@@ -40,32 +42,33 @@ export const RegisterCompany = () => {
       postal_code: formData.companyPostalCode,
       city: formData.companyCity,
       country: formData.companyCountry,
-      user_id: user.user_id  // Utiliser l'ID utilisateur provenant du hook useAuth
+      user_id: user._id  // Utiliser l'ID utilisateur provenant du hook useAuth
     };
-    
+
+    console.log("Données de l'entreprise envoyées :", companyData);
+
     try {
       const response = await http.post('/add_company', companyData, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
+          Authorization: `Bearer ${user.token}`,  // Utiliser le token de user
         },
       });
-      
-      if (response.status === 201) {
-        const companyId = response.data._id; // Assurez-vous que l'ID de la société est bien renvoyé dans la réponse
-        localStorage.setItem('companyId', companyId); // Stocker l'ID de la société
-        console.log('Company ID:', companyId); // Afficher l'ID de la société dans la console
 
-        console.log('Résultat après création du restaurant :');
-        console.log('Token:', localStorage.getItem('token'));
-        console.log('userId:', user.user_id);
-        console.log('companyId:', localStorage.getItem('companyId'));
+      console.log('Réponse du serveur:', response);
+
+      if (response.status === 201) {
+        const companyId = response.data._id;
+        localStorage.setItem('companyId', companyId);
+        console.log('Company ID:', companyId);
 
         alert('Entreprise créée avec succès !');
-        navigate('/dashboard/bookings'); // Rediriger l'utilisateur vers dashboard/bookings
+        navigate('/dashboard/bookings');
       } else {
+        console.error('Erreur lors de la création de l\'entreprise :', response);
         setErrorMessage('Une erreur est survenue lors de la création de l\'entreprise.');
       }
-    } catch (error) {
+    } catch (error: any) {
+      console.error('Erreur lors de la requête de création de l\'entreprise :', error);
       setErrorMessage('Une erreur est survenue lors de la création de l\'entreprise.');
     }
   };

@@ -33,7 +33,7 @@ export const DashboardNav: React.FC<DashboardNavProps> = ({ company }) => {
     const subscription = dateService.getDate().subscribe(date => {
       setDateSelected(date);
       const formattedDate = date.toLocaleDateString('fr-FR').replace(/\//g, '');
-      navigate(`/dashboard/bookings`);
+      navigate(`/dashboard/bookings?dayselected=${formattedDate}`);
     });
 
     return () => subscription.unsubscribe();

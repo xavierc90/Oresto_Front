@@ -1,6 +1,6 @@
 import { ChangeEvent, FormEvent, useState, useEffect } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { useAuth } from '../../Module/Auth/useAuth'; // Assurez-vous que le chemin est correct
+import { useAuth } from '../../Module/Auth/useAuth';
 import { http } from '../../Infrastructure/Http/axios.instance';
 import { AxiosError } from 'axios';
 
@@ -57,15 +57,11 @@ export const RegisterPage = () => {
       // Inscription de l'utilisateur
       const registerResponse = await http.post('/register_manager', managerData);
       if (registerResponse.status === 201) {
-        // Connexion de l'utilisateur après inscription
-        const loginResponse = await http.post('/login_manager', { email, password });
-        if (loginResponse.status === 200 && loginResponse.data.token) {
-          login(loginResponse.data.token, loginResponse.data._id); // Connexion réussie
-          alert('Inscription et connexion réussies !');
-          navigate('/register_company'); // Redirection vers la création de l'entreprise
-        } else {
-          setErrorMessage('Une erreur est survenue lors de la connexion.');
-        }
+        // Stocker un message de succès dans le localStorage
+        localStorage.setItem('successMessage', 'Inscription réussie ! Vous pouvez maintenant vous connecter.');
+
+        // Redirection vers la page de connexion
+        navigate('/login');
       } else {
         setErrorMessage('Une erreur est survenue lors de l\'inscription.');
       }
@@ -76,7 +72,7 @@ export const RegisterPage = () => {
       } else {
         setErrorMessage("Erreur réseau ou serveur non atteignable");
       }
-      console.error('Erreur lors de l\'inscription ou de la connexion:', e);
+      console.error('Erreur lors de l\'inscription:', e);
     }
   };
 
