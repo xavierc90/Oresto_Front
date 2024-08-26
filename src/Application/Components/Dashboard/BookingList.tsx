@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import { FaSort } from "react-icons/fa";
+import { FaSort, FaTimes } from "react-icons/fa";
 import { Booking } from '../../../Module/Types/bookng.type';
+import { http } from '../../../Infrastructure/Http/axios.instance';
+import { SuccessMessage } from '../SuccessMessage';
 
 interface BookingListProps {
   bookings: Booking[];
@@ -8,20 +10,66 @@ interface BookingListProps {
 
 export const BookingList: React.FC<BookingListProps> = ({ bookings }) => {
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
+  const [selectedBooking, setSelectedBooking] = useState<Booking | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [confirmationMessage, setConfirmationMessage] = useState<string | null>(null);
 
   const handleSortClick = () => {
     setSortOrder(prevOrder => (prevOrder === 'asc' ? 'desc' : 'asc'));
+  };
+
+  const handleBookingClick = (booking: Booking) => {
+    setSelectedBooking(booking);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedBooking(null);
+    setConfirmationMessage(null);
+  };
+
+  const handleConfirmBooking = async () => {
+    if (selectedBooking) {
+      try {
+        const response = await http.post(`/confirm_booking/${selectedBooking._id}`);
+        if (response.status === 200) {
+          setConfirmationMessage("La réservation a été confirmée avec succès.");
+        } else {
+          setConfirmationMessage("Erreur lors de la confirmation de la réservation.");
+        }
+      } catch (error) {
+        console.error('Error confirming booking:', error);
+        setConfirmationMessage("Erreur lors de la confirmation de la réservation.");
+      } finally {
+        setIsModalOpen(false);
+      }
+    }
+  };
+
+  const handleCancelBooking = async () => {
+    if (selectedBooking) {
+      try {
+        const response = await http.post(`/cancel_booking/${selectedBooking._id}`);
+        if (response.status === 200) {
+          setConfirmationMessage("La réservation a été annulée avec succès.");
+        } else {
+          setConfirmationMessage("Erreur lors de l'annulation de la réservation.");
+        }
+      } catch (error) {
+        console.error('Error canceling booking:', error);
+        setConfirmationMessage("Erreur lors de l'annulation de la réservation.");
+      } finally {
+        setIsModalOpen(false);
+      }
+    }
   };
 
   const sortedBookings = [...bookings].sort((a, b) => {
     const timeA = a.time_selected;
     const timeB = b.time_selected;
 
-    if (sortOrder === 'asc') {
-      return timeA.localeCompare(timeB);
-    } else {
-      return timeB.localeCompare(timeA);
-    }
+    return sortOrder === 'asc' ? timeA.localeCompare(timeB) : timeB.localeCompare(timeA);
   });
 
   return (
@@ -36,20 +84,24 @@ export const BookingList: React.FC<BookingListProps> = ({ bookings }) => {
               Heure <FaSort />
             </th>
             <th className="text-left min-w-[150px]">Nom</th>
-            <th className="text-left min-w-[150px]">Prénom</th>
             <th className="text-center min-w-[150px]">Nbr de couverts</th>
-            <th className="text-center min-w-[180px]">N° de table</th>
-            <th className="text-center w-auto flex items-center gap-1">Statut de la réservation <FaSort /></th>
+            <th className="text-center min-w-[180px]">Table</th>
+            <th className="text-center min-w-[180px]">Détails</th>
+            <th className="text-center w-auto flex items-center justify-center gap-1">Statut<FaSort /></th>
           </tr>
         </thead>
         <tbody className="bookinglist">
           {sortedBookings.map((booking) => (
-            <tr key={booking._id} className="hover:bg-gray-200 hover:cursor-pointer dark:hover:bg-dark-900 dark:hover:text-white">
+            <tr 
+              key={booking._id} 
+              className="hover:bg-gray-200 hover:cursor-pointer dark:hover:bg-dark-900 dark:hover:text-white"
+              onClick={() => handleBookingClick(booking)}
+            >
               <td className="text-left">{booking.time_selected}</td>
               <td className="text-left">{booking.user_id.lastname}</td>
-              <td className="text-left">{booking.user_id.firstname}</td>
               <td className="text-center">{booking.nbr_persons} {booking.nbr_persons > 1 ? 'personnes' : 'personne'}</td>
-              <td className="text-center">{booking.table._id || 'N/A'}</td>
+              <td className="text-center">{booking.table && booking.table[0]?.table_number || 'N/A'}</td>
+              <td className="text-center">{booking.details || 'Aucun'}</td>
               <td className="text-center">
                 <span className={`px-7 py-1 text-sm font-semibold ${
                   booking.status === 'waiting' ? 'bg-orange-500 text-white' :
@@ -67,6 +119,51 @@ export const BookingList: React.FC<BookingListProps> = ({ bookings }) => {
           ))}
         </tbody>
       </table>
+
+      {/* Modal */}
+      {isModalOpen && selectedBooking && (
+        <div 
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
+          onClick={handleCloseModal}  // Close modal when clicking outside of it
+        >
+          <div 
+            className="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg relative"
+            onClick={(e) => e.stopPropagation()}  // Prevent closing when clicking inside modal
+          >
+            {/* Close icon */}
+            <button 
+              className="absolute top-2 right-2 text-gray-700 hover:text-black"
+              onClick={handleCloseModal}
+            >
+              <FaTimes size={20} />
+            </button>
+
+            <h2 className="text-2xl font-bold mb-4 text-center">Détails de la réservation</h2>
+            <p><strong>Nom :</strong> {selectedBooking.user_id.firstname} {selectedBooking.user_id.lastname}</p>
+            <p><strong>Adresse mail :</strong> {selectedBooking.user_id.email}</p>
+            <p><strong>N° de téléphone :</strong> {selectedBooking.user_id.phone_number}</p>
+            <p><strong>Heure :</strong> {selectedBooking.time_selected}</p>
+            <p><strong>Date :</strong> {new Date(selectedBooking.date_selected).toLocaleDateString()}</p>
+            <p><strong>Heure :</strong> {selectedBooking.time_selected}</p>
+            <p><strong>Nombre de couverts :</strong> {selectedBooking.nbr_persons}</p>
+            <p><strong>Table :</strong> {selectedBooking.table && selectedBooking.table[0]?.table_number || 'N/A'}</p>
+            <p><strong>Détails :</strong> {selectedBooking.details || 'Aucun'}</p>
+            <div className="mt-8 flex justify-center gap-4">
+              <button className="bg-green-800 text-white font-semibold px-4 py-2 rounded-lg" onClick={handleConfirmBooking}>
+                Confirmer la réservation
+              </button>
+              <button className="bg-red-600 text-white font-semibold px-4 py-2 rounded-lg" onClick={handleCancelBooking}>
+                Annuler la réservation
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Message de confirmation */}
+      {confirmationMessage && (
+        <SuccessMessage message={confirmationMessage} />  // Utilisation du composant SuccessMessage
+      )}
     </div>
   );
 };
