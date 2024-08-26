@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { FaSort, FaTimes } from "react-icons/fa";
 import { Booking } from '../../../Module/Types/bookng.type';
 import { http } from '../../../Infrastructure/Http/axios.instance';
-import { SuccessMessage } from '../SuccessMessage';
+import { NotificationMessage } from '../NotificationMessage';
 
 interface BookingListProps {
   bookings: Booking[];
@@ -12,7 +12,7 @@ export const BookingList: React.FC<BookingListProps> = ({ bookings }) => {
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
   const [selectedBooking, setSelectedBooking] = useState<Booking | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [confirmationMessage, setConfirmationMessage] = useState<string | null>(null);
+  const [notification, setNotification] = useState<{ message: string | null; type: 'success' | 'error' }>({ message: null, type: 'success' });
 
   const handleSortClick = () => {
     setSortOrder(prevOrder => (prevOrder === 'asc' ? 'desc' : 'asc'));
@@ -26,7 +26,7 @@ export const BookingList: React.FC<BookingListProps> = ({ bookings }) => {
   const handleCloseModal = () => {
     setIsModalOpen(false);
     setSelectedBooking(null);
-    setConfirmationMessage(null);
+    setNotification({ message: null, type: 'success' });
   };
 
   const handleConfirmBooking = async () => {
@@ -34,13 +34,12 @@ export const BookingList: React.FC<BookingListProps> = ({ bookings }) => {
       try {
         const response = await http.post(`/confirm_booking/${selectedBooking._id}`);
         if (response.status === 200) {
-          setConfirmationMessage("La réservation a été confirmée avec succès.");
+          setNotification({ message: "La réservation a été confirmée avec succès.", type: 'success' });
         } else {
-          setConfirmationMessage("Erreur lors de la confirmation de la réservation.");
+          setNotification({ message: "Erreur lors de la confirmation de la réservation.", type: 'error' });
         }
       } catch (error) {
-        console.error('Error confirming booking:', error);
-        setConfirmationMessage("Erreur lors de la confirmation de la réservation.");
+        setNotification({ message: "Erreur lors de la confirmation de la réservation.", type: 'error' });
       } finally {
         setIsModalOpen(false);
       }
@@ -52,13 +51,12 @@ export const BookingList: React.FC<BookingListProps> = ({ bookings }) => {
       try {
         const response = await http.post(`/cancel_booking/${selectedBooking._id}`);
         if (response.status === 200) {
-          setConfirmationMessage("La réservation a été annulée avec succès.");
+          setNotification({ message: "La réservation a été annulée avec succès.", type: 'success' });
         } else {
-          setConfirmationMessage("Erreur lors de l'annulation de la réservation.");
+          setNotification({ message: "Erreur lors de l'annulation de la réservation.", type: 'error' });
         }
       } catch (error) {
-        console.error('Error canceling booking:', error);
-        setConfirmationMessage("Erreur lors de l'annulation de la réservation.");
+        setNotification({ message: "Erreur lors de l'annulation de la réservation.", type: 'error' });
       } finally {
         setIsModalOpen(false);
       }
@@ -77,10 +75,7 @@ export const BookingList: React.FC<BookingListProps> = ({ bookings }) => {
       <table className="mt-8 ml-12">
         <thead>
           <tr>
-            <th
-              className="text-left min-w-[100px] flex items-center gap-1 cursor-pointer"
-              onClick={handleSortClick}
-            >
+            <th className="text-left min-w-[100px] flex items-center gap-1 cursor-pointer" onClick={handleSortClick}>
               Heure <FaSort />
             </th>
             <th className="text-left min-w-[150px]">Nom</th>
@@ -124,11 +119,11 @@ export const BookingList: React.FC<BookingListProps> = ({ bookings }) => {
       {isModalOpen && selectedBooking && (
         <div 
           className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
-          onClick={handleCloseModal}  // Close modal when clicking outside of it
+          onClick={handleCloseModal}
         >
           <div 
             className="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg relative"
-            onClick={(e) => e.stopPropagation()}  // Prevent closing when clicking inside modal
+            onClick={(e) => e.stopPropagation()}
           >
             {/* Close icon */}
             <button 
@@ -140,29 +135,30 @@ export const BookingList: React.FC<BookingListProps> = ({ bookings }) => {
 
             <h2 className="text-2xl font-bold mb-4 text-center">Détails de la réservation</h2>
             <p><strong>Nom :</strong> {selectedBooking.user_id.firstname} {selectedBooking.user_id.lastname}</p>
-            <p><strong>Adresse mail :</strong> {selectedBooking.user_id.email}</p>
-            <p><strong>N° de téléphone :</strong> {selectedBooking.user_id.phone_number}</p>
             <p><strong>Heure :</strong> {selectedBooking.time_selected}</p>
             <p><strong>Date :</strong> {new Date(selectedBooking.date_selected).toLocaleDateString()}</p>
-            <p><strong>Heure :</strong> {selectedBooking.time_selected}</p>
             <p><strong>Nombre de couverts :</strong> {selectedBooking.nbr_persons}</p>
             <p><strong>Table :</strong> {selectedBooking.table && selectedBooking.table[0]?.table_number || 'N/A'}</p>
             <p><strong>Détails :</strong> {selectedBooking.details || 'Aucun'}</p>
             <div className="mt-8 flex justify-center gap-4">
-              <button className="bg-green-800 text-white font-semibold px-4 py-2 rounded-lg" onClick={handleConfirmBooking}>
-                Confirmer la réservation
-              </button>
-              <button className="bg-red-600 text-white font-semibold px-4 py-2 rounded-lg" onClick={handleCancelBooking}>
-                Annuler la réservation
-              </button>
+              {selectedBooking.status !== 'confirmed' && (
+                <button className="bg-green-800 text-white font-semibold px-4 py-2 rounded-lg" onClick={handleConfirmBooking}>
+                  Confirmer la réservation
+                </button>
+              )}
+              {selectedBooking.status !== 'canceled' && (
+                <button className="bg-red-600 text-white font-semibold px-4 py-2 rounded-lg" onClick={handleCancelBooking}>
+                  Annuler la réservation
+                </button>
+              )}
             </div>
           </div>
         </div>
       )}
 
-      {/* Message de confirmation */}
-      {confirmationMessage && (
-        <SuccessMessage message={confirmationMessage} />  // Utilisation du composant SuccessMessage
+      {/* Message de notification */}
+      {notification.message && (
+        <NotificationMessage message={notification.message} type={notification.type} />
       )}
     </div>
   );
