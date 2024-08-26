@@ -13,4 +13,5 @@ export type Booking = {
   company_id: string;
   table_id: Table;  // Utilisation de Table directement ici
   status: string;
+  table: Table;  // Utilisation de Table directement ici
 };

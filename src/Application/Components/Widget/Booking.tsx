@@ -66,7 +66,8 @@ export const Booking: React.FC<BookingProps> = ({ selectedDate, onTimeSelected, 
         date_selected: localDate.toISOString().split('T')[0],  
         time_selected: timeSelected,
         nbr_persons: nbrPersons,
-        user_id: user?._id
+        user_id: user?._id,
+        details: additionalInfo,
       };
       console.log("Données envoyées :", bookingData);
       
@@ -179,15 +180,15 @@ export const Booking: React.FC<BookingProps> = ({ selectedDate, onTimeSelected, 
         <>
           <h2 className="text-xl font-bold mb-4">Finaliser la réservation</h2>
           <div className="mb-4">
-            <p className="font-bold">Nom de réservation:</p>
+            <p className="font-semibold">Nom de réservation:</p>
             <p>{user?.firstname} {user?.lastname}</p>
           </div>
           <div className="mb-4">
-            <p className="font-bold">Date et heure sélectionnées:</p>
+            <p className="font-semibold">Date et heure sélectionnées:</p>
             <p>{localDate.toLocaleDateString()} à {timeSelected}</p>
           </div>
           <div className="mb-4">
-            <p className="font-bold">Nombre de couverts:</p>
+            <p className="font-semibold">Nombre de couverts:</p>
             <div className="flex items-center justify-center my-4 gap-2">
               <button 
                 onClick={decrementNbrPersons} 
@@ -205,7 +206,7 @@ export const Booking: React.FC<BookingProps> = ({ selectedDate, onTimeSelected, 
             </div>
           </div>
           <div className="my-7">
-            <p className="font-bold">Infos complémentaires:</p>
+            <p className="font-semibold">Infos complémentaires:</p>
             <textarea
               className="mt-4 w-full p-2 border border-gray-300 rounded-lg"
               rows={4}
@@ -237,28 +238,47 @@ export const Booking: React.FC<BookingProps> = ({ selectedDate, onTimeSelected, 
         </>
       )}
 
-      {step === 'success' && reservationDetails && (
-        <>
-          <h2 className="text-xl font-bold mb-4">Réservation effectuée</h2>
-          <p className="mb-4">Vous recevrez un mail de confirmation dès que le restaurant aura confirmé la réservation.</p>
-          <div className="mb-4">
-            <p className="font-bold">Nom de réservation:</p>
-            <p>{user?.firstname} {user?.lastname}</p>
-          </div>
-          <div className="mb-4">
-            <p className="font-bold">Date et heure de réservation:</p>
-            <p>{localDate.toLocaleDateString()} à {timeSelected}</p>
-          </div>
-          <div className="mb-4">
-            <p className="font-bold">Nombre de couverts : {nbrPersons}</p>
-          </div>
-          <div className="mt-4 text-center">
-            <button className="bg-black p-2 text-sm font-bold text-white rounded-lg" onClick={onReturnToAccount}>
-              Retour à l'accueil
-            </button>
-          </div>
-        </>
-      )}
+{step === 'success' && reservationDetails && (
+  <>
+    <h2 className="text-xl font-bold mb-4">Réservation effectuée</h2>
+    <p className="mb-4">Vous recevrez un mail de confirmation dès que le restaurant aura confirmé la réservation.</p>
+    <div className="mb-2 text-left">
+      <ul className='my-7 pl-2'>
+        <li className="font-semibold mb-2">Nom de réservation :
+          <span className='font-normal'> {user?.lastname}</span>
+        </li>
+        <li className="font-semibold mb-2">Adresse mail :
+          <span className='font-normal'> {user?.email}</span>
+        </li>
+        <li className="font-semibold mb-2">N° de téléphone :
+          <span className='font-normal'> {user?.phone_number}</span>
+        </li>
+        <li className="font-semibold mb-2">Date de réservation :
+          <span className='font-normal'> {localDate.toLocaleDateString()}</span>
+        </li>
+        <li className="font-semibold mb-2">Heure de réservation :
+          <span className='font-normal'> {timeSelected}</span>
+        </li>
+        <li className="font-semibold mb-2">Nombre de personnes :
+          <span className='font-normal'> {nbrPersons}</span>
+        </li>
+        <li className="font-semibold mb-2">N° de table : 
+          <span className='font-normal'> {reservationDetails.table && reservationDetails.table[0]?.table_number}</span>
+        </li>
+        {additionalInfo && (
+          <li className="font-semibold mb-2 flex flex-col">Autres informations :
+            <span className='font-normal'> {additionalInfo}</span>
+          </li>
+        )}
+      </ul>
+    </div>
+    <div className="my-4 text-center ">   
+      <button className="bg-black mt-2 p-2 text-white text-sm font-semibold rounded-lg w-full" onClick={onReturnToAccount}>
+        Retour à l'accueil
+      </button>
+    </div>
+  </>
+)}
     </div>
   );
 };

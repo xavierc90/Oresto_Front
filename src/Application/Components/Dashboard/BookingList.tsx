@@ -49,7 +49,7 @@ export const BookingList: React.FC<BookingListProps> = ({ bookings }) => {
               <td className="text-left">{booking.user_id.lastname}</td>
               <td className="text-left">{booking.user_id.firstname}</td>
               <td className="text-center">{booking.nbr_persons} {booking.nbr_persons > 1 ? 'personnes' : 'personne'}</td>
-              <td className="text-center">4</td>
+              <td className="text-center">{booking.table._id || 'N/A'}</td>
               <td className="text-center">
                 <span className={`px-7 py-1 text-sm font-semibold ${
                   booking.status === 'waiting' ? 'bg-orange-500 text-white' :
