@@ -135,7 +135,9 @@ export const BookingList: React.FC<BookingListProps> = ({ bookings }) => {
 
             <h2 className="text-2xl font-bold mb-4 text-center">Détails de la réservation</h2>
             <p><strong>Nom :</strong> {selectedBooking.user_id.firstname} {selectedBooking.user_id.lastname}</p>
-            <p><strong>Heure :</strong> {selectedBooking.time_selected}</p>
+            <p><strong>Email :</strong> {selectedBooking.user_id.email}</p>
+            <p><strong>N° de téléphone :</strong> {selectedBooking.user_id.phone_number}</p>
+            <p><strong>Allergènes :</strong> {Array.isArray(selectedBooking.user_id.allergens) && selectedBooking.user_id.allergens.length > 0 ? selectedBooking.user_id.allergens.join(', ') : 'Aucune allergie signalée'}</p>            <p><strong>Heure :</strong> {selectedBooking.time_selected}</p>
             <p><strong>Date :</strong> {new Date(selectedBooking.date_selected).toLocaleDateString()}</p>
             <p><strong>Nombre de couverts :</strong> {selectedBooking.nbr_persons}</p>
             <p><strong>Table :</strong> {selectedBooking.table && selectedBooking.table[0]?.table_number || 'N/A'}</p>

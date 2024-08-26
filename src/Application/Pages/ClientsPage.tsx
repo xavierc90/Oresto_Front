@@ -74,7 +74,6 @@ export const ClientsPage = () => {
         &nbsp;| <span className="font-bold text-red-500 dark:text-white"> 0</span> réservation
       </h2>
       <ClientList users={filteredUsers} />
-      <ClientInfos />
     </div>
   );
 };
