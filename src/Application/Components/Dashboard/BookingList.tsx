@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { FaSort, FaTimes } from "react-icons/fa";
-import { Booking } from '../../../Module/Types/bookng.type';
 import { http } from '../../../Infrastructure/Http/axios.instance';
 import { NotificationMessage } from '../NotificationMessage';
+import { StatusLabel } from './StatusLabel';
 import { RxCross1 } from 'react-icons/rx';
+import { Booking } from '../../../Module/Types/bookng.type';
 
 interface BookingListProps {
   bookings: Booking[];
@@ -83,7 +84,7 @@ export const BookingList: React.FC<BookingListProps> = ({ bookings }) => {
             <th className="text-left min-w-[150px]">Prénom</th>
             <th className="text-center min-w-[150px]">Nbr de couverts</th>
             <th className="text-center min-w-[180px]">Table</th>
-            <th className="text-center w-auto flex items-center justify-center gap-1">Statut<FaSort /></th>
+            <th className="text-left flex items-center justify-left gap-1">Etat réservation<FaSort /></th>
           </tr>
         </thead>
         <tbody className="bookinglist">
@@ -98,19 +99,7 @@ export const BookingList: React.FC<BookingListProps> = ({ bookings }) => {
               <td className="text-left">{booking.user_id.firstname}</td>
               <td className="text-center">{booking.nbr_persons} {booking.nbr_persons > 1 ? 'personnes' : 'personne'}</td>
               <td className="text-center">{booking.table && booking.table[0]?.table_number || 'N/A'}</td>
-              <td className="text-center">
-                <span className={`px-7 py-1 text-sm font-semibold ${
-                  booking.status === 'waiting' ? 'bg-orange-500 text-white' :
-                  booking.status === 'confirmed' ? 'bg-green-700 text-white' : 
-                  booking.status === 'archived' ? 'bg-gray-200 text-gray-900' : 
-                  booking.status === 'canceled' ? 'bg-red-600 text-white px-9' : ''
-                }`}>
-                  {booking.status === 'waiting' && 'En attente'}
-                  {booking.status === 'confirmed' && 'Confirmée'}
-                  {booking.status === 'archived' && 'Archivée'}
-                  {booking.status === 'canceled' && 'Annulée'}
-                </span>
-              </td>
+              <td className="text-left"><StatusLabel status={booking.status ? booking.status : 'waiting'} /></td>
             </tr>
           ))}
         </tbody>
@@ -134,7 +123,9 @@ export const BookingList: React.FC<BookingListProps> = ({ bookings }) => {
               <RxCross1 size={25} />
             </button>
 
-            <h2 className="text-2xl font-bold mb-6 mt-8 text-center">Détails de la réservation</h2>
+            <h2 className="text-2xl font-bold mb-2 mt-8 text-center">Détails de la réservation</h2>
+            <h3 className='flex justify-center mb-6 text-lg'><StatusLabel status={selectedBooking.status} /></h3>
+
             <ul className="list-none pl-5 space-y-1">
               <li><strong>Au nom de :</strong> {selectedBooking.user_id.firstname} {selectedBooking.user_id.lastname}</li>
               <li><strong>Email :</strong> {selectedBooking.user_id.email}</li>
