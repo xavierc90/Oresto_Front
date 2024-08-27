@@ -122,6 +122,11 @@
   overflow-x: hidden;
 }
 
+.chart-container {
+  width: 300px; /* Ajustez selon vos besoins */
+  height: 300px; /* Ajustez selon vos besoins */
+}
+
 .bookinglist tr {
     height: 30px;
   }
