@@ -1,11 +1,15 @@
 import { useState, useEffect } from 'react';
 import { http } from '../../../Infrastructure/Http/axios.instance';
 import { FaSort } from "react-icons/fa";
+import { FaUser } from "react-icons/fa";
+import { FaRegCalendarAlt } from "react-icons/fa";
 import { User } from '../../../Module/Auth/user.type';
 import { formatDateToFrench } from '../../../Module/Utils/dateFormatter';
+import { formatDateWithoutTime } from '../../../Module/Utils/dateFormatterWithoutHour';
 import moment from 'moment';
 import { RxCross1 } from 'react-icons/rx';
 import { Booking } from '../../../Module/Types/bookng.type';
+import { StatusLabel } from './StatusLabel';
 
 interface ClientListProps {
   users: User[];
@@ -51,36 +55,6 @@ export const ClientList = ({ users }: ClientListProps) => {
     }
   };
 
-  const translateStatus = (status: string) => {
-    let statusText = '';
-    let color = '';
-
-    switch (status) {
-      case 'confirmed':
-        statusText = 'Confirmée';
-        color = '#4CAF50';  // Vert
-        break;
-      case 'canceled':
-        statusText = 'Annulée';
-        color = '#f44336';  // Rouge
-        break;
-      case 'waiting':
-        statusText = 'En attente';
-        color = '#FF9800';  // Orange
-        break;
-      default:
-        statusText = 'État inconnu';
-        color = '#9E9E9E';  // Gris
-    }
-
-    return (
-      <span>
-        <span className="status-circle" style={{ backgroundColor: color }}></span>
-        {`${statusText}`}
-      </span>
-    );
-  };
-
   const handleCloseModal = () => {
     setIsModalOpen(false);
     setSelectedUser(null);
@@ -102,7 +76,6 @@ export const ClientList = ({ users }: ClientListProps) => {
               <th className="text-left">N° de téléphone</th>
               <th className="text-left">Date d'inscription</th>
               <th className="text-left">Status</th>
-              <th className="text-left">Nbr rés</th>
             </tr>
           </thead>
           <tbody>
@@ -112,8 +85,8 @@ export const ClientList = ({ users }: ClientListProps) => {
                 <td>{user.firstname}</td>
                 <td className="py-2">{user.phone_number}</td>
                 <td>{formatDateToFrench(user.created_at)}</td>
-                <td>{translateStatus(user.status || 'waiting')}</td>
-                <td className="py-2">{user.bookingCount || 0}</td>
+                <td><StatusLabel status={user.status ? user.status : 'waiting'} />
+                </td>
               </tr>
             ))}
           </tbody>
@@ -126,28 +99,41 @@ export const ClientList = ({ users }: ClientListProps) => {
             <button className="absolute top-4 right-4 text-gray-700 hover:text-black" onClick={handleCloseModal}>
               <RxCross1 size={25} />
             </button>
-            <h2 className="text-lg font-bold mb-2">Détails du client</h2>
+           
+            <h2 className="font-bold mb-5 flex items-center">
+            <FaUser />
+            <span className='pl-2'>Informations du client</span>
+            </h2>
+
             <ul className='space-y-2 text-sm'>
               <li className='font-semibold'>Nom : <span className='font-normal'>{selectedUser.lastname}</span></li>
               <li className='font-semibold'>Prénom : <span className='font-normal'>{selectedUser.firstname}</span></li>
               <li className='font-semibold'>Email : <span className='font-normal'>{selectedUser.email}</span></li>
               <li className='font-semibold'>N° de téléphone : <span className='font-normal'>{selectedUser.phone_number}</span></li>
               <li className='font-semibold'>Allergènes : <span className='font-normal'>{Array.isArray(selectedUser.allergens) && selectedUser.allergens.length > 0 ? selectedUser.allergens.join(', ') : 'Aucune allergie renseignée'}</span></li>
-              <li className='font-semibold'>Date et heure d'inscription : <span className='font-normal'>{formatDateToFrench(selectedUser.created_at)}</span></li>
+              <li className='font-semibold'>Inscris depuis le : <span className='font-normal'>{formatDateToFrench(selectedUser.created_at)}</span></li>
             </ul>
-            <h2 className="text-lg font-bold mt-6 mb-4">Historique des réservations</h2>
+            
+            <h2 className="font-bold mt-6 mb-5 flex items-center">
+            <FaRegCalendarAlt />
+            <span className='pl-2'>Historique des réservations</span>
+            </h2>
+            <div className='booking-list'>
             {bookings.length > 0 ? (
-              <ul className='list-disc pl-4'>
+              <ul className='list-none'>
                 {bookings.map(booking => (
-                  <li key={booking._id} className='mb-3'>
-                    <span className='font-bold text-sm'>{moment(booking.date_selected).format('DD/MM/YYYY')} à {booking.time_selected} - {translateStatus(booking.status)}</span>
-                    <div className='list-none'>{booking.nbr_persons} personnes - Table n°{booking.table[0].table_number} - {booking.details}</div>
-                  </li>
+                  <ul key={booking._id} className='mb-3 text-sm space-y-1'>
+                     <li className='font-semibold flex gap-2'>{moment(booking.date_selected).format('DD/MM/YYYY')} à {booking.time_selected}
+                     <StatusLabel status={booking.status || 'waiting'} /></li>
+                      <li>Table {booking.table[0].table_number} pour {booking.nbr_persons} personnes</li>
+                    <li>{booking.details ? booking.details : ''}</li>
+                    </ul>
                 ))}
               </ul>
             ) : (
-              <p>Aucune réservation trouvée pour cet utilisateur.</p>
+              <p>Aucune réservation trouvée pour cette personne.</p>
             )}
+            </div>
           </div>
         </div>
       )}
