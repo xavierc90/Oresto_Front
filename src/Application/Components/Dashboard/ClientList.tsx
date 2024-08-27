@@ -5,11 +5,11 @@ import { FaUser } from "react-icons/fa";
 import { FaRegCalendarAlt } from "react-icons/fa";
 import { User } from '../../../Module/Auth/user.type';
 import { formatDateToFrench } from '../../../Module/Utils/dateFormatter';
-import { formatDateWithoutTime } from '../../../Module/Utils/dateFormatterWithoutHour';
 import moment from 'moment';
 import { RxCross1 } from 'react-icons/rx';
 import { Booking } from '../../../Module/Types/bookng.type';
 import { StatusLabel } from './StatusLabel';
+import { FaInfoCircle } from "react-icons/fa";
 
 interface ClientListProps {
   users: User[];
@@ -20,24 +20,6 @@ export const ClientList = ({ users }: ClientListProps) => {
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [bookings, setBookings] = useState<Booking[]>([]);
-  const [usersWithCounts, setUsersWithCounts] = useState<User[]>([]);
-
-  useEffect(() => {
-    const loadBookingsCount = async () => {
-      const usersWithBookingCounts = await Promise.all(users.map(async user => {
-        try {
-          const response = await http.get<{ count: number }>(`/bookings/count/user/${user._id}`);
-          return { ...user, bookingCount: response.data.count };
-        } catch (error) {
-          console.error('Error fetching booking count:', error);
-          return { ...user, bookingCount: 0 };
-        }
-      }));
-      setUsersWithCounts(usersWithBookingCounts);
-    };
-
-    loadBookingsCount();
-  }, [users]);
 
   const handleSortToggle = () => {
     setSortOrder(prevOrder => prevOrder === 'asc' ? 'desc' : 'asc');
@@ -48,7 +30,8 @@ export const ClientList = ({ users }: ClientListProps) => {
     setIsModalOpen(true);
     try {
       const response = await http.get<Booking[]>(`/bookings/user/${user._id}`);
-      setBookings(response.data);  // Assign booking data directly
+      const sortedBookings = response.data.sort((a, b) => new Date(b.date_selected).getTime() - new Date(a.date_selected).getTime());
+      setBookings(sortedBookings);  // Assign sorted booking data directly
     } catch (error) {
       console.error('Error fetching bookings:', error);
       setBookings([]);
@@ -61,7 +44,7 @@ export const ClientList = ({ users }: ClientListProps) => {
     setBookings([]);
   };
 
-  const sortedUsers = sortOrder === 'asc' ? usersWithCounts.sort((a, b) => a.lastname.localeCompare(b.lastname)) : usersWithCounts.sort((a, b) => b.lastname.localeCompare(a.lastname));
+  const sortedUsers = sortOrder === 'asc' ? users.sort((a, b) => a.lastname.localeCompare(b.lastname)) : users.sort((a, b) => b.lastname.localeCompare(a.lastname));
 
   return (
     <div className="scrollable-list">
@@ -75,7 +58,6 @@ export const ClientList = ({ users }: ClientListProps) => {
               <th className="text-left">Prénom</th>
               <th className="text-left">N° de téléphone</th>
               <th className="text-left">Date d'inscription</th>
-              <th className="text-left">Status</th>
             </tr>
           </thead>
           <tbody>
@@ -85,7 +67,6 @@ export const ClientList = ({ users }: ClientListProps) => {
                 <td>{user.firstname}</td>
                 <td className="py-2">{user.phone_number}</td>
                 <td>{formatDateToFrench(user.created_at)}</td>
-                <td><StatusLabel status={user.status ? user.status : 'waiting'} /></td>
               </tr>
             ))}
           </tbody>
@@ -122,11 +103,15 @@ export const ClientList = ({ users }: ClientListProps) => {
               <ul className='list-none'>
                 {bookings.map(booking => (
                   <ul key={booking._id} className='mb-3 text-sm space-y-1'>
-                     <li className='font-semibold flex gap-2'>{moment(booking.date_selected).format('DD/MM/YYYY')} à {booking.time_selected}
-                     <StatusLabel status={booking.status || 'waiting'} /></li>
-                      <li>Table {booking.table[0].table_number} pour {booking.nbr_persons} personnes</li>
-                    <li>{booking.details ? booking.details : ''}</li>
-                    </ul>
+                    <li className='font-semibold flex gap-2'>{moment(booking.date_selected).format('DD/MM/YYYY')} à {booking.time_selected}
+                      <StatusLabel status={booking.status || 'waiting'} />
+                    </li>
+                    <li>Table {booking.table[0]?.table_number} pour {booking.nbr_persons || '0'} personnes</li>
+                    <li className='flex items-center'>
+                      {booking.details && <FaInfoCircle className="mr-2" />}
+                      {booking.details ? booking.details : ''}
+                    </li>
+                  </ul>
                 ))}
               </ul>
             ) : (

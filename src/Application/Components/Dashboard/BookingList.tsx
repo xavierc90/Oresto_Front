@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { FaSort, FaTimes } from "react-icons/fa";
 import { FaCheck } from "react-icons/fa";
+import { GrEdit } from "react-icons/gr";
 import { http } from '../../../Infrastructure/Http/axios.instance';
 import { NotificationMessage } from '../NotificationMessage';
 import { StatusLabel } from './StatusLabel';
@@ -44,6 +45,23 @@ export const BookingList: React.FC<BookingListProps> = ({ bookings }) => {
         }
       } catch (error) {
         setNotification({ message: "Erreur lors de la confirmation de la réservation.", type: 'error' });
+      } finally {
+        setIsModalOpen(false);
+      }
+    }
+  };
+
+  const handleUpdateBooking = async () => {
+    if (selectedBooking) {
+      try {
+        const response = await http.post(`/update_booking/${selectedBooking._id}`);
+        if (response.status === 200) {
+          setNotification({ message: "La réservation a été annulée avec succès.", type: 'success' });
+        } else {
+          setNotification({ message: "Erreur lors de l'annulation de la réservation.", type: 'error' });
+        }
+      } catch (error) {
+        setNotification({ message: "Erreur lors de l'annulation de la réservation.", type: 'error' });
       } finally {
         setIsModalOpen(false);
       }
@@ -114,7 +132,7 @@ export const BookingList: React.FC<BookingListProps> = ({ bookings }) => {
           onClick={handleCloseModal}
           >
           <div 
-            className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg w-full max-w-lg relative"
+            className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg w-full max-w-md relative"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Close icon */}
@@ -125,9 +143,11 @@ export const BookingList: React.FC<BookingListProps> = ({ bookings }) => {
               <RxCross1 size={25} />
             </button>
 
-            <h2 className="text-2xl font-bold mb-2 mt-8 text-center">Détails de la réservation</h2>
-            <h3 className='flex justify-center mb-6 text-lg'><StatusLabel status={selectedBooking.status} /></h3>
-
+            <h2 className="text-xl font-bold mb-2 mt-8 text-center">Détail de la réservation</h2>
+            <div className='flex justify-center mt-5'>
+              <h3 className='flex justify-center mb-6 text-sm bg-gray-100 dark:bg-gray-900 p-4 rounded-2xl lg:w-3/3'><StatusLabel status={selectedBooking.status} /></h3>
+            </div>
+            <div className='flex flex-col justify-center items-center'>
             <ul className="list-none pl-5 space-y-1">
               <li><strong>Au nom de :</strong> {selectedBooking.user_id.firstname} {selectedBooking.user_id.lastname}</li>
               <li><strong>Email :</strong> {selectedBooking.user_id.email}</li>
@@ -139,16 +159,23 @@ export const BookingList: React.FC<BookingListProps> = ({ bookings }) => {
               <li><strong>Table :</strong> {selectedBooking.table && selectedBooking.table[0]?.table_number || 'N/A'}</li>
               <li><strong>Détails :</strong> {selectedBooking.details || 'Aucun'}</li>
             </ul>
+            </div>
 <div className="mt-8 flex justify-center gap-4 ">
               {selectedBooking.status !== 'confirmed' && (
-                <button className="bg-green-800 text-white font-semibold px-4 py-2 rounded-lg flex items-center" onClick={handleConfirmBooking}>
-                  <FaCheck />
+                <button className="bg-green-700 text-white text-sm font-bold px-4 py-2 rounded-lg flex items-center" onClick={handleConfirmBooking}>
+                  <FaCheck size={10} />
                   <span className='ml-2'>Confirmer</span>
-                </button>
+                </button>  
+              )}
+              {selectedBooking.status !== 'edited' && (
+                <button className="bg-black text-white text-sm font-bold px-4 py-2 rounded-lg flex items-center" onClick={handleUpdateBooking}>
+                  <GrEdit size={10} />
+                  <span className='ml-2'>Modifier</span>
+                </button>  
               )}
               {selectedBooking.status !== 'canceled' && (
-                <button className="bg-red-600 text-white font-semibold px-4 py-2 rounded-lg flex items-center" onClick={handleCancelBooking}>
-                  <ImCross />
+                <button className="bg-red-600 text-white text-sm font-bold px-4 py-2 rounded-lg flex items-center" onClick={handleCancelBooking}>
+                  <ImCross size={10} />
                   <span className='ml-2'>Annuler</span>
                 </button>
               )}
