@@ -1,17 +1,15 @@
 import { useState, useEffect } from 'react';
 import { ClientList } from "../Components/Dashboard/ClientList";
-import { ClientInfos } from "../Components/Dashboard/ClientInfos";
 import { useOutletContext } from 'react-router-dom';
 import { User } from '../../Module/Auth/user.type';
 import { http } from '../../Infrastructure/Http/axios.instance';
-import { searchService } from '../../Module/Utils/searchService'; // Importez le service
+import { searchService } from '../../Module/Utils/searchService';
 
 type ContextType = { user: User | null };
 
 export const ClientsPage = () => {
   const { user } = useOutletContext<ContextType>();
   const [users, setUsers] = useState<User[]>([]);
-  const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState<string>('');
@@ -23,10 +21,7 @@ export const ClientsPage = () => {
         const response = await http.get('/clients_by_filters', {
           headers: { Authorization: `Bearer ${token}` },
         });
-        if (response.data.results) {
-          setUsers(response.data.results);
-          setFilteredUsers(response.data.results); // Initial setting for filtered users
-        }
+        setUsers(response.data.results || []);
       } catch (error) {
         console.error('Erreur lors de la récupération des utilisateurs:', error);
         setError('Erreur lors de la récupération des utilisateurs.');
@@ -39,20 +34,16 @@ export const ClientsPage = () => {
   }, []);
 
   useEffect(() => {
-    const subscription = searchService.getSearch().subscribe(searchTerm => {
-      setSearchTerm(searchTerm);
-      if (searchTerm.length > 0) {
-        const filtered = users.filter(user =>
-          user.lastname.toLowerCase().includes(searchTerm.toLowerCase())
-        );
-        setFilteredUsers(filtered);
-      } else {
-        setFilteredUsers(users);
-      }
+    const subscription = searchService.getSearch().subscribe(search => {
+      setSearchTerm(search);
     });
 
     return () => subscription.unsubscribe();
-  }, [users]);
+  }, []);
+
+  const filteredUsers = users.filter(user => 
+    user.lastname.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   if (loading) {
     return <div>Chargement des utilisateurs...</div>;

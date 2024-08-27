@@ -100,6 +100,21 @@
     overflow-x: hidden;
 }
 
+.status-circle {
+  height: 10px;
+  width: 10px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 5px;
+}
+
+.scrollable-list {
+  padding-top: 10px;
+  max-width: 100%;
+  max-height: 550px;
+  overflow-x: hidden;
+}
+
 .bookinglist tr {
     height: 30px;
   }

@@ -12,7 +12,8 @@ export type Booking = {
   created_at: Date;
   company_id: string;
   table_id: Table;  // Utilisation de Table directement ici
-  status: string;
+  status: string;  // Ajouter JSX.Element ici
   details: string;
   table: Table[];  // Utilisation de Table directement ici
+  date: Date;
 };

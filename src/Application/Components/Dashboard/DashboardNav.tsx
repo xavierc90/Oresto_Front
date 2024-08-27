@@ -88,7 +88,7 @@ export const DashboardNav: React.FC<DashboardNavProps> = ({ company }) => {
   return (
     <div className='bg-light dark:bg-dark-900 dark:text-white w-80 h-screen flex flex-col items-center shadow-2xl mt-2'>
       <div className='mt-4'>
-        <img src={logoSrc} width="220px" alt="Logo Oresto" />
+        <a href='../dashboard/bookings'><img src={logoSrc} width="220px" alt="Oresto - Gestion des réservations" /></a>
         {company && <h1 className='text-center pt-5 font-bold'>{company.name}</h1>}
       </div>
       

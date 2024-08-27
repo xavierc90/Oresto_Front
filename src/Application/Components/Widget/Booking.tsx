@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import moment from 'moment';  // Assurez-vous d'importer moment
 import { http } from '../../../Infrastructure/Http/axios.instance';
 import { CalendarShadcn } from '../Dashboard/CalendarShadcn';
 import { useAuth } from '../../../Module/Auth/useAuth'; 
@@ -10,7 +11,7 @@ type BookingProps = {
   onReturnToAccount: () => void;
 };
 
-export const Booking: React.FC<BookingProps> = ({ selectedDate, onTimeSelected, onReturnToAccount }) => {
+export const Booking: React.FC<BookingProps> = ({ selectedDate, onReturnToAccount }) => {
   const { user, token } = useAuth();
   const [step, setStep] = useState<'selectDate' | 'selectTime' | 'confirm' | 'success'>('selectDate');
   const [timeSelected, setTimeSelected] = useState<string | null>(null);
@@ -18,7 +19,7 @@ export const Booking: React.FC<BookingProps> = ({ selectedDate, onTimeSelected, 
   const [nbrPersons, setNbrPersons] = useState(1);
   const [additionalInfo, setAdditionalInfo] = useState<string>(''); 
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [reservationDetails, setReservationDetails] = useState<any>(null); // Pour stocker les détails de la réservation réussie
+  const [reservationDetails, setReservationDetails] = useState<any>(null);
 
   useEffect(() => {
     if (!selectedDate) {
@@ -29,7 +30,7 @@ export const Booking: React.FC<BookingProps> = ({ selectedDate, onTimeSelected, 
   const validateDate = (date: Date) => {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-    return date.getTime() >= today.getTime();
+    return date >= today;
   };
 
   const handleDateSelect = (date: Date) => {
@@ -62,15 +63,17 @@ export const Booking: React.FC<BookingProps> = ({ selectedDate, onTimeSelected, 
 
   const handleFinalConfirmation = async () => {
     try {
+      // Convertissez la date locale en date UTC pour l'envoyer au serveur
+      const formattedDate = moment(localDate).format('YYYY-MM-DD');
       const bookingData = {
-        date_selected: localDate.toISOString().split('T')[0],  
+        date_selected: formattedDate,
         time_selected: timeSelected,
         nbr_persons: nbrPersons,
         user_id: user?._id,
         details: additionalInfo,
       };
       console.log("Données envoyées :", bookingData);
-      
+
       const response = await http.post('/add_booking', bookingData, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -78,8 +81,8 @@ export const Booking: React.FC<BookingProps> = ({ selectedDate, onTimeSelected, 
       });
 
       if (response.status === 201) {
-        setReservationDetails(response.data);  // Stocker les détails de la réservation
-        setStep('success');  // Passer à l'étape de succès
+        setReservationDetails(response.data);
+        setStep('success');
       } else {
         console.log("Erreur lors de la réservation :", response.data);
         setErrorMessage("Erreur lors de la réservation, veuillez réessayer.");

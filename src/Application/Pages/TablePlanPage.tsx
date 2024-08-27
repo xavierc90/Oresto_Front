@@ -34,7 +34,7 @@ export const TablePlanPage = () => {
         | <span className="font-bold text-red-500 dark:text-white">0</span> couvert
       </h2>
       <TableForm />
-      <TableArea selectedDate={selectedDate} company={company[0]} token={token} />
+      <TableArea selectedDate={selectedDate} company={company} token={token} />
     </div>
   );
 };

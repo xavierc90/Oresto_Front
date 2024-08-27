@@ -10,4 +10,6 @@ export type User = {
     created_at: string;
     company_id: string;
     token?: string;
+    status?: string;
+    bookingCount?: number;  // Ajoutez ce champ pour stocker le nombre de réservations  
 };
