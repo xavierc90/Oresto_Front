@@ -85,8 +85,7 @@ export const ClientList = ({ users }: ClientListProps) => {
                 <td>{user.firstname}</td>
                 <td className="py-2">{user.phone_number}</td>
                 <td>{formatDateToFrench(user.created_at)}</td>
-                <td><StatusLabel status={user.status ? user.status : 'waiting'} />
-                </td>
+                <td><StatusLabel status={user.status ? user.status : 'waiting'} /></td>
               </tr>
             ))}
           </tbody>
@@ -111,7 +110,7 @@ export const ClientList = ({ users }: ClientListProps) => {
               <li className='font-semibold'>Email : <span className='font-normal'>{selectedUser.email}</span></li>
               <li className='font-semibold'>N° de téléphone : <span className='font-normal'>{selectedUser.phone_number}</span></li>
               <li className='font-semibold'>Allergènes : <span className='font-normal'>{Array.isArray(selectedUser.allergens) && selectedUser.allergens.length > 0 ? selectedUser.allergens.join(', ') : 'Aucune allergie renseignée'}</span></li>
-              <li className='font-semibold'>Inscris depuis le : <span className='font-normal'>{formatDateToFrench(selectedUser.created_at)}</span></li>
+              <li className='font-semibold'>Inscrit depuis le : <span className='font-normal'>{formatDateToFrench(selectedUser.created_at)}</span></li>
             </ul>
             
             <h2 className="font-bold mt-6 mb-5 flex items-center">

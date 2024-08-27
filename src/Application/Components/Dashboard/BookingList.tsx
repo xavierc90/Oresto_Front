@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { FaSort, FaTimes } from "react-icons/fa";
+import { FaCheck } from "react-icons/fa";
 import { http } from '../../../Infrastructure/Http/axios.instance';
 import { NotificationMessage } from '../NotificationMessage';
 import { StatusLabel } from './StatusLabel';
 import { RxCross1 } from 'react-icons/rx';
+import { ImCross } from 'react-icons/im';
 import { Booking } from '../../../Module/Types/bookng.type';
 
 interface BookingListProps {
@@ -137,15 +139,17 @@ export const BookingList: React.FC<BookingListProps> = ({ bookings }) => {
               <li><strong>Table :</strong> {selectedBooking.table && selectedBooking.table[0]?.table_number || 'N/A'}</li>
               <li><strong>Détails :</strong> {selectedBooking.details || 'Aucun'}</li>
             </ul>
-<div className="mt-8 flex justify-center gap-4">
+<div className="mt-8 flex justify-center gap-4 ">
               {selectedBooking.status !== 'confirmed' && (
-                <button className="bg-green-800 text-white font-semibold px-4 py-2 rounded-lg" onClick={handleConfirmBooking}>
-                  Confirmer la réservation
+                <button className="bg-green-800 text-white font-semibold px-4 py-2 rounded-lg flex items-center" onClick={handleConfirmBooking}>
+                  <FaCheck />
+                  <span className='ml-2'>Confirmer</span>
                 </button>
               )}
               {selectedBooking.status !== 'canceled' && (
-                <button className="bg-red-600 text-white font-semibold px-4 py-2 rounded-lg" onClick={handleCancelBooking}>
-                  Annuler la réservation
+                <button className="bg-red-600 text-white font-semibold px-4 py-2 rounded-lg flex items-center" onClick={handleCancelBooking}>
+                  <ImCross />
+                  <span className='ml-2'>Annuler</span>
                 </button>
               )}
             </div>
