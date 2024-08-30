@@ -1,5 +1,6 @@
 import { NavLink } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import { http } from '../../Infrastructure/Http/axios.instance';
 
 export const LostPasswordPage = () => {
   const [email, setEmail] = useState('');
@@ -25,12 +26,12 @@ export const LostPasswordPage = () => {
             <img src="../../../public/img/logo-oresto-red.png" width="300px" alt="Logo Oresto" />
           </a>
           <form className="flex flex-col w-80 mt-10" onSubmit={handleSubmit}>
-            <label className="text-xl font-bold mb-4" htmlFor='email'>Adresse mail ou identifiant</label>
+            <label className="text-xl font-bold mb-4 text-left" htmlFor='email'>Votre adresse mail</label>
             <input 
               type="email" 
               name="email" 
               id="email"
-              placeholder="Saisissez votre email ou identifiant" 
+              placeholder="Saisissez votre adresse mailt" 
               className="border-2 border-gray-300 p-2 mb-6 font-bold" 
               value={email}
               onChange={handleEmailChange}
@@ -43,7 +44,7 @@ export const LostPasswordPage = () => {
               Récupérer le mot de passe
             </button>
           </form>
-          <NavLink to="/login" className="pt-10">Retour à la page de connexion</NavLink>
+          <NavLink to="/login" className="pt-10 underline">Retour à la page de connexion</NavLink>
         </div>
       </div>
       <div className='cover-login w-6/12'>

@@ -1,9 +1,12 @@
-import { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { LoginFormUser } from './Form/LoginFormUser';
 import { RegisterFormUser } from './Form/RegisterFormUser';
 import { FormResetPassword } from './Form/FormResetPassword';
-import { RxCross1 } from "react-icons/rx";
-import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
+import ArrowButton from './Form/ArrowButton';
+import CloseButton from './Form/CloseButton';
+import { RiDragMove2Fill } from "react-icons/ri";
+import { Account } from './../Widget/Account';
+import { useAuth } from '../../../Module/Auth/useAuth';
 
 type WidgetProps = {
   setShowWidget: (visible: boolean) => void;
@@ -11,59 +14,94 @@ type WidgetProps = {
   setIsContentVisible: (visible: boolean) => void;
 };
 
-export const Widget: React.FC<WidgetProps> = ({ setShowWidget, isContentVisible, setIsContentVisible }) => {
+export const Widget: React.FC<WidgetProps> = ({
+  setShowWidget,
+  isContentVisible,
+  setIsContentVisible,
+}) => {
+  const { user, company, login, logout } = useAuth();
   const [isLoging, setIsLoging] = useState(true);
   const [isLostPassword, setIsLostPassword] = useState(false);
 
-  const handleLogin = () => {
-    console.log("User is logging in...");
+  useEffect(() => {
+    console.log("Current user in Widget:", user);
+    if (user) {
+      setIsLoging(false);  // Si l'utilisateur est connecté, mettre à jour l'état
+    }
+  }, [user]);
+
+  const handleLoginSuccess = () => {
+    console.log("Login successful, user:", user);
+    setIsLoging(false); // Indiquer que l'utilisateur est connecté
   };
 
   const handleClose = () => {
-    setShowWidget(false); // Masquer le widget en mettant à jour l'état dans HomePage
+    setShowWidget(false);
   };
 
   const toggleContentVisibility = () => {
-    setIsContentVisible(!isContentVisible); // Bascule la visibilité du contenu
+    setIsContentVisible(!isContentVisible);
   };
 
   return (
-    <div className="border-1 shadow-2xl border-gray-300 fixed bottom-0 right-10 bottom-0 flex items-center justify-center">
-      <div>
-        <div className='flex justify-between items-center bg-green-800 top-0 w-80 text-white py-3 pl-4 rounded-t-xl'>
-          Réserver en ligne
-          <div className='flex gap-2 mr-4'>
-            <button 
-              onClick={toggleContentVisibility} // Gérer le clic sur la flèche
-              className='hover:text-white'
-            >
-              {isContentVisible ? <IoIosArrowUp size={20} /> : <IoIosArrowDown size={20} />}
-            </button>
-            <button 
-              onClick={handleClose} // Utiliser un bouton pour gérer le clic sur la croix
-              className='hover:text-white'
-            >
-              <RxCross1 size={20} />
-            </button>
+    <div className="fixed text-center w-full bottom-0 lg:w-auto lg:bottom-0 lg:right-10 z-10">
+      <div className="flex flex-col lg:flex-row lg:fixed lg:bottom-0 lg:right-10 lg:w-70 lg:flex lg:flex-col lg:shadow-2xl">
+        <div className="flex justify-center items-center bg-green-800 lg:h-10 text-white py-3 pl-4 rounded-t-none lg:rounded-none lg:rounded-tl-xl lg:rounded-tr-xl lg:rounded-t-xl z-10 gap-4">
+          <a
+            onClick={toggleContentVisibility}
+            className="flex justify-center items-center cursor-pointer hover:text-white w-full lg:w-auto"
+          >
+            <RiDragMove2Fill /> <span className="pl-1">Réserver en ligne</span>
+          </a>
+          <div className="flex gap-2 ml-auto mr-4 lg:flex lg:gap-8">
+            <div className="hidden lg:block mr-5">
+              <ArrowButton
+                isContentVisible={isContentVisible}
+                onClick={toggleContentVisibility}
+              />
+            </div>
+            <div className="hidden lg:block absolute right-3 top-4 lg:top-2 lg:right-2">
+              <CloseButton onClick={handleClose} />
+            </div>
           </div>
         </div>
 
-        {isContentVisible && ( // Utiliser l'état pour décider d'afficher ou non le contenu
-          <>
-            {isLostPassword ? (
-              <FormResetPassword setIsLostPassword={setIsLostPassword} setIsLoging={setIsLoging} />
+        {isContentVisible && (
+          <div className="w-full bg-white p-4 lg:w-80 lg:h-auto">
+            {user ? (
+              <Account
+                setIsLoging={setIsLoging}
+                isContentVisible={isContentVisible}
+                setIsContentVisible={setIsContentVisible}
+                setShowWidget={setShowWidget}
+                handleLogout={logout}
+              />
+            ) : isLostPassword ? (
+              <FormResetPassword
+                setIsLostPassword={setIsLostPassword}
+                isContentVisible={isContentVisible}
+                setIsContentVisible={setIsContentVisible}
+                setShowWidget={setShowWidget}
+                setIsLoging={setIsLoging}
+              />
+            ) : isLoging ? (
+              <LoginFormUser
+                onLoginSuccess={handleLoginSuccess}
+                setIsLoging={setIsLoging}
+                setIsLostPassword={setIsLostPassword}
+                isContentVisible={isContentVisible}
+                setIsContentVisible={setIsContentVisible}
+                setShowWidget={setShowWidget}
+              />
             ) : (
-              isLoging ? (
-                <LoginFormUser 
-                  setIsLoging={setIsLoging} 
-                  setIsLostPassword={setIsLostPassword} 
-                  onLogin={handleLogin}
-                />
-              ) : (
-                <RegisterFormUser setIsLoging={setIsLoging} />
-              )
+              <RegisterFormUser
+                setIsLoging={setIsLoging}
+                isContentVisible={isContentVisible}
+                setIsContentVisible={setIsContentVisible}
+                setShowWidget={setShowWidget}
+              />
             )}
-          </>
+          </div>
         )}
       </div>
     </div>

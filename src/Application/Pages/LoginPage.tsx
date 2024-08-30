@@ -1,43 +1,43 @@
-import { useNavigate, NavLink } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { http } from '../../Infrastructure/Http/axios.instance';
-import { useAuth } from '../../Module/Auth/auth.hook';
+import { useAuth } from '../../Module/Auth/useAuth';
 
 export const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState(''); 
-  const { login: loginUser } = useAuth();
+  const [error, setError] = useState<string | null>(null);
+  const { login } = useAuth(); 
   const navigate = useNavigate();
-
-  useEffect(() => {
-    document.title = 'Oresto - Se connecter'; 
-    if (localStorage.getItem('token')) {
-      navigate('/dashboard/bookings');}
-  }, []); 
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
     try {
-      const response = await http.post('/login', { email, password });
-      const { token } = response.data
-      if (token) {
-        loginUser(token);
-      }    
+      const response = await http.post('/login_manager', { email, password });
 
-      // Redirigez l'utilisateur vers le tableau de bord
-      navigate('/dashboard/bookings');
-    } catch (error: unknown) {
-      console.error('Erreur de connexion:', error);
+      if (response.data.token) {
+        const user = response.data; // Contient toutes les informations utilisateur, y compris `company`
+        const companyArray = response.data.company; // Contient les informations de la société (tableau)
+        const token = response.data.token; // Contient le token
 
-      if (error instanceof Error) {
-        // Si l'erreur est une instance d'Error, vérifiez si elle contient une réponse HTTP
-        if ((error as any).response && (error as any).response.data && (error as any).response.data.type_error === 'no-valid-login') {
-          setError('Identifiant ou mot de passe incorrect');
+        // Vérifier si le tableau company contient au moins un objet avec un `_id`
+        const hasValidCompany = Array.isArray(companyArray) && companyArray.some((company: any) => company._id);
+
+        login(user, companyArray, token); // Connexion de l'utilisateur avec toutes les informations nécessaires
+
+        if (!hasValidCompany) {
+          // Si l'utilisateur n'a pas de société valide, rediriger vers la page de création de société
+          navigate('/register_company');
         } else {
-          setError('Une erreur est survenue. Veuillez réessayer.');
+          // Sinon, rediriger vers la page des réservations
+          navigate('/dashboard/bookings');
         }
+      } else {
+        setError('Erreur lors de la connexion. Veuillez réessayer.');
       }
+    } catch (error: unknown) {
+      setError('Identifiant ou mot de passe incorrect. Veuillez réessayer.');
     }
   };
 
@@ -45,37 +45,44 @@ export const LoginPage = () => {
     <div className='w-full h-screen flex'>
       <div className='w-6/12 bg-light'>
         <div className="flex flex-col w-400 items-center justify-center h-screen">
-          <img src="../../../public/img/logo-oresto-red.png" width="350px" alt="Logo Oresto" />
-          <form className="flex flex-col mt-8" onSubmit={handleSubmit}>
-          {error && <div className="text-red-500 mb-8 text-center font-bold">{error}</div>}
-            <label className="text-xl font-bold mb-4">Adresse mail</label>
-            <input 
-              type="text" 
-              name="email" 
-              placeholder="Saisissez votre email" 
-              className="border-2 border-gray-300 p-2 mb-6 font-bold" 
+          <img src="../../../public/img/logo-oresto-red.png" width="350px" alt="Logo Oresto" className='mb-10' />
+          {error && (
+            <div
+              className="text-red-500 mb-8 text-center font-bold"
+              dangerouslySetInnerHTML={{ __html: error }}
+            />
+          )}
+          <form className="flex flex-col" onSubmit={handleSubmit}>
+            <label className="text-xl font-bold mb-4" htmlFor='email'>Adresse mail</label>
+            <input
+              type="text"
+              name="email"
+              id='email'
+              placeholder="Saisissez votre email"
+              className="border-2 border-gray-300 p-2 mb-6 font-bold"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
-            <label className="text-xl font-bold mb-4">Mot de passe</label>
-            <input 
-              type="password" 
-              name="password" 
-              placeholder="Saisissez votre mot de passe" 
-              className="border-2 border-gray-300 p-2 mb-10 font-bold" 
+            <label className="text-xl font-bold mb-4" htmlFor='password'>Mot de passe</label>
+            <input
+              type="password"
+              name="password"
+              id='password'
+              placeholder="Saisissez votre mot de passe"
+              className="border-2 border-gray-300 p-2 mb-10 font-bold"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
             <div className="flex gap-2">
               <button type="submit" className="bg-black text-white p-4 rounded-lg font-bold uppercase">Se connecter</button>
-              <NavLink to="/register" className="bg-red-500 text-white text-center p-4 rounded-lg font-bold uppercase no-underline hover:text-white">Créer un compte</NavLink>
+              <NavLink to="/register" className="bg-red-600 text-white text-center p-4 rounded-lg font-bold uppercase no-underline hover:text-white">Créer un compte</NavLink>
             </div>
           </form>
           <div className='mt-10'>
-            <NavLink to="/lostpassword">J'ai oublié mon mot de passe</NavLink>
+            <NavLink to="/lostpassword" className={'underline'}>J'ai oublié mon mot de passe</NavLink>
           </div>
           <div className='mt-4'>
-            <a href="/conditions" target='_blank'>Conditions générales d'utilisation</a>
+            <a href="/conditions" target='_blank' className='underline'>Conditions générales d'utilisation</a>
           </div>
         </div>
       </div>
