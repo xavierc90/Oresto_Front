@@ -6,7 +6,7 @@ import { useAuth } from '../../Module/Auth/useAuth';
 
 export const TablePlanPage = () => {
   const { token, company } = useAuth();
-  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
+  const [selectedDate, setSelectedDate] = useState<Date>(new Date()); // Initialiser avec la date actuelle
 
   useEffect(() => {
     console.log("Token in TablePlanPage:", token);
@@ -17,14 +17,24 @@ export const TablePlanPage = () => {
       return;
     }
 
+    // Abonnement pour mettre à jour la date
     const subscription = dateService.getDate().subscribe((date) => {
-      setSelectedDate(new Date(date.getTime() - date.getTimezoneOffset() * 60000)); // Ajuste la date pour le fuseau horaire local
+      const localDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
+      console.log('Received date from dateService:', date);
+      console.log('Local date after timezone adjustment:', localDate);
+      setSelectedDate(localDate); // Mettre à jour selectedDate
     });
 
     return () => {
-      subscription.unsubscribe();
+      console.log('Unsubscribing from dateService');
+      subscription.unsubscribe(); // Nettoyer l'abonnement
     };
   }, [token, company]);
+
+  // Log the current state before rendering
+  console.log('Selected Date:', selectedDate);
+  console.log('Company:', company);
+  console.log('Token:', token);
 
   return (
     <div className="bg-light w-full">
@@ -34,7 +44,11 @@ export const TablePlanPage = () => {
         | <span className="font-bold text-red-500 dark:text-white">0</span> couvert
       </h2>
       <TableForm />
-      <TableArea selectedDate={selectedDate} company={company} token={token} />
+      {selectedDate && company && token ? (
+        <TableArea selectedDate={selectedDate} company={company} token={token} />
+      ) : (
+        <p>Chargement des données...</p>
+      )}
     </div>
   );
 };

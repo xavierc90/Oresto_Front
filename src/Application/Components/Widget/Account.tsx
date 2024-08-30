@@ -3,7 +3,7 @@ import ArrowButton from '../Widget/Form/ArrowButton';
 import CloseButton from '../Widget/Form/CloseButton';
 import { Booking } from '../Widget/Booking';
 import { useAuth } from '../../../Module/Auth/useAuth';
-import { UserSettings } from './UserSettings'; // Importer le composant UserSettings
+import { UserSettings } from './Settings/UserSettings'; // Importer le composant UserSettings
 
 type AccountProps = {
   setIsLoging: (value: boolean) => void;
@@ -68,8 +68,8 @@ export const Account: React.FC<AccountProps> = ({
 
       {!showBooking && !showUserSettings ? (
         <>
-          <h1 className="text-center text-xl font-bold pb-2">Bonjour {user?.firstname}</h1>
-          <h2 className="text-center mb-4">Comment puis-je vous aider ?</h2>
+          <h1 className="text-center text-md font-bold pb-2">Bonjour {user?.firstname}</h1>
+          <h2 className="text-center text-md mb-4">Comment puis-je vous aider ?</h2>
           <button
             className="bg-green-800 text-white text-sm font-bold px-4 py-2 rounded-lg mt-4"
             onClick={() => setShowBooking(true)} // Afficher le composant Booking
@@ -83,18 +83,18 @@ export const Account: React.FC<AccountProps> = ({
             Je souhaite gérer mon compte
           </button>
           <p className="pt-7 pb-3">
-            <a href="#" onClick={handleLogoutClick}>Se déconnecter</a>
+            <a href="#" onClick={handleLogoutClick} className='font-semibold text-sm'>Se déconnecter</a>
           </p>
         </>
       ) : showBooking ? (
         <Booking 
           selectedDate={selectedDate} 
           onTimeSelected={handleTimeSelected}
-          onReturnToAccount={handleReturnToAccount}  // Permettre le retour à l'accueil
+          onReturnToAccount={handleReturnToAccount}  
         />
       ) : (
         <UserSettings 
-          handleReturnToAccount={handleReturnToAccount}  // Gérer le retour à l'accueil
+          handleReturnToAccount={handleReturnToAccount}
         />
       )}
     </div>

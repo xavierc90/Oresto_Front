@@ -4,8 +4,8 @@ import { Table } from '../../../../Module/Types/table.type';
 
 interface TableAreaProps {
   selectedDate: Date | null;
-  company: any;
-  token: string;
+  company: { _id: string };  // Assure que company est un objet avec une propriété _id
+  token: string | null;  // Permet que token soit null
 }
 
 export const TableArea: React.FC<TableAreaProps> = ({ selectedDate, company, token }) => {
@@ -14,10 +14,10 @@ export const TableArea: React.FC<TableAreaProps> = ({ selectedDate, company, tok
   useEffect(() => {
     const fetchTables = async () => {
       if (!company || !company._id || !token) {
-        console.error('Company ID or token not found in context');
+        console.error('Company ID ou token non trouvés');
         return;
       }
-  
+
       try {
         let formattedDate = '';
         if (selectedDate) {
@@ -27,14 +27,21 @@ export const TableArea: React.FC<TableAreaProps> = ({ selectedDate, company, tok
         }
 
         const response = await http.get(`/table_plan/${formattedDate}?company_id=${company._id}`, {
-          headers: { Authorization: `Bearer ${token}` }
+          headers: { 
+            Authorization: `Bearer ${token}`,
+            'Cache-Control': 'no-cache'
+          }
         });
 
-        if (Array.isArray(response.data)) {
-          setTables(response.data);
+        // Vérifiez la structure des données reçues
+        console.log("Response data:", response.data);
+
+        // Accédez à la propriété tables dans les données de réponse
+        if (response.data && Array.isArray(response.data.tables)) {
+          setTables(response.data.tables);
         } else {
-          console.error('Unexpected response data:', response.data);
-          setTables([]);  // Mettez à jour l'état avec un tableau vide si la réponse n'est pas un tableau
+          console.error('Données de réponse inattendues:', response.data);
+          setTables([]);  // Mettez à jour l'état avec un tableau vide si les données ne sont pas au format attendu
         }
       } catch (error: any) {
         console.error('Erreur lors de la récupération des tables:', error.response ? error.response.data : error.message);
@@ -129,7 +136,7 @@ export const TableArea: React.FC<TableAreaProps> = ({ selectedDate, company, tok
         );
       }
     }
-    return null; // Si aucune condition ne correspond
+    return null; // Valeur par défaut si aucune condition n'est remplie
   };
 
   return (
