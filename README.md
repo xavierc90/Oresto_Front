@@ -23,3 +23,14 @@ No prerequisites for the moment
 ## Setup
 
 npm install
+
+## Installation via docker
+
+- Lancer le container de devlopment
+```bash
+# demmarrer le container
+docker compose up --build
+
+# arrêter et supprimer le container
+docker compose down --rmi all
+```
