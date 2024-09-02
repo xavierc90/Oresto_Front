@@ -32,7 +32,7 @@ export const DashboardNav: React.FC<DashboardNavProps> = ({ company }) => {
 
     const subscription = dateService.getDate().subscribe(date => {
       setDateSelected(date);
-      const formattedDate = date.toISOString().split('T')[0]; // Formate la date en 'YYYY-MM-DD'
+      const formattedDate = date.toISOString().split('T')[0];
       console.log("DashboardNav - Date selected and formatted:", formattedDate);
       navigate(`/dashboard/bookings?dayselected=${formattedDate}`);
     });

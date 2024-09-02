@@ -49,8 +49,13 @@ export const TableArea: React.FC<TableAreaProps> = ({ selectedDate, company, tok
       }
     };
 
-    fetchTables();
+    if (company && company._id && token) {
+      fetchTables();
+    } else {
+      console.log('Props non disponibles pour fetchTables :', { company, token });
+    }
   }, [selectedDate, company, token]);
+  
 
   const renderTableSVG = (table: Table) => {
     if (table.shape === 'rectangle') {
