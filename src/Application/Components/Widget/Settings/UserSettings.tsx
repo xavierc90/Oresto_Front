@@ -1,12 +1,20 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 
-
-type UserInfosProps = {
+type UserSettingsProps = {
   handleReturnToAccount: () => void;
+  onShowAllergens: () => void;
+  onShowPersonalData: () => void;
+  onShowBookingHistory: () => void;
+  onShowAccessibility: () => void;
 };
 
-export const UserSettings: React.FC<UserInfosProps> = ({ handleReturnToAccount }) => {
+export const UserSettings: React.FC<UserSettingsProps> = ({
+  handleReturnToAccount,
+  onShowAllergens,
+  onShowPersonalData,
+  onShowBookingHistory,
+  onShowAccessibility,
+}) => {
   return (
     <div className="flex flex-col items-center justify-center h-full bg-white">
       <h2 className="text-xl font-bold mb-4">Gérer mon compte</h2>
@@ -15,10 +23,10 @@ export const UserSettings: React.FC<UserInfosProps> = ({ handleReturnToAccount }
       </p>
       
       <ul className="flex flex-col text-left text-md font-semibold gap-4">
-        <li><a href="#" className='hover:text-green-800'>Mes préférences (allergènes)</a></li>
-        <li><a href="#" className='hover:text-green-800'>Mes données personnelles</a></li>
-        <li><a href="#" className='hover:text-green-800'>Historique des réservations</a></li>
-        <li><a href="#" className='hover:text-green-800'>Accessibilité</a></li>
+        <li><a href="#" className='hover:text-green-800' onClick={onShowAllergens}>Mes préférences (allergènes)</a></li>
+        <li><a href="#" className='hover:text-green-800' onClick={onShowPersonalData}>Mes données personnelles</a></li>
+        <li><a href="#" className='hover:text-green-800' onClick={onShowBookingHistory}>Historique des réservations</a></li>
+        <li><a href="#" className='hover:text-green-800' onClick={onShowAccessibility}>Accessibilité</a></li>
       </ul>
 
       <div className="mt-8 w-full text-center">

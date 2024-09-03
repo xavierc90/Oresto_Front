@@ -5,7 +5,7 @@ import { FormResetPassword } from './Form/FormResetPassword';
 import ArrowButton from './Form/ArrowButton';
 import CloseButton from './Form/CloseButton';
 import { RiDragMove2Fill } from "react-icons/ri";
-import { Account } from './../Widget/Account';
+import { Account } from './Account';
 import { useAuth } from '../../../Module/Auth/useAuth';
 
 type WidgetProps = {
@@ -19,19 +19,17 @@ export const Widget: React.FC<WidgetProps> = ({
   isContentVisible,
   setIsContentVisible,
 }) => {
-  const { user, company, login, logout } = useAuth();
+  const { user, login, logout } = useAuth();
   const [isLoging, setIsLoging] = useState(true);
   const [isLostPassword, setIsLostPassword] = useState(false);
 
   useEffect(() => {
-    console.log("Current user in Widget:", user);
     if (user) {
-      setIsLoging(false);  // Si l'utilisateur est connecté, mettre à jour l'état
+      setIsLoging(false); // Si l'utilisateur est connecté, mettre à jour l'état
     }
   }, [user]);
 
   const handleLoginSuccess = () => {
-    console.log("Login successful, user:", user);
     setIsLoging(false); // Indiquer que l'utilisateur est connecté
   };
 
