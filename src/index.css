@@ -278,10 +278,10 @@ input::placeholder {
 
 .table-container {
     /* width: 85px; */
-    height: 45px;
+    height: 55px;
     position: relative;
     display: inline-block;
-    margin: 5px;
+    margin: 7px;
 }
 
 .table-container svg {

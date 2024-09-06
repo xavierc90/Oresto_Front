@@ -11,11 +11,11 @@ export const StatusLabel: React.FC<StatusLabelProps> = ({ status }) => {
   switch (status) {
     case 'confirmed':
       statusText = 'Confirmée';
-      color = '#4CAF50';  // Vert
+      color = '#C31B1B';  // Rouge
       break;
     case 'canceled':
       statusText = 'Annulée';
-      color = '#f44336';  // Rouge
+      color = '#EBEBEB';  // Gris
       break;
     case 'waiting':
       statusText = 'En attente';
