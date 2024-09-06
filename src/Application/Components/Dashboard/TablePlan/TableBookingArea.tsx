@@ -5,7 +5,7 @@ import { Table } from '../../../../Module/Types/table.type';
 interface TableBookingAreaProps {
   selectedDate: Date | null;
   company: { _id: string };
-  token: string | null; 
+  token: string | null;
 }
 
 export const TableBookingArea: React.FC<TableBookingAreaProps> = ({ selectedDate, company, token }) => {
@@ -55,6 +55,9 @@ export const TableBookingArea: React.FC<TableBookingAreaProps> = ({ selectedDate
   }, [selectedDate, company, token]);
 
   const renderTableSVG = (table: Table) => {
+    // Détermine la couleur de la table selon son statut
+    const tableColor = table.status === 'reserved' ? '#FF0000' : '#BCDB9E'; // Rouge pour réservé, vert pour disponible
+
     switch (table.shape) {
       case 'rectangle':
         if (table.table_size === 4) {
@@ -64,7 +67,7 @@ export const TableBookingArea: React.FC<TableBookingAreaProps> = ({ selectedDate
               <ellipse cx="32.3326" cy="66.2533" rx="7.5806" ry="7.37634" fill="#508E14" />
               <ellipse cx="90.4502" cy="8.25806" rx="7.58057" ry="7.37635" fill="#508E14" />
               <ellipse cx="90.4502" cy="66.2533" rx="7.58057" ry="7.37634" fill="#508E14" />
-              <rect y="8" width="143" height="57" fill="#BCDB9E" />
+              <rect y="8" width="143" height="57" fill={tableColor} />
             </svg>
           );
         }
@@ -77,7 +80,7 @@ export const TableBookingArea: React.FC<TableBookingAreaProps> = ({ selectedDate
               <ellipse cx="101.45" cy="66.2533" rx="7.58057" ry="7.37634" fill="#508E14" />
               <ellipse cx="63.4502" cy="8.25806" rx="7.58057" ry="7.37635" fill="#508E14" />
               <ellipse cx="63.4502" cy="66.2533" rx="7.58057" ry="7.37634" fill="#508E14" />
-              <rect y="8" width="123" height="57" fill="#BCDB9E" />
+              <rect y="8" width="123" height="57" fill={tableColor} />
             </svg>
           );
         }
@@ -92,7 +95,7 @@ export const TableBookingArea: React.FC<TableBookingAreaProps> = ({ selectedDate
               <ellipse cx="116.45" cy="66.2533" rx="7.58057" ry="7.37634" fill="#508E14" />
               <ellipse cx="78.4502" cy="8.25806" rx="7.58057" ry="7.37635" fill="#508E14" />
               <ellipse cx="78.4502" cy="66.2533" rx="7.58057" ry="7.37634" fill="#508E14" />
-              <rect x="10" y="8" width="134" height="57" fill="#BCDB9E" />
+              <rect x="10" y="8" width="134" height="57" fill={tableColor} />
             </svg>
           );
         }
@@ -104,7 +107,7 @@ export const TableBookingArea: React.FC<TableBookingAreaProps> = ({ selectedDate
             <svg width="70" height="85" viewBox="0 0 70 85" fill="none" xmlns="http://www.w3.org/2000/svg">
               <ellipse cx="35.5806" cy="7.37634" rx="7.5806" ry="7.37634" fill="#508E14" />
               <ellipse cx="35.5806" cy="77.3763" rx="7.5806" ry="7.37634" fill="#508E14" />
-              <rect y="7" width="70" height="70" rx="35" fill="#BCDB9E" />
+              <rect y="7" width="70" height="70" rx="35" fill={tableColor} />
             </svg>
           );
         }
@@ -115,7 +118,7 @@ export const TableBookingArea: React.FC<TableBookingAreaProps> = ({ selectedDate
               <ellipse cx="43.5806" cy="77.3763" rx="7.5806" ry="7.37634" fill="#508E14" />
               <ellipse cx="7.5806" cy="42.3763" rx="7.5806" ry="7.37634" fill="#508E14" />
               <ellipse cx="77.5811" cy="42.3763" rx="7.5806" ry="7.37634" fill="#508E14" />
-              <rect x="8" y="7" width="70" height="70" rx="35" fill="#BCDB9E" />
+              <rect x="8" y="7" width="70" height="70" rx="35" fill={tableColor} />
             </svg>
           );
         }
@@ -127,7 +130,7 @@ export const TableBookingArea: React.FC<TableBookingAreaProps> = ({ selectedDate
             <svg width="70" height="90" viewBox="0 0 70 90" fill="none" xmlns="http://www.w3.org/2000/svg">
               <ellipse cx="35.5806" cy="7.37634" rx="7.5806" ry="7.37634" fill="#508E14" />
               <ellipse cx="35.5806" cy="82.3763" rx="7.5806" ry="7.37634" fill="#508E14" />
-              <rect y="10" width="70" height="70" fill="#BCDB9E" />
+              <rect y="10" width="70" height="70" fill={tableColor} />
             </svg>
           );
         }
@@ -138,7 +141,7 @@ export const TableBookingArea: React.FC<TableBookingAreaProps> = ({ selectedDate
               <ellipse cx="7.5806" cy="44.3763" rx="7.5806" ry="7.37634" fill="#508E14" />
               <ellipse cx="78.5811" cy="44.3763" rx="7.5806" ry="7.37634" fill="#508E14" />
               <ellipse cx="43.5806" cy="78.3763" rx="7.5806" ry="7.37634" fill="#508E14" />
-              <path d="M8 8L78 8L78 78L8 78L8 8Z" fill="#BCDB9E" />
+              <path d="M8 8L78 8L78 78L8 78L8 8Z" fill={tableColor} />
             </svg>
           );
         }
