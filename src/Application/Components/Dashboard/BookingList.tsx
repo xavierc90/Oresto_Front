@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { FaSort, FaTimes } from "react-icons/fa";
 import { FaCheck } from "react-icons/fa";
-import { GrEdit } from "react-icons/gr";
 import { http } from '../../../Infrastructure/Http/axios.instance';
 import { NotificationMessage } from '../NotificationMessage';
 import { StatusLabel } from './StatusLabel';
@@ -51,23 +50,6 @@ export const BookingList: React.FC<BookingListProps> = ({ bookings }) => {
     }
   };
 
-  const handleUpdateBooking = async () => {
-    if (selectedBooking) {
-      try {
-        const response = await http.post(`/update_booking/${selectedBooking._id}`);
-        if (response.status === 200) {
-          setNotification({ message: "La réservation a été annulée avec succès.", type: 'success' });
-        } else {
-          setNotification({ message: "Erreur lors de l'annulation de la réservation.", type: 'error' });
-        }
-      } catch (error) {
-        setNotification({ message: "Erreur lors de l'annulation de la réservation.", type: 'error' });
-      } finally {
-        setIsModalOpen(false);
-      }
-    }
-  };
-
   const handleCancelBooking = async () => {
     if (selectedBooking) {
       try {
@@ -94,7 +76,7 @@ export const BookingList: React.FC<BookingListProps> = ({ bookings }) => {
 
   return (
     <div className="scrollable-container">
-      <table className="mt-8 ml-12">
+      <table className="mt-5 ml-12">
         <thead>
           <tr>
             <th className="text-left min-w-[100px] flex items-center gap-1 cursor-pointer" onClick={handleSortClick}>
@@ -165,12 +147,6 @@ export const BookingList: React.FC<BookingListProps> = ({ bookings }) => {
                 <button className="bg-green-700 text-white text-sm font-bold px-4 py-2 rounded-lg flex items-center" onClick={handleConfirmBooking}>
                   <FaCheck size={10} />
                   <span className='ml-2'>Confirmer</span>
-                </button>  
-              )}
-              {selectedBooking.status !== 'edited' && (
-                <button className="bg-black text-white text-sm font-bold px-4 py-2 rounded-lg flex items-center" onClick={handleUpdateBooking}>
-                  <GrEdit size={10} />
-                  <span className='ml-2'>Modifier</span>
                 </button>  
               )}
               {selectedBooking.status !== 'canceled' && (

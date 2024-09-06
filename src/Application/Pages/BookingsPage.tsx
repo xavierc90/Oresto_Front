@@ -5,7 +5,7 @@ import { formatDateWithoutTime } from '../../Module/Utils/dateFormatterWithoutHo
 import { dateService } from '../../Module/Utils/dateService';
 import { http } from '../../Infrastructure/Http/axios.instance';
 import { Booking } from '../../Module/Types/bookng.type';
-import { TableArea } from '../Components/Dashboard/TablePlan/TableArea';
+import { TableBookingArea } from '../Components/Dashboard/TablePlan/TableBookingArea';
 
 interface OutletContextType {
   user: any;
@@ -87,7 +87,7 @@ export const BookingsPage = () => {
         | <span className="font-bold text-red-500 dark:text-white">{totalCovers}</span> couvert{totalCovers > 1 ? 's ' : ' '}
       </h2>
       <BookingList bookings={bookings} />
-      <TableArea selectedDate={selectedDate} company={company} token={token} />
+      <TableBookingArea selectedDate={selectedDate} company={company} token={token} />
     </div>
   );
 };

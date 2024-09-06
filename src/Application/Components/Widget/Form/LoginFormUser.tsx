@@ -43,20 +43,11 @@ export const LoginFormUser: React.FC<LoginFormUserProps> = ({
     const formData = new FormData(form);
     const email = formData.get('email') as string;
     const password = formData.get('password') as string;
-
-    console.log('Attempting login with email:', email, 'and password:', password);
-
     try {
       const response = await http.post('/login', { email, password });
-      console.log('Login response:', response.data);
-
       const user = response.data;
       const company = response.data.company || {}; // Assuming company data might be nested or not present
       const token = response.data.token; // Extract the token from the response
-
-      console.log('User data received:', user);
-      console.log('Company data received:', company);
-      console.log('Token received:', token);
 
       if (user && token) {
         login(user, company, token); // Pass all required arguments to the login function

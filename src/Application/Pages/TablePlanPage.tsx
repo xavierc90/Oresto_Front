@@ -1,53 +1,60 @@
 import { useEffect, useState } from 'react';
 import { TableArea } from '../Components/Dashboard/TablePlan/TableArea';
 import { TableForm } from '../Components/Dashboard/TablePlan/TableForm';
-import { dateService } from '../../Module/Utils/dateService';
 import { useAuth } from '../../Module/Auth/useAuth';
+import { http } from '../../Infrastructure/Http/axios.instance';
+
+interface Table {
+  _id: string;
+  table_number: string;
+  table_size: number;
+  shape: string;
+  status: string;
+}
 
 export const TablePlanPage = () => {
   const { token, company } = useAuth();
-  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
+  const [tables, setTables] = useState<Table[]>([]); // État pour stocker les tables
+
+  // Calcul du nombre total de tables et du nombre total de places
+  const totalTables = tables.length;
+  const totalSeats = tables.reduce((acc, table) => acc + table.table_size, 0);
 
   useEffect(() => {
-    console.log("Token in TablePlanPage:", token);
-    console.log("Company in TablePlanPage:", company);
+    const fetchTables = async () => {
+      if (!token || !company) return;
 
-    if (!token || !company) {
-      console.error('Token ou Company ID manquant');
-      return;
-    }
+      try {
+        const response = await http.get(`/tables_by_filters`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
 
-    const subscription = dateService.getDate().subscribe((date) => {
-      console.log('Received date from dateService:', date);
-      setSelectedDate(date);
-    });
-
-    return () => {
-      console.log('Unsubscribing from dateService');
-      subscription.unsubscribe();
+        if (response.data && Array.isArray(response.data.results)) {
+          setTables(response.data.results); // Mettre à jour les tables avec les données de l'API
+        }
+      } catch (error: any) {
+        console.error('Erreur lors de la récupération des tables:', error.message);
+      }
     };
-  }, [token, company]);
 
-  console.log('Selected Date:', selectedDate);
-  console.log('Company:', company);
-  console.log('Token:', token);
+    fetchTables();
+  }, [token, company]);
 
   if (!company || !token) {
     return <p>Chargement des données...</p>;
   }
 
-  // Si company est un tableau, utilisez company[0]
   const companyObject = Array.isArray(company) ? company[0] : company;
 
   return (
     <div className="bg-light w-full">
       <h1 className="text-xl font-bold pt-8 pl-12">Plan de table</h1>
       <h2 className="text-lg pl-12 mt-1">
-        <span className="font-bold text-red-500 dark:text-white">0</span> table enregistrée
-        | <span className="font-bold text-red-500 dark:text-white">0</span> couvert
+        <span className="font-bold text-red-500 dark:text-white">{totalTables}</span> table(s) enregistrée(s)
+        | <span className="font-bold text-red-500 dark:text-white">{totalSeats}</span> couvert(s)
       </h2>
       <TableForm />
-      <TableArea selectedDate={selectedDate} company={companyObject} token={token} />
+      <TableArea company={companyObject} token={token} />
     </div>
   );
 };

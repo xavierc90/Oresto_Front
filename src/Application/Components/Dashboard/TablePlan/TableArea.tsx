@@ -3,13 +3,12 @@ import { http } from '../../../../Infrastructure/Http/axios.instance';
 import { Table } from '../../../../Module/Types/table.type';
 
 interface TableAreaProps {
-  selectedDate: Date | null;
-  company: { _id: string };  // Assure que company est un objet avec une propriété _id
-  token: string | null;  // Permet que token soit null
+  company: { _id: string };
+  token: string | null;
 }
 
-export const TableArea: React.FC<TableAreaProps> = ({ selectedDate, company, token }) => {
-  const [tables, setTables] = useState<Table[]>([]);  // Assurez-vous que tables est initialisé à un tableau vide
+export const TableArea: React.FC<TableAreaProps> = ({ company, token }) => {
+  const [tables, setTables] = useState<Table[]>([]);
 
   useEffect(() => {
     const fetchTables = async () => {
@@ -19,26 +18,17 @@ export const TableArea: React.FC<TableAreaProps> = ({ selectedDate, company, tok
       }
 
       try {
-        let formattedDate = '';
-        if (selectedDate) {
-          const offset = selectedDate.getTimezoneOffset();
-          const localDate = new Date(selectedDate.getTime() - (offset * 60 * 1000));
-          formattedDate = localDate.toISOString().split('T')[0];
-        }
-
-        const response = await http.get(`/table_plan/${formattedDate}?company_id=${company._id}`, {
-          headers: { 
+        const response = await http.get(`/tables_by_filters`, {
+          headers: {
             Authorization: `Bearer ${token}`,
             'Cache-Control': 'no-cache'
           }
         });
 
-        // Vérifiez la structure des données reçues
         console.log("Response data:", response.data);
 
-        // Accédez à la propriété tables dans les données de réponse
-        if (response.data && Array.isArray(response.data.tables)) {
-          setTables(response.data.tables);
+        if (response.data && Array.isArray(response.data.results)) {
+          setTables(response.data.results); // Stockez les tables de la collection Tables
         } else {
           console.error('Données de réponse inattendues:', response.data);
           setTables([]);  // Mettez à jour l'état avec un tableau vide si les données ne sont pas au format attendu
@@ -51,11 +41,8 @@ export const TableArea: React.FC<TableAreaProps> = ({ selectedDate, company, tok
 
     if (company && company._id && token) {
       fetchTables();
-    } else {
-      console.log('Props non disponibles pour fetchTables :', { company, token });
     }
-  }, [selectedDate, company, token]);
-  
+  }, [company, token]);
 
   const renderTableSVG = (table: Table) => {
     if (table.shape === 'rectangle') {
@@ -145,7 +132,7 @@ export const TableArea: React.FC<TableAreaProps> = ({ selectedDate, company, tok
   };
 
   return (
-    <div className="max-w-4/5 h-80 ml-12 p-4 mt-6 border border-zinc-300 bg-zinc-50 dark:bg-dark-900 dark:border-dark-800 dark:text-black">
+    <div className="max-w-4/5 h-96 ml-12 p-4 mt-6 border border-zinc-300 bg-zinc-50 dark:bg-dark-900 dark:border-dark-800 dark:text-black">
       {tables.map((table) => (
         <div key={table._id} className="table-container">
           {renderTableSVG(table)}
