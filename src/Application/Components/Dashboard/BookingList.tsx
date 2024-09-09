@@ -152,7 +152,7 @@ export const BookingList: React.FC<BookingListProps> = ({ bookings }) => {
               {selectedBooking.status !== 'canceled' && (
                 <button className="bg-red-600 text-white text-sm font-bold px-4 py-2 rounded-lg flex items-center" onClick={handleCancelBooking}>
                   <ImCross size={10} />
-                  <span className='ml-2'>Annuler</span>
+                  <span className='ml-2'>Annuler la réservation</span>
                 </button>
               )}
             </div>
