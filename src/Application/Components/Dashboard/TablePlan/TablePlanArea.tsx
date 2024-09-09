@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import Draggable from 'react-draggable'; // Importation correcte de Draggable
 import { http } from '../../../../Infrastructure/Http/axios.instance';
 import { Table } from '../../../../Module/Types/table.type';
 
@@ -21,21 +22,22 @@ export const TablePlanArea: React.FC<TableAreaProps> = ({ company, token }) => {
         const response = await http.get(`/tables_by_filters`, {
           headers: {
             Authorization: `Bearer ${token}`,
-            'Cache-Control': 'no-cache'
-          }
+            'Cache-Control': 'no-cache',
+          },
         });
-
-        console.log("Response data:", response.data);
 
         if (response.data && Array.isArray(response.data.results)) {
           setTables(response.data.results); // Stockez les tables de la collection Tables
         } else {
           console.error('Données de réponse inattendues:', response.data);
-          setTables([]);  // Mettez à jour l'état avec un tableau vide si les données ne sont pas au format attendu
+          setTables([]); // Mettez à jour l'état avec un tableau vide si les données ne sont pas au format attendu
         }
       } catch (error: any) {
-        console.error('Erreur lors de la récupération des tables:', error.response ? error.response.data : error.message);
-        setTables([]);  // Mettez à jour l'état avec un tableau vide en cas d'erreur
+        console.error(
+          'Erreur lors de la récupération des tables:',
+          error.response ? error.response.data : error.message
+        );
+        setTables([]); // Mettez à jour l'état avec un tableau vide en cas d'erreur
       }
     };
 
@@ -43,6 +45,22 @@ export const TablePlanArea: React.FC<TableAreaProps> = ({ company, token }) => {
       fetchTables();
     }
   }, [company, token]);
+
+  // Fonction pour gérer le déplacement de la table et envoyer les coordonnées au backend
+  const handleDragStop = async (e: any, data: any, tableId: string) => {
+    const position_x = data.x;
+    const position_y = data.y;
+
+    try {
+      await http.put(`/update_table/${tableId}`, { position_x, position_y }, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+    } catch (error) {
+      console.error('Erreur lors de la mise à jour de la table:', error);
+    }
+  };
 
   const renderTableSVG = (table: Table) => {
     if (table.shape === 'rectangle') {
@@ -132,14 +150,24 @@ export const TablePlanArea: React.FC<TableAreaProps> = ({ company, token }) => {
   };
 
   return (
-    <div className="max-w-4/5 h-96 ml-12 p-4 mt-6 border border-zinc-300 bg-zinc-50 dark:bg-dark-900 dark:border-dark-800 dark:text-black">
+    <div
+      className="max-w-4/5 h-96 ml-12 p-4 mt-6 border border-zinc-300 bg-zinc-50 dark:bg-dark-900 dark:border-dark-800 dark:text-black"
+      style={{ position: 'relative', overflow: 'hidden' }} // Ajout pour limiter les tables à cette zone
+    >
       {tables.map((table) => (
-        <div key={table._id} className="table-container">
-          {renderTableSVG(table)}
-          <div className="number-circle">
-            <span>{table.table_number}</span>
+        <Draggable
+          key={table._id}
+          bounds="parent" // Limite le drag à la zone du parent
+          defaultPosition={{ x: table.position_x, y: table.position_y }} // Position initiale
+          onStop={(e, data) => handleDragStop(e, data, table._id)} // Envoie les nouvelles coordonnées au backend
+        >
+          <div className="table-container" style={{ position: 'absolute' }}>
+            {renderTableSVG(table)}
+            <div className="number-circle">
+              <span>{table.table_number}</span>
+            </div>
           </div>
-        </div>
+        </Draggable>
       ))}
     </div>
   );
