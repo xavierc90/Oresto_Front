@@ -91,12 +91,12 @@ export const AnalyticsPage = () => {
             <span className="font-semibold text-sm">Confirmées : {totalConfirmedBookings}</span>
           </li>
           <li className="flex items-center">
-            <span className="w-[20px] h-[20px] bg-[#F44336] rounded-full inline-block mr-2"></span>
-            <span className="font-semibold text-sm">Annulées : {totalCanceledBookings}</span>
-          </li>
-          <li className="flex items-center">
             <span className="w-[20px] h-[20px] bg-[#FFC107] rounded-full inline-block mr-2"></span>
             <span className="font-semibold text-sm">En attente : {totalWaitingBookings}</span>
+          </li>
+          <li className="flex items-center">
+            <span className="w-[20px] h-[20px] bg-[#F44336] rounded-full inline-block mr-2"></span>
+            <span className="font-semibold text-sm">Annulées : {totalCanceledBookings}</span>
           </li>
         </ul>
       </div>

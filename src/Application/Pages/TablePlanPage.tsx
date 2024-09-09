@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { TableArea } from '../Components/Dashboard/TablePlan/TableArea';
+import { TablePlanArea } from '../Components/Dashboard/TablePlan/TablePlanArea'
 import { TableForm } from '../Components/Dashboard/TablePlan/TableForm';
 import { useAuth } from '../../Module/Auth/useAuth';
 import { http } from '../../Infrastructure/Http/axios.instance';
@@ -54,7 +54,7 @@ export const TablePlanPage = () => {
         | <span className="font-bold text-red-500 dark:text-white">{totalSeats}</span> couvert(s)
       </h2>
       <TableForm />
-      <TableArea company={companyObject} token={token} />
+      <TablePlanArea company={companyObject} token={token} />
     </div>
   );
 };

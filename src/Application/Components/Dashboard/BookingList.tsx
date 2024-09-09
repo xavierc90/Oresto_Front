@@ -125,9 +125,9 @@ export const BookingList: React.FC<BookingListProps> = ({ bookings }) => {
               <RxCross1 size={25} />
             </button>
 
-            <h2 className="text-xl font-bold mb-2 mt-8 text-center">Détail de la réservation</h2>
-            <div className='flex justify-center mt-5'>
-              <h3 className='flex justify-center mb-6 text-sm bg-gray-100 dark:bg-gray-900 p-4 rounded-2xl lg:w-3/3'><StatusLabel status={selectedBooking.status} /></h3>
+            <h2 className="text-xl font-bold mt-8 text-center">Détail de la réservation</h2>
+            <div className='flex justify-center'>
+              <h3 className='flex justify-center text-md font-semibold py-6 rounded-2xl lg:w-3/3'><StatusLabel status={selectedBooking.status} /></h3>
             </div>
             <div className='flex flex-col justify-center items-center'>
             <ul className="list-none pl-5 space-y-1">

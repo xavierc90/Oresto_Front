@@ -7,7 +7,7 @@ interface TableAreaProps {
   token: string | null;
 }
 
-export const TableArea: React.FC<TableAreaProps> = ({ company, token }) => {
+export const TablePlanArea: React.FC<TableAreaProps> = ({ company, token }) => {
   const [tables, setTables] = useState<Table[]>([]);
 
   useEffect(() => {
