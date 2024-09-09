@@ -76,7 +76,7 @@ export const BookingList: React.FC<BookingListProps> = ({ bookings }) => {
 
   return (
     <div className="scrollable-container">
-      <table className="mt-5 ml-12">
+      <table className="mt-12 ml-12">
         <thead>
           <tr>
             <th className="text-left min-w-[100px] flex items-center gap-1 cursor-pointer" onClick={handleSortClick}>

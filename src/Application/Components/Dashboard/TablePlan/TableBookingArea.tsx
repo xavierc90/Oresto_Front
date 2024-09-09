@@ -86,9 +86,9 @@ export const TableBookingArea: React.FC<TableBookingAreaProps> = ({ selectedDate
       case 'waiting':
         return { tableColor: '#F8D89C', tableSizeColor: '#DF9507' }; // Orange pour waiting
       case 'confirmed':
-        return { tableColor: '#EE7E7E', tableSizeColor: '#C31B1B' }; // Doré pour confirmed
+        return { tableColor: '#FAD8D8', tableSizeColor: '#DB9E9E  ' }; // Rouge pour confirmed
       case 'available':
-        return { tableColor: '#C1E0A2', tableSizeColor: '#73A741' }; // Vert pour available
+        return { tableColor: '#E9FAD8', tableSizeColor: '#BCDB9E' }; // Vert pour available
       case 'unavailable':
         return { tableColor: '#D3D3D3', tableSizeColor: '#A9A9A9' }; // Gris pour unavailable
       default:
@@ -199,9 +199,17 @@ export const TableBookingArea: React.FC<TableBookingAreaProps> = ({ selectedDate
   };
 
   return (
-    <div className="max-w-4/5 h-96 ml-12 p-4 mt-6 border border-zinc-300 bg-zinc-50 dark:bg-dark-900 dark:border-dark-800 dark:text-black">
+    <div className="max-w-4/5 h-96 ml-12 p-4 mt-6 border border-zinc-300 bg-zinc-50 dark:bg-dark-900 dark:border-dark-800 dark:text-black relative">
       {tables.map((table) => (
-        <div key={table._id} className="table-container">
+        <div
+          key={table._id}
+          className="table-container"
+          style={{
+            position: 'absolute',
+            left: `${table.position_x}px`, // Utilise la position_x de la base de données
+            top: `${table.position_y}px`, // Utilise la position_y de la base de données
+          }}
+        >
           {renderTableSVG(table)}
           <div className="number-circle">
             <span>{table.table_number}</span>
