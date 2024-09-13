@@ -267,7 +267,7 @@ export const Booking: React.FC<BookingProps> = ({ selectedDate, onReturnToAccoun
           <span className='font-normal'> {nbrPersons}</span>
         </li>
         <li className="font-semibold mb-2">N° de table : 
-          <span className='font-normal'> {reservationDetails.table && reservationDetails.table[0]?.table_number}</span>
+          <span className='font-normal'> {reservationDetails.table && reservationDetails.table[0]?.number}</span>
         </li>
         {additionalInfo && (
           <li className="font-semibold mb-2 flex flex-col">Autres informations :
