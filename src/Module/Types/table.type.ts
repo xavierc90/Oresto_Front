@@ -5,6 +5,7 @@ export type Table = {
     number: string;
     capacity: number;
     shape: "rectangle" | "square" | "round";
+    status: string;
     index: number;
     position_x: number;
     position_y: number;

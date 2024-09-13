@@ -55,7 +55,7 @@ const tableShapes = [
 
 export const TableForm: React.FC = () => {
   const { token, company } = useAuth();
-  const [tableData, setTableData] = useState<TableData>({ number: '', capacity: , shape: '' });
+  const [tableData, setTableData] = useState<TableData>({ number: '', capacity: '', shape: '' });
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
