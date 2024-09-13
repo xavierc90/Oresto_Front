@@ -76,7 +76,7 @@ export const BookingList: React.FC<BookingListProps> = ({ bookings }) => {
 
   return (
     <div className="scrollable-container">
-      <table className="mt-12 ml-12">
+      <table className="mt-7 ml-12">
         <thead>
           <tr>
             <th className="text-left min-w-[100px] flex items-center gap-1 cursor-pointer" onClick={handleSortClick}>
@@ -100,7 +100,7 @@ export const BookingList: React.FC<BookingListProps> = ({ bookings }) => {
               <td className="text-left">{booking.user_id.lastname}</td>
               <td className="text-left">{booking.user_id.firstname}</td>
               <td className="text-center">{booking.nbr_persons} {booking.nbr_persons > 1 ? 'personnes' : 'personne'}</td>
-              <td className="text-center">{booking.table && booking.table[0]?.table_number || 'N/A'}</td>
+              <td className="text-center">{booking.table && booking.table[0]?.number || 'N/A'}</td>
               <td className="text-left"><StatusLabel status={booking.status ? booking.status : 'waiting'} /></td>
             </tr>
           ))}

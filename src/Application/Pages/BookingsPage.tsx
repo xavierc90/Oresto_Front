@@ -78,8 +78,8 @@ export const BookingsPage = () => {
   console.log("Bookings:", bookings);
 
   return (
-    <div className="bg-light w-full mb-4">
-      <h1 className="text-xl font-bold pt-8 pl-12">
+    <div className="bg-light w-full">
+      <h1 className="text-xl font-bold pt-12 pl-12">
         {selectedDate ? formatDateWithoutTime(selectedDate.toISOString()) : 'Sélectionnez une date'}
       </h1>
       <h2 className="text-lg pl-12 mt-1">

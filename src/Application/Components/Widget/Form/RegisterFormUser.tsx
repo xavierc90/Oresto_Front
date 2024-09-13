@@ -224,7 +224,7 @@ export const RegisterFormUser: React.FC<RegisterFormUserProps> = ({
           </h2>
           <form className="flex flex-col justify-center items-center mt-8">
             <div className="flex flex-col w-full relative">
-              <label htmlFor="password" className="font-bold items-left mb-1">
+              <label htmlFor="password" className="font-bold items-left text-left mb-1">
                 Mot de passe
               </label>
               <input
@@ -246,7 +246,7 @@ export const RegisterFormUser: React.FC<RegisterFormUserProps> = ({
             </div>
 
             <div className="flex flex-col w-full relative">
-              <label htmlFor="confirmPassword" className="font-bold mb-1 mt-8">
+              <label htmlFor="confirmPassword" className="font-bold mb-1 mt-8 text-left">
                 Confirmez le mot de passe
               </label>
               <input

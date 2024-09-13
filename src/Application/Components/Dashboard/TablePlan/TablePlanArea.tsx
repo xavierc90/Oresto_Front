@@ -117,7 +117,7 @@ export const TablePlanArea: React.FC<TableAreaProps> = ({ company, token }) => {
     const rotation = table.rotate || 0; // Par défaut, aucune rotation si le champ rotate est vide
 
     if (table.shape === 'rectangle') {
-      if (table.table_size === 4) {
+      if (table.capacity === 4) {
         return (
           <svg
             width="123"
@@ -135,7 +135,7 @@ export const TablePlanArea: React.FC<TableAreaProps> = ({ company, token }) => {
           </svg>
         );
       }
-      if (table.table_size === 6) {
+      if (table.capacity === 6) {
         return (
           <svg
             width="123"
@@ -155,7 +155,7 @@ export const TablePlanArea: React.FC<TableAreaProps> = ({ company, token }) => {
           </svg>
         );
       }
-      if (table.table_size === 8) {
+      if (table.capacity === 8) {
         return (
           <svg
             width="153"
@@ -178,7 +178,7 @@ export const TablePlanArea: React.FC<TableAreaProps> = ({ company, token }) => {
         );
       }
     } else if (table.shape === 'round') {
-      if (table.table_size === 2) {
+      if (table.capacity === 2) {
         return (
           <svg
             width="70"
@@ -194,7 +194,7 @@ export const TablePlanArea: React.FC<TableAreaProps> = ({ company, token }) => {
           </svg>
         );
       }
-      if (table.table_size === 4) {
+      if (table.capacity === 4) {
         return (
           <svg
             width="86"
@@ -213,7 +213,7 @@ export const TablePlanArea: React.FC<TableAreaProps> = ({ company, token }) => {
         );
       }
     } else if (table.shape === 'square') {
-      if (table.table_size === 2) {
+      if (table.capacity === 2) {
         return (
           <svg
             width="70"
@@ -229,7 +229,7 @@ export const TablePlanArea: React.FC<TableAreaProps> = ({ company, token }) => {
           </svg>
         );
       }
-      if (table.table_size === 4) {
+      if (table.capacity === 4) {
         return (
           <svg
             width="87"
@@ -274,7 +274,7 @@ export const TablePlanArea: React.FC<TableAreaProps> = ({ company, token }) => {
           >
             {renderTableSVG(table)}
             <div className="number-circle">
-              <span>{table.table_number}</span>
+              <span>{table.number}</span>
             </div>
           </div>
         </Draggable>

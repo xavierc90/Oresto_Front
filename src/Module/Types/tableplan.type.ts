@@ -7,8 +7,8 @@ export type TablePlan = {
   company_id: string;
   tables: {
     table_id: Table;
-    table_number: string;  // Correctif : c'est un string (ou number si besoin)
-    table_size: number;
+    number: string;  // Correctif : c'est un string (ou number si besoin)
+    capacity: number;
     shape: "rectangle" | "square" | "round";
     position_x: number;
     position_y: number;

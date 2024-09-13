@@ -10,52 +10,52 @@ import { http } from '../../../../Infrastructure/Http/axios.instance';
 import { useAuth } from '../../../../Module/Auth/useAuth'
 
 interface TableData {
-  table_number: string;
-  table_size: string;
+  number: string;
+  capacity: number;
   shape: string;
 }
 
 const tableShapes = [
   {
     shape: "square",
-    table_size: "2",
+    capacity: "2",
     svg: squareSvg,
   },
   {
     shape: "round",
-    table_size: "2",
+    capacity: "2",
     svg: circleSvg,
   },
   {
     shape: "square",
-    table_size: "4",
+    capacity: "4",
     svg: square4Svg,
   },
   {
     shape: "round",
-    table_size: "4",
+    capacity: "4",
     svg: circle4Svg,
   },
   {
     shape: "rectangle",
-    table_size: "4",
+    capacity: "4",
     svg: rectangleSvg,
   },
   {
     shape: "rectangle",
-    table_size: "6",
+    capacity: "6",
     svg: rectangle6Svg,
   },
   {
     shape: "rectangle",
-    table_size: "8",
+    capacity: "8",
     svg: rectangle8Svg,
   }
 ];
 
 export const TableForm: React.FC = () => {
   const { token, company } = useAuth();
-  const [tableData, setTableData] = useState<TableData>({ table_number: '', table_size: '', shape: '' });
+  const [tableData, setTableData] = useState<TableData>({ number: '', capacity: , shape: '' });
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
@@ -66,13 +66,13 @@ export const TableForm: React.FC = () => {
     setTableData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleShapeChange = (shape: string, table_size: string) => {
-    setTableData(prev => ({ ...prev, shape, table_size }));
+  const handleShapeChange = (shape: string, capacity: string) => {
+    setTableData(prev => ({ ...prev, shape, capacity }));
   };
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    if (!tableData.table_number || !tableData.shape || !tableData.table_size) {
+    if (!tableData.number || !tableData.shape || !tableData.capacity) {
       setErrorMessage('Veuillez sélectionner un modèle de table');
       setSuccessMessage(null);
       setShowErrorMessage(false);
@@ -94,13 +94,13 @@ export const TableForm: React.FC = () => {
       }, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      setSuccessMessage(`Table n°${tableData.table_number} pour ${tableData.table_size} personnes créée avec succès`);
+      setSuccessMessage(`Table n°${tableData.number} pour ${tableData.capacity} personnes créée avec succès`);
       setErrorMessage(null);
       setShowSuccessMessage(false);
       setShowErrorMessage(false);
       setTimeout(() => setShowSuccessMessage(true), 0);
       setTimeout(() => setShowSuccessMessage(false), 5000);
-      setTableData({ table_number: '', table_size: '', shape: '' });
+      setTableData({ number: '', capacity: '', shape: '' });
     } catch (error: any) {
       setErrorMessage('Erreur lors de l’ajout de la table');
       console.error('Erreur lors de l’ajout de la table:', error.response ? error.response.data : error.message);
@@ -122,17 +122,17 @@ export const TableForm: React.FC = () => {
       <form onSubmit={handleSubmit} className='flex flex-col mt-10 ml-12'>
         <label className='flex items-center'>
           N° de la table :
-          <input type="text" name="table_number" className='border-2 border-gray-300 ml-5 w-14 text-center dark:text-white dark:bg-dark-900 dark:border-2 dark:border-dark-900' value={tableData.table_number} onChange={handleChange} required />
+          <input type="text" name="number" className='border-2 border-gray-300 ml-5 w-14 text-center dark:text-white dark:bg-dark-900 dark:border-2 dark:border-dark-900' value={tableData.number} onChange={handleChange} required />
         </label>
         <div className="mt-4">
           Modèle de table :
           <div className="flex gap-4 ml-4">
-            {tableShapes.map(({ shape, table_size, svg }) => {
-              const isSelected = tableData.shape === shape && tableData.table_size === table_size;
+            {tableShapes.map(({ shape, capacity, svg }) => {
+              const isSelected = tableData.shape === shape && tableData.capacity === capacity;
               return (
-                <label key={`${shape}-${table_size}`} className="flex items-center space-x-2 my-4">
-                  <input type="radio" name="shape" value={`${shape}-${table_size}`} checked={isSelected} 
-                  onChange={() => handleShapeChange(shape, table_size)}
+                <label key={`${shape}-${capacity}`} className="flex items-center space-x-2 my-4">
+                  <input type="radio" name="shape" value={`${shape}-${capacity}`} checked={isSelected} 
+                  onChange={() => handleShapeChange(shape, capacity)}
                   className='invisible-radio' />
                   <img src={svg} alt={shape} className={isSelected ? "filter-green" : ""} style={{ height: 60 }} />
                 </label>

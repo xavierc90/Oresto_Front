@@ -4,27 +4,15 @@ import { Table } from '../../../../Module/Types/table.type';
 import { LuLayoutDashboard } from "react-icons/lu";
 import { Link } from 'react-router-dom';
 
-
-interface TimeSlot {
-  time: string;
-  status: string;
-  _id: string;
-  booking_id?: string;
-  user_id?: string;
-}
-
-interface TableWithSlots extends Table {
-  time_slots: TimeSlot[];
-}
-
 interface TableBookingAreaProps {
   selectedDate: Date | null;
   company: { _id: string };
   token: string | null;
+  status: string;
 }
 
 export const TableBookingArea: React.FC<TableBookingAreaProps> = ({ selectedDate, company, token }) => {
-  const [tables, setTables] = useState<TableWithSlots[]>([]); // État pour stocker les tables avec leurs time_slots
+  const [tables, setTables] = useState<Table[]>([]); // État pour stocker les tables
   const [loading, setLoading] = useState<boolean>(true); // Pour gérer le chargement des données
 
   useEffect(() => {
@@ -85,13 +73,13 @@ export const TableBookingArea: React.FC<TableBookingAreaProps> = ({ selectedDate
 
     return (
       <div className='flex flex-col justify-center items-center'>
-          <h1 className='font-semibold text-lg'>Bienvenue sur l'application Oresto</h1>
-          <p className='pb-5'>Afin de rendre la réservation en ligne fonctionnelle, créez votre plan de tables</p>
-      <Link to="/dashboard/table_plan" className={getLinkClass('/dashboard/table_plan')}>
+        <h1 className='font-semibold text-lg'>Bienvenue sur l'application Oresto</h1>
+        <p className='pb-5'>Afin de rendre la réservation en ligne fonctionnelle, créez votre plan de tables</p>
+        <Link to="/dashboard/table_plan" className={getLinkClass('/dashboard/table_plan')}>
           <LuLayoutDashboard size={23} className="mb-1" />
           <h2 className="text-xs font-bold dark:text-grey-700">Plan de tables</h2>
         </Link>
-        </div>
+      </div>
     );
   }
 
@@ -101,7 +89,7 @@ export const TableBookingArea: React.FC<TableBookingAreaProps> = ({ selectedDate
       case 'waiting':
         return { tableColor: '#F8D89C', tableSizeColor: '#DF9507' }; // Orange pour waiting
       case 'confirmed':
-        return { tableColor: '#FAD8D8', tableSizeColor: '#DB9E9E  ' }; // Rouge pour confirmed
+        return { tableColor: '#FAD8D8', tableSizeColor: '#DB9E9E' }; // Rouge pour confirmed
       case 'available':
         return { tableColor: '#DFF3CA', tableSizeColor: '#73A741' }; // Vert pour available
       case 'unavailable':
@@ -111,20 +99,16 @@ export const TableBookingArea: React.FC<TableBookingAreaProps> = ({ selectedDate
     }
   };
 
-  const renderTableSVG = (table: TableWithSlots) => {
-    // Cherche le statut prioritaire pour définir la couleur
-    const status =
-      table.time_slots.find((slot) => ['waiting', 'confirmed', 'unavailable'].includes(slot.status))?.status || 'available';
-  
+  const renderTableSVG = (table: Table) => {
     // Applique les couleurs en fonction du statut
-    const { tableColor, tableSizeColor } = getColorByStatus(status);
-  
+    const { tableColor, tableSizeColor } = getColorByStatus(table.status);
+
     // Applique la rotation depuis la base de données (par défaut 0 si non défini)
     const rotation = table.rotate || 0;
-  
+
     switch (table.shape) {
       case 'rectangle':
-        if (table.table_size === 4) {
+        if (table.capacity === 4) {
           return (
             <svg
               width="123"
@@ -138,11 +122,11 @@ export const TableBookingArea: React.FC<TableBookingAreaProps> = ({ selectedDate
               <ellipse cx="32.3326" cy="66.2533" rx="7.5806" ry="7.37634" fill={tableSizeColor} />
               <ellipse cx="90.4502" cy="8.25806" rx="7.58057" ry="7.37635" fill={tableSizeColor} />
               <ellipse cx="90.4502" cy="66.2533" rx="7.58057" ry="7.37634" fill={tableSizeColor} />
-              <rect y="8" width="143" height="57" fill={tableColor} />
+              <rect y="8" width="123" height="57" fill={tableColor} />
             </svg>
           );
         }
-        if (table.table_size === 6) {
+        if (table.capacity === 6) {
           return (
             <svg
               width="123"
@@ -162,7 +146,7 @@ export const TableBookingArea: React.FC<TableBookingAreaProps> = ({ selectedDate
             </svg>
           );
         }
-        if (table.table_size === 8) {
+        if (table.capacity === 8) {
           return (
             <svg
               width="153"
@@ -185,9 +169,9 @@ export const TableBookingArea: React.FC<TableBookingAreaProps> = ({ selectedDate
           );
         }
         break;
-  
+
       case 'round':
-        if (table.table_size === 2) {
+        if (table.capacity === 2) {
           return (
             <svg
               width="70"
@@ -203,7 +187,7 @@ export const TableBookingArea: React.FC<TableBookingAreaProps> = ({ selectedDate
             </svg>
           );
         }
-        if (table.table_size === 4) {
+        if (table.capacity === 4) {
           return (
             <svg
               width="86"
@@ -222,9 +206,9 @@ export const TableBookingArea: React.FC<TableBookingAreaProps> = ({ selectedDate
           );
         }
         break;
-  
+
       case 'square':
-        if (table.table_size === 2) {
+        if (table.capacity === 2) {
           return (
             <svg
               width="70"
@@ -240,7 +224,7 @@ export const TableBookingArea: React.FC<TableBookingAreaProps> = ({ selectedDate
             </svg>
           );
         }
-        if (table.table_size === 4) {
+        if (table.capacity === 4) {
           return (
             <svg
               width="87"
@@ -259,20 +243,19 @@ export const TableBookingArea: React.FC<TableBookingAreaProps> = ({ selectedDate
           );
         }
         break;
-  
+
       default:
         return null;
     }
   };
-  
 
   return (
-    <div className="max-w-4/5 h-96 ml-12 p-4 mt-7 border border-zinc-300 bg-zinc-50 dark:bg-dark-900 dark:border-dark-800 dark:text-black relative"
-    style={{
-      position: 'relative',
-      overflow: 'hidden',
-      background: 'repeating-linear-gradient(0deg, transparent, transparent 19px, rgba(0,0,0,0.1) 20px), repeating-linear-gradient(-90deg, transparent, transparent 19px, rgba(0,0,0,0.1) 20px)',
-    }}
+    <div className="max-w-4/5 h-96 ml-12 p-4 border border-zinc-300 bg-zinc-50 dark:bg-dark-900 dark:border-dark-800 dark:text-black relative"
+      style={{
+        position: 'relative',
+        overflow: 'hidden',
+        background: 'repeating-linear-gradient(0deg, transparent, transparent 19px, rgba(0,0,0,0.1) 20px), repeating-linear-gradient(-90deg, transparent, transparent 19px, rgba(0,0,0,0.1) 20px)',
+      }}
     >
       {tables.map((table) => (
         <div
@@ -286,7 +269,7 @@ export const TableBookingArea: React.FC<TableBookingAreaProps> = ({ selectedDate
         >
           {renderTableSVG(table)}
           <div className="number-circle">
-            <span>{table.table_number}</span>
+            <span>{table.number}</span> {/* Corrigé pour utiliser `number` */}
           </div>
         </div>
       ))}

@@ -106,6 +106,7 @@ export const Booking: React.FC<BookingProps> = ({ selectedDate, onReturnToAccoun
             selected={localDate}
             onSelect={handleDateSelect} 
             required={true}
+            className=''
           />
           {errorMessage && (
             <p className="text-red-600 font-semibold">{errorMessage}</p>

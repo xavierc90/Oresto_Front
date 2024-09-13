@@ -6,8 +6,8 @@ import { http } from '../../Infrastructure/Http/axios.instance';
 
 interface Table {
   _id: string;
-  table_number: string;
-  table_size: number;
+  number: string;
+  capacity: number;
   shape: string;
   status: string;
 }
@@ -18,7 +18,7 @@ export const TablePlanPage = () => {
 
   // Calcul du nombre total de tables et du nombre total de places
   const totalTables = tables.length;
-  const totalSeats = tables.reduce((acc, table) => acc + table.table_size, 0);
+  const totalSeats = tables.reduce((acc, table) => acc + table.capacity, 0);
 
   useEffect(() => {
     const fetchTables = async () => {
