@@ -65,7 +65,7 @@ export const SettingsPage = () => {
       if (restaurant?._id) {
         try {
           const response = await http.get(`/opening_hours/${restaurant._id}`);
-          console.log('Restaurant id :' , restaurant._id);
+          console.log('Restaurant id :' , restaurant);
           const fetchedHours: OpeningHour[] = response.data;
 
           if (fetchedHours.length === 0) {

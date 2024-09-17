@@ -1,5 +1,3 @@
-// ReservationsPage.tsx
-
 import { useEffect, useState } from 'react';
 import { useOutletContext } from 'react-router-dom';
 import { ReservationList } from '../Components/Dashboard/ReservationList';
@@ -16,7 +14,10 @@ interface OutletContextType {
 }
 
 export const ReservationsPage = () => {
-  const { user, restaurant, token } = useOutletContext<OutletContextType>();
+  const { user, token } = useOutletContext<OutletContextType>();
+
+  // Si user.restaurant est un tableau, on récupère le premier élément
+  const restaurant = user?.restaurant?.[0];
 
   console.log("Token dans useOutletContext:", token);
   console.log("User dans useOutletContext:", user);
