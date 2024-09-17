@@ -3,8 +3,14 @@ import { useOutletContext } from 'react-router-dom';
 import { Restaurant } from '../../Module/Types/restaurant.type';
 import { useDarkMode } from '../../Module/Utils/darkMode';
 import { http } from '../../Infrastructure/Http/axios.instance';
+import { User } from '../../Module/Auth/user.type';
+import { FaStore } from "react-icons/fa";
+import { FaUser } from "react-icons/fa";
+
+
 
 interface ContextType {
+  user: User | null;
   restaurant: Restaurant | null;
 }
 
@@ -50,7 +56,7 @@ const defaultOpeningHours: OpeningHour[] = englishDaysOrder.map((day) => ({
 }));
 
 export const SettingsPage = () => {
-  const { restaurant } = useOutletContext<ContextType>();
+  const { restaurant, user } = useOutletContext<ContextType>();  // Ajout de `user` ici
   const [darkMode, toggleDarkMode] = useDarkMode();
   const [openingHours, setOpeningHours] = useState<OpeningHour[]>(defaultOpeningHours);
   const [isEditing, setIsEditing] = useState(false);
@@ -169,37 +175,52 @@ export const SettingsPage = () => {
       <h2 className="text-lg mt-1 mb-8">Gérer les paramètres principaux</h2>
 
       {/* Conteneur Flex pour les 3 colonnes */}
-      <div className="flex justify-between gap-8">
+      <div className="flex justify-between gap-10">
         
         {/* Première colonne : Informations du restaurant et thème */}
         <div className="w-1/3">
-          <h3 className="text-md font-semibold pb-3">Informations du restaurant</h3>
-          {restaurant ? (
+          <div className='border-2 border-gray-200 p-3 m-2'>
+            <div className='flex items-center pb-2'>
+            <FaStore />
+            <h3 className="ml-2 text-md font-semibold">Informations du restaurant</h3>
+            </div>
+            {restaurant ? (
+              <ul>
+                <li className='text-sm pb-1'><span className='font-semibold'>Nom du restaurant :</span> {restaurant.name}</li>
+                <li className='text-sm pb-1'><span className='font-semibold'>Adresse :</span> {restaurant.address}</li>
+                <li className='text-sm pb-1'><span className='font-semibold'>Code postal : </span>{restaurant.postal_code}</li>
+                <li className='text-sm pb-1'><span className='font-semibold'>Ville : </span> {restaurant.city}</li>
+                <li className='text-sm pb-1'><span className='font-semibold'>Pays : </span>{restaurant.country}</li>
+              </ul>
+            ) : (
+              <p>Chargement des informations de la compagnie...</p>
+            )}
+          </div>
+
+          <div className='border-2 border-gray-200 p-3 m-2'>
+          <div className='flex items-center pb-2'>
+          <FaUser />
+          <h3 className="ml-2 text-sm font-semibold">Votre compte Oresto  
+          </h3>
+          </div>
+          {user ? (
             <ul>
-              <li className='text-sm pb-1'><strong>Nom:</strong> {restaurant.name}</li>
-              <li className='text-sm pb-1'><strong>Adresse:</strong> {restaurant.address}</li>
-              <li className='text-sm pb-1'><strong>Ville :</strong> {restaurant.city}</li>
-              <li className='text-sm pb-1'><strong>Code postal :</strong> {restaurant.postal_code}</li>
-              <li className='text-sm pb-1'><strong>Pays :</strong> {restaurant.country}</li>
+              <li className='text-sm pb-1'><strong>Nom : </strong>{user?.lastname}</li>
+              <li className='text-sm pb-1'><strong>Prénom : </strong>{user?.firstname}</li>
+              <li className='text-sm pb-1'><strong>Profil : </strong>{user?.role}</li>
+              <li className='text-sm pb-1'><strong>N° de téléphone :</strong> {user?.phone_number}</li>
+              <li className='text-sm pb-1'><strong>Adresse mail :</strong> {user?.email}</li>
             </ul>
           ) : (
             <p>Chargement des informations de la compagnie...</p>
           )}
-
-          {/* Section pour le thème */}
-          <div className="mt-6">
-            <h3 className="font-semibold pb-3">Thème</h3>
-            <button
-              onClick={toggleDarkMode}
-              className="bg-gray-200 dark:bg-gray-800 text-black dark:text-white text-sm p-2 rounded"
-            >
-              Activer le mode {darkMode ? 'clair' : 'sombre'}
-            </button>
           </div>
         </div>
 
         {/* Deuxième colonne : Horaires du restaurant */}
         <div className="w-1/3">
+       {/* Vous pouvez ajouter des paramètres supplémentaires ici */}
+          <div className='w-96 border-2 border-gray-200 p-3 m-2'>
           <h3 className="text-md font-semibold mb-3">
             Horaires d'ouverture
             {isEditing ? (
@@ -316,11 +337,25 @@ export const SettingsPage = () => {
               ))}
             </tbody>
           </table>
+          </div>  
+
+          <div className='w-60 border-2 border-gray-200 p-3 m-2'>
+
+                     {/* Section pour le thème */}
+            <h3 className="font-semibold pb-3">Accessibilité / Affichage</h3>
+            <button
+              onClick={toggleDarkMode}
+              className="bg-gray-200 dark:bg-gray-800 text-black dark:text-white text-sm p-2 rounded"
+            >
+              Activer le mode {darkMode ? 'clair' : 'sombre'}
+            </button>
+</div>
+
         </div>
 
         {/* Troisième colonne : à personnaliser (exemple laissé vide pour l'instant) */}
         <div className="w-1/3">
-          {/* Vous pouvez ajouter des paramètres supplémentaires ici */}
+        
         </div>
       </div>
     </div>
