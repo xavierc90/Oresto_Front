@@ -18,11 +18,6 @@ export const ReservationsPage = () => {
 
   // Si user.restaurant est un tableau, on récupère le premier élément
   const restaurant = user?.restaurant?.[0];
-
-  console.log("Token dans useOutletContext:", token);
-  console.log("User dans useOutletContext:", user);
-  console.log("Restaurant dans useOutletContext:", restaurant);
-
   const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
   const [reservations, setReservations] = useState<Reservation[]>([]);
 

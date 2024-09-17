@@ -4,8 +4,11 @@ import { Restaurant } from '../../Module/Types/restaurant.type';
 import { useDarkMode } from '../../Module/Utils/darkMode';
 import { http } from '../../Infrastructure/Http/axios.instance';
 import { User } from '../../Module/Auth/user.type';
-import { FaStore } from "react-icons/fa";
+import { FaClock, FaStore } from "react-icons/fa";
 import { FaUser } from "react-icons/fa";
+import { FaRegClock } from "react-icons/fa";
+import { IoAccessibility } from "react-icons/io5";
+
 
 
 
@@ -170,7 +173,7 @@ export const SettingsPage = () => {
   };
 
   return (
-    <div className="bg-light text-black dark:text-white p-8">
+    <div className="bg-light text-black dark:text-white pt-12 pl-12">
       <h1 className="text-xl font-bold">Paramètres</h1>
       <h2 className="text-lg mt-1 mb-8">Gérer les paramètres principaux</h2>
 
@@ -179,7 +182,7 @@ export const SettingsPage = () => {
         
         {/* Première colonne : Informations du restaurant et thème */}
         <div className="w-1/3">
-          <div className='border-2 border-gray-200 p-3 m-2'>
+          <div className='border-2 border-gray-200 p-3 ml-0'>
             <div className='flex items-center pb-2'>
             <FaStore />
             <h3 className="ml-2 text-md font-semibold">Informations du restaurant</h3>
@@ -197,10 +200,10 @@ export const SettingsPage = () => {
             )}
           </div>
 
-          <div className='border-2 border-gray-200 p-3 m-2'>
+          <div className='border-2 border-gray-200 p-3 mt-4 ml-0'>
           <div className='flex items-center pb-2'>
           <FaUser />
-          <h3 className="ml-2 text-sm font-semibold">Votre compte Oresto  
+          <h3 className="ml-2 text-md font-semibold">Votre compte Oresto  
           </h3>
           </div>
           {user ? (
@@ -220,8 +223,10 @@ export const SettingsPage = () => {
         {/* Deuxième colonne : Horaires du restaurant */}
         <div className="w-1/3">
        {/* Vous pouvez ajouter des paramètres supplémentaires ici */}
-          <div className='w-96 border-2 border-gray-200 p-3 m-2'>
-          <h3 className="text-md font-semibold mb-3">
+          <div className='w-96 border-2 border-gray-200 p-3'>
+          <div className='flex items-center pb-2'>
+            <FaRegClock />
+          <h3 className="text-md font-semibold ml-2">
             Horaires d'ouverture
             {isEditing ? (
               <button
@@ -239,6 +244,7 @@ export const SettingsPage = () => {
               </button>
             )}
           </h3>
+          </div>
 
           {successMessage && (
             <div className={`success-message ${showSuccessMessage ? 'show' : ''}`}>
@@ -339,16 +345,23 @@ export const SettingsPage = () => {
           </table>
           </div>  
 
-          <div className='w-60 border-2 border-gray-200 p-3 m-2'>
+          <div className='w-64 border-2 border-gray-200 p-3 mt-4'>
 
                      {/* Section pour le thème */}
-            <h3 className="font-semibold pb-3">Accessibilité / Affichage</h3>
-            <button
-              onClick={toggleDarkMode}
-              className="bg-gray-200 dark:bg-gray-800 text-black dark:text-white text-sm p-2 rounded"
-            >
+                     <div className='flex items-center pb-2'>
+          <FaUser />
+          <h3 className="ml-2 text-md font-semibold">Accessibilité / Affichage  
+          </h3>
+          </div>
+          <ul className='space-y-2'>
+            <li>
+            <a onClick={toggleDarkMode} className="text-black dark:text-white text-sm rounded cursor-pointer">
               Activer le mode {darkMode ? 'clair' : 'sombre'}
-            </button>
+            </a>
+            </li>
+            <li className="text-black dark:text-white text-sm rounded cursor-pointer">Augmenter la taille du texte</li>
+            <li className="text-black dark:text-white text-sm rounded cursor-pointer">Modifier la couleur du widget</li>
+          </ul>
 </div>
 
         </div>
