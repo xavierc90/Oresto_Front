@@ -11,51 +11,51 @@ import { useAuth } from '../../../../Module/Auth/useAuth'
 
 interface TableData {
   number: string;
-  capacity: number;
+  capacity: number;  // Changez de 'string' à 'number'
   shape: string;
 }
 
 const tableShapes = [
   {
     shape: "square",
-    capacity: "2",
+    capacity: 2,
     svg: squareSvg,
   },
   {
     shape: "round",
-    capacity: "2",
+    capacity: 2,
     svg: circleSvg,
   },
   {
     shape: "square",
-    capacity: "4",
+    capacity: 4,
     svg: square4Svg,
   },
   {
     shape: "round",
-    capacity: "4",
+    capacity: 4,
     svg: circle4Svg,
   },
   {
     shape: "rectangle",
-    capacity: "4",
+    capacity: 4,
     svg: rectangleSvg,
   },
   {
     shape: "rectangle",
-    capacity: "6",
+    capacity: 6,
     svg: rectangle6Svg,
   },
   {
     shape: "rectangle",
-    capacity: "8",
+    capacity: 8,
     svg: rectangle8Svg,
   }
 ];
 
 export const TableForm: React.FC = () => {
-  const { token, company } = useAuth();
-  const [tableData, setTableData] = useState<TableData>({ number: '', capacity: '', shape: '' });
+  const { token, restaurant } = useAuth();
+  const [tableData, setTableData] = useState<TableData>({ number: '', capacity: 0, shape: '' });
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
@@ -66,7 +66,7 @@ export const TableForm: React.FC = () => {
     setTableData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleShapeChange = (shape: string, capacity: string) => {
+  const handleShapeChange = (shape: string, capacity: number) => {
     setTableData(prev => ({ ...prev, shape, capacity }));
   };
 
@@ -82,15 +82,15 @@ export const TableForm: React.FC = () => {
       return;
     }
 
-    if (!token || !company) {
-      setErrorMessage('Token ou Company ID manquant');
+    if (!token || !restaurant) {
+      setErrorMessage('Token ou Restaurant ID manquant');
       return;
     }
 
     try {
       const response = await http.post('/add_table', {
         ...tableData,
-        company_id: company._id,
+        restaurant_id: restaurant._id,
       }, {
         headers: { Authorization: `Bearer ${token}` }
       });
@@ -100,7 +100,7 @@ export const TableForm: React.FC = () => {
       setShowErrorMessage(false);
       setTimeout(() => setShowSuccessMessage(true), 0);
       setTimeout(() => setShowSuccessMessage(false), 5000);
-      setTableData({ number: '', capacity: '', shape: '' });
+      setTableData({ number: '', capacity: 0, shape: '' });
     } catch (error: any) {
       setErrorMessage('Erreur lors de l’ajout de la table');
       console.error('Erreur lors de l’ajout de la table:', error.response ? error.response.data : error.message);

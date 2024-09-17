@@ -17,21 +17,21 @@ export const LoginPage = () => {
       const response = await http.post('/login_manager', { email, password });
 
       if (response.data.token) {
-        const user = response.data; // Contient toutes les informations utilisateur, y compris `company`
-        const companyArray = response.data.company; // Contient les informations de la société (tableau)
+        const user = response.data; // Contient toutes les informations utilisateur, y compris `restaurant`
+        const restaurantArray = response.data.restaurant; // Contient les informations de la société (tableau)
         const token = response.data.token; // Contient le token
 
-        // Vérifier si le tableau company contient au moins un objet avec un `_id`
-        const hasValidCompany = Array.isArray(companyArray) && companyArray.some((company: any) => company._id);
+        // Vérifier si le tableau restaurant contient au moins un objet avec un `_id`
+        const hasValidRestaurant = Array.isArray(restaurantArray) && restaurantArray.some((restaurant: any) => restaurant._id);
 
-        login(user, companyArray, token); // Connexion de l'utilisateur avec toutes les informations nécessaires
+        login(user, restaurantArray, token); // Connexion de l'utilisateur avec toutes les informations nécessaires
 
-        if (!hasValidCompany) {
+        if (!hasValidRestaurant) {
           // Si l'utilisateur n'a pas de société valide, rediriger vers la page de création de société
-          navigate('/register_company');
+          navigate('/register_restaurant');
         } else {
           // Sinon, rediriger vers la page des réservations
-          navigate('/dashboard/bookings');
+          navigate('/dashboard/reservations');
         }
       } else {
         setError('Erreur lors de la connexion. Veuillez réessayer.');

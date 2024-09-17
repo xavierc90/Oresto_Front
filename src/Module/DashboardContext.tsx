@@ -1,16 +1,16 @@
 // src/context/DashboardContext.tsx
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { useAuth } from '../Module/Auth/auth.hook';
+import { useAuth } from '../Module/Auth/useAuth';
 import { http } from '../Infrastructure/Http/axios.instance';
 
 // Types
 import { User } from './Auth/user.type';
-import { Company } from './Types/company.type';
+import { Restaurant } from './Types/restaurant.type';
 import { Table } from '../Module/Types/table.type'; // Assurez-vous que ce type est défini
 
 interface DashboardContextType {
   user: User | null;
-  company: Company | null;
+  restaurant: Restaurant | null;
   tables: Table[] | null; // Type Table doit être défini dans vos types
 }
 
@@ -19,7 +19,7 @@ const DashboardContext = createContext<DashboardContextType | undefined>(undefin
 // Fournisseur de contexte
 export const DashboardProvider: React.FC<{children: ReactNode}> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
-  const [company, setCompany] = useState<Company | null>(null);
+  const [restaurant, setRestaurant] = useState<Restaurant | null>(null);
   const [tables, setTables] = useState<Table[] | null>(null);
   const { isAuthenticated, userId } = useAuth();
 
@@ -36,9 +36,9 @@ export const DashboardProvider: React.FC<{children: ReactNode}> = ({ children })
         const userResponse = await http.get<User>(`/find_user/${userId}`, { headers });
         setUser(userResponse.data);
 
-        if (userResponse.data && userResponse.data.company_id) {
-          const companyResponse = await http.get<Company>(`/find_user/${userResponse.data.company_id}`, { headers });
-          setCompany(companyResponse.data);
+        if (userResponse.data && userResponse.data.restaurant_id) {
+          const restaurantResponse = await http.get<Restaurant>(`/find_user/${userResponse.data.restaurant_id}`, { headers });
+          setRestaurant(restaurantResponse.data);
 
         }
       } catch (error) {
@@ -50,7 +50,7 @@ export const DashboardProvider: React.FC<{children: ReactNode}> = ({ children })
   }, [isAuthenticated, userId]);
 
   return (
-    <DashboardContext.Provider value={{ user, company, tables }}>
+    <DashboardContext.Provider value={{ user, restaurant, tables }}>
       {children}
     </DashboardContext.Provider>
   );

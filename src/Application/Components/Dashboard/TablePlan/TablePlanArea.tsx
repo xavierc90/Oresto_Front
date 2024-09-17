@@ -4,11 +4,11 @@ import { http } from '../../../../Infrastructure/Http/axios.instance';
 import { Table } from '../../../../Module/Types/table.type';
 
 interface TableAreaProps {
-  company: { _id: string };
+  restaurant: { _id: string };
   token: string | null;
 }
 
-export const TablePlanArea: React.FC<TableAreaProps> = ({ company, token }) => {
+export const TablePlanArea: React.FC<TableAreaProps> = ({ restaurant, token }) => {
   const [tables, setTables] = useState<Table[]>([]);
   const [draggingTableId, setDraggingTableId] = useState<string | null>(null);
   const [isDragging, setIsDragging] = useState(false);
@@ -16,8 +16,8 @@ export const TablePlanArea: React.FC<TableAreaProps> = ({ company, token }) => {
 
   useEffect(() => {
     const fetchTables = async () => {
-      if (!company || !company._id || !token) {
-        console.error('Company ID ou token non trouvés');
+      if (!restaurant || !restaurant._id || !token) {
+        console.error('Restaurant ID ou token non trouvés');
         return;
       }
 
@@ -44,10 +44,10 @@ export const TablePlanArea: React.FC<TableAreaProps> = ({ company, token }) => {
       }
     };
 
-    if (company && company._id && token) {
+    if (restaurant && restaurant._id && token) {
       fetchTables();
     }
-  }, [company, token]);
+  }, [restaurant, token]);
 
   // Fonction pour gérer le déplacement de la table et envoyer les coordonnées au backend
   const handleDragStop = async (e: any, data: any, tableId: string): Promise<void> => {

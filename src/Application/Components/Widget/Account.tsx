@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import ArrowButton from '../Widget/Form/ArrowButton';
 import CloseButton from '../Widget/Form/CloseButton';
-import { Booking } from '../Widget/Booking';
+import { Reservation } from '../Widget/Reservation';
 import { useAuth } from '../../../Module/Auth/useAuth';
 import { UserSettings } from './Settings/UserSettings';
 import { Allergens } from './Settings/Allergens';
 import { PersonalData } from './Settings/PersonalData';
-import { BookingHistory } from './Settings/BookingHistory';
+import { ReservationHistory } from './Settings/ReservationHistory';
 import { Accessibility } from './Settings/Accessibility';
 
 type AccountProps = {
@@ -25,11 +25,11 @@ export const Account: React.FC<AccountProps> = ({
   handleLogout,
 }) => {
   const { user } = useAuth();
-  const [showBooking, setShowBooking] = useState(false);
+  const [showReservation, setShowReservation] = useState(false);
   const [showUserSettings, setShowUserSettings] = useState(false);
   const [showAllergens, setShowAllergens] = useState(false);
   const [showPersonalData, setShowPersonalData] = useState(false);
-  const [showBookingHistory, setShowBookingHistory] = useState(false);
+  const [showReservationHistory, setShowReservationHistory] = useState(false);
   const [showAccessibility, setShowAccessibility] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
 
@@ -48,15 +48,15 @@ export const Account: React.FC<AccountProps> = ({
 
   const handleManageAccountClick = () => {
     setShowUserSettings(true);
-    setShowBooking(false);
+    setShowReservation(false);
   };
 
   const handleReturnToAccount = () => {
-    setShowBooking(false);
+    setShowReservation(false);
     setShowUserSettings(false);
     setShowAllergens(false);
     setShowPersonalData(false);
-    setShowBookingHistory(false);
+    setShowReservationHistory(false);
     setShowAccessibility(false);
   };
 
@@ -67,13 +67,13 @@ export const Account: React.FC<AccountProps> = ({
         <CloseButton onClick={handleClose} />
       </div>
 
-      {!showBooking && !showUserSettings && !showAllergens && !showPersonalData && !showBookingHistory && !showAccessibility ? (
+      {!showReservation && !showUserSettings && !showAllergens && !showPersonalData && !showReservationHistory && !showAccessibility ? (
         <>
           <h1 className="text-center text-md font-bold pb-2">Bonjour {user?.firstname}</h1>
           <h2 className="text-center text-md mb-4">Comment puis-je vous aider ?</h2>
           <button
             className="bg-green-800 text-white text-sm font-bold px-4 py-2 rounded-lg mt-4"
-            onClick={() => setShowBooking(true)}
+            onClick={() => setShowReservation(true)}
           >
             Je souhaite réserver une table
           </button>
@@ -87,10 +87,10 @@ export const Account: React.FC<AccountProps> = ({
             <a href="#" onClick={handleLogoutClick} className="font-semibold text-sm">Se déconnecter</a>
           </p>
         </>
-      ) : showBooking ? (
-        <Booking 
+      ) : showReservation ? (
+        <Reservation 
           selectedDate={selectedDate} 
-          onTimeSelected={() => setShowBooking(false)}
+          onTimeSelected={() => setShowReservation(false)}
           onReturnToAccount={handleReturnToAccount}  
         />
       ) : showUserSettings ? (
@@ -104,8 +104,8 @@ export const Account: React.FC<AccountProps> = ({
             setShowPersonalData(true);
             setShowUserSettings(false);
           }}
-          onShowBookingHistory={() => {
-            setShowBookingHistory(true);
+          onShowReservationHistory={() => {
+            setShowReservationHistory(true);
             setShowUserSettings(false);
           }}
           onShowAccessibility={() => {
@@ -117,8 +117,8 @@ export const Account: React.FC<AccountProps> = ({
         <Allergens onReturnToAccount={handleReturnToAccount} />
       ) : showPersonalData ? (
         <PersonalData onReturnToAccount={handleReturnToAccount} />
-      ) : showBookingHistory ? (
-        <BookingHistory onReturnToAccount={handleReturnToAccount} />
+      ) : showReservationHistory ? (
+        <ReservationHistory onReturnToAccount={handleReturnToAccount} />
       ) : showAccessibility ? (
         <Accessibility onReturnToAccount={handleReturnToAccount} />
       ) : null}

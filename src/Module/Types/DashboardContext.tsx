@@ -1,53 +1,69 @@
-import { createContext, useState, useContext, useEffect } from 'react';
+import { createContext, useState, useContext, useEffect, ReactNode } from 'react';
 import { http } from '../../Infrastructure/Http/axios.instance';
 
-// Création du contexte
-export const DashboardContext = createContext();
+// Types pour le contexte
+interface DashboardContextType {
+  user: any; // Remplace 'any' par un type spécifique pour 'user' si disponible
+  restaurant: any; // Remplace 'any' par un type spécifique pour 'restaurant' si disponible
+}
 
-export const useDashboard = () => useContext(DashboardContext);
+// Création du contexte avec une valeur par défaut
+export const DashboardContext = createContext<DashboardContextType | undefined>(undefined);
+
+export const useDashboard = () => {
+  const context = useContext(DashboardContext);
+  if (!context) {
+    throw new Error('useDashboard must be used within a DashboardProvider');
+  }
+  return context;
+};
 
 // Provider du contexte
-export const DashboardProvider = ({ children }) => {
-    const [user, setUser] = useState(null);
-    const [company, setCompany] = useState(null);
+interface DashboardProviderProps {
+  children: ReactNode; // Définition explicite du type pour 'children'
+}
 
-    useEffect(() => {
-        const fetchUserData = async () => {
-            const token = localStorage.getItem('token');
-            const userId = localStorage.getItem('userId');
+export const DashboardProvider: React.FC<DashboardProviderProps> = ({ children }) => {
+  const [user, setUser] = useState<any>(null); // Remplace 'any' par un type spécifique si disponible
+  const [restaurant, setRestaurant] = useState<any>(null); // Remplace 'any' par un type spécifique si disponible
 
-            if (!token || !userId) {
-                console.error('Token ou User ID manquant');
-                return;
-            }
+  useEffect(() => {
+    const fetchUserData = async () => {
+      const token = localStorage.getItem('token');
+      const userId = localStorage.getItem('userId');
 
-            try {
-                const userResponse = await http.get(`find_user/${userId}`, {
-                    headers: { Authorization: `Bearer ${token}` }
-                });
+      if (!token || !userId) {
+        console.error('Token ou User ID manquant');
+        return;
+      }
 
-                if (userResponse.data) {
-                    setUser(userResponse.data);
+      try {
+        const userResponse = await http.get(`find_user/${userId}`, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
 
-                    const companyResponse = await http.get(`find_company/${userResponse.data.companyId}`, {
-                        headers: { Authorization: `Bearer ${token}` }
-                    });
+        if (userResponse.data) {
+          setUser(userResponse.data);
 
-                    if (companyResponse.data) {
-                        setCompany(companyResponse.data);
-                    }
-                }
-            } catch (error) {
-                console.error('Erreur lors de la récupération des données:', error);
-            }
-        };
+          const restaurantResponse = await http.get(`find_restaurant/${userResponse.data.restaurantId}`, {
+            headers: { Authorization: `Bearer ${token}` }
+          });
 
-        fetchUserData();
-    }, []);
+          if (restaurantResponse.data) {
+            setRestaurant(restaurantResponse.data);
+          }
+        }
+      } catch (error) {
+        console.error('Erreur lors de la récupération des données:', error);
+      }
+    };
 
-    return (
-        <DashboardContext.Provider value={{ user, company }}>
-            {children}
-        </DashboardContext.Provider>
-    );
+    fetchUserData();
+  }, []);
+
+  return (
+    <DashboardContext.Provider value={{ user, restaurant }}>
+      {children}
+    </DashboardContext.Provider>
+  );
 };

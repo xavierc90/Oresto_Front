@@ -2,12 +2,12 @@ import { createBrowserRouter, Navigate, Outlet } from "react-router-dom";
 import { HomePage } from "../../Application/Pages/HomePage";
 import { LoginPage } from "../../Application/Pages/LoginPage";
 import { DashboardPage } from "../../Application/Pages/DashboardPage";
-import { BookingsPage } from "../../Application/Pages/BookingsPage"; 
+import { ReservationsPage } from "../../Application/Pages/ReservationsPage"; 
 import { ClientsPage } from "../../Application/Pages/ClientsPage"; 
 import { TablePlanPage } from "../../Application/Pages/TablePlanPage";
 import { AnalyticsPage } from "../../Application/Pages/AnalyticsPage";
 import { SettingsPage } from "../../Application/Pages/SettingsPage";
-import { RegisterCompany } from "../../Application/Pages/RegisterCompany";
+import { RegisterRestaurant } from "../../Application/Pages/RegisterRestaurant";
 import { useAuth } from '../../Module/Auth/useAuth';
 import { RegisterPage } from "../../Application/Pages/RegisterPage";
 
@@ -38,8 +38,8 @@ export const router = createBrowserRouter([
         element: <DashboardPage />, // Assurez-vous que DashboardPage est bien rendu ici
         children: [
           {
-            path: "bookings",
-            element: <BookingsPage />,  // BookingsPage est protégé
+            path: "reservations",
+            element: <ReservationsPage />,  // ReservationsPage est protégé
           },
           {
             path: "table_plan",
@@ -62,12 +62,12 @@ export const router = createBrowserRouter([
     ],
   },
   {
-    path: "/register_company",
+    path: "/register_restaurant",
     element: <ProtectedRoute />, // Protège la création d'entreprise
     children: [
       {
         path: "", 
-        element: <RegisterCompany />,
+        element: <RegisterRestaurant />,
       },
     ],
   },

@@ -7,25 +7,25 @@ import { Chart as ChartJS, Tooltip, Legend, ArcElement, Title } from 'chart.js';
 ChartJS.register(ArcElement, Tooltip, Legend, Title);
 
 export const AnalyticsPage = () => {
-  const [totalBookings, setTotalBookings] = useState(0);
-  const [totalConfirmedBookings, setTotalConfirmedBookings] = useState(0);
-  const [totalCanceledBookings, setTotalCanceledBookings] = useState(0);
-  const [totalWaitingBookings, setTotalWaitingBookings] = useState(0);
+  const [totalReservations, setTotalReservations] = useState(0);
+  const [totalConfirmedReservations, setTotalConfirmedReservations] = useState(0);
+  const [totalCanceledReservations, setTotalCanceledReservations] = useState(0);
+  const [totalWaitingReservations, setTotalWaitingReservations] = useState(0);
 
   useEffect(() => {
-    const fetchTotalBookings = async () => {
+    const fetchTotalReservations = async () => {
       try {
-        const response = await http.get('/bookings');
-        setTotalBookings(response.data.bookings.length);
-        setTotalConfirmedBookings(response.data.statusCounts.confirmed);
-        setTotalCanceledBookings(response.data.statusCounts.canceled);
-        setTotalWaitingBookings(response.data.statusCounts.waiting);
+        const response = await http.get('/reservations');
+        setTotalReservations(response.data.reservations.length);
+        setTotalConfirmedReservations(response.data.statusCounts.confirmed);
+        setTotalCanceledReservations(response.data.statusCounts.canceled);
+        setTotalWaitingReservations(response.data.statusCounts.waiting);
       } catch (error) {
         console.error('Erreur lors de la récupération du nombre total de réservations:', error);
       }
     };
 
-    fetchTotalBookings();
+    fetchTotalReservations();
   }, []);
 
   // Données du graphique
@@ -33,7 +33,7 @@ export const AnalyticsPage = () => {
     labels: ['Confirmées', 'Annulées', 'En attente'],
     datasets: [
       {
-        data: [totalConfirmedBookings, totalCanceledBookings, totalWaitingBookings],
+        data: [totalConfirmedReservations, totalCanceledReservations, totalWaitingReservations],
         backgroundColor: ['#4CAF50', '#F44336', '#FFC107'],
         borderColor: '#ffffff',
         borderWidth: 1
@@ -75,7 +75,7 @@ export const AnalyticsPage = () => {
     <div className="bg-light w-full">
       <h1 className="text-xl font-bold pt-8 pl-12">Statistiques</h1>
       <h2 className="text-lg pl-12 mt-1">
-        <span className="font-bold text-red-500 dark:text-white">{totalBookings}</span> réservation{totalBookings > 1 ? 's' : ''} au total
+        <span className="font-bold text-red-500 dark:text-white">{totalReservations}</span> réservation{totalReservations > 1 ? 's' : ''} au total
       </h2>
       <ul className="pl-12 pt-12">
         <li className="text-lg font-bold">Réservations</li>
@@ -88,15 +88,15 @@ export const AnalyticsPage = () => {
         <ul className="flex flex-col gap-4 pr-8">
           <li className="flex items-center">
             <span className="w-[20px] h-[20px] bg-[#4CAF50] rounded-full inline-block mr-2"></span>
-            <span className="font-semibold text-sm">Confirmées : {totalConfirmedBookings}</span>
+            <span className="font-semibold text-sm">Confirmées : {totalConfirmedReservations}</span>
           </li>
           <li className="flex items-center">
             <span className="w-[20px] h-[20px] bg-[#FFC107] rounded-full inline-block mr-2"></span>
-            <span className="font-semibold text-sm">En attente : {totalWaitingBookings}</span>
+            <span className="font-semibold text-sm">En attente : {totalWaitingReservations}</span>
           </li>
           <li className="flex items-center">
             <span className="w-[20px] h-[20px] bg-[#F44336] rounded-full inline-block mr-2"></span>
-            <span className="font-semibold text-sm">Annulées : {totalCanceledBookings}</span>
+            <span className="font-semibold text-sm">Annulées : {totalCanceledReservations}</span>
           </li>
         </ul>
       </div>

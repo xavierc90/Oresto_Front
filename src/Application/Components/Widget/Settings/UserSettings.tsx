@@ -4,7 +4,7 @@ type UserSettingsProps = {
   handleReturnToAccount: () => void;
   onShowAllergens: () => void;
   onShowPersonalData: () => void;
-  onShowBookingHistory: () => void;
+  onShowReservationHistory: () => void;
   onShowAccessibility: () => void;
 };
 
@@ -12,7 +12,7 @@ export const UserSettings: React.FC<UserSettingsProps> = ({
   handleReturnToAccount,
   onShowAllergens,
   onShowPersonalData,
-  onShowBookingHistory,
+  onShowReservationHistory,
   onShowAccessibility,
 }) => {
   return (
@@ -25,7 +25,7 @@ export const UserSettings: React.FC<UserSettingsProps> = ({
       <ul className="flex flex-col text-left text-md font-semibold gap-4">
         <li><a href="#" className='hover:text-green-800' onClick={onShowAllergens}>Mes préférences (allergènes)</a></li>
         <li><a href="#" className='hover:text-green-800' onClick={onShowPersonalData}>Mes données personnelles</a></li>
-        <li><a href="#" className='hover:text-green-800' onClick={onShowBookingHistory}>Historique des réservations</a></li>
+        <li><a href="#" className='hover:text-green-800' onClick={onShowReservationHistory}>Historique des réservations</a></li>
         <li><a href="#" className='hover:text-green-800' onClick={onShowAccessibility}>Accessibilité</a></li>
       </ul>
 

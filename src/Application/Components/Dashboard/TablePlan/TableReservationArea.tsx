@@ -4,21 +4,21 @@ import { Table } from '../../../../Module/Types/table.type';
 import { LuLayoutDashboard } from "react-icons/lu";
 import { Link } from 'react-router-dom';
 
-interface TableBookingAreaProps {
+interface TableReservationAreaProps {
   selectedDate: Date | null;
-  company: { _id: string };
+  restaurant: { _id: string };
   token: string | null;
   status: string;
 }
 
-export const TableBookingArea: React.FC<TableBookingAreaProps> = ({ selectedDate, company, token }) => {
+export const TableReservationArea: React.FC<TableReservationAreaProps> = ({ selectedDate, restaurant, token }) => {
   const [tables, setTables] = useState<Table[]>([]); // État pour stocker les tables
   const [loading, setLoading] = useState<boolean>(true); // Pour gérer le chargement des données
 
   useEffect(() => {
     const fetchTables = async () => {
-      if (!company?._id || !token) {
-        console.error('Company ID ou token non trouvés');
+      if (!restaurant?._id || !token) {
+        console.error('Restaurant ID ou token non trouvés');
         return;
       }
 
@@ -30,7 +30,7 @@ export const TableBookingArea: React.FC<TableBookingAreaProps> = ({ selectedDate
           formattedDate = localDate.toISOString().split('T')[0];
         }
 
-        const response = await http.get(`/table_plan/${formattedDate}?company_id=${company._id}`, {
+        const response = await http.get(`/table_plan/${formattedDate}?restaurant_id=${restaurant._id}`, {
           headers: {
             Authorization: `Bearer ${token}`,
             'Cache-Control': 'no-cache',
@@ -51,12 +51,12 @@ export const TableBookingArea: React.FC<TableBookingAreaProps> = ({ selectedDate
       }
     };
 
-    if (company?._id && token) {
+    if (restaurant?._id && token) {
       fetchTables();
     } else {
       setLoading(false);
     }
-  }, [selectedDate, company, token]);
+  }, [selectedDate, restaurant, token]);
 
   // Rendu conditionnel pour afficher le message si aucune table n'existe
   if (loading) {

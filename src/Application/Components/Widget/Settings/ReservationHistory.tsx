@@ -4,7 +4,7 @@ type AllergensProps = {
   onReturnToAccount: () => void;
 };
 
-export const BookingHistory: React.FC<AllergensProps> = ({ onReturnToAccount }) => {
+export const ReservationHistory: React.FC<AllergensProps> = ({ onReturnToAccount }) => {
   return (
     <div className="flex flex-col items-center justify-center h-full bg-white">
       <h2 className="text-xl font-bold mb-4">Préférences Allergènes</h2>

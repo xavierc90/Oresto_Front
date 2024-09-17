@@ -117,7 +117,7 @@
 }
 
 
-.booking-list {
+.reservation-list {
   max-width: 100%;
   max-height: 180px;
   overflow-x: hidden;
@@ -128,7 +128,7 @@
   height: 260px; /* Ajustez selon vos besoins */
 }
 
-.bookinglist tr {
+.reservationlist tr {
     height: 30px;
   }
 
@@ -167,8 +167,8 @@
     background-size: cover;
 }
 
-.cover-company {
-    background-image: url('../public//img/cover-company.jpg');
+.cover-restaurant {
+    background-image: url('../public//img/cover-restaurant.jpg');
     background-repeat: no-repeat;
     background-size: cover;
 }
@@ -251,9 +251,9 @@ input::placeholder {
   opacity: 0.5;
 }
 
-/* Booking list style */
+/* Reservation list style */
 
-.booking-list {
+.reservation-list {
     border-collapse: collapse;
     width: 100%;
 }

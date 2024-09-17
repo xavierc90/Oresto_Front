@@ -1,6 +1,6 @@
 export type Table = {
     _id: string;
-    company_id: string;
+    restaurant_id: string;
     created_by: string;
     number: string;
     capacity: number;

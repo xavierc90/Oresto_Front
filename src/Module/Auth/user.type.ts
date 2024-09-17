@@ -8,8 +8,8 @@ export type User = {
     phone_number: string;
     allergens: string;
     created_at: string;
-    company_id: string;
+    restaurant_id: string;
     token?: string;
     status?: string;
-    bookingCount?: number;  // Ajoutez ce champ pour stocker le nombre de réservations  
+    reservationCount?: number;  // Ajoutez ce champ pour stocker le nombre de réservations  
 };

@@ -5,13 +5,13 @@ import { CalendarShadcn } from '../Dashboard/CalendarShadcn';
 import { useAuth } from '../../../Module/Auth/useAuth'; 
 import { AiOutlineCalendar } from 'react-icons/ai';
 
-type BookingProps = {
+type ReservationProps = {
   selectedDate: Date | null;
   onTimeSelected: () => void;
   onReturnToAccount: () => void;
 };
 
-export const Booking: React.FC<BookingProps> = ({ selectedDate, onReturnToAccount }) => {
+export const Reservation: React.FC<ReservationProps> = ({ selectedDate, onReturnToAccount }) => {
   const { user, token } = useAuth();
   const [step, setStep] = useState<'selectDate' | 'selectTime' | 'confirm' | 'success'>('selectDate');
   const [timeSelected, setTimeSelected] = useState<string | null>(null);
@@ -65,16 +65,16 @@ export const Booking: React.FC<BookingProps> = ({ selectedDate, onReturnToAccoun
     try {
       // Convertissez la date locale en date UTC pour l'envoyer au serveur
       const formattedDate = moment(localDate).format('YYYY-MM-DD');
-      const bookingData = {
+      const reservationData = {
         date_selected: formattedDate,
         time_selected: timeSelected,
         nbr_persons: nbrPersons,
         user_id: user?._id,
         details: additionalInfo,
       };
-      console.log("Données envoyées :", bookingData);
+      console.log("Données envoyées :", reservationData);
 
-      const response = await http.post('/add_booking', bookingData, {
+      const response = await http.post('/add_reservation', reservationData, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

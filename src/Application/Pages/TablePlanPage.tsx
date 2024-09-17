@@ -13,7 +13,7 @@ interface Table {
 }
 
 export const TablePlanPage = () => {
-  const { token, company } = useAuth();
+  const { token, restaurant } = useAuth();
   const [tables, setTables] = useState<Table[]>([]); // État pour stocker les tables
 
   // Calcul du nombre total de tables et du nombre total de places
@@ -22,7 +22,7 @@ export const TablePlanPage = () => {
 
   useEffect(() => {
     const fetchTables = async () => {
-      if (!token || !company) return;
+      if (!token || !restaurant) return;
 
       try {
         const response = await http.get(`/tables_by_filters`, {
@@ -38,13 +38,13 @@ export const TablePlanPage = () => {
     };
 
     fetchTables();
-  }, [token, company]);
+  }, [token, restaurant]);
 
-  if (!company || !token) {
+  if (!restaurant || !token) {
     return <p>Chargement des données...</p>;
   }
 
-  const companyObject = Array.isArray(company) ? company[0] : company;
+  const restaurantObject = Array.isArray(restaurant) ? restaurant[0] : restaurant;
 
   return (
     <div className="bg-light w-full">
@@ -54,7 +54,7 @@ export const TablePlanPage = () => {
         | <span className="font-bold text-red-500 dark:text-white">{totalSeats}</span> couvert(s)
       </h2>
       <TableForm />
-      <TablePlanArea company={companyObject} token={token} />
+      <TablePlanArea restaurant={restaurantObject} token={token} />
     </div>
   );
 };

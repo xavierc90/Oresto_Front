@@ -7,7 +7,7 @@ import { User } from '../../../Module/Auth/user.type';
 import { formatDateToFrench } from '../../../Module/Utils/dateFormatter';
 import moment from 'moment';
 import { RxCross1 } from 'react-icons/rx';
-import { Booking } from '../../../Module/Types/bookng.type';
+import { Reservation } from '../../../Module/Types/reservation.type';
 import { StatusLabel } from './StatusLabel';
 import { FaInfoCircle } from "react-icons/fa";
 
@@ -19,7 +19,7 @@ export const ClientList = ({ users }: ClientListProps) => {
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [bookings, setBookings] = useState<Booking[]>([]);
+  const [reservations, setReservations] = useState<Reservation[]>([]);
 
   const handleSortToggle = () => {
     setSortOrder(prevOrder => prevOrder === 'asc' ? 'desc' : 'asc');
@@ -29,19 +29,19 @@ export const ClientList = ({ users }: ClientListProps) => {
     setSelectedUser(user);
     setIsModalOpen(true);
     try {
-      const response = await http.get<Booking[]>(`/bookings/user/${user._id}`);
-      const sortedBookings = response.data.sort((a, b) => new Date(b.date_selected).getTime() - new Date(a.date_selected).getTime());
-      setBookings(sortedBookings);  // Assign sorted booking data directly
+      const response = await http.get<Reservation[]>(`/reservations/user/${user._id}`);
+      const sortedReservations = response.data.sort((a, b) => new Date(b.date_selected).getTime() - new Date(a.date_selected).getTime());
+      setReservations(sortedReservations);  // Assign sorted reservation data directly
     } catch (error) {
-      console.error('Error fetching bookings:', error);
-      setBookings([]);
+      console.error('Error fetching reservations:', error);
+      setReservations([]);
     }
   };
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
     setSelectedUser(null);
-    setBookings([]);
+    setReservations([]);
   };
 
   const sortedUsers = sortOrder === 'asc' ? users.sort((a, b) => a.lastname.localeCompare(b.lastname)) : users.sort((a, b) => b.lastname.localeCompare(a.lastname));
@@ -98,18 +98,18 @@ export const ClientList = ({ users }: ClientListProps) => {
             <FaRegCalendarAlt />
             <span className='pl-2'>Historique des réservations</span>
             </h2>
-            <div className='booking-list'>
-            {bookings.length > 0 ? (
+            <div className='reservation-list'>
+            {reservations.length > 0 ? (
               <ul className='list-none'>
-                {bookings.map(booking => (
-                  <ul key={booking._id} className='mb-3 text-sm space-y-1'>
-                    <li className='font-semibold flex gap-2'>{moment(booking.date_selected).format('DD/MM/YYYY')} à {booking.time_selected}
-                      <StatusLabel status={booking.status || 'waiting'} />
+                {reservations.map(reservation => (
+                  <ul key={reservation._id} className='mb-3 text-sm space-y-1'>
+                    <li className='font-semibold flex gap-2'>{moment(reservation.date_selected).format('DD/MM/YYYY')} à {reservation.time_selected}
+                      <StatusLabel status={reservation.status || 'waiting'} />
                     </li>
-                    <li>Table {booking.table[0]?.table_number} pour {booking.nbr_persons || '0'} personnes</li>
+                    <li>Table {reservation.table[0]?.table_number} pour {reservation.nbr_persons || '0'} personnes</li>
                     <li className='flex items-center'>
-                      {booking.details && <FaInfoCircle className="mr-2" />}
-                      {booking.details ? booking.details : ''}
+                      {reservation.details && <FaInfoCircle className="mr-2" />}
+                      {reservation.details ? reservation.details : ''}
                     </li>
                   </ul>
                 ))}

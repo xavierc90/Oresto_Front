@@ -7,16 +7,16 @@ import { FaGear } from "react-icons/fa6";
 import { LuLayoutDashboard } from "react-icons/lu";
 import { MdLogout } from "react-icons/md";
 import { CalendarShadcn } from "./CalendarShadcn";
-import { Company } from '../../../Module/Types/company.type';
+import { Restaurant } from '../../../Module/Types/restaurant.type';
 import { useAuth } from '../../../Module/Auth/useAuth';
 import { dateService } from '../../../Module/Utils/dateService';
 import { searchService } from '../../../Module/Utils/searchService';
 
 interface DashboardNavProps {
-  company: Company | null;
+  restaurant: Restaurant | null;
 }
 
-export const DashboardNav: React.FC<DashboardNavProps> = ({ company }) => {
+export const DashboardNav: React.FC<DashboardNavProps> = ({ restaurant }) => {
   const [dateSelected, setDateSelected] = useState<Date>(new Date());
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [darkMode, setDarkMode] = useState<boolean>(false);
@@ -34,7 +34,7 @@ export const DashboardNav: React.FC<DashboardNavProps> = ({ company }) => {
       setDateSelected(date);
       const formattedDate = date.toISOString().split('T')[0];
       console.log("DashboardNav - Date selected and formatted:", formattedDate);
-      navigate(`/dashboard/bookings?dayselected=${formattedDate}`);
+      navigate(`/dashboard/reservations?dayselected=${formattedDate}`);
     });
 
     return () => subscription.unsubscribe();
@@ -80,8 +80,8 @@ export const DashboardNav: React.FC<DashboardNavProps> = ({ company }) => {
   return (
     <div className='bg-light justify-center gap-8 dark:bg-dark-900 dark:text-white w-80 h-screen flex flex-col items-center shadow-2xl'>
       <div className='mt-4'>
-        <a href='../dashboard/bookings'><img src={logoSrc} width="220px" alt="Oresto - Gestion des réservations" /></a>
-        {company && <h1 className='text-center pt-5 font-bold'>{company.name}</h1>}
+        <a href='../dashboard/reservations'><img src={logoSrc} width="220px" alt="Oresto - Gestion des réservations" /></a>
+        {restaurant && <h1 className='text-center pt-5 font-bold'>{restaurant.name}</h1>}
       </div>
       
       <div className="mt-2ss">
@@ -102,7 +102,7 @@ export const DashboardNav: React.FC<DashboardNavProps> = ({ company }) => {
       </form>
       
       <div className="grid grid-cols-2 gap-6 justify-items-center">
-        <Link to={`/dashboard/bookings?dayselected=${dateSelected.toISOString().split('T')[0]}`} className={getLinkClass('/dashboard/bookings')}>
+        <Link to={`/dashboard/reservations?dayselected=${dateSelected.toISOString().split('T')[0]}`} className={getLinkClass('/dashboard/reservations')}>
           <BsListCheck size={23} className="mb-1" />
           <h2 className="text-xs font-bold">Réservations</h2>
         </Link>

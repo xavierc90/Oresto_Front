@@ -46,14 +46,14 @@ export const LoginFormUser: React.FC<LoginFormUserProps> = ({
     try {
       const response = await http.post('/login', { email, password });
       const user = response.data;
-      const company = response.data.company || {}; // Assuming company data might be nested or not present
+      const restaurant = response.data.restaurant || {}; // Assuming restaurant data might be nested or not present
       const token = response.data.token; // Extract the token from the response
 
       if (user && token) {
-        login(user, company, token); // Pass all required arguments to the login function
+        login(user, restaurant, token); // Pass all required arguments to the login function
         onLoginSuccess(); // Trigger post-login success actions
       } else {
-        console.error('Invalid user, company, or token data provided:', { user, company, token });
+        console.error('Invalid user, restaurant, or token data provided:', { user, restaurant, token });
         setErrorMessage('Données utilisateur, entreprise, ou jeton invalides.');
       }
     } catch (error: any) {

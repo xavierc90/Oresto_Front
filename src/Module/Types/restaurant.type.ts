@@ -1,4 +1,4 @@
-export type Company = {
+export type Restaurant = {
     _id: string;
     name: string;
     address: string;

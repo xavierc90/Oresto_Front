@@ -1,11 +1,15 @@
 import { useEffect, useState } from 'react';
 import { authService } from './authService';
-import { Company } from '../Types/company.type';
+import { Restaurant } from '../Types/restaurant.type';
 import { User } from './user.type';
 
 export const useAuth = () => {
   const [user, setUser] = useState<User | null>(() => authService.currentUser);
-  const [company, setCompany] = useState<Company | null>(() => authService.currentCompany);
+  const [restaurant, setRestaurant] = useState<Restaurant | null>(() => {
+    const storedRestaurant = authService.currentRestaurant;
+    // Vérification si currentRestaurant est un tableau par erreur, on prend le premier élément si c'est le cas.
+    return Array.isArray(storedRestaurant) ? storedRestaurant[0] : storedRestaurant;
+  });
   const [token, setToken] = useState<string | null>(() => authService.currentToken);
 
   useEffect(() => {
@@ -14,9 +18,11 @@ export const useAuth = () => {
       localStorage.setItem('user', JSON.stringify(newUser));
     });
 
-    const companySubscription = authService.company$.subscribe((newCompany) => {
-      setCompany(newCompany);
-      localStorage.setItem('company', JSON.stringify(newCompany));
+    const restaurantSubscription = authService.restaurant$.subscribe((newRestaurant) => {
+      // Vérification si la donnée est un tableau, on prend le premier élément si c'est le cas.
+      const restaurantData = Array.isArray(newRestaurant) ? newRestaurant[0] : newRestaurant;
+      setRestaurant(restaurantData);
+      localStorage.setItem('restaurant', JSON.stringify(restaurantData));
     });
 
     const tokenSubscription = authService.token$.subscribe((newToken) => {
@@ -30,24 +36,35 @@ export const useAuth = () => {
 
     return () => {
       userSubscription.unsubscribe();
-      companySubscription.unsubscribe();
+      restaurantSubscription.unsubscribe();
       tokenSubscription.unsubscribe();
     };
   }, []);
 
-  const login = (user: User, company: Company, token: string) => {
-    authService.login(user, company, token);
+  const login = (user: User, restaurant: Restaurant, token: string) => {
+    authService.login(user, restaurant, token);
     setUser(user);
-    setCompany(company);
+    setRestaurant(restaurant);
     setToken(token);
   };
 
   const logout = () => {
     authService.logout();
     setUser(null);
-    setCompany(null);
+    setRestaurant(null);
     setToken(null);
   };
 
-  return { user, company, token, login, logout };
+  const isAuthenticated = Boolean(user && token);
+  const userId = user ? user._id : null;
+
+  return { 
+    user, 
+    restaurant, 
+    token, 
+    login, 
+    logout, 
+    isAuthenticated, 
+    userId 
+  };
 };
