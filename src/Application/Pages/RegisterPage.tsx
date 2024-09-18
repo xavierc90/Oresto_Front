@@ -38,6 +38,22 @@ export const RegisterPage = () => {
     setState(event.target.value);
   };
 
+  const formatPhoneNumber = (value: string) => {
+    // Retirer les espaces déjà présents
+    const cleaned = value.replace(/\s+/g, '');
+
+    // Ajouter un espace après chaque groupe de deux chiffres
+    const formatted = cleaned.match(/.{1,2}/g)?.join(' ') || cleaned;
+
+    return formatted;
+  };
+
+  const handlePhoneNumberChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const inputValue = event.target.value;
+    const formattedPhoneNumber = formatPhoneNumber(inputValue);
+    setPhoneNumber(formattedPhoneNumber);
+  };
+
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!isFormValid) {
@@ -49,18 +65,14 @@ export const RegisterPage = () => {
       firstname: firstName,
       lastname: lastName,
       email: email,
-      phone_number: phoneNumber,
+      phone_number: phoneNumber, // Garder le numéro avec les espaces
       password: password,
     };
 
     try {
-      // Inscription de l'utilisateur
       const registerResponse = await http.post('/register_manager', managerData);
       if (registerResponse.status === 201) {
-        // Stocker un message de succès dans le localStorage
         localStorage.setItem('successMessage', 'Inscription réussie ! Vous pouvez maintenant vous connecter.');
-
-        // Redirection vers la page de connexion
         navigate('/login');
       } else {
         setErrorMessage('Une erreur est survenue lors de l\'inscription.');
@@ -139,9 +151,9 @@ export const RegisterPage = () => {
               type="tel"
               name="phoneNumber"
               id='phoneNumber'
-              placeholder="Exemple : 0612345678"
+              placeholder="Exemple : 06 12 34 56 78"
               value={phoneNumber}
-              onChange={(e) => handleInputChange(e, setPhoneNumber)}
+              onChange={handlePhoneNumberChange}
               className={`border-2 p-2 mb-6 font-bold text-sm ${
                 phoneNumber.trim() !== '' ? 'border-green-500' : 'border-gray-300'
               }`}

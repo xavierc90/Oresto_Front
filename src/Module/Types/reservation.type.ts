@@ -12,7 +12,8 @@ export type Reservation = {
   created_at: Date;
   restaurant_id: string;
   table_id: Table;  // Utilisation de Table directement ici
-  status: string;  // Ajouter JSX.Element ici
+  table_number: string;
+  status: string;  // Ajouter JSX.Element ic
   details: string;
   table: Table[];  // Utilisation de Table directement ici
   date: Date;

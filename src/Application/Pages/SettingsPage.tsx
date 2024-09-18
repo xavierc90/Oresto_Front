@@ -128,7 +128,7 @@ export const SettingsPage = () => {
       return day;
     });
     setEditedHours(updatedHours);
-};
+  };
 
   const handleEditClick = () => {
     setIsEditing(true);
@@ -219,7 +219,7 @@ export const SettingsPage = () => {
           </div>
         </div>
 
-        {/* Deuxième colonne : Horaires du restaurant */}
+        {/* Deuxième colonne */}
         <div className="w-1/3">
           <div className='dark:bg-dark-900 dark:border-0 p-3'>
             <div className='w-96 flex items-center pb-2'>
@@ -264,100 +264,100 @@ export const SettingsPage = () => {
                 </tr>
               </thead>
               <tbody>
-                {editedHours.map((day) => (
-                  <tr key={day.day} className="py-10">
-                    <td className="font-semibold text-sm m-4 pr-12">
-                      {daysOfWeek[day.day]}
-                    </td>
-                    <td className="text-center">
-                      {isEditing ? (
-                        <div className="flex space-x-2 justify-center max-w-full overflow-hidden">
-                          <input
-                            type="checkbox"
-                            checked={day.hours[0].status === 'opened'}
-                            onChange={() => handleStatusChange(day.day, day.hours[0]._id)}
-                          />
-                          <input
-                            type="time"
-                            value={day.hours[0]?.opening || '00:00'}
-                            onChange={(e) =>
-                              handleInputChange(
-                                day.day,
-                                day.hours[0]._id,
-                                'opening',
-                                e.target.value
-                              )
-                            }
-                            className="border pl-2 rounded dark:bg-dark-900 dark:text-white border-dark-900 text-center w-24"
-                            disabled={day.hours[0].status === 'closed'}
-                          />
-                          <input
-                            type="time"
-                            value={day.hours[0]?.closing || '00:00'}
-                            onChange={(e) =>
-                              handleInputChange(
-                                day.day,
-                                day.hours[0]._id,
-                                'closing',
-                                e.target.value
-                              )
-                            }
-                            className="border pl-2 rounded dark:bg-dark-900 dark:text-white border-dark-900 w-24"
-                            disabled={day.hours[0].status === 'closed'}
-                          />
-                        </div>
-                      ) : (
-                        day.hours[0].status === 'closed'
-                          ? 'Fermé'
-                          : `${day.hours[0]?.opening} - ${day.hours[0]?.closing}`
-                      )}
-                    </td>
-                    <td className="text-center pl-7">
-                      {isEditing ? (
-                        <div className="flex space-x-2 justify-center max-w-full overflow-hidden">
-                          <input
-                            type="checkbox"
-                            checked={day.hours[1].status === 'opened'}
-                            onChange={() => handleStatusChange(day.day, day.hours[1]._id)}
-                          />
-                          <input
-                            type="time"
-                            value={day.hours[1]?.opening || '00:00'}
-                            onChange={(e) =>
-                              handleInputChange(
-                                day.day,
-                                day.hours[1]._id,
-                                'opening',
-                                e.target.value
-                              )
-                            }
-                            className="border ml-4 pl-2 rounded dark:bg-dark-900 dark:text-white border-dark-900 w-24"
-                            disabled={day.hours[1].status === 'closed'}
-                          />
-                          <input
-                            type="time"
-                            value={day.hours[1]?.closing || '00:00'}
-                            onChange={(e) =>
-                              handleInputChange(
-                                day.day,
-                                day.hours[1]._id,
-                                'closing',
-                                e.target.value
-                              )
-                            }
-                            className="border pl-2 rounded dark:bg-dark-900 dark:text-white border-dark-900 w-24"
-                            disabled={day.hours[1].status === 'closed'}
-                          />
-                        </div>
-                      ) : (
-                        day.hours[1].status === 'closed'
-                          ? 'Fermé'
-                          : `${day.hours[1]?.opening} - ${day.hours[1]?.closing}`
-                      )}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
+  {editedHours.map((day, index) => (
+    <tr key={day.day} className={`py-10 ${index % 2 === 0 ? 'bg-gray-200' : ''}`}>
+      <td className="font-semibold text-sm m-4 pr-12">
+        {daysOfWeek[day.day]}
+      </td>
+      <td className="text-center">
+        {isEditing ? (
+          <div className="flex space-x-2 justify-center max-w-full overflow-hidden">
+            <input
+              type="checkbox"
+              checked={day.hours[0].status === 'opened'}
+              onChange={() => handleStatusChange(day.day, day.hours[0]._id)}
+            />
+            <input
+              type="time"
+              value={day.hours[0]?.opening || '00:00'}
+              onChange={(e) =>
+                handleInputChange(
+                  day.day,
+                  day.hours[0]._id,
+                  'opening',
+                  e.target.value
+                )
+              }
+              className="border pl-2 rounded dark:bg-dark-900 dark:text-white border-dark-900 text-center w-18"
+              disabled={day.hours[0].status === 'closed'}
+            />
+            <input
+              type="time"
+              value={day.hours[0]?.closing || '00:00'}
+              onChange={(e) =>
+                handleInputChange(
+                  day.day,
+                  day.hours[0]._id,
+                  'closing',
+                  e.target.value
+                )
+              }
+              className="border pl-2 rounded dark:bg-dark-900 dark:text-white border-dark-900 w-18"
+              disabled={day.hours[0].status === 'closed'}
+            />
+          </div>
+        ) : (
+          day.hours[0].status === 'closed'
+            ? 'Fermé'
+            : `${day.hours[0]?.opening} - ${day.hours[0]?.closing}`
+        )}
+      </td>
+      <td className="text-center">
+        {isEditing ? (
+          <div className="flex space-x-2 pl-7 justify-center max-w-full overflow-hidden">
+            <input
+              type="checkbox"
+              checked={day.hours[1].status === 'opened'}
+              onChange={() => handleStatusChange(day.day, day.hours[1]._id)}
+            />
+            <input
+              type="time"
+              value={day.hours[1]?.opening || '00:00'}
+              onChange={(e) =>
+                handleInputChange(
+                  day.day,
+                  day.hours[1]._id,
+                  'opening',
+                  e.target.value
+                )
+              }
+              className="border ml-2 pl-2 rounded dark:bg-dark-900 dark:text-white border-dark-900 w-18"
+              disabled={day.hours[1].status === 'closed'}
+            />
+            <input
+              type="time"
+              value={day.hours[1]?.closing || '00:00'}
+              onChange={(e) =>
+                handleInputChange(
+                  day.day,
+                  day.hours[1]._id,
+                  'closing',
+                  e.target.value
+                )
+              }
+              className="border pl-2 rounded dark:bg-dark-900 dark:text-white border-dark-900 w-18"
+              disabled={day.hours[1].status === 'closed'}
+            />
+          </div>
+        ) : (
+          day.hours[1].status === 'closed'
+            ? 'Fermé'
+            : `${day.hours[1]?.opening} - ${day.hours[1]?.closing}`
+        )}
+      </td>
+    </tr>
+  ))}
+</tbody>
             </table>
           </div>  
         </div>

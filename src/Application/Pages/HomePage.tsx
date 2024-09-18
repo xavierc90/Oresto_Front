@@ -114,19 +114,19 @@ export const HomePage = () => {
               <li className='text-sm'>Dimanche et lundi : Fermé</li>
             </ul>
             <ul className='mb-4 lg:pl-10'>
-              <li className='text-lg font-bold'>Méthodes de paiement</li>
+              <li className='text-md font-bold'>Méthodes de paiement</li>
               <li className='text-sm'>Carte de crédit, espèces</li>
             </ul>
             <ul className='mb-4 lg:pl-10'>
-              <li className='text-lg font-bold'>N° de téléphone</li>
+              <li className='text-md font-bold'>N° de téléphone</li>
               <li className='text-sm'>+33 1 23 45 67 89</li>
             </ul>
             <ul className='mb-4 lg:pl-10'>
-              <li className='text-lg font-bold'>Adresse mail</li>
+              <li className='text-md font-bold'>Adresse mail</li>
               <li className='text-sm'>contact@labelleassiette.fr</li>
             </ul>
             <ul className='mb-4 lg:pl-10'>
-              <li className='text-lg font-bold'>Adresse</li>
+              <li className='text-md font-bold'>Adresse</li>
               <li className='text-sm'>123 rue fictive, 75001 Paris, France</li>
             </ul>
           </div>

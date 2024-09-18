@@ -100,7 +100,7 @@ export const ReservationList: React.FC<ReservationListProps> = ({ reservations }
               <td className="text-left">{reservation.user_id.lastname}</td>
               <td className="text-left">{reservation.user_id.firstname}</td>
               <td className="text-center">{reservation.nbr_persons} {reservation.nbr_persons > 1 ? 'personnes' : 'personne'}</td>
-              <td className="text-center">{reservation.table && reservation.table[0]?.number || 'N/A'}</td>
+              <td className="text-center">{reservation.table && reservation.table_number || 'N/A'}</td>
               <td className="text-left"><StatusLabel status={reservation.status ? reservation.status : 'waiting'} /></td>
             </tr>
           ))}
@@ -138,7 +138,7 @@ export const ReservationList: React.FC<ReservationListProps> = ({ reservations }
               <li><strong>Heure :</strong> {selectedReservation.time_selected}</li>
               <li><strong>Date :</strong> {new Date(selectedReservation.date_selected).toLocaleDateString()}</li>
               <li><strong>Nombre de couverts :</strong> {selectedReservation.nbr_persons}</li>
-              <li><strong>Table :</strong> {selectedReservation.table && selectedReservation.table[0]?.number || 'N/A'}</li>
+              <li><strong>Table :</strong> {selectedReservation.table && selectedReservation.table_number || 'N/A'}</li>
               <li><strong>Détails :</strong> {selectedReservation.details || 'Aucun'}</li>
             </ul>
             </div>

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { http } from '../../../Infrastructure/Http/axios.instance';
 import { FaSort } from "react-icons/fa";
 import { FaUser } from "react-icons/fa";
