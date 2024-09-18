@@ -22,8 +22,7 @@ export const ReservationsPage = () => {
   const [reservations, setReservations] = useState<Reservation[]>([]);
 
   useEffect(() => {
-    console.log("UseEffect triggered - Checking token, user, restaurant");
-
+    document.title = 'Oresto - Réservations';
     if (!token || !user || !restaurant) {
       console.error("Token, utilisateur ou entreprise manquants. Redirection vers la page de connexion...");
       return;

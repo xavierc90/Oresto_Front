@@ -15,6 +15,7 @@ export const ClientsPage = () => {
   const [searchTerm, setSearchTerm] = useState<string>('');
 
   useEffect(() => {
+    document.title = 'Oresto - Gestion des clients';
     const fetchUsers = async () => {
       try {
         const token = localStorage.getItem('token');

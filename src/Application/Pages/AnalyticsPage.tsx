@@ -13,6 +13,7 @@ export const AnalyticsPage = () => {
   const [totalWaitingReservations, setTotalWaitingReservations] = useState(0);
 
   useEffect(() => {
+    document.title = 'Oresto - Statistiques';
     const fetchTotalReservations = async () => {
       try {
         const response = await http.get('/reservations');

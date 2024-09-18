@@ -21,6 +21,7 @@ export const TablePlanPage = () => {
   const totalSeats = tables.reduce((acc, table) => acc + table.capacity, 0);
 
   useEffect(() => {
+    document.title = 'Oresto - Plan de table';
     const fetchTables = async () => {
       if (!token || !restaurant) return;
 

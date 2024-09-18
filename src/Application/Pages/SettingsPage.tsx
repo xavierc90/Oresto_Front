@@ -1,16 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useOutletContext } from 'react-router-dom';
 import { Restaurant } from '../../Module/Types/restaurant.type';
-import { useDarkMode } from '../../Module/Utils/darkMode';
 import { http } from '../../Infrastructure/Http/axios.instance';
 import { User } from '../../Module/Auth/user.type';
-import { FaClock, FaStore } from "react-icons/fa";
-import { FaUser } from "react-icons/fa";
-import { FaRegClock } from "react-icons/fa";
-import { IoAccessibility } from "react-icons/io5";
-
-
-
+import { FaStore, FaUser, FaRegClock } from "react-icons/fa";
 
 interface ContextType {
   user: User | null;
@@ -21,6 +14,7 @@ interface Hour {
   opening: string;
   closing: string;
   _id: string;
+  status: string;
 }
 
 interface OpeningHour {
@@ -49,47 +43,36 @@ const englishDaysOrder: OpeningHour['day'][] = [
   'Sunday',
 ];
 
-const defaultOpeningHours: OpeningHour[] = englishDaysOrder.map((day) => ({
-  _id: day,
-  day: day, // Le jour est en anglais
-  hours: [
-    { opening: '00:00', closing: '00:00', _id: '1' },
-    { opening: '00:00', closing: '00:00', _id: '2' },
-  ],
-}));
-
 export const SettingsPage = () => {
-  const { restaurant, user } = useOutletContext<ContextType>();  // Ajout de `user` ici
-  const [darkMode, toggleDarkMode] = useDarkMode();
-  const [openingHours, setOpeningHours] = useState<OpeningHour[]>(defaultOpeningHours);
+  const { restaurant, user } = useOutletContext<ContextType>();
+  const [openingHours, setOpeningHours] = useState<OpeningHour[]>([]);
   const [isEditing, setIsEditing] = useState(false);
-  const [editedHours, setEditedHours] = useState<OpeningHour[]>(defaultOpeningHours);
+  const [editedHours, setEditedHours] = useState<OpeningHour[]>([]);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [showErrorMessage, setShowErrorMessage] = useState(false);
 
   useEffect(() => {
+    document.title = 'Oresto - Paramètres';
     const fetchOpeningHours = async () => {
       if (restaurant?._id) {
         try {
           const response = await http.get(`/opening_hours/${restaurant._id}`);
-          console.log('Restaurant id :' , restaurant);
-          const fetchedHours: OpeningHour[] = response.data;
+          const fetchedHours: OpeningHour[] = response.data.map((day: OpeningHour) => ({
+            ...day,
+            hours: day.hours.map((hour) => ({
+              ...hour,
+              status: hour.status === 'opened' || hour.status === 'closed' ? hour.status : 'opened'
+            }))
+          }));
 
-          if (fetchedHours.length === 0) {
-            setOpeningHours(defaultOpeningHours);
-            setEditedHours(defaultOpeningHours);
-          } else {
-            // Trier les horaires selon l'ordre des jours en anglais
-            const sortedOpeningHours = fetchedHours.sort(
-              (a, b) =>
-                englishDaysOrder.indexOf(a.day) - englishDaysOrder.indexOf(b.day)
-            );
+          const sortedOpeningHours = fetchedHours.sort(
+            (a, b) => englishDaysOrder.indexOf(a.day) - englishDaysOrder.indexOf(b.day)
+          );
 
-            setOpeningHours(sortedOpeningHours);
-            setEditedHours(sortedOpeningHours);
-          }
+          setOpeningHours(sortedOpeningHours);
+          setEditedHours(sortedOpeningHours);
         } catch (error: any) {
           console.error('Erreur lors de la récupération des horaires :', error);
           setErrorMessage('Erreur lors de la récupération des horaires');
@@ -128,6 +111,24 @@ export const SettingsPage = () => {
     setEditedHours(updatedHours);
   };
 
+  const handleStatusChange = (dayId: string, hourId: string) => {
+    const updatedHours = editedHours.map((day) => {
+      if (day.day === dayId) {
+        return {
+          ...day,
+          hours: day.hours.map((hour) => {
+            if (hour._id === hourId) {
+              return { ...hour, status: hour.status === 'opened' ? 'closed' : 'opened' };
+            }
+            return hour;
+          }),
+        };
+      }
+      return day;
+    });
+    setEditedHours(updatedHours);
+  };
+
   const handleEditClick = () => {
     setIsEditing(true);
     setSuccessMessage(null);
@@ -147,16 +148,16 @@ export const SettingsPage = () => {
     }
 
     try {
-      // Les jours sont déjà en anglais, nous les envoyons tels quels
       const updatedData = editedHours.map((day) => ({
-        day: day.day, // Day in English
+        day: day.day,
         hours: day.hours.map((hour) => ({
           opening: hour.opening,
           closing: hour.closing,
+          status: hour.status,
         })),
       }));
 
-      const response = await http.put(`/update_hours/${restaurant._id}`, updatedData);
+      await http.put(`/update_hours/${restaurant._id}`, updatedData);
 
       setOpeningHours(editedHours);
       setIsEditing(false);
@@ -177,15 +178,13 @@ export const SettingsPage = () => {
       <h1 className="text-xl font-bold">Paramètres</h1>
       <h2 className="text-lg mt-1 mb-8">Gérer les paramètres principaux</h2>
 
-      {/* Conteneur Flex pour les 3 colonnes */}
       <div className="flex justify-between gap-10">
-        
         {/* Première colonne : Informations du restaurant et thème */}
         <div className="w-1/3">
-          <div className='border-2 border-gray-200 p-3 ml-0'>
+          <div className='border-2 border-gray-200 dark:bg-dark-900 dark:border-0 p-3 ml-0'>
             <div className='flex items-center pb-2'>
-            <FaStore />
-            <h3 className="ml-2 text-md font-semibold">Informations du restaurant</h3>
+              <FaStore />
+              <h3 className="ml-2 text-md font-semibold">Informations du restaurant</h3>
             </div>
             {restaurant ? (
               <ul>
@@ -200,176 +199,170 @@ export const SettingsPage = () => {
             )}
           </div>
 
-          <div className='border-2 border-gray-200 p-3 mt-4 ml-0'>
-          <div className='flex items-center pb-2'>
-          <FaUser />
-          <h3 className="ml-2 text-md font-semibold">Votre compte Oresto  
-          </h3>
-          </div>
-          {user ? (
-            <ul>
-              <li className='text-sm pb-1'><strong>Nom : </strong>{user?.lastname}</li>
-              <li className='text-sm pb-1'><strong>Prénom : </strong>{user?.firstname}</li>
-              <li className='text-sm pb-1'><strong>Profil : </strong>{user?.role}</li>
-              <li className='text-sm pb-1'><strong>N° de téléphone :</strong> {user?.phone_number}</li>
-              <li className='text-sm pb-1'><strong>Adresse mail :</strong> {user?.email}</li>
-            </ul>
-          ) : (
-            <p>Chargement des informations de la compagnie...</p>
-          )}
+          <div className='border-2 border-gray-200 dark:bg-dark-900 dark:border-0 p-3 mt-4 ml-0'>
+            <div className='flex items-center pb-2'>
+              <FaUser />
+              <h3 className="ml-2 text-md font-semibold">Votre compte Oresto</h3>
+            </div>
+            {user ? (
+              <ul>
+                <li className='text-sm pb-1'><strong>Nom : </strong>{user?.lastname}</li>
+                <li className='text-sm pb-1'><strong>Prénom : </strong>{user?.firstname}</li>
+                <li className='text-sm pb-1'><strong>Profil : </strong>{user?.role}</li>
+                <li className='text-sm pb-1'><strong>N° de téléphone :</strong> {user?.phone_number}</li>
+                <li className='text-sm pb-1'><strong>Adresse mail :</strong> {user?.email}</li>
+              </ul>
+            ) : (
+              <p>Chargement des informations de la compagnie...</p>
+            )}
           </div>
         </div>
 
         {/* Deuxième colonne : Horaires du restaurant */}
         <div className="w-1/3">
-       {/* Vous pouvez ajouter des paramètres supplémentaires ici */}
-          <div className='w-96 border-2 border-gray-200 p-3'>
-          <div className='flex items-center pb-2'>
-            <FaRegClock />
-          <h3 className="text-md font-semibold ml-2">
-            Horaires d'ouverture
-            {isEditing ? (
-              <button
-                onClick={handleUpdateClick}
-                className="ml-4 bg-black text-white text-xs p-1 rounded"
-              >
-                Mettre à jour
-              </button>
-            ) : (
-              <button
-                onClick={handleEditClick}
-                className="ml-4 bg-black text-white text-xs p-1 rounded"
-              >
-                Modifier
-              </button>
+          <div className='dark:bg-dark-900 dark:border-0 p-3'>
+            <div className='w-96 flex items-center pb-2'>
+              <FaRegClock />
+              <h3 className="text-md font-semibold ml-2">
+                Horaires d'ouverture
+                {isEditing ? (
+                  <button
+                    onClick={handleUpdateClick}
+                    className="ml-4 bg-black text-white text-xs p-1 rounded"
+                  >
+                    Mettre à jour
+                  </button>
+                ) : (
+                  <button
+                    onClick={handleEditClick}
+                    className="ml-4 bg-black text-white text-xs p-1 rounded"
+                  >
+                    Modifier
+                  </button>
+                )}
+              </h3>
+            </div>
+
+            {successMessage && (
+              <div className={`success-message ${showSuccessMessage ? 'show' : ''}`}>
+                {successMessage}
+              </div>
             )}
-          </h3>
-          </div>
+            {errorMessage && (
+              <div className={`error-message ${showErrorMessage ? 'show' : ''}`}>
+                {errorMessage}
+              </div>
+            )}
 
-          {successMessage && (
-            <div className={`success-message ${showSuccessMessage ? 'show' : ''}`}>
-              {successMessage}
-            </div>
-          )}
-          {errorMessage && (
-            <div className={`error-message ${showErrorMessage ? 'show' : ''}`}>
-              {errorMessage}
-            </div>
-          )}
-
-          <table className="w-full text-sm">
-            <thead>
-              <tr>
-                <th className="text-left">Jour</th>
-                <th className="text-center">Midi</th>
-                <th className="text-center">Soir</th>
-              </tr>
-            </thead>
-            <tbody>
-              {editedHours.map((day) => (
-                <tr key={day.day} className="py-10">
-                  <td className="font-semibold text-sm m-4 pr-12">
-                    {daysOfWeek[day.day]}
-                  </td>
-                  <td className="text-center">
-                    {isEditing ? (
-                      <div className="flex space-x-2 justify-center">
-                        <input
-                          type="time"
-                          value={day.hours[0]?.opening || '00:00'}
-                          onChange={(e) =>
-                            handleInputChange(
-                              day.day,
-                              day.hours[0]._id,
-                              'opening',
-                              e.target.value
-                            )
-                          }
-                          className="border pl-2 rounded dark:bg-dark-900 dark:text-white border-dark-900 text-center"
-                        />
-                        <input
-                          type="time"
-                          value={day.hours[0]?.closing || '00:00'}
-                          onChange={(e) =>
-                            handleInputChange(
-                              day.day,
-                              day.hours[0]._id,
-                              'closing',
-                              e.target.value
-                            )
-                          }
-                          className="border pl-2 rounded dark:bg-dark-900 dark:text-white border-dark-900"
-                        />
-                      </div>
-                    ) : (
-                      `${day.hours[0]?.opening} - ${day.hours[0]?.closing}`
-                    )}
-                  </td>
-                  <td className="text-center">
-                    {isEditing ? (
-                      <div className="flex space-x-2 justify-center">
-                        <input
-                          type="time"
-                          value={day.hours[1]?.opening || '00:00'}
-                          onChange={(e) =>
-                            handleInputChange(
-                              day.day,
-                              day.hours[1]._id,
-                              'opening',
-                              e.target.value
-                            )
-                          }
-                          className="border ml-4 pl-2 rounded dark:bg-dark-900 dark:text-white border-dark-900"
-                        />
-                        <input
-                          type="time"
-                          value={day.hours[1]?.closing || '00:00'}
-                          onChange={(e) =>
-                            handleInputChange(
-                              day.day,
-                              day.hours[1]._id,
-                              'closing',
-                              e.target.value
-                            )
-                          }
-                          className="border pl-2 rounded dark:bg-dark-900 dark:text-white border-dark-900"
-                        />
-                      </div>
-                    ) : (
-                      `${day.hours[1]?.opening} - ${day.hours[1]?.closing}`
-                    )}
-                  </td>
+            <table className="w-full text-sm">
+              <thead>
+                <tr>
+                  <th className="text-left">Jour</th>
+                  <th className="text-center">Midi</th>
+                  <th className="text-center">Soir</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {editedHours.map((day) => (
+                  <tr key={day.day} className="py-10">
+                    <td className="font-semibold text-sm m-4 pr-12">
+                      {daysOfWeek[day.day]}
+                    </td>
+                    <td className="text-center">
+                      {isEditing ? (
+                        <div className="flex space-x-2 justify-center max-w-full overflow-hidden">
+                          <input
+                            type="checkbox"
+                            checked={day.hours[0].status === 'opened'}
+                            onChange={() => handleStatusChange(day.day, day.hours[0]._id)}
+                          />
+                          <input
+                            type="time"
+                            value={day.hours[0]?.opening || '00:00'}
+                            onChange={(e) =>
+                              handleInputChange(
+                                day.day,
+                                day.hours[0]._id,
+                                'opening',
+                                e.target.value
+                              )
+                            }
+                            className="border pl-2 rounded dark:bg-dark-900 dark:text-white border-dark-900 text-center w-24"
+                            disabled={day.hours[0].status === 'closed'}
+                          />
+                          <input
+                            type="time"
+                            value={day.hours[0]?.closing || '00:00'}
+                            onChange={(e) =>
+                              handleInputChange(
+                                day.day,
+                                day.hours[0]._id,
+                                'closing',
+                                e.target.value
+                              )
+                            }
+                            className="border pl-2 rounded dark:bg-dark-900 dark:text-white border-dark-900 w-24"
+                            disabled={day.hours[0].status === 'closed'}
+                          />
+                        </div>
+                      ) : (
+                        day.hours[0].status === 'closed'
+                          ? 'Fermé'
+                          : `${day.hours[0]?.opening} - ${day.hours[0]?.closing}`
+                      )}
+                    </td>
+                    <td className="text-center pl-7">
+                      {isEditing ? (
+                        <div className="flex space-x-2 justify-center max-w-full overflow-hidden">
+                          <input
+                            type="checkbox"
+                            checked={day.hours[1].status === 'opened'}
+                            onChange={() => handleStatusChange(day.day, day.hours[1]._id)}
+                          />
+                          <input
+                            type="time"
+                            value={day.hours[1]?.opening || '00:00'}
+                            onChange={(e) =>
+                              handleInputChange(
+                                day.day,
+                                day.hours[1]._id,
+                                'opening',
+                                e.target.value
+                              )
+                            }
+                            className="border ml-4 pl-2 rounded dark:bg-dark-900 dark:text-white border-dark-900 w-24"
+                            disabled={day.hours[1].status === 'closed'}
+                          />
+                          <input
+                            type="time"
+                            value={day.hours[1]?.closing || '00:00'}
+                            onChange={(e) =>
+                              handleInputChange(
+                                day.day,
+                                day.hours[1]._id,
+                                'closing',
+                                e.target.value
+                              )
+                            }
+                            className="border pl-2 rounded dark:bg-dark-900 dark:text-white border-dark-900 w-24"
+                            disabled={day.hours[1].status === 'closed'}
+                          />
+                        </div>
+                      ) : (
+                        day.hours[1].status === 'closed'
+                          ? 'Fermé'
+                          : `${day.hours[1]?.opening} - ${day.hours[1]?.closing}`
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>  
-
-          <div className='w-64 border-2 border-gray-200 p-3 mt-4'>
-
-                     {/* Section pour le thème */}
-                     <div className='flex items-center pb-2'>
-          <FaUser />
-          <h3 className="ml-2 text-md font-semibold">Accessibilité / Affichage  
-          </h3>
-          </div>
-          <ul className='space-y-2'>
-            <li>
-            <a onClick={toggleDarkMode} className="text-black dark:text-white text-sm rounded cursor-pointer">
-              Activer le mode {darkMode ? 'clair' : 'sombre'}
-            </a>
-            </li>
-            <li className="text-black dark:text-white text-sm rounded cursor-pointer">Augmenter la taille du texte</li>
-            <li className="text-black dark:text-white text-sm rounded cursor-pointer">Modifier la couleur du widget</li>
-          </ul>
-</div>
-
         </div>
 
-        {/* Troisième colonne : à personnaliser (exemple laissé vide pour l'instant) */}
-        <div className="w-1/3">
-        
-        </div>
+        {/* Troisième colonne : à personnaliser */}
+        <div className="w-1/3"></div>
       </div>
     </div>
   );

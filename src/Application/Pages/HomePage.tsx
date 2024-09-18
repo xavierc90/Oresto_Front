@@ -15,6 +15,7 @@ export const HomePage = () => {
 
   // Ajoute ou enlève la classe 'overflow-hidden' au body pour désactiver le défilement
   useEffect(() => {
+    document.title = 'La belle assiette - Restaurant traditionnel';
     if (isMenuVisible) {
       document.body.classList.add('overflow-hidden');
     } else {

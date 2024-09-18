@@ -18,7 +18,7 @@ export const RegisterPage = () => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   useEffect(() => {
-    document.title = 'Oresto - Inscription';
+    document.title = 'Oresto - Inscription restaurateur';
   }, []);
 
   const handleCheckboxChange = (event: ChangeEvent<HTMLInputElement>) => {
