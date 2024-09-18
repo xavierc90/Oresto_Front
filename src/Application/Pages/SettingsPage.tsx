@@ -11,6 +11,7 @@ interface ContextType {
 }
 
 interface Hour {
+  period: 'afternoon' | 'evening'; // Période ajoutée
   opening: string;
   closing: string;
   _id: string;
@@ -127,7 +128,7 @@ export const SettingsPage = () => {
       return day;
     });
     setEditedHours(updatedHours);
-  };
+};
 
   const handleEditClick = () => {
     setIsEditing(true);
@@ -151,6 +152,7 @@ export const SettingsPage = () => {
       const updatedData = editedHours.map((day) => ({
         day: day.day,
         hours: day.hours.map((hour) => ({
+          period: hour.period, // On ajoute la période ici
           opening: hour.opening,
           closing: hour.closing,
           status: hour.status,
@@ -179,7 +181,6 @@ export const SettingsPage = () => {
       <h2 className="text-lg mt-1 mb-8">Gérer les paramètres principaux</h2>
 
       <div className="flex justify-between gap-10">
-        {/* Première colonne : Informations du restaurant et thème */}
         <div className="w-1/3">
           <div className='border-2 border-gray-200 dark:bg-dark-900 dark:border-0 p-3 ml-0'>
             <div className='flex items-center pb-2'>
@@ -361,7 +362,6 @@ export const SettingsPage = () => {
           </div>  
         </div>
 
-        {/* Troisième colonne : à personnaliser */}
         <div className="w-1/3"></div>
       </div>
     </div>

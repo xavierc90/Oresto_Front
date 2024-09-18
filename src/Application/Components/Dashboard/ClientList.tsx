@@ -49,7 +49,7 @@ export const ClientList = ({ users }: ClientListProps) => {
   return (
     <div className="scrollable-list">
       {sortedUsers.length === 0 ? (
-        <div className="ml-12 mt-8 text-lg">Aucun client trouvé</div>
+        <div className="ml-12 mt-8 text-sm">Aucun client trouvé</div>
       ) : (
         <table className="ml-12 w-full">
           <thead>
@@ -106,7 +106,7 @@ export const ClientList = ({ users }: ClientListProps) => {
                     <li className='font-semibold flex gap-2'>{moment(reservation.date_selected).format('DD/MM/YYYY')} à {reservation.time_selected}
                       <StatusLabel status={reservation.status || 'waiting'} />
                     </li>
-                    <li>Table {reservation.table[0]?.table_number} pour {reservation.nbr_persons || '0'} personnes</li>
+                    <li>Table {reservation.table[0]?.number} pour {reservation.nbr_persons || '0'} personnes</li>
                     <li className='flex items-center'>
                       {reservation.details && <FaInfoCircle className="mr-2" />}
                       {reservation.details ? reservation.details : ''}
