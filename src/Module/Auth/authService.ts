@@ -78,6 +78,16 @@ class AuthService {
       console.error('Erreur lors de la suppression des données du localStorage :', error);
     }
   }
+
+  // Méthode pour mettre à jour l'utilisateur
+  updateUser(updatedUser: User) {
+    this.userSubject.next(updatedUser); // Mise à jour du BehaviorSubject
+    try {
+      localStorage.setItem('user', JSON.stringify(updatedUser)); // Mise à jour dans le localStorage
+    } catch (error) {
+      console.error('Erreur lors de la mise à jour des données utilisateur dans le localStorage :', error);
+    }
+  }
 }
 
 export const authService = new AuthService();

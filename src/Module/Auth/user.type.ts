@@ -6,7 +6,7 @@ export type User = {
     email: string;
     role: string;
     phone_number: string;
-    allergens: string;
+    allergens: string[];
     created_at: string;
     restaurant_id: string;
     token?: string;

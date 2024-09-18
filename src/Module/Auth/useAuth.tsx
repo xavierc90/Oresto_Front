@@ -55,6 +55,13 @@ export const useAuth = () => {
     setToken(null);
   };
 
+  // Ajout de la fonction updateUser
+  const updateUser = (updatedUser: User) => {
+    setUser(updatedUser);
+    localStorage.setItem('user', JSON.stringify(updatedUser)); // Mettre à jour les données dans le localStorage
+    authService.updateUser(updatedUser); // Si authService a une méthode pour mettre à jour l'utilisateur
+  };
+
   const isAuthenticated = Boolean(user && token);
   const userId = user ? user._id : null;
 
@@ -65,6 +72,7 @@ export const useAuth = () => {
     login, 
     logout, 
     isAuthenticated, 
-    userId 
+    userId, 
+    updateUser // Retourne la méthode updateUser
   };
 };

@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { http } from '../../../../Infrastructure/Http/axios.instance';
+import { useAuth } from '../../../../Module/Auth/useAuth';
 
 type AllergensProps = {
   onReturnToAccount: () => void;
@@ -19,8 +20,15 @@ export const Allergens: React.FC<AllergensProps> = ({ onReturnToAccount }) => {
   const [selectedAllergens, setSelectedAllergens] = useState<string[]>([]);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
-  const userId = "66d6c8ed1762cac42c20d8de"; // Remplacez par l'ID de l'utilisateur connecté
-  const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NmQ2YzhlZDE3NjJjYWM0MmMyMGQ4ZGUiLCJpYXQiOjE3MjUzNTYyMzgsImV4cCI6MTcyNTM2MzQzOH0.ojPDS3x9bSwiLFPiZCnAbXjCKVgW2pGtCCHUwb1jBPM"; // Remplacez par le token de l'utilisateur
+  // Utiliser useAuth pour récupérer les informations de l'utilisateur connecté
+  const { user, token, updateUser } = useAuth();  // updateUser sera utilisé pour mettre à jour les informations de l'utilisateur
+
+  // Initialiser les allergènes sélectionnés avec ceux du user connecté
+  useEffect(() => {
+    if (user?.allergens) {
+      setSelectedAllergens(user.allergens);  // Si les allergènes existent, on les initialise
+    }
+  }, [user]);
 
   const handleAllergenChange = (id: string) => {
     setSelectedAllergens(prevState =>
@@ -33,17 +41,26 @@ export const Allergens: React.FC<AllergensProps> = ({ onReturnToAccount }) => {
   const handleSaveChanges = async () => {
     console.log("Selected allergens:", selectedAllergens);
 
+    if (!user || !token) {
+      console.error("User or token not available");
+      return;
+    }
+
     try {
       const response = await http.put(
-        `/update_user/${userId}`,
+        `/update_user/${user._id}`,  // Utilisation dynamique de l'ID de l'utilisateur
         { allergens: selectedAllergens },
         {
           headers: {
-            Authorization: `Bearer ${token}`
+            Authorization: `Bearer ${token}`  // Utilisation dynamique du token
           }
         }
       );
       console.log("Update response:", response.data);
+      
+      // Mise à jour des allergènes dans le contexte utilisateur
+      updateUser({ ...user, allergens: selectedAllergens });
+
       setSuccessMessage("Vos préférences ont été mises à jour");
     } catch (error) {
       console.error("Error updating allergens:", error);
@@ -53,6 +70,7 @@ export const Allergens: React.FC<AllergensProps> = ({ onReturnToAccount }) => {
   return (
     <div className="flex flex-col items-center justify-center h-full bg-white">
       <h2 className="text-xl font-bold mb-4">Mes préférences</h2>
+
       <p className="text-gray-600 text-center mb-4">
         Mentionner vos allergies permet une meilleure prise en charge de vos réservations
       </p>
@@ -78,10 +96,11 @@ export const Allergens: React.FC<AllergensProps> = ({ onReturnToAccount }) => {
         </ul>
       </div>
 
-      {successMessage && (
-        <p className="mt-4 lg:mt-0 text-green-800 lg:w-[200px] mb-4 lg:mb-0 text-center">{successMessage}</p>
-      )}
 
+      {successMessage && (
+        <p className="mt-4 lg:mt-0 text-sm font-bold text-green-800 lg:w-[300px] mb-4 lg:mb-0 text-center">{successMessage}</p>
+      )}
+      
       <button 
         className="bg-green-800 text-white py-2 px-4 rounded-lg text-sm font-semibold lg:mt-4"
         onClick={handleSaveChanges}

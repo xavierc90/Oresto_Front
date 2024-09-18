@@ -21,9 +21,9 @@ export const LoginPage = () => {
       const response = await http.post('/login_manager', { email, password });
 
       if (response.data.token) {
-        const user = response.data; // Contient toutes les informations utilisateur, y compris `restaurant`
-        const restaurantArray = response.data.restaurant; // Contient les informations de la société (tableau)
-        const token = response.data.token; // Contient le token
+        const user = response.data; 
+        const restaurantArray = response.data.restaurant; 
+        const token = response.data.token;
 
         // Vérifier si le tableau restaurant contient au moins un objet avec un `_id`
         const hasValidRestaurant = Array.isArray(restaurantArray) && restaurantArray.some((restaurant: any) => restaurant._id);
@@ -41,7 +41,7 @@ export const LoginPage = () => {
         setError('Erreur lors de la connexion. Veuillez réessayer.');
       }
     } catch (error: unknown) {
-      setError('Identifiant ou mot de passe incorrect. Veuillez réessayer.');
+      setError('Identifiant ou mot de passe incorrect');
     }
   };
 

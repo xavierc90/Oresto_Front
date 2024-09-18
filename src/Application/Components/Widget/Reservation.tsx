@@ -22,6 +22,7 @@ export const Reservation: React.FC<ReservationProps> = ({ selectedDate, onReturn
   const [reservationDetails, setReservationDetails] = useState<any>(null);
 
   useEffect(() => {
+    document.title = 'Oresto - Réservation';
     if (!selectedDate) {
       setLocalDate(new Date());
     }
