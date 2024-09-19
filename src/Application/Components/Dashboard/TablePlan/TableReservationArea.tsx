@@ -95,7 +95,7 @@ export const TableReservationArea: React.FC<TableReservationAreaProps> = ({ sele
       case 'unavailable':
         return { tableColor: '#D3D3D3', tableSizeColor: '#A9A9A9' }; // Gris pour unavailable
       default:
-        return { tableColor: '#FFFFFF', tableSizeColor: '#000000' }; // Default (blanc et noir)
+        return { tableColor: '#DFF3CA', tableSizeColor: '#73A741' }; // Default (blanc et noir)
     }
   };
 

@@ -9,7 +9,7 @@ export const RegisterRestaurant = () => {
     document.title = 'Oresto - Créer une entreprise';
   }, []);
 
-  const { user, token, login } = useAuth();  // Récupérer l'utilisateur actuel et le token
+  const { user, token, login } = useAuth();
   const [formData, setFormData] = useState({
     restaurantName: '',
     restaurantAddress: '',
