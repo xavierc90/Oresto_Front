@@ -1,67 +1,39 @@
-import { useEffect, useState } from 'react';
-import Draggable from 'react-draggable'; // Importation correcte de Draggable
+import React from 'react';
+import Draggable from 'react-draggable';
 import { http } from '../../../../Infrastructure/Http/axios.instance';
 import { Table } from '../../../../Module/Types/table.type';
 
 interface TableAreaProps {
   restaurant: { _id: string };
   token: string | null;
+  tables: Table[]; // Accepter les tables en tant que prop
+  onTablesUpdate: () => void; // Fonction de rappel pour notifier le parent des mises à jour
 }
 
-export const TablePlanArea: React.FC<TableAreaProps> = ({ restaurant, token }) => {
-  const [tables, setTables] = useState<Table[]>([]);
-  const [draggingTableId, setDraggingTableId] = useState<string | null>(null);
-  const [isDragging, setIsDragging] = useState(false);
-  const [clickStartedPosition, setClickStartedPosition] = useState<{ x: number; y: number } | null>(null);
-
-  useEffect(() => {
-    const fetchTables = async () => {
-      if (!restaurant || !restaurant._id || !token) {
-        console.error('Restaurant ID ou token non trouvés');
-        return;
-      }
-
-      try {
-        const response = await http.get(`/tables_by_filters`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Cache-Control': 'no-cache',
-          },
-        });
-
-        if (response.data && Array.isArray(response.data.results)) {
-          setTables(response.data.results);
-        } else {
-          console.error('Données de réponse inattendues:', response.data);
-          setTables([]);
-        }
-      } catch (error: any) {
-        console.error(
-          'Erreur lors de la récupération des tables:',
-          error.response ? error.response.data : error.message
-        );
-        setTables([]);
-      }
-    };
-
-    if (restaurant && restaurant._id && token) {
-      fetchTables();
-    }
-  }, [restaurant, token]);
+export const TablePlanArea: React.FC<TableAreaProps> = ({ restaurant, token, tables, onTablesUpdate }) => {
+  const [draggingTableId, setDraggingTableId] = React.useState<string | null>(null);
+  const [isDragging, setIsDragging] = React.useState(false);
+  const [clickStartedPosition, setClickStartedPosition] = React.useState<{ x: number; y: number } | null>(null);
 
   // Fonction pour gérer le déplacement de la table et envoyer les coordonnées au backend
-  const handleDragStop = async (e: any, data: any, tableId: string): Promise<void> => {
+  const handleDragStop = async (e: any, data: any, table: Table): Promise<void> => {
     const position_x = data.x;
     const position_y = data.y;
-    setDraggingTableId(null); // Réinitialise l'ID de la table après avoir arrêté le drag
-    setIsDragging(false); // Fin du drag
+    setDraggingTableId(null);
+    setIsDragging(false);
 
     try {
-      await http.put(`/update_table/${tableId}`, { position_x, position_y }, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      await http.put(
+        `/update_table/${table._id}`,
+        { position_x, position_y },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      // Notifier le parent pour rafraîchir les tables
+      onTablesUpdate();
     } catch (error) {
       console.error('Erreur lors de la mise à jour de la table:', error);
     }
@@ -69,20 +41,22 @@ export const TablePlanArea: React.FC<TableAreaProps> = ({ restaurant, token }) =
 
   // Fonction pour gérer le clic simple pour la rotation
   const handleTableClick = async (table: Table) => {
-    if (isDragging) return; // Ne pas appliquer la rotation si un drag a eu lieu
+    if (isDragging) return;
 
     const newRotation = (table.rotate || 0) + 30;
-    const updatedTables = tables.map(t =>
-      t._id === table._id ? { ...t, rotate: newRotation % 360 } : t
-    );
-    setTables(updatedTables);
 
     try {
-      await http.put(`/update_table/${table._id}`, { rotate: newRotation % 360 }, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      await http.put(
+        `/update_table/${table._id}`,
+        { rotate: newRotation % 360 },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      // Notifier le parent pour rafraîchir les tables
+      onTablesUpdate();
     } catch (error) {
       console.error('Erreur lors de la mise à jour de la rotation de la table:', error);
     }
@@ -90,31 +64,30 @@ export const TablePlanArea: React.FC<TableAreaProps> = ({ restaurant, token }) =
 
   const handleStart = (e: any, data: any) => {
     setIsDragging(false);
-    setClickStartedPosition({ x: data.x, y: data.y }); // Enregistre la position de départ du drag
+    setClickStartedPosition({ x: data.x, y: data.y });
   };
 
   const handleStop = (e: any, data: any, table: Table) => {
-    const distanceMoved = Math.abs(data.x - clickStartedPosition!.x) + Math.abs(data.y - clickStartedPosition!.y);
+    const distanceMoved =
+      Math.abs(data.x - clickStartedPosition!.x) + Math.abs(data.y - clickStartedPosition!.y);
     setDraggingTableId(null);
 
     if (distanceMoved < 5) {
-      // Si la distance du drag est minime, on considère cela comme un simple clic
       handleTableClick(table);
     } else {
-      // Si la distance est plus importante, on considère cela comme un drag
       setIsDragging(true);
-      handleDragStop(e, data, table._id); // Mise à jour de la position
+      handleDragStop(e, data, table);
     }
   };
 
   // Fonction pour changer la couleur de la table si elle est sélectionnée
   const getTableColor = (tableId: string): string => {
-    return draggingTableId === tableId ? '#848485' : '#EAE5E5'; // Jaune si la table est sélectionnée
+    return draggingTableId === tableId ? '#848485' : '#EAE5E5';
   };
 
   const renderTableSVG = (table: Table) => {
-    const tableColor = getTableColor(table._id); // Utilise la fonction pour obtenir la couleur
-    const rotation = table.rotate || 0; // Par défaut, aucune rotation si le champ rotate est vide
+    const tableColor = getTableColor(table._id);
+    const rotation = table.rotate || 0;
 
     if (table.shape === 'rectangle') {
       if (table.capacity === 4) {
@@ -131,7 +104,7 @@ export const TablePlanArea: React.FC<TableAreaProps> = ({ restaurant, token }) =
             <ellipse cx="32.3326" cy="66.2533" rx="7.5806" ry="7.37634" fill="#7F7F7F" />
             <ellipse cx="90.4502" cy="8.25806" rx="7.58057" ry="7.37635" fill="#7F7F7F" />
             <ellipse cx="90.4502" cy="66.2533" rx="7.58057" ry="7.37634" fill="#7F7F7F" />
-            <rect y="8" width="143" height="57" fill={tableColor} />
+            <rect y="8" width="123" height="57" fill={tableColor} />
           </svg>
         );
       }
@@ -147,10 +120,10 @@ export const TablePlanArea: React.FC<TableAreaProps> = ({ restaurant, token }) =
           >
             <ellipse cx="22.3326" cy="8.25806" rx="7.5806" ry="7.37635" fill="#7F7F7F" />
             <ellipse cx="22.3326" cy="66.2533" rx="7.5806" ry="7.37634" fill="#7F7F7F" />
-            <ellipse cx="101.45" cy="8.25806" rx="7.58057" ry="7.37635" fill="#7F7F7F" />
-            <ellipse cx="101.45" cy="66.2533" rx="7.58057" ry="7.37634" fill="#7F7F7F" />
             <ellipse cx="63.4502" cy="8.25806" rx="7.58057" ry="7.37635" fill="#7F7F7F" />
             <ellipse cx="63.4502" cy="66.2533" rx="7.58057" ry="7.37634" fill="#7F7F7F" />
+            <ellipse cx="101.45" cy="8.25806" rx="7.58057" ry="7.37635" fill="#7F7F7F" />
+            <ellipse cx="101.45" cy="66.2533" rx="7.58057" ry="7.37634" fill="#7F7F7F" />
             <rect y="8" width="123" height="57" fill={tableColor} />
           </svg>
         );
@@ -167,12 +140,12 @@ export const TablePlanArea: React.FC<TableAreaProps> = ({ restaurant, token }) =
           >
             <ellipse cx="37.3326" cy="8.25806" rx="7.5806" ry="7.37635" fill="#7F7F7F" />
             <ellipse cx="37.3326" cy="66.2533" rx="7.5806" ry="7.37634" fill="#7F7F7F" />
-            <ellipse cx="8.33255" cy="36.2533" rx="7.5806" ry="7.37634" fill="#7F7F7F" />
-            <ellipse cx="145.333" cy="36.2533" rx="7.5806" ry="7.37634" fill="#7F7F7F" />
-            <ellipse cx="116.45" cy="8.25806" rx="7.58057" ry="7.37635" fill="#7F7F7F" />
-            <ellipse cx="116.45" cy="66.2533" rx="7.58057" ry="7.37634" fill="#7F7F7F" />
             <ellipse cx="78.4502" cy="8.25806" rx="7.58057" ry="7.37635" fill="#7F7F7F" />
             <ellipse cx="78.4502" cy="66.2533" rx="7.58057" ry="7.37634" fill="#7F7F7F" />
+            <ellipse cx="116.45" cy="8.25806" rx="7.58057" ry="7.37635" fill="#7F7F7F" />
+            <ellipse cx="116.45" cy="66.2533" rx="7.58057" ry="7.37634" fill="#7F7F7F" />
+            <ellipse cx="8.33255" cy="36.2533" rx="7.5806" ry="7.37634" fill="#7F7F7F" />
+            <ellipse cx="145.333" cy="36.2533" rx="7.5806" ry="7.37634" fill="#7F7F7F" />
             <rect x="10" y="8" width="134" height="57" fill={tableColor} />
           </svg>
         );
@@ -240,10 +213,10 @@ export const TablePlanArea: React.FC<TableAreaProps> = ({ restaurant, token }) =
             style={{ transform: `rotate(${rotation}deg)` }}
           >
             <ellipse cx="43.5806" cy="7.37634" rx="7.5806" ry="7.37634" fill="#7F7F7F" />
+            <ellipse cx="43.5806" cy="78.3763" rx="7.5806" ry="7.37634" fill="#7F7F7F" />
             <ellipse cx="7.5806" cy="44.3763" rx="7.5806" ry="7.37634" fill="#7F7F7F" />
             <ellipse cx="78.5811" cy="44.3763" rx="7.5806" ry="7.37634" fill="#7F7F7F" />
-            <ellipse cx="43.5806" cy="78.3763" rx="7.5806" ry="7.37634" fill="#7F7F7F" />
-            <path d="M8 8L78 8L78 78L8 78L8 8Z" fill={tableColor} />
+            <rect x="8" y="8" width="70" height="70" fill={tableColor} />
           </svg>
         );
       }
@@ -257,21 +230,19 @@ export const TablePlanArea: React.FC<TableAreaProps> = ({ restaurant, token }) =
       style={{
         position: 'relative',
         overflow: 'hidden',
-        background: 'repeating-linear-gradient(0deg, transparent, transparent 19px, rgba(0,0,0,0.1) 20px), repeating-linear-gradient(-90deg, transparent, transparent 19px, rgba(0,0,0,0.1) 20px)',
-      }} // Ajout d'une grille en fond
+        background:
+          'repeating-linear-gradient(0deg, transparent, transparent 19px, rgba(0,0,0,0.1) 20px), repeating-linear-gradient(-90deg, transparent, transparent 19px, rgba(0,0,0,0.1) 20px)',
+      }}
     >
       {tables.map((table) => (
         <Draggable
           key={table._id}
-          bounds="parent" // Limite le drag à la zone du parent
-          defaultPosition={{ x: table.position_x, y: table.position_y }} // Position initiale
+          bounds="parent"
+          defaultPosition={{ x: table.position_x, y: table.position_y }}
           onStart={(e, data) => handleStart(e, data)}
           onStop={(e, data) => handleStop(e, data, table)}
         >
-          <div
-            className="table-container"
-            style={{ position: 'absolute', cursor: 'pointer' }}
-          >
+          <div className="table-container" style={{ position: 'absolute', cursor: 'pointer' }}>
             {renderTableSVG(table)}
             <div className="number-circle">
               <span>{table.number}</span>

@@ -7,12 +7,17 @@ import rectangleSvg from '../../../../../public/svg/rectangle.svg';
 import rectangle6Svg from '../../../../../public/svg/rectangle6.svg';
 import rectangle8Svg from '../../../../../public/svg/rectangle8.svg';
 import { http } from '../../../../Infrastructure/Http/axios.instance';
-import { useAuth } from '../../../../Module/Auth/useAuth'
+import { useAuth } from '../../../../Module/Auth/useAuth';
 
 interface TableData {
   number: string;
-  capacity: number;  // Changez de 'string' à 'number'
+  capacity: number;
   shape: string;
+}
+
+// Ajout de l'interface pour les props du composant
+interface TableFormProps {
+  onTableCreated?: () => void; // Fonction de rappel optionnelle
 }
 
 const tableShapes = [
@@ -53,7 +58,7 @@ const tableShapes = [
   }
 ];
 
-export const TableForm: React.FC = () => {
+export const TableForm: React.FC<TableFormProps> = ({ onTableCreated }) => {
   const { token, restaurant } = useAuth();
   const [tableData, setTableData] = useState<TableData>({ number: '', capacity: 0, shape: '' });
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
@@ -101,6 +106,11 @@ export const TableForm: React.FC = () => {
       setTimeout(() => setShowSuccessMessage(true), 0);
       setTimeout(() => setShowSuccessMessage(false), 5000);
       setTableData({ number: '', capacity: 0, shape: '' });
+
+      // Appeler la fonction de rappel si elle est fournie
+      if (onTableCreated) {
+        onTableCreated();
+      }
     } catch (error: any) {
       setErrorMessage('Erreur lors de l’ajout de la table');
       console.error('Erreur lors de l’ajout de la table:', error.response ? error.response.data : error.message);

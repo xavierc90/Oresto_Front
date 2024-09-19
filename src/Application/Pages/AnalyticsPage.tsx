@@ -72,35 +72,49 @@ export const AnalyticsPage = () => {
     maintainAspectRatio: false // Assure que le graphique utilise la taille du conteneur
   };
 
+  // Vérifier s'il y a des données disponibles
+  const isDataAvailable = totalReservations > 0;
+
   return (
-    <div className="bg-light w-full">
+    <div className="bg-light w-full h-screen">
+      {/* Titre des statistiques toujours visible */}
       <h1 className="text-xl font-bold pt-12 pl-12">Statistiques</h1>
-      <h2 className="text-lg pl-12 mt-1">
-        <span className="font-bold text-red-500 dark:text-white">{totalReservations}</span> réservation{totalReservations > 1 ? 's' : ''} au total
-      </h2>
-      <ul className="pl-12 pt-12">
-        <li className="text-lg font-bold">Réservations</li>
-        <li className="text-sm italic mb-8">Les statistiques correspondent à l'année en cours</li>
-      </ul>
-      <div className="flex items-center pl-12 gap-6">
-        <div className="chart-container" style={{ position: 'relative', height: '200px', width: '200px' }}>
-          <Doughnut data={data} options={options} />
+      <span className="dark:text-white pl-12">Retrouvez les statistiques de votre restaurant</span>
+
+      {isDataAvailable ? (
+        <div>
+          <h2 className="text-lg pl-12 mt-1">
+            <span className="font-bold text-red-500 dark:text-white">{totalReservations}</span> réservation{totalReservations > 1 ? 's' : ''} au total
+          </h2>
+          <ul className="pl-12 pt-12">
+            <li className="text-lg font-bold">Réservations</li>
+            <li className="text-sm italic mb-8">Les statistiques correspondent à l'année en cours</li>
+          </ul>
+          <div className="flex items-center pl-12 gap-6">
+            <div className="chart-container" style={{ position: 'relative', height: '200px', width: '200px' }}>
+              <Doughnut data={data} options={options} />
+            </div>
+            <ul className="flex flex-col gap-4 pr-8">
+              <li className="flex items-center">
+                <span className="w-[20px] h-[20px] bg-[#4CAF50] rounded-full inline-block mr-2"></span>
+                <span className="font-semibold text-sm">Confirmées : {totalConfirmedReservations}</span>
+              </li>
+              <li className="flex items-center">
+                <span className="w-[20px] h-[20px] bg-[#FFC107] rounded-full inline-block mr-2"></span>
+                <span className="font-semibold text-sm">En attente : {totalWaitingReservations}</span>
+              </li>
+              <li className="flex items-center">
+                <span className="w-[20px] h-[20px] bg-[#F44336] rounded-full inline-block mr-2"></span>
+                <span className="font-semibold text-sm">Annulées : {totalCanceledReservations}</span>
+              </li>
+            </ul>
+          </div>
         </div>
-        <ul className="flex flex-col gap-4 pr-8">
-          <li className="flex items-center">
-            <span className="w-[20px] h-[20px] bg-[#4CAF50] rounded-full inline-block mr-2"></span>
-            <span className="font-semibold text-sm">Confirmées : {totalConfirmedReservations}</span>
-          </li>
-          <li className="flex items-center">
-            <span className="w-[20px] h-[20px] bg-[#FFC107] rounded-full inline-block mr-2"></span>
-            <span className="font-semibold text-sm">En attente : {totalWaitingReservations}</span>
-          </li>
-          <li className="flex items-center">
-            <span className="w-[20px] h-[20px] bg-[#F44336] rounded-full inline-block mr-2"></span>
-            <span className="font-semibold text-sm">Annulées : {totalCanceledReservations}</span>
-          </li>
-        </ul>
-      </div>
+      ) : (
+        <div className="flex items-center justify-center h-full">
+          <p className="text-center text-xl font-bold text-gray-500">Aucune donnée disponible pour le moment</p>
+        </div>
+      )}
     </div>
   );
 };
