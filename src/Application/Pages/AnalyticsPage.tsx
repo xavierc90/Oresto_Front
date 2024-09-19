@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { http } from "../../Infrastructure/Http/axios.instance";
-import { Doughnut } from 'react-chartjs-2'; // Remplacez Pie par Doughnut
+import { Doughnut } from 'react-chartjs-2';
 import { Chart as ChartJS, Tooltip, Legend, ArcElement, Title } from 'chart.js';
+import { BiErrorCircle } from "react-icons/bi";
 
-// Enregistrer les composants nécessaires
 ChartJS.register(ArcElement, Tooltip, Legend, Title);
 
 export const AnalyticsPage = () => {
@@ -29,7 +29,6 @@ export const AnalyticsPage = () => {
     fetchTotalReservations();
   }, []);
 
-  // Données du graphique
   const data = {
     labels: ['Confirmées', 'Annulées', 'En attente'],
     datasets: [
@@ -42,17 +41,16 @@ export const AnalyticsPage = () => {
     ]
   };
 
-  // Options du graphique
   const options = {
     responsive: true,
     plugins: {
       legend: {
         display: false,
-        position: 'top' as const, // Position de la légende
+        position: 'top' as const,
       },
       title: {
         display: false,
-        text: 'Statistiques des Réservations', // Titre du graphique
+        text: 'Statistiques des Réservations',
         font: {
           size: 20
         },
@@ -63,23 +61,24 @@ export const AnalyticsPage = () => {
             const dataset = tooltipItem.dataset.data;
             const total = dataset.reduce((acc: number, value: number) => acc + value, 0);
             const currentValue = dataset[tooltipItem.dataIndex];
-            const percentage = ((currentValue / total) * 100).toFixed(2); // Calcul du pourcentage
-            return `${tooltipItem.label}: ${currentValue} (${percentage}%)`; // Affiche le label, la valeur et le pourcentage
+            const percentage = ((currentValue / total) * 100).toFixed(2);
+            return `${tooltipItem.label}: ${currentValue} (${percentage}%)`;
           }
         }
       }
     },
-    maintainAspectRatio: false // Assure que le graphique utilise la taille du conteneur
+    maintainAspectRatio: false
   };
 
-  // Vérifier s'il y a des données disponibles
   const isDataAvailable = totalReservations > 0;
 
   return (
-    <div className="bg-light w-full h-screen">
-      {/* Titre des statistiques toujours visible */}
-      <h1 className="text-xl font-bold pt-12 pl-12">Statistiques</h1>
-      <span className="dark:text-white pl-12">Retrouvez les statistiques de votre restaurant</span>
+    <div className="bg-light w-full min-h-screen flex flex-col">
+      {/* En-tête des statistiques */}
+      <div className="pt-12 pl-12">
+        <h1 className="text-xl font-bold">Statistiques</h1>
+        <span className="dark:text-white">Retrouvez les statistiques de votre restaurant</span>
+      </div>
 
       {isDataAvailable ? (
         <div>
@@ -111,8 +110,12 @@ export const AnalyticsPage = () => {
           </div>
         </div>
       ) : (
-        <div className="flex items-center justify-center h-full">
-          <p className="text-center text-xl font-bold text-gray-500">Aucune donnée disponible pour le moment</p>
+        <div className="flex-grow flex flex-col items-center justify-center">
+          <p className="flex flex-col justify-center items-center text-lg font-bold text-gray-500 gap-2">
+            <BiErrorCircle size={80} color="#d8d8d8" />
+            Aucune donnée disponible pour le moment</p>
+          <article className="text-sm pt-1">Les données seront consultables dés qu'une réservation sera faite sur votre restaurant</article>
+
         </div>
       )}
     </div>

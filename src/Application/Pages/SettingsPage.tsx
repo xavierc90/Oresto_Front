@@ -265,7 +265,7 @@ export const SettingsPage = () => {
               </thead>
               <tbody>
   {editedHours.map((day, index) => (
-    <tr key={day.day} className={`py-10 ${index % 2 === 0 ? 'bg-gray-200' : ''}`}>
+    <tr key={day.day} className={`py-10 ${index % 2 === 0 ? 'bg-gray-100' : ''}`}>
       <td className="font-semibold text-sm m-4 pr-12">
         {daysOfWeek[day.day]}
       </td>
