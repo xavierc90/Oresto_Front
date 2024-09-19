@@ -77,7 +77,11 @@ export const AnalyticsPage = () => {
       {/* En-tête des statistiques */}
       <div className="pt-12 pl-12">
         <h1 className="text-xl font-bold">Statistiques</h1>
-        <span className="dark:text-white">Retrouvez les statistiques de votre restaurant</span>
+        <span className="dark:text-white">
+          {isDataAvailable
+            ? ``
+            : "Retrouvez les statistiques de votre restaurant"}
+        </span>
       </div>
 
       {isDataAvailable ? (
@@ -113,9 +117,9 @@ export const AnalyticsPage = () => {
         <div className="flex-grow flex flex-col items-center justify-center">
           <p className="flex flex-col justify-center items-center text-lg font-bold text-gray-500 gap-2">
             <BiErrorCircle size={80} color="#d8d8d8" />
-            Aucune donnée disponible pour le moment</p>
-          <article className="text-sm pt-1">Les données seront consultables dés qu'une réservation sera faite sur votre restaurant</article>
-
+            Aucune donnée disponible pour le moment
+          </p>
+          <article className="text-sm pt-1">Les données seront consultables dès qu'une réservation sera faite sur votre restaurant</article>
         </div>
       )}
     </div>
