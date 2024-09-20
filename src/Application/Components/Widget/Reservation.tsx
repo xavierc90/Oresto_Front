@@ -64,7 +64,7 @@ export const Reservation: React.FC<ReservationProps> = ({ selectedDate, onReturn
 
   const handleFinalConfirmation = async () => {
     try {
-      // Convertissez la date locale en date UTC pour l'envoyer au serveur
+      // Convertir la date locale en format UTC pour l'envoyer au serveur
       const formattedDate = moment(localDate).format('YYYY-MM-DD');
       const reservationData = {
         date_selected: formattedDate,
@@ -74,15 +74,17 @@ export const Reservation: React.FC<ReservationProps> = ({ selectedDate, onReturn
         details: additionalInfo,
       };
       console.log("Données envoyées :", reservationData);
-
+  
       const response = await http.post('/add_reservation', reservationData, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-
+  
+      console.log("Réponse du backend :", response.data);  // Ajoutez ceci pour afficher la réponse du backend
+  
       if (response.status === 201) {
-        setReservationDetails(response.data);
+        setReservationDetails(response.data);  // Enregistrer les détails de la réservation, y compris le table_number
         setStep('success');
       } else {
         console.log("Erreur lors de la réservation :", response.data);
@@ -266,9 +268,6 @@ export const Reservation: React.FC<ReservationProps> = ({ selectedDate, onReturn
         </li>
         <li className="font-semibold mb-2">Nombre de personnes :
           <span className='font-normal'> {nbrPersons}</span>
-        </li>
-        <li className="font-semibold mb-2">N° de table : 
-          <span className='font-normal'> {reservationDetails.table_id?.number}</span>
         </li>
         {additionalInfo && (
           <li className="font-semibold mb-2 flex flex-col">Autres informations :
