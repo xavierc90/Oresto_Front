@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState, useRef } from 'react';
 import Draggable from 'react-draggable';
 import { http } from '../../../../Infrastructure/Http/axios.instance';
 import { Table } from '../../../../Module/Types/table.type';
+import { FaTrashAlt } from "react-icons/fa";
 
 interface TableAreaProps {
   restaurant: { _id: string };
@@ -11,9 +12,16 @@ interface TableAreaProps {
 }
 
 export const TablePlanArea: React.FC<TableAreaProps> = ({ restaurant, token, tables, onTablesUpdate }) => {
-  const [draggingTableId, setDraggingTableId] = React.useState<string | null>(null);
-  const [isDragging, setIsDragging] = React.useState(false);
-  const [clickStartedPosition, setClickStartedPosition] = React.useState<{ x: number; y: number } | null>(null);
+  const [draggingTableId, setDraggingTableId] = useState<string | null>(null);
+  const [isDragging, setIsDragging] = useState(false);
+  const [overTrash, setOverTrash] = useState(false);
+  const [deleteMessage, setDeleteMessage] = useState<string | null>(null); // Message de suppression
+  const [showDeleteMessage, setShowDeleteMessage] = useState(false); // Pour gérer l'animation du message
+  const trashRef = useRef<HTMLDivElement | null>(null);
+  const [clickStartedPosition, setClickStartedPosition] = useState<{ x: number; y: number } | null>(null);
+
+  // Coordonnées et dimensions de la poubelle
+  const deleteZone = { width: 100, height: 100 };
 
   // Fonction pour gérer le déplacement de la table et envoyer les coordonnées au backend
   const handleDragStop = async (e: any, data: any, table: Table): Promise<void> => {
@@ -22,6 +30,39 @@ export const TablePlanArea: React.FC<TableAreaProps> = ({ restaurant, token, tab
     setDraggingTableId(null);
     setIsDragging(false);
 
+    // Vérifier si la table est déposée dans la zone de la poubelle
+    const trashElement = trashRef.current;
+    if (trashElement) {
+      const trashRect = trashElement.getBoundingClientRect();
+      const tableX = e.clientX;
+      const tableY = e.clientY;
+
+      if (
+        tableX >= trashRect.left &&
+        tableX <= trashRect.right &&
+        tableY >= trashRect.top &&
+        tableY <= trashRect.bottom
+      ) {
+        try {
+          // Appel pour supprimer la table
+          await http.delete(`/delete_table/${table._id}`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+          setDeleteMessage(`La table n°${table.number} pour ${table.capacity} personnes a été supprimée`);
+          setShowDeleteMessage(false);
+          setTimeout(() => setShowDeleteMessage(true), 100); // Activer l'animation
+          setTimeout(() => setShowDeleteMessage(false), 5000); // Masquer le message après 5 secondes
+          onTablesUpdate(); // Rafraîchir les tables après la suppression
+          return;
+        } catch (error) {
+          console.error('Erreur lors de la suppression de la table:', error);
+        }
+      }
+    }
+
+    // Mettre à jour la position de la table si elle n'a pas été supprimée
     try {
       await http.put(
         `/update_table/${table._id}`,
@@ -32,14 +73,12 @@ export const TablePlanArea: React.FC<TableAreaProps> = ({ restaurant, token, tab
           },
         }
       );
-      // Notifier le parent pour rafraîchir les tables
       onTablesUpdate();
     } catch (error) {
       console.error('Erreur lors de la mise à jour de la table:', error);
     }
   };
 
-  // Fonction pour gérer le clic simple pour la rotation
   const handleTableClick = async (table: Table) => {
     if (isDragging) return;
 
@@ -55,32 +94,51 @@ export const TablePlanArea: React.FC<TableAreaProps> = ({ restaurant, token, tab
           },
         }
       );
-      // Notifier le parent pour rafraîchir les tables
-      onTablesUpdate();
+      onTablesUpdate(); // Rafraîchir les tables après la rotation
     } catch (error) {
       console.error('Erreur lors de la mise à jour de la rotation de la table:', error);
     }
   };
 
   const handleStart = (e: any, data: any) => {
-    setIsDragging(false);
+    setIsDragging(true);  // Activer le mode "dragging"
     setClickStartedPosition({ x: data.x, y: data.y });
+  };
+
+  const handleDrag = (e: any, data: any) => {
+    const trashElement = trashRef.current;
+    if (trashElement) {
+      const trashRect = trashElement.getBoundingClientRect();
+      const tableX = e.clientX;
+      const tableY = e.clientY;
+
+      if (
+        tableX >= trashRect.left &&
+        tableX <= trashRect.right &&
+        tableY >= trashRect.top &&
+        tableY <= trashRect.bottom
+      ) {
+        setOverTrash(true); // Change l'opacité si la table est au-dessus de la poubelle
+      } else {
+        setOverTrash(false); // Rétablir l'opacité si elle est en dehors
+      }
+    }
   };
 
   const handleStop = (e: any, data: any, table: Table) => {
     const distanceMoved =
       Math.abs(data.x - clickStartedPosition!.x) + Math.abs(data.y - clickStartedPosition!.y);
     setDraggingTableId(null);
+    setIsDragging(false);  // Désactiver le mode "dragging"
+    setOverTrash(false); // Réinitialiser l'opacité de la poubelle
 
     if (distanceMoved < 5) {
       handleTableClick(table);
     } else {
-      setIsDragging(true);
       handleDragStop(e, data, table);
     }
   };
 
-  // Fonction pour changer la couleur de la table si elle est sélectionnée
   const getTableColor = (tableId: string): string => {
     return draggingTableId === tableId ? '#848485' : '#EAE5E5';
   };
@@ -226,7 +284,7 @@ export const TablePlanArea: React.FC<TableAreaProps> = ({ restaurant, token, tab
 
   return (
     <div
-      className="max-w-4/5 h-96 ml-12 mt-6 border border-zinc-300 dark:bg-dark-900 dark:border-dark-800 dark:text-black"
+      className="table-plan max-w-4/5 h-96 ml-12 mt-6 border border-zinc-300 dark:bg-dark-900 dark:border-dark-800 dark:text-black"
       style={{
         position: 'relative',
         overflow: 'hidden',
@@ -234,12 +292,43 @@ export const TablePlanArea: React.FC<TableAreaProps> = ({ restaurant, token, tab
           'repeating-linear-gradient(0deg, transparent, transparent 19px, rgba(0,0,0,0.1) 20px), repeating-linear-gradient(-90deg, transparent, transparent 19px, rgba(0,0,0,0.1) 20px)',
       }}
     >
+      {/* Message de suppression */}
+      {deleteMessage && (
+        <div className={`success-message ${showDeleteMessage ? 'show' : ''}`}>
+          {deleteMessage}
+        </div>
+      )}
+
+      {/* Icône Poubelle */}
+      {isDragging && (
+        <div
+          ref={trashRef}
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            position: 'absolute',
+            bottom: '20px', // Placer la corbeille en bas à droite
+            right: '20px',
+            width: `${deleteZone.width}px`,
+            height: `${deleteZone.height}px`,
+            justifyContent: 'center',
+            alignItems: 'center',
+            zIndex: 1000,
+            opacity: overTrash ? 1 : 0.5, // Opacité variable
+          }}
+        >
+          <FaTrashAlt size={25} color="#ff0000" /> {/* Taille et couleur de l'icône de la corbeille */}
+          <span className='text-sm'>Supprimer</span>
+        </div>
+      )}
+
       {tables.map((table) => (
         <Draggable
           key={table._id}
           bounds="parent"
           defaultPosition={{ x: table.position_x, y: table.position_y }}
           onStart={(e, data) => handleStart(e, data)}
+          onDrag={(e, data) => handleDrag(e, data)}
           onStop={(e, data) => handleStop(e, data, table)}
         >
           <div className="table-container" style={{ position: 'absolute', cursor: 'pointer' }}>

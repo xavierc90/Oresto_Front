@@ -82,7 +82,7 @@ export const TableForm: React.FC<TableFormProps> = ({ onTableCreated }) => {
       setSuccessMessage(null);
       setShowErrorMessage(false);
       setShowSuccessMessage(false);
-      setTimeout(() => setShowErrorMessage(true), 0);
+      setTimeout(() => setShowErrorMessage(true), 100);
       setTimeout(() => setShowErrorMessage(false), 3500); 
       return;
     }
