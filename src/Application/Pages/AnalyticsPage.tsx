@@ -80,7 +80,7 @@ export const AnalyticsPage = () => {
         <span className="dark:text-white">
           {isDataAvailable
             ? ``
-            : "Retrouvez les statistiques de votre restaurant"}
+            : "Retrouvez les statistiques de votre restaurant sur cette page"}
         </span>
       </div>
 

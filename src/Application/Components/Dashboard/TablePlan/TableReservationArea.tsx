@@ -73,11 +73,11 @@ export const TableReservationArea: React.FC<TableReservationAreaProps> = ({ sele
 
     return (
       <div className='flex flex-col justify-center items-center'>
-        <h1 className='font-semibold text-lg'>Bienvenue sur l'application Oresto</h1>
-        <p className='pb-5'>Afin de rendre la réservation en ligne fonctionnelle, créez votre plan de tables</p>
+        <h1 className='font-semibold text-xl pb-2'>Bienvenue sur l'application Oresto</h1>
+        <p className='pb-5'>Afin de rendre la réservation en ligne fonctionnelle, créez votre plan de table</p>
         <Link to="/dashboard/table_plan" className={getLinkClass('/dashboard/table_plan')}>
           <LuLayoutDashboard size={23} className="mb-1" />
-          <h2 className="text-xs font-bold dark:text-grey-700">Plan de tables</h2>
+          <h2 className="text-xs font-bold dark:text-grey-700">Plan de table</h2>
         </Link>
       </div>
     );

@@ -65,7 +65,7 @@ export const ClientList = ({ users }: ClientListProps) => {
               <tr key={user._id} onClick={() => handleUserClick(user)} className="hover:bg-gray-200 hover:cursor-pointer dark:hover:bg-dark-900 dark:hover:text-white">
                 <td>{user.lastname}</td>
                 <td>{user.firstname}</td>
-                <td className="py-2">{user.phone_number}</td>
+                <td className="py-1">{user.phone_number}</td>
                 <td>{formatDateToFrench(user.created_at)}</td>
               </tr>
             ))}

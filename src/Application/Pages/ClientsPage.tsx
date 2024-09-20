@@ -65,7 +65,7 @@ export const ClientsPage = () => {
       <h1 className="text-xl font-bold pt-12 pl-12">Gestion des clients</h1>
       <span className="dark:text-white pl-12">
         {isDataAvailable
-          ? <h2 className="text-lg pl-12 mt-1 mb-8">
+          ? <h2 className="text-lg mt-1 mb-8">
               <span className="font-bold text-red-500 dark:text-white">{clientsCount}</span> {searchTerm.length > 0 ? clientsText : registeredText}
               &nbsp;| <span className="font-bold text-red-500 dark:text-white"> 0</span> réservation
             </h2>
