@@ -78,7 +78,7 @@ export const ClientsPage = () => {
         <div className="flex-grow flex flex-col items-center justify-center">
           <p className="flex flex-col justify-center items-center text-lg font-bold text-gray-500 gap-2">
             <BiErrorCircle size={80} color="#d8d8d8" />
-            Aucune donnée disponible pour le moment
+            Aucune donnée disponible
           </p>
           <article className="text-sm pt-1">Les données seront consultables dès qu'un client aura créé un compte dans votre restaurant</article>
         </div>

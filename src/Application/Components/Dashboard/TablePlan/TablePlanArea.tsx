@@ -19,6 +19,7 @@ export const TablePlanArea: React.FC<TableAreaProps> = ({ restaurant, token, tab
   const [showDeleteMessage, setShowDeleteMessage] = useState(false); // Pour gérer l'animation du message
   const trashRef = useRef<HTMLDivElement | null>(null);
   const [clickStartedPosition, setClickStartedPosition] = useState<{ x: number; y: number } | null>(null);
+  const [clickTime, setClickTime] = useState<number>(0);
 
   // Coordonnées et dimensions de la poubelle
   const deleteZone = { width: 100, height: 100 };
@@ -80,8 +81,6 @@ export const TablePlanArea: React.FC<TableAreaProps> = ({ restaurant, token, tab
   };
 
   const handleTableClick = async (table: Table) => {
-    if (isDragging) return;
-
     const newRotation = (table.rotate || 0) + 30;
 
     try {
@@ -101,8 +100,9 @@ export const TablePlanArea: React.FC<TableAreaProps> = ({ restaurant, token, tab
   };
 
   const handleStart = (e: any, data: any) => {
-    setIsDragging(true);  // Activer le mode "dragging"
+    setIsDragging(true); // Activer le dragging
     setClickStartedPosition({ x: data.x, y: data.y });
+    setClickTime(Date.now()); // Enregistrer le temps de départ
   };
 
   const handleDrag = (e: any, data: any) => {
@@ -126,15 +126,17 @@ export const TablePlanArea: React.FC<TableAreaProps> = ({ restaurant, token, tab
   };
 
   const handleStop = (e: any, data: any, table: Table) => {
-    const distanceMoved =
-      Math.abs(data.x - clickStartedPosition!.x) + Math.abs(data.y - clickStartedPosition!.y);
+    const distanceMoved = Math.abs(data.x - clickStartedPosition!.x) + Math.abs(data.y - clickStartedPosition!.y);
+    const clickDuration = Date.now() - clickTime; // Calculer la durée du clic
     setDraggingTableId(null);
     setIsDragging(false);  // Désactiver le mode "dragging"
     setOverTrash(false); // Réinitialiser l'opacité de la poubelle
 
-    if (distanceMoved < 5) {
+    if (distanceMoved < 5 && clickDuration < 300) {
+      // Si le clic n'est pas un déplacement, déclencher la rotation
       handleTableClick(table);
     } else {
+      // Sinon, traiter cela comme un déplacement
       handleDragStop(e, data, table);
     }
   };
@@ -146,6 +148,7 @@ export const TablePlanArea: React.FC<TableAreaProps> = ({ restaurant, token, tab
   const renderTableSVG = (table: Table) => {
     const tableColor = getTableColor(table._id);
     const rotation = table.rotate || 0;
+
 
     if (table.shape === 'rectangle') {
       if (table.capacity === 4) {
@@ -327,7 +330,10 @@ export const TablePlanArea: React.FC<TableAreaProps> = ({ restaurant, token, tab
           key={table._id}
           bounds="parent"
           defaultPosition={{ x: table.position_x, y: table.position_y }}
-          onStart={(e, data) => handleStart(e, data)}
+          onStart={(e, data) => {
+            setIsDragging(true); // La table commence à être déplacée
+            handleStart(e, data);
+          }}
           onDrag={(e, data) => handleDrag(e, data)}
           onStop={(e, data) => handleStop(e, data, table)}
         >
