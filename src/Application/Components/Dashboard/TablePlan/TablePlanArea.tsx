@@ -24,7 +24,7 @@ export const TablePlanArea: React.FC<TableAreaProps> = ({ restaurant, token, tab
   // Coordonnées et dimensions de la poubelle
   const deleteZone = { width: 100, height: 100 };
 
-  // Fonction pour gérer le déplacement de la table et envoyer les coordonnées au backend
+  // Fonction pour archiver la table et envoyer les coordonnées au backend
   const handleDragStop = async (e: any, data: any, table: Table): Promise<void> => {
     const position_x = data.x;
     const position_y = data.y;
@@ -45,8 +45,8 @@ export const TablePlanArea: React.FC<TableAreaProps> = ({ restaurant, token, tab
         tableY <= trashRect.bottom
       ) {
         try {
-          // Appel pour supprimer la table
-          await http.delete(`/delete_table/${table._id}`, {
+          // Appel pour archiver la table
+          await http.put(`/archive_table/${table._id}`, {}, {
             headers: {
               Authorization: `Bearer ${token}`,
             },
@@ -55,15 +55,15 @@ export const TablePlanArea: React.FC<TableAreaProps> = ({ restaurant, token, tab
           setShowDeleteMessage(false);
           setTimeout(() => setShowDeleteMessage(true), 100); // Activer l'animation
           setTimeout(() => setShowDeleteMessage(false), 5000); // Masquer le message après 5 secondes
-          onTablesUpdate(); // Rafraîchir les tables après la suppression
+          onTablesUpdate(); // Rafraîchir les tables après l'archivage
           return;
         } catch (error) {
-          console.error('Erreur lors de la suppression de la table:', error);
+          console.error('Erreur lors de l\'archivage de la table:', error);
         }
       }
     }
 
-    // Mettre à jour la position de la table si elle n'a pas été supprimée
+    // Mettre à jour la position de la table si elle n'a pas été archivée
     try {
       await http.put(
         `/update_table/${table._id}`,
@@ -148,7 +148,6 @@ export const TablePlanArea: React.FC<TableAreaProps> = ({ restaurant, token, tab
   const renderTableSVG = (table: Table) => {
     const tableColor = getTableColor(table._id);
     const rotation = table.rotate || 0;
-
 
     if (table.shape === 'rectangle') {
       if (table.capacity === 4) {
@@ -325,26 +324,28 @@ export const TablePlanArea: React.FC<TableAreaProps> = ({ restaurant, token, tab
         </div>
       )}
 
-      {tables.map((table) => (
-        <Draggable
-          key={table._id}
-          bounds="parent"
-          defaultPosition={{ x: table.position_x, y: table.position_y }}
-          onStart={(e, data) => {
-            setIsDragging(true); // La table commence à être déplacée
-            handleStart(e, data);
-          }}
-          onDrag={(e, data) => handleDrag(e, data)}
-          onStop={(e, data) => handleStop(e, data, table)}
-        >
-          <div className="table-container" style={{ position: 'absolute', cursor: 'pointer' }}>
-            {renderTableSVG(table)}
-            <div className="number-circle">
-              <span>{table.number}</span>
+      {tables
+        .filter((table) => table.status !== 'archived') // Filtrer les tables avec le statut "available" seulement
+        .map((table) => (
+          <Draggable
+            key={table._id}
+            bounds="parent"
+            defaultPosition={{ x: table.position_x, y: table.position_y }}
+            onStart={(e, data) => {
+              setIsDragging(true); // La table commence à être déplacée
+              handleStart(e, data);
+            }}
+            onDrag={(e, data) => handleDrag(e, data)}
+            onStop={(e, data) => handleStop(e, data, table)}
+          >
+            <div className="table-container" style={{ position: 'absolute', cursor: 'pointer' }}>
+              {renderTableSVG(table)}
+              <div className="number-circle">
+                <span>{table.number}</span>
+              </div>
             </div>
-          </div>
-        </Draggable>
-      ))}
+          </Draggable>
+        ))}
     </div>
   );
 };

@@ -9,8 +9,12 @@ export const TablePlanPage = () => {
   const { token, restaurant } = useAuth();
   const [tables, setTables] = useState<Table[]>([]);
 
-  const totalTables = tables.length;
-  const totalSeats = tables.reduce((acc, table) => acc + table.capacity, 0);
+  // Filtrer les tables qui ne sont pas en statut "archived"
+  const availableTables = tables.filter((table) => table.status !== 'archived');
+
+  // Calculer le nombre total de tables et de sièges pour les tables disponibles
+  const totalTables = availableTables.length;
+  const totalSeats = availableTables.reduce((acc, table) => acc + table.capacity, 0);
 
   const fetchTables = async () => {
     if (!token || !restaurant) return;
@@ -58,7 +62,7 @@ export const TablePlanPage = () => {
       <TablePlanArea
         restaurant={restaurantObject}
         token={token}
-        tables={tables}
+        tables={availableTables} // Passer uniquement les tables disponibles
         onTablesUpdate={handleTablesUpdate}
       />
     </div>
