@@ -84,7 +84,8 @@ export const ReservationsPage = () => {
         | <span className="font-bold text-red-500 dark:text-white">{totalCovers}</span> couvert{totalCovers > 1 ? 's ' : ' '}
       </h2>
       <ReservationList reservations={reservations} />
-      <TableReservationArea selectedDate={selectedDate} restaurant={restaurant} token={token} status='' />
+      <TableReservationArea selectedDate={selectedDate} 
+      reservations={reservations} restaurant={restaurant} token={token} status='' />
     </div>
   );
 };

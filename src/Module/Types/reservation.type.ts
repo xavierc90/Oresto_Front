@@ -1,20 +1,33 @@
-import { User } from '../Auth/user.type';
 import { Table } from './table.type';
 
-export type Reservation = {
+// reservation.type.ts
+export interface Reservation {
   _id: string;
-  user_id: User;
-  email: string;
-  phone_number: string;
-  date_selected: Date;
+  date_selected: string;
   time_selected: string;
   nbr_persons: number;
-  created_at: Date;
-  restaurant_id: string;
-  table_id: Table;  // Utilisation de Table directement ici
-  table_number: string;
-  status: string;  // Ajouter JSX.Element ic
   details: string;
-  table: Table[];  // Utilisation de Table directement ici
-  date: Date;
-};
+  status: 'waiting' | 'confirmed' | 'canceled' | 'occupied';
+  restaurant_id: string;
+  table_id: string;
+  table_number: string;
+  user_id: {
+    _id: string;
+    firstname: string;
+    lastname: string;
+    email: string;
+    password: string;
+    phone_number: string;
+    role: string;
+    restaurant_id: string | null;
+    allergens: string[];
+    created_at: string;
+    __v: number;
+    token: string;
+    id: string;
+  };
+  created_at: string;
+  __v: number;
+  table: Table;
+  id: string;
+}

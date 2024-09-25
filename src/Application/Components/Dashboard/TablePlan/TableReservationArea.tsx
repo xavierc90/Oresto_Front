@@ -3,19 +3,22 @@ import { http } from '../../../../Infrastructure/Http/axios.instance';
 import { Table } from '../../../../Module/Types/table.type';
 import { LuLayoutDashboard } from "react-icons/lu";
 import { Link } from 'react-router-dom';
+import { Reservation } from '../../../../Module/Types/reservation.type';
 
 interface TableReservationAreaProps {
   selectedDate: Date | null;
   restaurant: { _id: string };
   token: string | null;
+  reservations: Reservation[];
   status: string;
 }
 
-export const TableReservationArea: React.FC<TableReservationAreaProps> = ({ selectedDate, restaurant, token }) => {
+export const TableReservationArea: React.FC<TableReservationAreaProps> = ({ selectedDate, restaurant, token, reservations }) => {
   const [tables, setTables] = useState<Table[]>([]); // État pour stocker les tables
   const [loading, setLoading] = useState<boolean>(true); // Pour gérer le chargement des données
 
   useEffect(() => {
+    console.log("Réservations reçues dans TableReservationArea:", reservations); // Vérifier les données des réservations
     const fetchTables = async () => {
       if (!restaurant?._id || !token) {
         console.error('Restaurant ID ou token non trouvés');
@@ -56,7 +59,7 @@ export const TableReservationArea: React.FC<TableReservationAreaProps> = ({ sele
     } else {
       setLoading(false);
     }
-  }, [selectedDate, restaurant, token]);
+  }, [selectedDate, restaurant, token, reservations]);
 
   // Rendu conditionnel pour afficher le message si aucune table n'existe
   if (loading) {
