@@ -16,6 +16,7 @@ export const ReservationList: React.FC<ReservationListProps> = ({ reservations }
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
   const [selectedReservation, setSelectedReservation] = useState<Reservation | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [hideCanceled, setHideCanceled] = useState(true); 
   const [notification, setNotification] = useState<{ message: string | null; type: 'success' | 'error' }>({ message: null, type: 'success' });
 
   const handleSortClick = () => {
@@ -74,8 +75,21 @@ export const ReservationList: React.FC<ReservationListProps> = ({ reservations }
     return sortOrder === 'asc' ? timeA.localeCompare(timeB) : timeB.localeCompare(timeA);
   });
 
+  // Filtrer les réservations annulées si la case est cochée
+  const filteredReservations = sortedReservations.filter(reservation => hideCanceled || reservation.status !== 'canceled');
+
   return (
     <div className="scrollable-container">
+
+            {/* Case à cocher pour masquer les réservations annulées */}
+            <div className="absolute top-12 left-1/2 mb-4 p-2 ">
+            <label className="inline-flex items-center mb-5 cursor-pointer">
+  <input type="checkbox" checked={hideCanceled} onChange={() => setHideCanceled(prev => !prev)} className="sr-only peer"></input>
+  <div className="relative w-9 h-5 bg-gray-200 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"></div>
+  <span className="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">Réservations annulées</span>
+</label>
+      </div>
+
       <table className="ml-12">
         <thead>
           <tr>
@@ -91,7 +105,7 @@ export const ReservationList: React.FC<ReservationListProps> = ({ reservations }
           </tr>
         </thead>
         <tbody className="reservationlist">
-          {sortedReservations.map((reservation) => (
+          {filteredReservations.map((reservation) => (
             <tr 
               key={reservation._id} 
               className="hover:bg-gray-200 hover:cursor-pointer dark:hover:bg-dark-900 dark:hover:text-white"
@@ -110,10 +124,10 @@ export const ReservationList: React.FC<ReservationListProps> = ({ reservations }
 
       {/* Modal */}
       {isModalOpen && selectedReservation && (
-          <div 
+        <div 
           className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
           onClick={handleCloseModal}
-          >
+        >
           <div 
             className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg w-full max-w-md relative"
             onClick={(e) => e.stopPropagation()}
@@ -143,7 +157,7 @@ export const ReservationList: React.FC<ReservationListProps> = ({ reservations }
               <li><strong>Détails :</strong> {selectedReservation.details || 'Aucun'}</li>
             </ul>
             </div>
-<div className="mt-8 flex justify-center gap-4 ">
+            <div className="mt-8 flex justify-center gap-4 ">
               {selectedReservation.status !== 'confirmed' && (
                 <button className="bg-green-700 text-white text-sm font-bold px-4 py-2 rounded-lg flex items-center" onClick={handleConfirmReservation}>
                   <FaCheck size={10} />
@@ -160,7 +174,6 @@ export const ReservationList: React.FC<ReservationListProps> = ({ reservations }
           </div>
         </div>
       )}
-
       {/* Message de notification */}
       {notification.message && (
         <NotificationMessage message={notification.message} type={notification.type} />
