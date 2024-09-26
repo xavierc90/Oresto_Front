@@ -131,16 +131,20 @@ export const ClientList = ({ users }: ClientListProps) => {
             </tr>
           </thead>
           <tbody>
-            {sortedUsers.map((user: User) => (
-              <tr key={user._id} onClick={() => handleUserClick(user)} className="hover:bg-gray-200 hover:cursor-pointer dark:hover:bg-dark-900 dark:hover:text-white">
-                <td>{user.lastname}</td>
-                <td>{user.firstname}</td>
-                <td>{user.phone_number}</td>
-                <td>{user.email}</td>
-                <td>{formatDateToFrench(user.created_at)}</td>
-              </tr>
-            ))}
-          </tbody>
+  {sortedUsers.map((user: User, index) => (
+    <tr
+      key={user._id}
+      onClick={() => handleUserClick(user)}
+      className={`hover:bg-gray-200 hover:cursor-pointer dark:hover:bg-dark-900 dark:hover:text-white ${index % 2 === 0 ? 'bg-gray-100' : ''}`}
+    >
+      <td className="py-1">{user.lastname}</td>
+      <td>{user.firstname}</td>
+      <td>{user.phone_number}</td>
+      <td>{user.email}</td>
+      <td>{formatDateToFrench(user.created_at)}</td>
+    </tr>
+  ))}
+</tbody>
         </table>
       )}
 
@@ -213,21 +217,21 @@ export const ClientList = ({ users }: ClientListProps) => {
               <li className='font-semibold'>
                 Allergènes :
                 {isEditing ? (
-                  <div className="grid grid-cols-2 gap-2 mt-2">
-                    {availableAllergens.map(allergen => (
-                      <label key={allergen} className="inline-flex items-center">
-                        <input
-                          type="checkbox"
-                          checked={selectedAllergens.includes(allergen)}
-                          onChange={() => handleAllergenChange(allergen)}
-                        />
-                        <span className="ml-2"> {allergen}</span>
-                      </label>
-                    ))}
-                  </div>
-                ) : (
-                  <span className='font-normal'> {selectedUser.allergens && selectedUser.allergens.length > 0 ? selectedUser.allergens.join(', ') : 'Aucune allergie renseignée'}</span>
-                )}
+              <div className="grid grid-cols-3 gap-2 mt-2"> {/* Modifier grid-cols-2 en grid-cols-3 */}
+                {availableAllergens.map(allergen => (
+                  <label key={allergen} className="inline-flex items-center">
+                    <input
+                      type="checkbox"
+                      checked={selectedAllergens.includes(allergen)}
+                      onChange={() => handleAllergenChange(allergen)}
+                    />
+                    <span className="ml-2"> {allergen}</span>
+                  </label>
+                ))}
+              </div>
+            ) : (
+              <span className='font-normal'> {selectedUser.allergens && selectedUser.allergens.length > 0 ? selectedUser.allergens.join(', ') : 'Aucune allergie renseignée'}</span>
+            )}
               </li>
             </ul>
             <h2 className="font-bold mt-4 mb-2 flex items-center">
@@ -242,7 +246,7 @@ export const ClientList = ({ users }: ClientListProps) => {
                     <li className='font-semibold flex gap-2'>{moment(reservation.date_selected).format('DD/MM/YYYY')} à {reservation.time_selected}
                       <StatusLabel status={reservation.status || 'waiting'} />
                     </li>
-                    <li>Table {reservation.table[0]?.number} pour {reservation.nbr_persons || '0'} personnes</li>
+                    <li>Table {reservation.table?.number || 'N/A'} pour {reservation.nbr_persons || '0'} personnes</li>
                     <li className='flex items-center'>
                       {reservation.details && <FaInfoCircle className="mr-2" />}
                       {reservation.details ? reservation.details : ''}
