@@ -10,16 +10,27 @@ import { RxCross1 } from 'react-icons/rx';
 import { Reservation } from '../../../Module/Types/reservation.type';
 import { StatusLabel } from './StatusLabel';
 import { FaInfoCircle } from "react-icons/fa";
+import { NotificationMessage } from '../NotificationMessage';  // Import du composant
 
 interface ClientListProps {
   users: User[];
 }
+
+const availableAllergens = [
+  "Arachides", "Noix", "Lait", "Œufs", "Poisson", "Crustacés", "Blé",
+  "Soja", "Sésame", "Gluten", "Moutarde", "Céleri", "Sulfites", "Lupin", "Mollusques"
+];
 
 export const ClientList = ({ users }: ClientListProps) => {
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [reservations, setReservations] = useState<Reservation[]>([]);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editableUser, setEditableUser] = useState<User | null>(null);
+  const [selectedAllergens, setSelectedAllergens] = useState<string[]>([]);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);  // Ajout du message d'erreur
 
   const handleSortToggle = () => {
     setSortOrder(prevOrder => prevOrder === 'asc' ? 'desc' : 'asc');
@@ -27,11 +38,14 @@ export const ClientList = ({ users }: ClientListProps) => {
 
   const handleUserClick = async (user: User) => {
     setSelectedUser(user);
+    setEditableUser(user);
+    setSelectedAllergens(user.allergens || []);
     setIsModalOpen(true);
+    setSuccessMessage(null);
     try {
       const response = await http.get<Reservation[]>(`/reservations/user/${user._id}`);
       const sortedReservations = response.data.sort((a, b) => new Date(b.date_selected).getTime() - new Date(a.date_selected).getTime());
-      setReservations(sortedReservations);  // Assign sorted reservation data directly
+      setReservations(sortedReservations);
     } catch (error) {
       console.error('Error fetching reservations:', error);
       setReservations([]);
@@ -42,12 +56,67 @@ export const ClientList = ({ users }: ClientListProps) => {
     setIsModalOpen(false);
     setSelectedUser(null);
     setReservations([]);
+    setIsEditing(false);
+    setSuccessMessage(null);
   };
 
-  const sortedUsers = sortOrder === 'asc' ? users.sort((a, b) => a.lastname.localeCompare(b.lastname)) : users.sort((a, b) => b.lastname.localeCompare(a.lastname));
+  const handleEditClick = () => {
+    setIsEditing(true);
+    setSuccessMessage(null);
+  };
+
+  const handleUpdateClick = async () => {
+    if (!selectedUser || !editableUser) return;
+
+    try {
+      const response = await http.put(
+        `/update_user/${selectedUser._id}`,
+        {
+          allergens: selectedAllergens,
+          firstname: editableUser.firstname,
+          lastname: editableUser.lastname,
+          email: editableUser.email,
+          phone_number: editableUser.phone_number
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`
+          }
+        }
+      );
+      console.log("Update response:", response.data);
+
+      setSuccessMessage("Informations du client mises à jour avec succès");
+      setIsEditing(false);
+
+      setSelectedUser({ ...editableUser, allergens: selectedAllergens });
+    } catch (error) {
+      console.error("Error updating user data:", error);
+      setErrorMessage("Erreur lors de la mise à jour des informations");
+    }
+  };
+
+  const handleAllergenChange = (allergen: string) => {
+    if (selectedAllergens.includes(allergen)) {
+      setSelectedAllergens(prev => prev.filter(a => a !== allergen));
+    } else {
+      setSelectedAllergens(prev => [...prev, allergen]);
+    }
+  };
+
+  const handleInputChange = (field: keyof User, value: string) => {
+    if (editableUser) {
+      setEditableUser({ ...editableUser, [field]: value });
+    }
+  };
+
+  const sortedUsers = sortOrder === 'asc' ? [...users].sort((a, b) => a.lastname.localeCompare(b.lastname)) : [...users].sort((a, b) => b.lastname.localeCompare(a.lastname));
 
   return (
     <div className="scrollable-list">
+      <NotificationMessage message={successMessage} type="success" />
+      <NotificationMessage message={errorMessage} type="error" />
+
       {sortedUsers.length === 0 ? (
         <div className="ml-12 mt-8 text-sm">Aucun client trouvé</div>
       ) : (
@@ -82,21 +151,86 @@ export const ClientList = ({ users }: ClientListProps) => {
               <RxCross1 size={25} />
             </button>
            
-            <h2 className="font-bold mb-5 flex items-center">
+            <h2 className="font-bold mb-2 flex items-center">
             <FaUser />
             <span className='pl-2'>Informations du client</span>
             </h2>
+            <h3 className='font-normal text-sm mb-2'>Inscrit depuis le <span className='font-normal'>{formatDateToFrench(selectedUser.created_at)}</span></h3>
 
             <ul className='space-y-2 text-sm'>
-              <li className='font-semibold'>Nom : <span className='font-normal'>{selectedUser.lastname}</span></li>
-              <li className='font-semibold'>Prénom : <span className='font-normal'>{selectedUser.firstname}</span></li>
-              <li className='font-semibold'>Email : <span className='font-normal'>{selectedUser.email}</span></li>
-              <li className='font-semibold'>N° de téléphone : <span className='font-normal'>{selectedUser.phone_number}</span></li>
-              <li className='font-semibold'>Allergènes : <span className='font-normal'>{Array.isArray(selectedUser.allergens) && selectedUser.allergens.length > 0 ? selectedUser.allergens.join(', ') : 'Aucune allergie renseignée'}</span></li>
-              <li className='font-semibold'>Inscrit depuis le : <span className='font-normal'>{formatDateToFrench(selectedUser.created_at)}</span></li>
+              <li className='font-semibold'>
+                Nom : 
+                {isEditing ? (
+                   <input 
+                    type="text" 
+                    value={editableUser?.lastname || ''} 
+                    onChange={(e) => handleInputChange('lastname', e.target.value)}
+                    className="ml-2 border-2 border-gray-300 pl-2 rounded font-normal"
+                  />
+                ) : (
+                  <span className='font-normal'> {selectedUser.lastname}</span>
+                )}
+              </li>
+              <li className='font-semibold'>
+                Prénom : 
+                {isEditing ? (
+                  <input 
+                    type="text" 
+                    value={editableUser?.firstname || ''} 
+                    onChange={(e) => handleInputChange('firstname', e.target.value)}
+                    className="ml-2 border-2 border-gray-300 font-normal pl-2 rounded"
+                  />
+                ) : (
+                  <span className='font-normal'> {selectedUser.firstname}</span>
+                )}
+              </li>
+              <li className='font-semibold'>
+                Email : 
+                {isEditing ? (
+                  <input 
+                    type="text" 
+                    value={editableUser?.email || ''} 
+                    onChange={(e) => handleInputChange('email', e.target.value)}
+                    className="ml-2 border-2 border-gray-300 font-normal pl-2 rounded w-72"
+                  />
+                ) : (
+                  <span className='font-normal'> {selectedUser.email}</span>
+                )}
+              </li>
+              <li className='font-semibold'>
+                N° de téléphone : 
+                {isEditing ? (
+                  <input 
+                    type="text" 
+                    value={editableUser?.phone_number || ''} 
+                    onChange={(e) => handleInputChange('phone_number', e.target.value)}
+                    className="ml-2 border-2 border-gray-300 font-normal pl-2 rounded"
+                  />
+                ) : (
+                  <span className='font-normal'> {selectedUser.phone_number}</span>
+                )}
+              </li>
+              <li className='font-semibold'>
+                Allergènes :
+                {isEditing ? (
+                  <div className="grid grid-cols-2 gap-2 mt-2">
+                    {availableAllergens.map(allergen => (
+                      <label key={allergen} className="inline-flex items-center">
+                        <input
+                          type="checkbox"
+                          checked={selectedAllergens.includes(allergen)}
+                          onChange={() => handleAllergenChange(allergen)}
+                        />
+                        <span className="ml-2"> {allergen}</span>
+                      </label>
+                    ))}
+                  </div>
+                ) : (
+                  <span className='font-normal'> {selectedUser.allergens && selectedUser.allergens.length > 0 ? selectedUser.allergens.join(', ') : 'Aucune allergie renseignée'}</span>
+                )}
+              </li>
             </ul>
-            
-            <h2 className="font-bold mt-6 mb-5 flex items-center">
+            <h2 className="font-bold mt-4 mb-2 flex items-center">
             <FaRegCalendarAlt />
             <span className='pl-2'>Historique des réservations</span>
             </h2>
@@ -117,8 +251,26 @@ export const ClientList = ({ users }: ClientListProps) => {
                 ))}
               </ul>
             ) : (
-              <p>Aucune réservation trouvée pour cette personne.</p>
+              <p className='text-sm'>Aucune réservation trouvée pour cette personne.</p>
             )}
+            </div>
+            <div className='flex gap-3 pt-5 items-center justify-center'>
+              {isEditing ? (
+                <button
+                  className='bg-black text-white text-sm font-semibold p-2 rounded-lg'
+                  onClick={handleUpdateClick}
+                >
+                  Mettre à jour
+                </button>
+              ) : (
+                <button
+                  className='bg-black text-white text-sm font-semibold p-2 rounded-lg'
+                  onClick={handleEditClick}
+                >
+                  Modifier
+                </button>
+              )}
+              <button className='bg-red-600 text-white text-sm font-semibold p-2 rounded-lg'>Supprimer</button>
             </div>
           </div>
         </div>

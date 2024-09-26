@@ -23,8 +23,8 @@ export const NotificationMessage: React.FC<NotificationMessageProps> = ({ messag
   if (!message) return null;
 
   return (
-    <div className={`fixed top-4 left-1/2 transform -translate-x-1/2 p-4 rounded-md shadow-md z-50
-      ${type === 'success' ? 'bg-green-800 text-white' : 'bg-red-500 text-white'}
+    <div className={`fixed top-4 left-1/2 transform -translate-x-1/2 p-4 rounded-lg shadow-md z-[1000]
+      ${type === 'success' ? 'bg-green-600 text-white font-semibold' : 'bg-red-500 text-white'}
       ${showMessage ? 'opacity-100' : 'opacity-0'}
       transition-opacity duration-500 ease-in-out`}>
       {message}

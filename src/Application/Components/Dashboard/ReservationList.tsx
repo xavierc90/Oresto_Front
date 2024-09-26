@@ -38,7 +38,7 @@ export const ReservationList: React.FC<ReservationListProps> = ({ reservations }
       try {
         const response = await http.post(`/confirm_reservation/${selectedReservation._id}`);
         if (response.status === 200) {
-          setNotification({ message: "La réservation a été confirmée avec succès.", type: 'success' });
+          setNotification({ message: `Réservation au nom de ${selectedReservation.user_id.lastname} confirmée avec succès.`, type: 'success' });
         } else {
           setNotification({ message: "Erreur lors de la confirmation de la réservation.", type: 'error' });
         }

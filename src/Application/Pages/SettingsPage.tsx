@@ -50,7 +50,6 @@ export const SettingsPage = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedHours, setEditedHours] = useState<OpeningHour[]>([]);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
-
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [showErrorMessage, setShowErrorMessage] = useState(false);
