@@ -18,7 +18,9 @@ export const TableReservationArea: React.FC<TableReservationAreaProps> = ({ sele
   const [loading, setLoading] = useState<boolean>(true); // Pour gérer le chargement des données
 
   useEffect(() => {
-    console.log("Réservations reçues dans TableReservationArea:", reservations); // Vérifier les données des réservations
+    console.log('Tables dans TableReservation:', tables);
+    console.log('Réservations dans TableReservation:', reservations);
+    
     const fetchTables = async () => {
       if (!restaurant?._id || !token) {
         console.error('Restaurant ID ou token non trouvés');
@@ -67,7 +69,6 @@ export const TableReservationArea: React.FC<TableReservationAreaProps> = ({ sele
   }
 
   if (tables.length === 0) {
-
     const getLinkClass = (path: string) => {
       return location.pathname.startsWith(path)
         ? 'flex flex-col items-center text-red-500 dark:text-white transition duration-300'
@@ -102,11 +103,19 @@ export const TableReservationArea: React.FC<TableReservationAreaProps> = ({ sele
     }
   };
 
-  const renderTableSVG = (table: Table) => {
-    // Applique les couleurs en fonction du statut
-    const { tableColor, tableSizeColor } = getColorByStatus(table.status);
+  // Fonction pour chercher le statut de la table dans les réservations
+  const getTableStatus = (table_id: string) => {
+    const reservation = reservations.find(r => r.table_id === table_id);
+    if (reservation) {
+      return reservation.status;
+    }
+    return 'available'; // Par défaut, la table est disponible si aucune réservation
+  };
 
-    // Applique la rotation depuis la base de données (par défaut 0 si non défini)
+  const renderTableSVG = (table: Table) => {
+    const status = getTableStatus(table._id);
+    const { tableColor, tableSizeColor } = getColorByStatus(status);
+
     const rotation = table.rotate || 0;
 
     switch (table.shape) {

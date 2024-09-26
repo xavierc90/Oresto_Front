@@ -11,5 +11,6 @@ export interface Table {
   position_y: number;
   rotate: number;
   created_at: string;
+  tabkle_id: string;
   __v: number;
 }
