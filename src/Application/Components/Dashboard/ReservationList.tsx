@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FaSort, FaTimes } from "react-icons/fa";
+import { FaSort } from "react-icons/fa";
 import { FaCheck } from "react-icons/fa";
 import { http } from '../../../Infrastructure/Http/axios.instance';
 import { NotificationMessage } from '../NotificationMessage';
@@ -17,6 +17,7 @@ export const ReservationList: React.FC<ReservationListProps> = ({ reservations }
   const [selectedReservation, setSelectedReservation] = useState<Reservation | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [hideCanceled, setHideCanceled] = useState(true); 
+  const [hideConfirmed, setHideConfirmed] = useState(false); // Nouvel état pour masquer les réservations confirmées
   const [notification, setNotification] = useState<{ message: string | null; type: 'success' | 'error' }>({ message: null, type: 'success' });
 
   const handleSortClick = () => {
@@ -75,20 +76,34 @@ export const ReservationList: React.FC<ReservationListProps> = ({ reservations }
     return sortOrder === 'asc' ? timeA.localeCompare(timeB) : timeB.localeCompare(timeA);
   });
 
-  // Filtrer les réservations annulées si la case est cochée
-  const filteredReservations = sortedReservations.filter(reservation => hideCanceled || reservation.status !== 'canceled');
+  // Filtrer les réservations annulées et confirmées
+  const filteredReservations = sortedReservations.filter(reservation => 
+    (hideCanceled || reservation.status !== 'canceled') && 
+    (hideConfirmed || reservation.status !== 'confirmed')
+  );
 
   return (
     <div className="scrollable-container">
-
-            {/* Case à cocher pour masquer les réservations annulées */}
-            <div className="absolute top-12 left-1/2 mb-4 p-2 ">
-            <label className="inline-flex items-center mb-5 cursor-pointer">
-  <input type="checkbox" checked={hideCanceled} onChange={() => setHideCanceled(prev => !prev)} className="sr-only peer"></input>
-  <div className="relative w-9 h-5 bg-gray-200 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"></div>
-  <span className="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">Réservations annulées</span>
-</label>
+      <div className='flex flex-col'>
+    <div className='absolute top-12 left-1/2 flex items-center justify-center gap-4'>
+    <span>Filtrer par statut : </span>
+      {/* Case à cocher pour masquer les réservations annulées */}
+      <div className="flex pr-2">
+        <label className="inline-flex items-center cursor-pointer">
+          <input type="checkbox" checked={hideCanceled} onChange={() => setHideCanceled(prev => !prev)} className="sr-only peer" />
+          <div className="relative w-9 h-5 bg-gray-200 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"></div>
+          <span className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Annulées</span>
+        </label>
       </div>
+
+      {/* Case à cocher pour masquer les réservations confirmées */}
+        <label className="inline-flex items-center cursor-pointer">
+          <input type="checkbox" checked={hideConfirmed} onChange={() => setHideConfirmed(prev => !prev)} className="sr-only peer" />
+          <div className="relative w-9 h-5 bg-gray-200 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"></div>
+          <span className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Confirmées</span>
+        </label>
+    </div>
+    </div>
 
       <table className="ml-12">
         <thead>

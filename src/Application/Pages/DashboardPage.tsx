@@ -37,13 +37,13 @@ export const DashboardPage = () => {
       <div className='w-9/12'>
         <Outlet context={{ user, restaurant, token }} />
       </div>
-      <div className="flex absolute right-12 mr-4 top-10 gap-2">
+      {/* <div className="flex absolute right-12 mr-4 top-10 gap-2">
         <IoIosNotifications size={25} />
         <div className="flex gap-3 justify-center items-center">
           <h2>{user ? `${user.firstname} ${user.lastname}` : 'Chargement...'}</h2>
           <IoIosArrowDown size={20} />
-        </div>
-      </div>
+        </div> 
+      </div>*/}
     </div>
   );
 };

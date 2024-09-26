@@ -1,116 +1,143 @@
 import React, { useState, useEffect } from "react";
 import { http } from "../../Infrastructure/Http/axios.instance";
-import { Doughnut } from 'react-chartjs-2';
-import { Chart as ChartJS, Tooltip, Legend, ArcElement, Title } from 'chart.js';
 import { BiErrorCircle } from "react-icons/bi";
-
-ChartJS.register(ArcElement, Tooltip, Legend, Title);
+import { useAuth } from "../../Module/Auth/useAuth";
+import { formatDateWithoutTime } from "../../Module/Utils/dateFormatterWithoutHour";
 
 export const AnalyticsPage = () => {
+  const { user } = useAuth();
   const [totalReservations, setTotalReservations] = useState(0);
   const [totalConfirmedReservations, setTotalConfirmedReservations] = useState(0);
   const [totalCanceledReservations, setTotalCanceledReservations] = useState(0);
   const [totalWaitingReservations, setTotalWaitingReservations] = useState(0);
 
+  const tableRankings = [
+    { table: 'Table 1', timesBooked: 35 },
+    { table: 'Table 2', timesBooked: 30 },
+    { table: 'Table 3', timesBooked: 25 },
+    { table: 'Table 4', timesBooked: 20 },
+  ];
+
+  const popularCapacities = [
+    { capacity: '2 personnes', bookings: 50 },
+    { capacity: '4 personnes', bookings: 35 },
+    { capacity: '6 personnes', bookings: 15 },
+  ];
+
+  const peopleCounts = [
+    { people: '2 personnes', count: 40 },
+    { people: '4 personnes', count: 35 },
+    { people: '6 personnes', count: 25 },
+  ];
+
   useEffect(() => {
     document.title = 'Oresto - Statistiques';
     const fetchTotalReservations = async () => {
       try {
-        const response = await http.get('/reservations');
-        setTotalReservations(response.data.reservations.length);
-        setTotalConfirmedReservations(response.data.statusCounts.confirmed);
-        setTotalCanceledReservations(response.data.statusCounts.canceled);
-        setTotalWaitingReservations(response.data.statusCounts.waiting);
+        setTotalReservations(100);
+        setTotalConfirmedReservations(60);
+        setTotalCanceledReservations(25);
+        setTotalWaitingReservations(15);
       } catch (error) {
-        console.error('Erreur lors de la récupération du nombre total de réservations:', error);
+        console.error('Erreur lors de la récupération des données:', error);
       }
     };
 
     fetchTotalReservations();
   }, []);
 
-  const data = {
-    labels: ['Confirmées', 'Annulées', 'En attente'],
-    datasets: [
-      {
-        data: [totalConfirmedReservations, totalCanceledReservations, totalWaitingReservations],
-        backgroundColor: ['#4CAF50', '#F44336', '#FFC107'],
-        borderColor: '#ffffff',
-        borderWidth: 1
-      }
-    ]
-  };
-
-  const options = {
-    responsive: true,
-    plugins: {
-      legend: {
-        display: false,
-        position: 'top' as const,
-      },
-      title: {
-        display: false,
-        text: 'Statistiques des Réservations',
-        font: {
-          size: 20
-        },
-      },
-      tooltip: {
-        callbacks: {
-          label: function (tooltipItem: any) {
-            const dataset = tooltipItem.dataset.data;
-            const total = dataset.reduce((acc: number, value: number) => acc + value, 0);
-            const currentValue = dataset[tooltipItem.dataIndex];
-            const percentage = ((currentValue / total) * 100).toFixed(2);
-            return `${tooltipItem.label}: ${currentValue} (${percentage}%)`;
-          }
-        }
-      }
-    },
-    maintainAspectRatio: false
-  };
-
   const isDataAvailable = totalReservations > 0;
 
   return (
-    <div className="bg-light w-full min-h-screen flex flex-col">
+    <div className="bg-light w-full min-h-screen p-8">
       {/* En-tête des statistiques */}
-      <div className="pt-12 pl-12">
-        <h1 className="text-xl font-bold">Statistiques</h1>
-        <span className="dark:text-white">
-          {isDataAvailable
-            ? ``
-            : "Retrouvez les statistiques de votre restaurant sur cette page"}
+      <div className="pb-6">
+        <h1 className="text-2xl font-bold">Statistiques</h1>
+        <span className="text-gray-500">
+          {isDataAvailable ? "" : "Retrouvez les statistiques de votre restaurant sur cette page"}
         </span>
       </div>
 
       {isDataAvailable ? (
-        <div>
-          <h2 className="text-lg pl-12 mt-1">
-            <span className="font-bold text-red-500 dark:text-white">{totalReservations}</span> réservation{totalReservations > 1 ? 's' : ''} au total
-          </h2>
-          <ul className="pl-12 pt-12">
-            <li className="text-lg font-bold">Réservations</li>
-            <li className="text-sm italic mb-8">Les statistiques correspondent à l'année en cours</li>
-          </ul>
-          <div className="flex items-center pl-12 gap-6">
-            <div className="chart-container" style={{ position: 'relative', height: '200px', width: '200px' }}>
-              <Doughnut data={data} options={options} />
-            </div>
-            <ul className="flex flex-col gap-4 pr-8">
-              <li className="flex items-center">
-                <span className="w-[20px] h-[20px] bg-[#4CAF50] rounded-full inline-block mr-2"></span>
-                <span className="font-semibold text-sm">Confirmées : {totalConfirmedReservations}</span>
-              </li>
-              <li className="flex items-center">
-                <span className="w-[20px] h-[20px] bg-[#FFC107] rounded-full inline-block mr-2"></span>
-                <span className="font-semibold text-sm">En attente : {totalWaitingReservations}</span>
-              </li>
-              <li className="flex items-center">
-                <span className="w-[20px] h-[20px] bg-[#F44336] rounded-full inline-block mr-2"></span>
-                <span className="font-semibold text-sm">Annulées : {totalCanceledReservations}</span>
-              </li>
-            </ul>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {/* Statistiques des réservations */}
+          <div className="p-6 bg-white rounded shadow-md">
+            <h2 className="text-lg font-bold mb-2">Réservations</h2>
+            <p className="text-gray-700">
+              Total des réservations : <span className="font-semibold">{totalReservations}</span>
+            </p>
+            <p className="text-gray-700">
+              Confirmées : <span className="font-semibold text-green-500">{totalConfirmedReservations}</span>
+            </p>
+            <p className="text-gray-700">
+              En attente : <span className="font-semibold text-yellow-500">{totalWaitingReservations}</span>
+            </p>
+            <p className="text-gray-700">
+              Annulées : <span className="font-semibold text-red-500">{totalCanceledReservations}</span>
+            </p>
+          </div>
+
+          {/* Classement des tables les plus réservées */}
+          <div className="p-6 bg-white rounded shadow-md">
+            <h2 className="text-lg font-bold mb-4">Classement des tables les plus réservées</h2>
+            <table className="w-full text-left table-auto">
+              <thead>
+                <tr className="bg-gray-200">
+                  <th className="px-4 py-2">Table</th>
+                  <th className="px-4 py-2">Nombre de réservations</th>
+                </tr>
+              </thead>
+              <tbody>
+                {tableRankings.map((table, index) => (
+                  <tr key={index} className={index % 2 === 0 ? "bg-gray-100" : ""}>
+                    <td className="border px-4 py-2">{table.table}</td>
+                    <td className="border px-4 py-2">{table.timesBooked}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {/* Capacités les plus réservées */}
+          <div className="p-6 bg-white rounded shadow-md">
+            <h2 className="text-lg font-bold mb-4">Capacités les plus réservées</h2>
+            <table className="w-full text-left table-auto">
+              <thead>
+                <tr className="bg-gray-200">
+                  <th className="px-4 py-2">Capacité</th>
+                  <th className="px-4 py-2">Réservations</th>
+                </tr>
+              </thead>
+              <tbody>
+                {popularCapacities.map((capacity, index) => (
+                  <tr key={index} className={index % 2 === 0 ? "bg-gray-100" : ""}>
+                    <td className="border px-4 py-2">{capacity.capacity}</td>
+                    <td className="border px-4 py-2">{capacity.bookings}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {/* Nombre de personnes par réservation */}
+          <div className="p-6 bg-white rounded shadow-md">
+            <h2 className="text-lg font-bold mb-4">Nombre de personnes par réservation</h2>
+            <table className="w-full text-left table-auto">
+              <thead>
+                <tr className="bg-gray-200">
+                  <th className="px-4 py-2">Nombre de personnes</th>
+                  <th className="px-4 py-2">Nombre de réservations</th>
+                </tr>
+              </thead>
+              <tbody>
+                {peopleCounts.map((people, index) => (
+                  <tr key={index} className={index % 2 === 0 ? "bg-gray-100" : ""}>
+                    <td className="border px-4 py-2">{people.people}</td>
+                    <td className="border px-4 py-2">{people.count}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
       ) : (
