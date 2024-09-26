@@ -54,10 +54,11 @@ export const ClientList = ({ users }: ClientListProps) => {
         <table className="ml-12 w-full">
           <thead>
             <tr>
-              <th className="text-left flex items-center gap-1">Nom<span><FaSort onClick={handleSortToggle} className="cursor-pointer" /></span></th>
+              <th className="text-left"><span className='flex items-center'>Nom<FaSort onClick={handleSortToggle} className="cursor-pointer" /></span></th>
               <th className="text-left">Prénom</th>
               <th className="text-left">N° de téléphone</th>
-              <th className="text-left">Date d'inscription</th>
+              <th className="text-left">Adresse mail</th>
+              <th className="text-left">Inscrit depuis le</th>
             </tr>
           </thead>
           <tbody>
@@ -65,7 +66,8 @@ export const ClientList = ({ users }: ClientListProps) => {
               <tr key={user._id} onClick={() => handleUserClick(user)} className="hover:bg-gray-200 hover:cursor-pointer dark:hover:bg-dark-900 dark:hover:text-white">
                 <td>{user.lastname}</td>
                 <td>{user.firstname}</td>
-                <td className="py-1">{user.phone_number}</td>
+                <td>{user.phone_number}</td>
+                <td>{user.email}</td>
                 <td>{formatDateToFrench(user.created_at)}</td>
               </tr>
             ))}

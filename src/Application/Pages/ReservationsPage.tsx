@@ -79,7 +79,7 @@ export const ReservationsPage = () => {
       <h1 className="text-xl font-bold pt-12 pl-12">
         {selectedDate ? formatDateWithoutTime(selectedDate.toISOString()) : 'Sélectionnez une date'}
       </h1>
-      <h2 className="text-lg pl-12 mt-1">
+      <h2 className="text-lg pl-12 mt-1 mb-3">
         <span className="font-bold text-red-500 dark:text-white">{validReservations}</span> réservation{validReservations > 1 ? 's ' : ' '}
         | <span className="font-bold text-red-500 dark:text-white">{totalCovers}</span> couvert{totalCovers > 1 ? 's ' : ' '}
       </h2>

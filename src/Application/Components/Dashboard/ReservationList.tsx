@@ -76,17 +76,18 @@ export const ReservationList: React.FC<ReservationListProps> = ({ reservations }
 
   return (
     <div className="scrollable-container">
-      <table className="mt-7 ml-12">
+      <table className="ml-12">
         <thead>
           <tr>
-            <th className="text-left min-w-[100px] flex items-center gap-1 cursor-pointer" onClick={handleSortClick}>
-              Heure <FaSort />
+            <th className="text-left min-w-[100px]" onClick={handleSortClick}>
+              <span className='flex items-center gap-1 cursor-pointer'>Heure <FaSort /></span>
             </th>
             <th className="text-left min-w-[150px]">Nom</th>
             <th className="text-left min-w-[150px]">Prénom</th>
             <th className="text-center min-w-[150px]">Nbr de couverts</th>
             <th className="text-center min-w-[180px]">Table</th>
-            <th className="text-left flex items-center justify-left gap-1">Etat réservation<FaSort /></th>
+            <th className="text-left">
+            <span className='flex items-center gap-1 cursor-pointer'>Etat réservation<FaSort /></span></th>
           </tr>
         </thead>
         <tbody className="reservationlist">
