@@ -62,8 +62,8 @@ export const ClientsPage = () => {
 
   return (
     <div className="bg-light w-full min-h-screen flex flex-col">
-      <h1 className="text-xl font-bold pt-10 pl-12">Gestion des clients</h1>
-      <span className="dark:text-white pl-12">
+      <h1 className="text-xl font-bold pt-10 pl-10">Gestion des clients</h1>
+      <span className="dark:text-white pl-10">
         {isDataAvailable
           ? <h2 className="text-lg mt-1 mb-8">
               <span className="font-bold text-red-500 dark:text-white">{clientsCount}</span> {searchTerm.length > 0 ? clientsText : registeredText}

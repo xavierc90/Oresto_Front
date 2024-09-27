@@ -130,7 +130,7 @@ export const ReservationList: React.FC<ReservationListProps> = ({
               <th className="text-left max-w-[180px] hidden lg:table-cell">Détails</th>
               <th className="text-left max-w-[100px] hidden lg:table-cell">
                 <span className="flex items-center gap-1 cursor-pointer">
-                  État réservation <FaSort />
+                  Status <FaSort />
                 </span>
               </th>
             </tr>

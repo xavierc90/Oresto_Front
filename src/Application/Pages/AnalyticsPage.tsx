@@ -49,10 +49,10 @@ export const AnalyticsPage = () => {
   const isDataAvailable = totalReservations > 0;
 
   return (
-    <div className="bg-light w-full min-h-screen p-8">
+    <div className="bg-light w-full min-h-screen pl-10">
       {/* En-tête des statistiques */}
-      <div className="pb-6">
-        <h1 className="text-2xl font-bold">Statistiques</h1>
+      <div className="pt-10">
+        <h1 className="text-xl font-bold">Statistiques</h1>
         <span className="text-gray-500">
           {isDataAvailable ? "" : "Retrouvez les statistiques de votre restaurant sur cette page"}
         </span>

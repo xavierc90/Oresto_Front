@@ -177,7 +177,7 @@ export const SettingsPage = () => {
   };
 
   return (
-    <div className="bg-light text-black dark:text-white pt-12 pl-12">
+    <div className="bg-light text-black dark:text-white pt-10 pl-10">
       <h1 className="text-xl font-bold">Paramètres</h1>
       <h2 className="text-lg mt-1 mb-8">Gérer les paramètres principaux</h2>
 

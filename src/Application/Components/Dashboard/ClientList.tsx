@@ -118,9 +118,9 @@ export const ClientList = ({ users }: ClientListProps) => {
       <NotificationMessage message={errorMessage} type="error" />
 
       {sortedUsers.length === 0 ? (
-        <div className="ml-12 mt-8 text-sm">Aucun client trouvé</div>
+        <div className="ml-10 mt-8 text-sm">Aucun client trouvé</div>
       ) : (
-        <table className="ml-12 w-full">
+        <table className="ml-10 w-full">
           <thead>
             <tr>
               <th className="text-left"><span className='flex items-center'>Nom<FaSort onClick={handleSortToggle} className="cursor-pointer" /></span></th>
