@@ -17,7 +17,7 @@ export const ReservationList: React.FC<ReservationListProps> = ({ reservations }
   const [selectedReservation, setSelectedReservation] = useState<Reservation | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [hideCanceled, setHideCanceled] = useState(true); 
-  const [hideConfirmed, setHideConfirmed] = useState(false); // Nouvel état pour masquer les réservations confirmées
+  const [hideConfirmed, setHideConfirmed] = useState(true); // Nouvel état pour masquer les réservations confirmées
   const [notification, setNotification] = useState<{ message: string | null; type: 'success' | 'error' }>({ message: null, type: 'success' });
 
   const handleSortClick = () => {
@@ -84,8 +84,8 @@ export const ReservationList: React.FC<ReservationListProps> = ({ reservations }
 
   return (
     <div className="scrollable-container">
-      <div className='flex flex-col'>
-    <div className='absolute top-12 left-1/2 flex items-center justify-center gap-4'>
+      <div className='flex'>
+    <div className='absolute top-12 right-12 mr-12 pt-3 flex items-center gap-4'>
     <span>Filtrer par statut : </span>
       {/* Case à cocher pour masquer les réservations annulées */}
       <div className="flex pr-2">
@@ -115,6 +115,7 @@ export const ReservationList: React.FC<ReservationListProps> = ({ reservations }
             <th className="text-left min-w-[150px]">Prénom</th>
             <th className="text-center min-w-[150px]">Nbr de couverts</th>
             <th className="text-center min-w-[180px]">Table</th>
+            <th className="text-left min-w-[180px]">Détails</th>
             <th className="text-left">
             <span className='flex items-center gap-1 cursor-pointer'>Etat réservation<FaSort /></span></th>
           </tr>
@@ -131,6 +132,7 @@ export const ReservationList: React.FC<ReservationListProps> = ({ reservations }
               <td className="text-left">{reservation.user_id.firstname}</td>
               <td className="text-center">{reservation.nbr_persons} {reservation.nbr_persons > 1 ? 'personnes' : 'personne'}</td>
               <td className="text-center">{reservation.table && reservation.table_number || 'N/A'}</td>
+              <td className="text-left">{reservation.details || ''}</td>
               <td className="text-left"><StatusLabel status={reservation.status ? reservation.status : 'waiting'} /></td>
             </tr>
           ))}
