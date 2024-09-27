@@ -78,7 +78,7 @@ export const DashboardNav: React.FC<DashboardNavProps> = ({ restaurant }) => {
     : "../../../../public/img/logo-oresto-red.png";
 
   return (
-    <div className='bg-light justify-center gap-8 dark:bg-dark-900 dark:text-white w-80 h-screen flex flex-col items-center shadow-2xl'>
+    <div className='bg-light justify-center gap-8 dark:bg-dark-900 dark:text-white w-96 h-screen flex flex-col items-center shadow-2xl'>
       <div className='mt-4'>
         <a href='../dashboard/reservations'><img src={logoSrc} width="220px" alt="Oresto - Gestion des réservations" /></a>
         {restaurant && <h1 className='text-center pt-5 font-bold'>{restaurant.name}</h1>}
