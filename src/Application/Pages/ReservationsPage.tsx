@@ -1,3 +1,5 @@
+// ReservationsPage.tsx
+
 import { useEffect, useState, useCallback } from 'react';
 import { useOutletContext } from 'react-router-dom';
 import { ReservationList } from '../Components/Dashboard/ReservationList';
@@ -20,14 +22,55 @@ export const ReservationsPage = () => {
   const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
   const [reservations, setReservations] = useState<Reservation[]>([]);
 
+  // États des filtres
+  const [hideCanceled, setHideCanceled] = useState(true);
+  const [hideConfirmed, setHideConfirmed] = useState(false);
+  const [hideWaiting, setHideWaiting] = useState(false);
+
+  // Déplacer fetchReservations AVANT le useEffect
+  const fetchReservations = useCallback(
+    async (date: Date) => {
+      if (!token || !user || !restaurant) {
+        console.error(
+          "Token, utilisateur ou entreprise manquants. Impossible de récupérer les réservations."
+        );
+        return;
+      }
+
+      try {
+        const normalizedDate = new Date(
+          Date.UTC(date.getFullYear(), date.getMonth(), date.getDate())
+        );
+        const formattedDate = normalizedDate.toISOString().split('T')[0];
+
+        const response = await http.get(`/reservations/${formattedDate}`, {
+          headers: { Authorization: `Bearer ${token}` },
+          params: {
+            userId: user._id,
+            restaurantId: restaurant._id,
+          },
+        });
+        setReservations(response.data);
+      } catch (error: any) {
+        console.error('Erreur lors de la récupération des réservations:', error);
+        if (error.response && error.response.status === 401) {
+          console.error("Non autorisé. Redirection vers la page de connexion...");
+        }
+      }
+    },
+    [token, user, restaurant]
+  );
+
   useEffect(() => {
     document.title = 'Oresto - Réservations';
     if (!token || !user || !restaurant) {
-      console.error("Token, utilisateur ou entreprise manquants. Redirection vers la page de connexion...");
+      console.error(
+        "Token, utilisateur ou entreprise manquants. Redirection vers la page de connexion..."
+      );
       return;
     }
 
-    const subscription = dateService.getDate().subscribe(date => {
+    const subscription = dateService.getDate().subscribe((date) => {
       setSelectedDate(date);
       fetchReservations(date);
     });
@@ -35,51 +78,89 @@ export const ReservationsPage = () => {
     return () => {
       subscription.unsubscribe();
     };
-  }, [token, user, restaurant]);
+  }, [token, user, restaurant, fetchReservations]);
 
-  const fetchReservations = useCallback(async (date: Date) => {
-    if (!token || !user || !restaurant) {
-      console.error("Token, utilisateur ou entreprise manquants. Impossible de récupérer les réservations.");
-      return;
-    }
+  // Calculer les réservations en fonction des filtres
+  const filteredReservations = reservations.filter((reservation) => {
+    if (hideCanceled && reservation.status === 'canceled') return false;
+    if (hideConfirmed && reservation.status === 'confirmed') return false;
+    if (hideWaiting && reservation.status === 'waiting') return false;
+    return true;
+  });
 
-    try {
-      const normalizedDate = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
-      const formattedDate = normalizedDate.toISOString().split('T')[0];
+  const totalCovers = filteredReservations.reduce(
+    (sum, reservation) => sum + reservation.nbr_persons,
+    0
+  );
 
-      const response = await http.get(`/reservations/${formattedDate}`, {
-        headers: { Authorization: `Bearer ${token}` },
-        params: {
-          userId: user._id,
-          restaurantId: restaurant._id
-        }
-      });
-      setReservations(response.data);
-    } catch (error: any) {
-      console.error('Erreur lors de la récupération des réservations:', error);
-      if (error.response && error.response.status === 401) {
-        console.error("Non autorisé. Redirection vers la page de connexion...");
-      }
-    }
-  }, [token, user, restaurant]);
-
-  const totalCovers = reservations
-    .filter(reservation => reservation.status !== 'canceled')
-    .reduce((sum, reservation) => sum + reservation.nbr_persons, 0);
-
-  const validReservations = reservations.filter(reservation => reservation.status !== 'canceled').length;
+  const validReservations = filteredReservations.length;
 
   return (
     <div className="bg-light w-full">
-      <h1 className="text-xl font-bold pt-10 pl-12">
-        {selectedDate ? formatDateWithoutTime(selectedDate.toISOString()) : 'Sélectionnez une date'}
-      </h1>
-      <h2 className="text-lg pl-12 mt-1 mb-3">
-        <span className="font-bold text-red-500 dark:text-white">{validReservations}</span> réservation{validReservations > 1 ? 's ' : ' '}
-        | <span className="font-bold text-red-500 dark:text-white">{totalCovers}</span> couvert{totalCovers > 1 ? 's ' : ' '}
-      </h2>
+      <div className="text-xl font-bold pt-10 pl-12">
+        {selectedDate
+          ? formatDateWithoutTime(selectedDate.toISOString())
+          : 'Sélectionnez une date'}
+      </div>
+      <div className="flex items-center justify-between pl-12 pr-12 mt-1 mb-3">
+        <div className="text-lg">
+          <span className="font-bold text-red-500 dark:text-white">
+            {validReservations}
+          </span>{' '}
+          réservation{validReservations > 1 ? 's ' : ' '}
+          |{' '}
+          <span className="font-bold text-red-500 dark:text-white">
+            {totalCovers}
+          </span>{' '}
+          couvert{totalCovers > 1 ? 's ' : ' '}
+        </div>
+        <div className="flex items-center gap-4">
+          <span>Filtres :</span>
+          {/* Filtre pour "Annulées" */}
+          <label className="inline-flex items-center cursor-pointer">
+            <input
+              type="checkbox"
+              checked={!hideCanceled}
+              onChange={() => setHideCanceled((prev) => !prev)}
+              className="sr-only peer"
+            />
+            <div className="relative w-9 h-5 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-600 peer-checked:bg-red-500"></div>
+            <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">
+              Annulées
+            </span>
+          </label>
+
+          {/* Filtre pour "Confirmées" */}
+          <label className="inline-flex items-center cursor-pointer">
+            <input
+              type="checkbox"
+              checked={!hideConfirmed}
+              onChange={() => setHideConfirmed((prev) => !prev)}
+              className="sr-only peer"
+            />
+            <div className="relative w-9 h-5 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"></div>
+            <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">
+              Confirmées
+            </span>
+          </label>
+
+          {/* Filtre pour "En attente" */}
+          <label className="inline-flex items-center cursor-pointer">
+            <input
+              type="checkbox"
+              checked={!hideWaiting}
+              onChange={() => setHideWaiting((prev) => !prev)}
+              className="sr-only peer"
+            />
+            <div className="relative w-9 h-5 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-600 peer-checked:bg-amber-500"></div>
+            <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">
+              En attente
+            </span>
+          </label>
+        </div>
+      </div>
       <ReservationList
-        reservations={reservations}
+        reservations={filteredReservations}
         fetchReservations={fetchReservations}
         selectedDate={selectedDate}
       />

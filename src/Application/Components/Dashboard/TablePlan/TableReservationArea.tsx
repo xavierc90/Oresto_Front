@@ -110,13 +110,13 @@ export const TableReservationArea: React.FC<TableReservationAreaProps> = ({ sele
       case 'waiting':
         return { tableColor: '#F8D89C', tableSizeColor: '#DF9507' };
       case 'confirmed':
-        return { tableColor: '#7abefe', tableSizeColor: '#1f4f9e' };
+        return { tableColor: '#76c87a', tableSizeColor: '#59a25d' };
       case 'available':
-        return { tableColor: '#DFF3CA', tableSizeColor: '#73A741' };
+        return { tableColor: '#EAE5E5', tableSizeColor: '#B8BCBA' };
       case 'unavailable':
         return { tableColor: '#D3D3D3', tableSizeColor: '#A9A9A9' };
       default:
-        return { tableColor: '#DFF3CA', tableSizeColor: '#73A741' };
+        return { tableColor: '#F1F1F1', tableSizeColor: '#7F7F7F' };
     }
   };
 
@@ -292,7 +292,7 @@ export const TableReservationArea: React.FC<TableReservationAreaProps> = ({ sele
 
   return (
     <div
-      className="max-w-4/5 h-96 ml-12 p-4 border border-zinc-300 bg-zinc-50 dark:bg-dark-900 dark:border-dark-800 dark:text-black relative"
+      className="max-w-[900px] h-96 mx-auto p-4 border border-zinc-300 bg-zinc-50 dark:bg-dark-900 dark:border-dark-800 dark:text-black relative"
       style={{
         position: 'relative',
         overflow: 'hidden',
@@ -353,5 +353,6 @@ export const TableReservationArea: React.FC<TableReservationAreaProps> = ({ sele
         );
       })}
     </div>
+
   );
 };
