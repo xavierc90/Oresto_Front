@@ -88,7 +88,6 @@ export const ReservationsPage = () => {
         reservations={reservations}
         restaurant={restaurant}
         token={token}
-        status=''
       />
     </div>
   );

@@ -1,4 +1,13 @@
-export interface Table {
+export type TableId = {
+  _id: string;
+  restaurant_id: string;
+  created_by: string;
+  number: string;
+  capacity: number;
+  // Ajoutez d'autres propriétés si nécessaire
+}
+
+export type Table = {
   _id: string;
   restaurant_id: string;
   created_by: string;
@@ -11,6 +20,6 @@ export interface Table {
   position_y: number;
   rotate: number;
   created_at: string;
-  tabkle_id: string;
+  table_id: TableId; 
   __v: number;
 }

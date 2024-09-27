@@ -62,7 +62,7 @@ export const ClientsPage = () => {
 
   return (
     <div className="bg-light w-full min-h-screen flex flex-col">
-      <h1 className="text-xl font-bold pt-12 pl-12">Gestion des clients</h1>
+      <h1 className="text-xl font-bold pt-10 pl-12">Gestion des clients</h1>
       <span className="dark:text-white pl-12">
         {isDataAvailable
           ? <h2 className="text-lg mt-1 mb-8">

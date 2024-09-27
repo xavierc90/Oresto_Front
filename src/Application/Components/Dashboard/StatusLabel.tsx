@@ -13,12 +13,12 @@ export const StatusLabel: React.FC<StatusLabelProps> = ({ status }) => {
   switch (status) {
     case 'confirmed':
       statusText = 'Confirmée';
-      color = '#4CAF50';  // Vert
+      color = '#1E90FF';  // Bleu
       IconComponent = FaCheckCircle; // Icône check-circle pour le statut confirmé
       break;
     case 'canceled':
       statusText = 'Annulée';
-      color = '#B8BCBA';  // Gris
+      color = '#fe6161';  // Rouge
       IconComponent = FaTimesCircle; // Icône times-circle pour le statut annulé
       break;
     case 'waiting':

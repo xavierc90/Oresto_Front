@@ -4,18 +4,19 @@ import { Table } from '../../../../Module/Types/table.type';
 import { LuLayoutDashboard } from "react-icons/lu";
 import { Link } from 'react-router-dom';
 import { Reservation } from '../../../../Module/Types/reservation.type';
+import Tippy from '@tippyjs/react';
+import 'tippy.js/dist/tippy.css';
 
 interface TableReservationAreaProps {
   selectedDate: Date | null;
   restaurant: { _id: string };
   token: string | null;
   reservations: Reservation[];
-  status: string;
 }
 
 export const TableReservationArea: React.FC<TableReservationAreaProps> = ({ selectedDate, restaurant, token, reservations }) => {
-  const [tables, setTables] = useState<Table[]>([]); // État pour stocker les tables
-  const [loading, setLoading] = useState<boolean>(true); // Pour gérer le chargement des données
+  const [tables, setTables] = useState<Table[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     console.log('Tables dans TableReservation:', tables);
@@ -46,13 +47,13 @@ export const TableReservationArea: React.FC<TableReservationAreaProps> = ({ sele
           setTables(response.data.tables);
         } else {
           console.error('Données de réponse inattendues:', response.data);
-          setTables([]); // Réinitialise les tables si les données ne sont pas au format attendu
+          setTables([]);
         }
       } catch (error: any) {
         console.error('Erreur lors de la récupération des tables:', error.response?.data || error.message);
-        setTables([]); // Réinitialise les tables en cas d'erreur
+        setTables([]);
       } finally {
-        setLoading(false); // Arrête le chargement des données
+        setLoading(false);
       }
     };
 
@@ -61,9 +62,8 @@ export const TableReservationArea: React.FC<TableReservationAreaProps> = ({ sele
     } else {
       setLoading(false);
     }
-  }, [selectedDate, restaurant, token, reservations]);
+  }, [selectedDate, restaurant, token]);
 
-  // Rendu conditionnel pour afficher le message si aucune table n'existe
   if (loading) {
     return <p>Chargement des tables...</p>;
   }
@@ -87,33 +87,62 @@ export const TableReservationArea: React.FC<TableReservationAreaProps> = ({ sele
     );
   }
 
-  // Fonction pour définir la couleur en fonction du statut
-  const getColorByStatus = (status: string) => {
-    switch (status) {
-      case 'waiting':
-        return { tableColor: '#F8D89C', tableSizeColor: '#DF9507' }; // Orange pour waiting
+  // Fonction pour traduire le statut en français
+  const translateStatus = (status: string) => {
+    switch (status.toLowerCase()) {
       case 'confirmed':
-        return { tableColor: '#FAD8D8', tableSizeColor: '#DB9E9E' }; // Rouge pour confirmed
+        return 'confirmée';
+      case 'waiting':
+        return 'en attente';
+      case 'canceled':
+        return 'annulée';
       case 'available':
-        return { tableColor: '#DFF3CA', tableSizeColor: '#73A741' }; // Vert pour available
+        return 'disponible';
       case 'unavailable':
-        return { tableColor: '#D3D3D3', tableSizeColor: '#A9A9A9' }; // Gris pour unavailable
+        return 'indisponible';
       default:
-        return { tableColor: '#DFF3CA', tableSizeColor: '#73A741' }; // Default (blanc et noir)
+        return status;
     }
   };
 
-  // Fonction pour chercher le statut de la table dans les réservations
-  const getTableStatus = (table_id: string) => {
-    const reservation = reservations.find(r => r.table_id === table_id);
-    if (reservation) {
-      return reservation.status;
+  const getColorByStatus = (status: string) => {
+    switch (status.toLowerCase()) {
+      case 'waiting':
+        return { tableColor: '#F8D89C', tableSizeColor: '#DF9507' };
+      case 'confirmed':
+        return { tableColor: '#7abefe', tableSizeColor: '#1f4f9e' };
+      case 'available':
+        return { tableColor: '#DFF3CA', tableSizeColor: '#73A741' };
+      case 'unavailable':
+        return { tableColor: '#D3D3D3', tableSizeColor: '#A9A9A9' };
+      default:
+        return { tableColor: '#DFF3CA', tableSizeColor: '#73A741' };
     }
-    return 'available'; // Par défaut, la table est disponible si aucune réservation
+  };
+
+  const getTableStatus = (table: Table) => {
+    const tableIdToMatch = table.table_id ? table.table_id._id : table._id;
+    const tableReservations = reservations.filter(r => r.table_id === tableIdToMatch && r.status !== 'canceled');
+
+    if (tableReservations.length > 0) {
+      if (tableReservations.some(r => r.status.toLowerCase() === 'confirmed')) {
+        return 'confirmed';
+      }
+      if (tableReservations.some(r => r.status.toLowerCase() === 'waiting')) {
+        return 'waiting';
+      }
+    }
+    return 'available';
+  };
+
+  const getReservationsForTable = (table: Table) => {
+    const tableIdToMatch = table.table_id ? table.table_id._id : table._id;
+    const tableReservations = reservations.filter(r => r.table_id === tableIdToMatch && r.status !== 'canceled');
+    return tableReservations;
   };
 
   const renderTableSVG = (table: Table) => {
-    const status = getTableStatus(table._id);
+    const status = getTableStatus(table);
     const { tableColor, tableSizeColor } = getColorByStatus(status);
 
     const rotation = table.rotate || 0;
@@ -128,7 +157,7 @@ export const TableReservationArea: React.FC<TableReservationAreaProps> = ({ sele
               viewBox="0 0 123 74"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
-              style={{ transform: `rotate(${rotation}deg)` }} // Applique la rotation
+              style={{ transform: `rotate(${rotation}deg)` }}
             >
               <ellipse cx="32.3326" cy="8.25806" rx="7.5806" ry="7.37635" fill={tableSizeColor} />
               <ellipse cx="32.3326" cy="66.2533" rx="7.5806" ry="7.37634" fill={tableSizeColor} />
@@ -146,7 +175,7 @@ export const TableReservationArea: React.FC<TableReservationAreaProps> = ({ sele
               viewBox="0 0 123 74"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
-              style={{ transform: `rotate(${rotation}deg)` }} // Applique la rotation
+              style={{ transform: `rotate(${rotation}deg)` }}
             >
               <ellipse cx="22.3326" cy="8.25806" rx="7.5806" ry="7.37635" fill={tableSizeColor} />
               <ellipse cx="22.3326" cy="66.2533" rx="7.5806" ry="7.37634" fill={tableSizeColor} />
@@ -166,7 +195,7 @@ export const TableReservationArea: React.FC<TableReservationAreaProps> = ({ sele
               viewBox="0 0 153 74"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
-              style={{ transform: `rotate(${rotation}deg)` }} // Applique la rotation
+              style={{ transform: `rotate(${rotation}deg)` }}
             >
               <ellipse cx="37.3326" cy="8.25806" rx="7.5806" ry="7.37635" fill={tableSizeColor} />
               <ellipse cx="37.3326" cy="66.2533" rx="7.5806" ry="7.37634" fill={tableSizeColor} />
@@ -191,7 +220,7 @@ export const TableReservationArea: React.FC<TableReservationAreaProps> = ({ sele
               viewBox="0 0 70 85"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
-              style={{ transform: `rotate(${rotation}deg)` }} // Applique la rotation
+              style={{ transform: `rotate(${rotation}deg)` }}
             >
               <ellipse cx="35.5806" cy="7.37634" rx="7.5806" ry="7.37634" fill={tableSizeColor} />
               <ellipse cx="35.5806" cy="77.3763" rx="7.5806" ry="7.37634" fill={tableSizeColor} />
@@ -207,7 +236,7 @@ export const TableReservationArea: React.FC<TableReservationAreaProps> = ({ sele
               viewBox="0 0 86 85"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
-              style={{ transform: `rotate(${rotation}deg)` }} // Applique la rotation
+              style={{ transform: `rotate(${rotation}deg)` }}
             >
               <ellipse cx="43.5806" cy="7.37634" rx="7.5806" ry="7.37634" fill={tableSizeColor} />
               <ellipse cx="43.5806" cy="77.3763" rx="7.5806" ry="7.37634" fill={tableSizeColor} />
@@ -228,7 +257,7 @@ export const TableReservationArea: React.FC<TableReservationAreaProps> = ({ sele
               viewBox="0 0 70 90"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
-              style={{ transform: `rotate(${rotation}deg)` }} // Applique la rotation
+              style={{ transform: `rotate(${rotation}deg)` }}
             >
               <ellipse cx="35.5806" cy="7.37634" rx="7.5806" ry="7.37634" fill={tableSizeColor} />
               <ellipse cx="35.5806" cy="82.3763" rx="7.5806" ry="7.37634" fill={tableSizeColor} />
@@ -244,7 +273,7 @@ export const TableReservationArea: React.FC<TableReservationAreaProps> = ({ sele
               viewBox="0 0 87 86"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
-              style={{ transform: `rotate(${rotation}deg)` }} // Applique la rotation
+              style={{ transform: `rotate(${rotation}deg)` }}
             >
               <ellipse cx="43.5806" cy="7.37634" rx="7.5806" ry="7.37634" fill={tableSizeColor} />
               <ellipse cx="7.5806" cy="44.3763" rx="7.5806" ry="7.37634" fill={tableSizeColor} />
@@ -262,29 +291,67 @@ export const TableReservationArea: React.FC<TableReservationAreaProps> = ({ sele
   };
 
   return (
-    <div className="max-w-4/5 h-96 ml-12 p-4 border border-zinc-300 bg-zinc-50 dark:bg-dark-900 dark:border-dark-800 dark:text-black relative"
+    <div
+      className="max-w-4/5 h-96 ml-12 p-4 border border-zinc-300 bg-zinc-50 dark:bg-dark-900 dark:border-dark-800 dark:text-black relative"
       style={{
         position: 'relative',
         overflow: 'hidden',
         background: 'repeating-linear-gradient(0deg, transparent, transparent 19px, rgba(0,0,0,0.1) 20px), repeating-linear-gradient(-90deg, transparent, transparent 19px, rgba(0,0,0,0.1) 20px)',
       }}
     >
-      {tables.map((table) => (
-        <div
-          key={table._id}
-          className="table-container"
-          style={{
-            position: 'absolute',
-            left: `${table.position_x}px`, // Utilise la position_x de la base de données
-            top: `${table.position_y}px`, // Utilise la position_y de la base de données
-          }}
-        >
-          {renderTableSVG(table)}
-          <div className="number-circle">
-            <span>{table.number}</span> {/* Corrigé pour utiliser `number` */}
+      {tables.map((table) => {
+        const reservationsForTable = getReservationsForTable(table);
+
+        // Contenu du tooltip
+        const content = (
+          <div>
+            <strong>Table n°{table.number}</strong>
+            {reservationsForTable.length > 0 ? (
+              reservationsForTable.map((reservation) => (
+                <div key={reservation._id} className="mb-2 mt-2">
+                  <strong>{reservation.user_id.firstname} {reservation.user_id.lastname}</strong><br />
+                  {reservation.nbr_persons} {reservation.nbr_persons > 1 ? 'personnes' : 'personne'}<br />
+                  {reservation.time_selected}<br />
+                  {reservation.details && (
+  <>
+    {reservation.details}<br />
+  </>
+)}
+
+                  Réservation {translateStatus(reservation.status)}
+                </div>
+              ))
+            ) : (
+              <div>Aucune réservation</div>
+            )}
           </div>
-        </div>
-      ))}
+        );
+
+        return (
+          <Tippy
+            key={table._id}
+            content={content}
+            placement="auto"
+            arrow={true}
+            delay={[0, 0]}
+            interactive={true}
+          >
+            <div
+              className="table-container"
+              style={{
+                position: 'absolute',
+                left: `${table.position_x}px`,
+                top: `${table.position_y}px`,
+              }}
+            >
+              {renderTableSVG(table)}
+              <div className="number-circle">
+                <span>{table.number}</span>
+              </div>
+            </div>
+          </Tippy>
+        );
+      })}
     </div>
   );
 };
