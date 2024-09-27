@@ -135,7 +135,7 @@ export const ClientList = ({ users }: ClientListProps) => {
     <tr
       key={user._id}
       onClick={() => handleUserClick(user)}
-      className={`hover:bg-gray-200 hover:cursor-pointer dark:hover:bg-dark-900 dark:hover:text-white ${index % 2 === 0 ? 'bg-gray-100' : ''}`}
+      className={`hover:bg-gray-200 hover:cursor-pointer dark:hover:bg-dark-900 dark:hover:text-white ${index % 2 === 0 ? 'bg-gray-100 ' : ''}`}
     >
       <td className="py-1">{user.lastname}</td>
       <td>{user.firstname}</td>

@@ -286,7 +286,7 @@ export const TablePlanArea: React.FC<TableAreaProps> = ({ restaurant, token, tab
 
   return (
     <div
-      className="table-plan max-w-4/5 h-96 ml-12 mt-6 border border-zinc-300 dark:bg-dark-900 dark:border-dark-800 dark:text-black"
+      className="table-plan w-100 h-96 lg:h-[350px] mx-auto mt-5 border border-zinc-300 bg-zinc-50 dark:bg-dark-900 dark:border-dark-800 dark:text-black relative"
       style={{
         position: 'relative',
         overflow: 'hidden',

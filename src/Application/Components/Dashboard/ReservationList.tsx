@@ -111,23 +111,24 @@ export const ReservationList: React.FC<ReservationListProps> = ({
   });
 
   return (
-    <div className='pt-3'>
+    <div>
       {/* Conteneur du tableau des réservations */}
       <div className="scrollable-container">
-        <table className="ml-12">
+        <table className="ml-12 w-full">
           <thead>
             <tr>
-              <th className="text-left min-w-[100px]" onClick={handleSortClick}>
+              <th className="text-left min-w-[50px]" onClick={handleSortClick}>
                 <span className="flex items-center gap-1 cursor-pointer">
                   Heure <FaSort />
                 </span>
               </th>
-              <th className="text-left min-w-[150px]">Nom</th>
-              <th className="text-left min-w-[150px]">Prénom</th>
-              <th className="text-center min-w-[150px]">Nbr de couverts</th>
-              <th className="text-center min-w-[180px]">Table</th>
-              <th className="text-left min-w-[180px]">Détails</th>
-              <th className="text-left">
+              <th className="text-left max-w-[100px]">Nom</th>
+              <th className="text-left max-w-[100px]">Prénom</th>
+              <th className="text-center max-w-[150px]">Nbr de couverts</th>
+              <th className="text-center max-w-[180px]">Table</th>
+              {/* Cacher la colonne "Détails" sur les petits écrans */}
+              <th className="text-left max-w-[180px] hidden lg:table-cell">Détails</th>
+              <th className="text-left max-w-[200px] hidden lg:table-cell">
                 <span className="flex items-center gap-1 cursor-pointer">
                   État réservation <FaSort />
                 </span>
@@ -135,34 +136,39 @@ export const ReservationList: React.FC<ReservationListProps> = ({
             </tr>
           </thead>
           <tbody className="reservationlist">
-            {sortedReservations.map((reservation) => (
-              <tr
-                key={reservation._id}
-                className="hover:bg-gray-200 hover:cursor-pointer dark:hover:bg-dark-900 dark:hover:text-white"
-                onClick={() => handleReservationClick(reservation)}
-              >
-                <td className="text-left">{reservation.time_selected}</td>
-                <td className="text-left">{reservation.user_id.lastname}</td>
-                <td className="text-left">{reservation.user_id.firstname}</td>
-                <td className="text-center">
-                  {reservation.nbr_persons}{' '}
-                  {reservation.nbr_persons > 1 ? 'personnes' : 'personne'}
-                </td>
-                <td className="text-center">
-                  {(reservation.table && reservation.table_number) || 'N/A'}
-                </td>
-                <td className="text-left">{reservation.details || ''}</td>
-                <td className="text-left">
-                  <StatusLabel status={reservation.status ? reservation.status : 'waiting'} />
-                </td>
-              </tr>
-            ))}
+            {sortedReservations.map((reservation, index) => {
+              // Alternance des couleurs de fond
+              const rowBackground = index % 2 === 1 ? 'bg-white' : 'bg-gray-100';
+
+              return (
+                <tr
+                  key={reservation._id}
+                  className={`hover:bg-gray-200 hover:cursor-pointer dark:hover:bg-dark-900 dark:hover:text-white ${rowBackground}`}
+                  onClick={() => handleReservationClick(reservation)}
+                >
+                  <td className="text-left">{reservation.time_selected}</td>
+                  <td className="text-left">{reservation.user_id.lastname}</td>
+                  <td className="text-left">{reservation.user_id.firstname}</td>
+                  <td className="text-center">
+                    {reservation.nbr_persons}{' '}
+                    {reservation.nbr_persons > 1 ? 'personnes' : 'personne'}
+                  </td>
+                  <td className="text-center">
+                    {(reservation.table && reservation.table_number) || 'N/A'}
+                  </td>
+                  {/* Cacher la colonne "Détails" sur les petits écrans */}
+                  <td className="text-left hidden lg:table-cell">{reservation.details || ''}</td>
+                  <td className="text-left">
+                    <StatusLabel status={reservation.status ? reservation.status : 'waiting'} />
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
 
         {/* Modal */}
         {isModalOpen && selectedReservation && (
-          // ... Votre code pour le modal
           <div
             className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
             onClick={handleCloseModal}

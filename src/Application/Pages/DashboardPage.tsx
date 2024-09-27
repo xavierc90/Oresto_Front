@@ -34,7 +34,7 @@ export const DashboardPage = () => {
   return (
     <div className='flex dark:bg-dark-800 dark:text-white'>
       <DashboardNav restaurant={restaurant} />
-      <div className='w-9/12'>
+      <div className='w-full'>
         <Outlet context={{ user, restaurant, token }} />
       </div>
       {/* <div className="flex absolute right-12 mr-4 top-10 gap-2">

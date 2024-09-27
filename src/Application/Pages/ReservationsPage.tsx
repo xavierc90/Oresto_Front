@@ -23,7 +23,7 @@ export const ReservationsPage = () => {
   const [reservations, setReservations] = useState<Reservation[]>([]);
 
   // États des filtres
-  const [hideCanceled, setHideCanceled] = useState(true);
+  const [hideCanceled, setHideCanceled] = useState(false);
   const [hideConfirmed, setHideConfirmed] = useState(false);
   const [hideWaiting, setHideWaiting] = useState(false);
 
@@ -102,7 +102,7 @@ export const ReservationsPage = () => {
           ? formatDateWithoutTime(selectedDate.toISOString())
           : 'Sélectionnez une date'}
       </div>
-      <div className="flex items-center justify-between pl-12 pr-12 mt-1 mb-3">
+      <div className="flex items-center justify-between pl-12 mt-1 mb-3">
         <div className="text-lg">
           <span className="font-bold text-red-500 dark:text-white">
             {validReservations}
@@ -114,8 +114,8 @@ export const ReservationsPage = () => {
           </span>{' '}
           couvert{totalCovers > 1 ? 's ' : ' '}
         </div>
-        <div className="flex items-center gap-4">
-          <span>Filtres :</span>
+        <div className="flex items-center pr-12 gap-4">
+          <span>Filtrer par status :</span>
           {/* Filtre pour "Annulées" */}
           <label className="inline-flex items-center cursor-pointer">
             <input
