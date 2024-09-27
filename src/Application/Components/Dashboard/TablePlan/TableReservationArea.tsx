@@ -292,7 +292,7 @@ export const TableReservationArea: React.FC<TableReservationAreaProps> = ({ sele
 
   return (
     <div
-      className="w-100 lg:h-96 mx-auto border border-zinc-300 bg-zinc-50 dark:bg-dark-900 dark:border-dark-800 dark:text-black relative"
+      className="w-100 h-96 mx-auto border border-zinc-300 bg-zinc-50 dark:bg-dark-900 dark:border-dark-800 dark:text-black relative"
       style={{
         position: 'relative',
         overflow: 'hidden',
