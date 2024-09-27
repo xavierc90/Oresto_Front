@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { FaSort } from "react-icons/fa";
-import { FaCheck } from "react-icons/fa";
+import { FaSort, FaCheck } from "react-icons/fa";
 import { http } from '../../../Infrastructure/Http/axios.instance';
 import { NotificationMessage } from '../NotificationMessage';
 import { StatusLabel } from './StatusLabel';
@@ -10,14 +9,16 @@ import { Reservation } from '../../../Module/Types/reservation.type';
 
 interface ReservationListProps {
   reservations: Reservation[];
+  fetchReservations: (date: Date) => void;
+  selectedDate: Date | null;
 }
 
-export const ReservationList: React.FC<ReservationListProps> = ({ reservations }) => {
+export const ReservationList: React.FC<ReservationListProps> = ({ reservations, fetchReservations, selectedDate }) => {
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
   const [selectedReservation, setSelectedReservation] = useState<Reservation | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [hideCanceled, setHideCanceled] = useState(true); 
-  const [hideConfirmed, setHideConfirmed] = useState(true); // Nouvel état pour masquer les réservations confirmées
+  const [hideConfirmed, setHideConfirmed] = useState(true);
   const [notification, setNotification] = useState<{ message: string | null; type: 'success' | 'error' }>({ message: null, type: 'success' });
 
   const handleSortClick = () => {
@@ -41,6 +42,10 @@ export const ReservationList: React.FC<ReservationListProps> = ({ reservations }
         const response = await http.post(`/confirm_reservation/${selectedReservation._id}`);
         if (response.status === 200) {
           setNotification({ message: `Réservation au nom de ${selectedReservation.user_id.lastname} confirmée avec succès.`, type: 'success' });
+          // Recharger les réservations
+          if (selectedDate) {
+            fetchReservations(selectedDate);
+          }
         } else {
           setNotification({ message: "Erreur lors de la confirmation de la réservation.", type: 'error' });
         }
@@ -58,6 +63,10 @@ export const ReservationList: React.FC<ReservationListProps> = ({ reservations }
         const response = await http.post(`/cancel_reservation/${selectedReservation._id}`);
         if (response.status === 200) {
           setNotification({ message: "La réservation a été annulée avec succès.", type: 'success' });
+          // Recharger les réservations
+          if (selectedDate) {
+            fetchReservations(selectedDate);
+          }
         } else {
           setNotification({ message: "Erreur lors de l'annulation de la réservation.", type: 'error' });
         }
@@ -76,7 +85,6 @@ export const ReservationList: React.FC<ReservationListProps> = ({ reservations }
     return sortOrder === 'asc' ? timeA.localeCompare(timeB) : timeB.localeCompare(timeA);
   });
 
-  // Filtrer les réservations annulées et confirmées
   const filteredReservations = sortedReservations.filter(reservation => 
     (hideCanceled || reservation.status !== 'canceled') && 
     (hideConfirmed || reservation.status !== 'confirmed')
@@ -85,25 +93,25 @@ export const ReservationList: React.FC<ReservationListProps> = ({ reservations }
   return (
     <div className="scrollable-container">
       <div className='flex'>
-    <div className='absolute top-12 right-12 mr-12 pt-3 flex items-center gap-4'>
-    <span>Filtrer par statut : </span>
-      {/* Case à cocher pour masquer les réservations annulées */}
-      <div className="flex pr-2">
-        <label className="inline-flex items-center cursor-pointer">
-          <input type="checkbox" checked={hideCanceled} onChange={() => setHideCanceled(prev => !prev)} className="sr-only peer" />
-          <div className="relative w-9 h-5 bg-gray-200 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"></div>
-          <span className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Annulées</span>
-        </label>
-      </div>
+        <div className='absolute top-12 right-12 mr-12 flex items-center gap-4'>
+          <span>Filtrer par statut : </span>
+          {/* Case à cocher pour masquer les réservations annulées */}
+          <div className="flex pr-2">
+            <label className="inline-flex items-center cursor-pointer">
+              <input type="checkbox" checked={hideCanceled} onChange={() => setHideCanceled(prev => !prev)} className="sr-only peer" />
+              <div className="relative w-9 h-5 bg-gray-200 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"></div>
+              <span className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Annulées</span>
+            </label>
+          </div>
 
-      {/* Case à cocher pour masquer les réservations confirmées */}
-        <label className="inline-flex items-center cursor-pointer">
-          <input type="checkbox" checked={hideConfirmed} onChange={() => setHideConfirmed(prev => !prev)} className="sr-only peer" />
-          <div className="relative w-9 h-5 bg-gray-200 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"></div>
-          <span className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Confirmées</span>
-        </label>
-    </div>
-    </div>
+          {/* Case à cocher pour masquer les réservations confirmées */}
+          <label className="inline-flex items-center cursor-pointer">
+            <input type="checkbox" checked={hideConfirmed} onChange={() => setHideConfirmed(prev => !prev)} className="sr-only peer" />
+            <div className="relative w-9 h-5 bg-gray-200 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"></div>
+            <span className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Confirmées</span>
+          </label>
+        </div>
+      </div>
 
       <table className="ml-12">
         <thead>
@@ -117,7 +125,8 @@ export const ReservationList: React.FC<ReservationListProps> = ({ reservations }
             <th className="text-center min-w-[180px]">Table</th>
             <th className="text-left min-w-[180px]">Détails</th>
             <th className="text-left">
-            <span className='flex items-center gap-1 cursor-pointer'>Etat réservation<FaSort /></span></th>
+              <span className='flex items-center gap-1 cursor-pointer'>État réservation <FaSort /></span>
+            </th>
           </tr>
         </thead>
         <tbody className="reservationlist">
@@ -149,7 +158,7 @@ export const ReservationList: React.FC<ReservationListProps> = ({ reservations }
             className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg w-full max-w-md relative"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Close icon */}
+            {/* Icône de fermeture */}
             <button 
               className="absolute top-4 right-4 text-gray-700 hover:text-black dark:text-white dark:hover:text-white"
               onClick={handleCloseModal}
@@ -162,17 +171,17 @@ export const ReservationList: React.FC<ReservationListProps> = ({ reservations }
               <h3 className='flex justify-center text-md font-semibold py-6 rounded-2xl lg:w-3/3'><StatusLabel status={selectedReservation.status} /></h3>
             </div>
             <div className='flex flex-col justify-center items-center'>
-            <ul className="list-none pl-5 space-y-1">
-              <li><strong>Au nom de :</strong> {selectedReservation.user_id.firstname} {selectedReservation.user_id.lastname}</li>
-              <li><strong>Email :</strong> {selectedReservation.user_id.email}</li>
-              <li><strong>N° de téléphone :</strong> {selectedReservation.user_id.phone_number}</li>
-              <li><strong>Allergènes :</strong> {Array.isArray(selectedReservation.user_id.allergens) && selectedReservation.user_id.allergens.length > 0 ? selectedReservation.user_id.allergens.join(', ') : 'Aucune allergie signalée'}</li>
-              <li><strong>Heure :</strong> {selectedReservation.time_selected}</li>
-              <li><strong>Date :</strong> {new Date(selectedReservation.date_selected).toLocaleDateString()}</li>
-              <li><strong>Nombre de couverts :</strong> {selectedReservation.nbr_persons}</li>
-              <li><strong>Table :</strong> {selectedReservation.table && selectedReservation.table_number || 'N/A'}</li>
-              <li><strong>Détails :</strong> {selectedReservation.details || 'Aucun'}</li>
-            </ul>
+              <ul className="list-none pl-5 space-y-1">
+                <li><strong>Au nom de :</strong> {selectedReservation.user_id.firstname} {selectedReservation.user_id.lastname}</li>
+                <li><strong>Email :</strong> {selectedReservation.user_id.email}</li>
+                <li><strong>N° de téléphone :</strong> {selectedReservation.user_id.phone_number}</li>
+                <li><strong>Allergènes :</strong> {Array.isArray(selectedReservation.user_id.allergens) && selectedReservation.user_id.allergens.length > 0 ? selectedReservation.user_id.allergens.join(', ') : 'Aucune allergie signalée'}</li>
+                <li><strong>Heure :</strong> {selectedReservation.time_selected}</li>
+                <li><strong>Date :</strong> {new Date(selectedReservation.date_selected).toLocaleDateString()}</li>
+                <li><strong>Nombre de couverts :</strong> {selectedReservation.nbr_persons}</li>
+                <li><strong>Table :</strong> {selectedReservation.table && selectedReservation.table_number || 'N/A'}</li>
+                <li><strong>Détails :</strong> {selectedReservation.details || 'Aucun'}</li>
+              </ul>
             </div>
             <div className="mt-8 flex justify-center gap-4 ">
               {selectedReservation.status !== 'confirmed' && (

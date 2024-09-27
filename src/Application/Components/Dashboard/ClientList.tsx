@@ -149,7 +149,7 @@ export const ClientList = ({ users }: ClientListProps) => {
       )}
 
       {isModalOpen && selectedUser && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50" onClick={handleCloseModal}>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-80" onClick={handleCloseModal}>
           <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg w-full max-w-lg relative" onClick={e => e.stopPropagation()}>
             <button className="absolute top-4 right-4 text-gray-700 hover:text-black" onClick={handleCloseModal}>
               <RxCross1 size={25} />

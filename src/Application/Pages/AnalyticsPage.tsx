@@ -79,12 +79,12 @@ export const AnalyticsPage = () => {
 
           {/* Classement des tables les plus réservées */}
           <div className="p-6 bg-white rounded shadow-md">
-            <h2 className="text-lg font-bold mb-4">Classement des tables les plus réservées</h2>
+            <h2 className="text-lg font-bold mb-4">Les tables les plus réservées</h2>
             <table className="w-full text-left table-auto">
               <thead>
                 <tr className="bg-gray-200">
                   <th className="px-4 py-2">Table</th>
-                  <th className="px-4 py-2">Nombre de réservations</th>
+                  <th className="px-4 py-2">Nbr de réservations</th>
                 </tr>
               </thead>
               <tbody>
@@ -121,7 +121,7 @@ export const AnalyticsPage = () => {
 
           {/* Nombre de personnes par réservation */}
           <div className="p-6 bg-white rounded shadow-md">
-            <h2 className="text-lg font-bold mb-4">Nombre de personnes par réservation</h2>
+            <h2 className="text-lg font-bold mb-4">Personnes par réservation</h2>
             <table className="w-full text-left table-auto">
               <thead>
                 <tr className="bg-gray-200">
