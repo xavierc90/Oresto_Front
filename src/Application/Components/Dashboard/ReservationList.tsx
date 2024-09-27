@@ -114,7 +114,7 @@ export const ReservationList: React.FC<ReservationListProps> = ({
     <div>
       {/* Conteneur du tableau des réservations */}
       <div className="scrollable-container">
-        <table className="ml-12 w-full">
+        <table className="ml-10 w-full">
           <thead>
             <tr>
               <th className="text-left min-w-[50px]" onClick={handleSortClick}>

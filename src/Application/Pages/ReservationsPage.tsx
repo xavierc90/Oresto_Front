@@ -97,12 +97,12 @@ export const ReservationsPage = () => {
 
   return (
     <div className="bg-light w-full">
-      <div className="text-xl font-bold pt-10 pl-12">
+      <div className="text-xl font-bold pt-10 pl-10">
         {selectedDate
           ? formatDateWithoutTime(selectedDate.toISOString())
           : 'Sélectionnez une date'}
       </div>
-      <div className="flex items-center justify-between pl-12 mt-1 mb-3">
+      <div className="flex items-center justify-between pl-10 mt-1 mb-3">
         <div className="text-lg">
           <span className="font-bold text-red-500 dark:text-white">
             {validReservations}
@@ -130,20 +130,6 @@ export const ReservationsPage = () => {
             </span>
           </label>
 
-          {/* Filtre pour "Confirmées" */}
-          <label className="inline-flex items-center cursor-pointer">
-            <input
-              type="checkbox"
-              checked={!hideConfirmed}
-              onChange={() => setHideConfirmed((prev) => !prev)}
-              className="sr-only peer"
-            />
-            <div className="relative w-9 h-5 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"></div>
-            <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">
-              Confirmées
-            </span>
-          </label>
-
           {/* Filtre pour "En attente" */}
           <label className="inline-flex items-center cursor-pointer">
             <input
@@ -157,6 +143,21 @@ export const ReservationsPage = () => {
               En attente
             </span>
           </label>
+
+                    {/* Filtre pour "Confirmées" */}
+                    <label className="inline-flex items-center cursor-pointer">
+            <input
+              type="checkbox"
+              checked={!hideConfirmed}
+              onChange={() => setHideConfirmed((prev) => !prev)}
+              className="sr-only peer"
+            />
+            <div className="relative w-9 h-5 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"></div>
+            <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">
+              Confirmées
+            </span>
+          </label>
+          
         </div>
       </div>
       <ReservationList
