@@ -192,7 +192,7 @@ input::placeholder {
 /* Calendrier */
 
 .calendar {
-    height: 250px;
+    height: 255px;
     overflow: hidden; /* Pour éviter tout débordement */
     padding: 0;
 }

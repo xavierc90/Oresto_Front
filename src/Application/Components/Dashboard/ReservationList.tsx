@@ -111,7 +111,7 @@ export const ReservationList: React.FC<ReservationListProps> = ({
   });
 
   return (
-    <div>
+    <div className='mt-5'>
       {/* Conteneur du tableau des réservations */}
       <div className="scrollable-container">
         <table className="ml-10 w-full">
