@@ -224,9 +224,6 @@ padding: 0 10px; /* Ajuster l'espacement si nécessaire */
   flex-grow: 1; /* Permet au mois de prendre l'espace central disponible */
 }
 
-.rdp-day_button {
-  border-radius: 10px;
-}
 
 .rdp-root {
   position: relative;
@@ -382,6 +379,7 @@ background: none; /* Retirer l'arrière-plan */
   .rectangle-table {
     max-height: 120px; /* Taille maximale pour les tables rectangulaires */
   }
+  
 
 /* Version responsive */
 

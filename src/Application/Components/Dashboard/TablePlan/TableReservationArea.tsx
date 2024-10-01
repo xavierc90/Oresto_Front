@@ -1,3 +1,5 @@
+// TableReservationArea.tsx
+
 import React, { useEffect, useState } from 'react';
 import { http } from '../../../../Infrastructure/Http/axios.instance';
 import { Table } from '../../../../Module/Types/table.type';
@@ -89,7 +91,6 @@ export const TableReservationArea: React.FC<TableReservationAreaProps> = ({ sele
     );
   }
 
-  // **Supprimer la redéclaration de translateStatus**
   // Gardez une seule déclaration de la fonction translateStatus
   const translateStatus = (status: string) => {
     switch (status.toLowerCase()) {
@@ -148,7 +149,7 @@ export const TableReservationArea: React.FC<TableReservationAreaProps> = ({ sele
     const status = getTableStatus(table);
     const { tableColor, tableSizeColor } = getColorByStatus(status);
 
-    // **Accès direct aux propriétés de la table sans passer par table.table_id**
+    // Accès direct aux propriétés de la table sans passer par table.table_id
     const rotation = table.rotate || 0;
     const tableNumber = table.number;
     const tableCapacity = table.capacity;
@@ -319,6 +320,7 @@ export const TableReservationArea: React.FC<TableReservationAreaProps> = ({ sele
 
       {tables.map((table) => {
         const reservationsForTable = getReservationsForTable(table);
+        const status = getTableStatus(table); // Obtenir le statut de la table
 
         // Contenu du tooltip
         const content = (
@@ -354,7 +356,7 @@ export const TableReservationArea: React.FC<TableReservationAreaProps> = ({ sele
             interactive={true}
           >
             <div
-              className="table-container"
+              className={`table-container ${status === 'waiting' ? 'blink' : ''}`} // Ajouter la classe 'blink' si le statut est 'waiting'
               style={{
                 position: 'absolute',
                 left: `${table.position_x}px`,

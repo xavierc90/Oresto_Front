@@ -7,10 +7,8 @@ type AllergensProps = {
 export const Accessibility: React.FC<AllergensProps> = ({ onReturnToAccount }) => {
   return (
     <div className="flex flex-col items-center justify-center h-full bg-white">
-      <h2 className="text-xl font-bold mb-4">Préférences Allergènes</h2>
-      <p className="text-gray-600 text-center mb-8">
-        Sélectionnez vos préférences concernant les allergènes.
-      </p>
+      <h2 className="text-xl font-bold mb-4">Accessbilité</h2>
+
 
       {/* Contenu pour gérer les préférences d'allergènes */}
       

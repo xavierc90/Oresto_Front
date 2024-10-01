@@ -106,8 +106,8 @@ export const Reservation: React.FC<ReservationProps> = ({ selectedDate, onReturn
           <h2 className="text-lg font-bold mb-4">Choisissez la date</h2>
 
           <p className=' pb-7'>
-            <h3 className='font-semibold'>Horaires du restaurant</h3>
-            <span className='w-20'>Ouvert du lundi au vendredi <br/>
+            <h3 className='font-semibold text-sm'>Horaires du restaurant</h3>
+            <span className='w-20 text-sm'>Ouvert du lundi au vendredi <br/>
             11:30 - 14:30 / 19:30 - 23:00</span>
 
             </p>
@@ -140,56 +140,67 @@ export const Reservation: React.FC<ReservationProps> = ({ selectedDate, onReturn
       )}
       
       {step === 'selectTime' && (
-        <>
-          <h2 className="text-lg font-bold mb-4">Choisissez l'heure</h2>
-          <div className="flex items-center justify-center text-green-800 mb-4">
-            <AiOutlineCalendar 
-              className="mr-2 cursor-pointer" onClick={() => setStep('selectDate')}
-            />
-            <span>
-              {localDate.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}
-            </span>
-          </div>
-          <h3 className="font-bold text-md mb-2">Repas du midi</h3>
-          <div className="grid grid-cols-4 lg:grid-cols-4 gap-2 mb-4 font-semibold">
-            {['12:00', '12:15', '12:30', '12:45', '13:00', '13:15', '13:30', '13:45'].map(time => (
-              <button
-                key={time}
-                className={`flex justify-center items-center py-2 px-4 text-center rounded-lg text-sm lg:text-base lg:py-3 lg:px-5 ${timeSelected === time ? 'bg-green-800 text-white' : 'bg-gray-300 text-black'}`}
-                onClick={() => handleTimeSelect(time)}
-              >
-                {time}
-              </button>
-            ))}
-          </div>
-          <h3 className="font-bold text-md mb-2 mt-6">Repas du soir</h3>
-          <div className="grid grid-cols-4 lg:grid-cols-4 gap-2 font-semibold">
-            {['20:00', '20:15', '20:30', '20:45', '21:00', '21:15', '21:30', '21:45'].map(time => (
-              <button
-                key={time}
-                className={`flex justify-center items-center py-2 px-4 text-center rounded-lg text-sm lg:text-base lg:py-3 lg:px-5 ${timeSelected === time ? 'bg-green-800 text-white' : 'bg-gray-300 text-black'}`}
-                onClick={() => handleTimeSelect(time)}
-              >
-                {time}
-              </button>
-            ))}
-          </div>
-          <button
-            className={`bg-black text-white text-sm py-2 px-4 mt-9 lg:py-3 lg:px-5 font-bold rounded-lg mt-4 ${
-              !timeSelected ? 'opacity-50 cursor-not-allowed' : ''
-            }`}
-            onClick={handleConfirm}
-            disabled={!timeSelected}
-          >
-            Finaliser la réservation
-          </button>
-          <div className="mt-4 text-center">
-            <button className="text-black underline" onClick={onReturnToAccount}>
-              Retour à l'accueil
-            </button>
-          </div>
-        </>
-      )}
+  <>
+    <h2 className="text-lg font-bold mb-4">Choisissez l'heure</h2>
+    <div className="flex items-center justify-center text-green-800 mb-1">
+      <AiOutlineCalendar 
+        className="mr-2 cursor-pointer" 
+        onClick={() => setStep('selectDate')}
+      />
+      <span>
+        {localDate.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}
+      </span>
+    </div>
+    {/* Ajouter un lien pour modifier la date */}
+    <div className="text-center mb-4">
+      <button
+        className="text-sm text-green-800 font-semibold"
+        onClick={() => setStep('selectDate')}
+      >
+        Modifier la date
+      </button>
+    </div>
+    <h3 className="font-bold text-md mb-2">Repas du midi</h3>
+    <div className="grid grid-cols-4 lg:grid-cols-4 gap-2 mb-4 font-semibold">
+      {['12:00', '12:15', '12:30', '12:45', '13:00', '13:15', '13:30', '13:45'].map(time => (
+        <button
+          key={time}
+          className={`flex justify-center items-center py-2 px-4 text-center rounded-lg text-sm lg:text-base lg:py-3 lg:px-5 ${timeSelected === time ? 'bg-green-800 text-white' : 'bg-gray-300 text-black'}`}
+          onClick={() => handleTimeSelect(time)}
+        >
+          {time}
+        </button>
+      ))}
+    </div>
+    <h3 className="font-bold text-md mb-2 mt-6">Repas du soir</h3>
+    <div className="grid grid-cols-4 lg:grid-cols-4 gap-2 font-semibold">
+      {['20:00', '20:15', '20:30', '20:45', '21:00', '21:15', '21:30', '21:45'].map(time => (
+        <button
+          key={time}
+          className={`flex justify-center items-center py-2 px-4 text-center rounded-lg text-sm lg:text-base lg:py-3 lg:px-5 ${timeSelected === time ? 'bg-green-800 text-white' : 'bg-gray-300 text-black'}`}
+          onClick={() => handleTimeSelect(time)}
+        >
+          {time}
+        </button>
+      ))}
+    </div>
+    <button
+      className={`bg-black text-white text-sm py-2 px-4 mt-9 lg:py-3 lg:px-5 font-bold rounded-lg mt-4 ${
+        !timeSelected ? 'opacity-50 cursor-not-allowed' : ''
+      }`}
+      onClick={handleConfirm}
+      disabled={!timeSelected}
+    >
+      Finaliser la réservation
+    </button>
+    <div className="mt-4 text-center">
+      <button className="text-black underline" onClick={onReturnToAccount}>
+        Retour à l'accueil
+      </button>
+    </div>
+  </>
+)}
+
 
       {step === 'confirm' && (
         <>

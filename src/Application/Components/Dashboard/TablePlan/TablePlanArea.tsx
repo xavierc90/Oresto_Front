@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import Draggable from 'react-draggable';
 import { http } from '../../../../Infrastructure/Http/axios.instance';
 import { Table } from '../../../../Module/Types/table.type';
-import { FaTrashAlt } from "react-icons/fa";
+import { FaTrashAlt, FaEye, FaEyeSlash } from "react-icons/fa"; // Import des icônes
 
 interface TableAreaProps {
   restaurant: { _id: string };
@@ -20,9 +20,15 @@ export const TablePlanArea: React.FC<TableAreaProps> = ({ restaurant, token, tab
   const trashRef = useRef<HTMLDivElement | null>(null);
   const [clickStartedPosition, setClickStartedPosition] = useState<{ x: number; y: number } | null>(null);
   const [clickTime, setClickTime] = useState<number>(0);
+  const [showGrid, setShowGrid] = useState<boolean>(true); // État pour la visibilité de la grille
 
   // Coordonnées et dimensions de la poubelle
   const deleteZone = { width: 100, height: 100 };
+
+  // Fonction pour basculer la visibilité de la grille
+  const toggleGrid = () => {
+    setShowGrid(prev => !prev);
+  };
 
   // Fonction pour archiver la table et envoyer les coordonnées au backend
   const handleDragStop = async (e: any, data: any, table: Table): Promise<void> => {
@@ -286,14 +292,24 @@ export const TablePlanArea: React.FC<TableAreaProps> = ({ restaurant, token, tab
 
   return (
     <div
-      className="table-plan w-100 lg:h-96 lg:h-[350px] mx-auto border border-zinc-300 bg-zinc-50 dark:bg-dark-900 dark:border-dark-800 dark:text-black relative"
+      className="table-reservation-plan w-full h-96 mx-auto border border-zinc-300 bg-gray-800 dark:bg-gray-900 dark:border-dark-800 dark:text-black relative"
       style={{
         position: 'relative',
         overflow: 'hidden',
-        background:
-          'repeating-linear-gradient(0deg, transparent, transparent 19px, rgba(0,0,0,0.1) 20px), repeating-linear-gradient(-90deg, transparent, transparent 19px, rgba(0,0,0,0.1) 20px)',
+        background: showGrid
+          ? 'repeating-linear-gradient(0deg, transparent, transparent 19px, rgba(128, 128, 128, 0.5) 20px), repeating-linear-gradient(-90deg, transparent, transparent 19px, rgba(128, 128, 128, 0.5) 20px)'
+          : 'none', // Masquer le quadrillage si showGrid est false
       }}
     >
+      {/* Bouton pour afficher/masquer la grille */}
+      <button
+        onClick={toggleGrid}
+        className="absolute top-4 right-4 bg-gray-700 text-white p-2 rounded-full shadow-md hover:bg-gray-600 focus:outline-none"
+        aria-label={showGrid ? "Masquer la grille" : "Afficher la grille"}
+      >
+        {showGrid ? <FaEyeSlash /> : <FaEye />}
+      </button>
+
       {/* Message de suppression */}
       {deleteMessage && (
         <div className={`success-message ${showDeleteMessage ? 'show' : ''}`}>
