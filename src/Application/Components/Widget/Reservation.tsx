@@ -254,7 +254,7 @@ export const Reservation: React.FC<ReservationProps> = ({ selectedDate, onReturn
         <li className="font-semibold mb-2">Nom de réservation :
           <span className='font-normal'> {user?.lastname}</span>
         </li>
-        <li className="font-semibold mb-2">Adresse mail :
+        <li className="font-semibold mb-2">Email :
           <span className='font-normal'> {user?.email}</span>
         </li>
         <li className="font-semibold mb-2">N° de téléphone :

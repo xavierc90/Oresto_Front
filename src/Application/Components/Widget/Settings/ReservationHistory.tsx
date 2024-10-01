@@ -1,16 +1,17 @@
 import React from 'react';
 
-type AllergensProps = {
+type ReservationHistoryProps = {
   onReturnToAccount: () => void;
 };
 
-export const ReservationHistory: React.FC<AllergensProps> = ({ onReturnToAccount }) => {
+export const ReservationHistory: React.FC<ReservationHistoryProps> = ({ onReturnToAccount }) => {
   return (
     <div className="flex flex-col items-center justify-center h-full bg-white">
-      <h2 className="text-xl font-bold mb-4">Préférences Allergènes</h2>
-      <p className="text-gray-600 text-center mb-8">
-        Sélectionnez vos préférences concernant les allergènes.
-      </p>
+      <h2 className="text-lg font-bold mb-4">Vos réservations</h2>
+      
+      <p className="text-gray-600 text-center text-sm mb-8">
+      Consultez l'historique de vos réservations     
+       </p>
 
       {/* Contenu pour gérer les préférences d'allergènes */}
       s

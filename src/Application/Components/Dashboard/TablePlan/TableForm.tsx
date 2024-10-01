@@ -129,7 +129,7 @@ export const TableForm: React.FC<TableFormProps> = ({ onTableCreated }) => {
           {errorMessage}
         </div>
       )}
-      <form onSubmit={handleSubmit} className='flex flex-col mt-7 pb-12 h-96 pl-10'>
+      <form onSubmit={handleSubmit} className='flex flex-col mt-7 pb-12 h-72 pl-10'>
        <div className='flex gap-5'>
         <label className='flex items-center'>
           N° de la table :

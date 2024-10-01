@@ -9,6 +9,7 @@ export type User = {
     allergens: string[];
     created_at: string;
     restaurant_id: string;
+    password: string;
     token?: string;
     status?: string;
     reservationCount?: number;  // Ajoutez ce champ pour stocker le nombre de réservations  
