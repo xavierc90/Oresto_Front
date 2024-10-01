@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { http } from '../../../../Infrastructure/Http/axios.instance';
 import { Table } from '../../../../Module/Types/table.type';
 import { LuLayoutDashboard } from "react-icons/lu";
@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import { Reservation } from '../../../../Module/Types/reservation.type';
 import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
+import { FaEye, FaEyeSlash } from "react-icons/fa"; // Import des icônes pour le bouton
 
 interface TableReservationAreaProps {
   selectedDate: Date | null;
@@ -17,6 +18,7 @@ interface TableReservationAreaProps {
 export const TableReservationArea: React.FC<TableReservationAreaProps> = ({ selectedDate, restaurant, token, reservations }) => {
   const [tables, setTables] = useState<Table[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const [showGrid, setShowGrid] = useState<boolean>(true); // Nouvel état pour la visibilité du quadrillage
 
   useEffect(() => {
     console.log('Tables dans TableReservation:', tables);
@@ -87,7 +89,8 @@ export const TableReservationArea: React.FC<TableReservationAreaProps> = ({ sele
     );
   }
 
-  // Fonction pour traduire le statut en français
+  // **Supprimer la redéclaration de translateStatus**
+  // Gardez une seule déclaration de la fonction translateStatus
   const translateStatus = (status: string) => {
     switch (status.toLowerCase()) {
       case 'confirmed':
@@ -108,7 +111,7 @@ export const TableReservationArea: React.FC<TableReservationAreaProps> = ({ sele
   const getColorByStatus = (status: string) => {
     switch (status.toLowerCase()) {
       case 'waiting':
-        return { tableColor: '#F8D89C', tableSizeColor: '#DF9507' };
+        return { tableColor: '#ffd16d', tableSizeColor: '#eea404' };
       case 'confirmed':
         return { tableColor: '#76c87a', tableSizeColor: '#59a25d' };
       case 'available':
@@ -125,11 +128,11 @@ export const TableReservationArea: React.FC<TableReservationAreaProps> = ({ sele
     const tableReservations = reservations.filter(r => r.table_id === tableIdToMatch && r.status !== 'canceled');
 
     if (tableReservations.length > 0) {
-      if (tableReservations.some(r => r.status.toLowerCase() === 'confirmed')) {
-        return 'confirmed';
-      }
       if (tableReservations.some(r => r.status.toLowerCase() === 'waiting')) {
         return 'waiting';
+      }
+      if (tableReservations.some(r => r.status.toLowerCase() === 'confirmed')) {
+        return 'confirmed';
       }
     }
     return 'available';
@@ -145,11 +148,15 @@ export const TableReservationArea: React.FC<TableReservationAreaProps> = ({ sele
     const status = getTableStatus(table);
     const { tableColor, tableSizeColor } = getColorByStatus(status);
 
+    // **Accès direct aux propriétés de la table sans passer par table.table_id**
     const rotation = table.rotate || 0;
+    const tableNumber = table.number;
+    const tableCapacity = table.capacity;
+    const tableShape = table.shape;
 
-    switch (table.shape) {
+    switch (tableShape) {
       case 'rectangle':
-        if (table.capacity === 4) {
+        if (tableCapacity === 4) {
           return (
             <svg
               width="123"
@@ -167,7 +174,7 @@ export const TableReservationArea: React.FC<TableReservationAreaProps> = ({ sele
             </svg>
           );
         }
-        if (table.capacity === 6) {
+        if (tableCapacity === 6) {
           return (
             <svg
               width="123"
@@ -179,15 +186,15 @@ export const TableReservationArea: React.FC<TableReservationAreaProps> = ({ sele
             >
               <ellipse cx="22.3326" cy="8.25806" rx="7.5806" ry="7.37635" fill={tableSizeColor} />
               <ellipse cx="22.3326" cy="66.2533" rx="7.5806" ry="7.37634" fill={tableSizeColor} />
-              <ellipse cx="101.45" cy="8.25806" rx="7.58057" ry="7.37635" fill={tableSizeColor} />
-              <ellipse cx="101.45" cy="66.2533" rx="7.58057" ry="7.37634" fill={tableSizeColor} />
               <ellipse cx="63.4502" cy="8.25806" rx="7.58057" ry="7.37635" fill={tableSizeColor} />
               <ellipse cx="63.4502" cy="66.2533" rx="7.58057" ry="7.37634" fill={tableSizeColor} />
+              <ellipse cx="101.45" cy="8.25806" rx="7.58057" ry="7.37635" fill={tableSizeColor} />
+              <ellipse cx="101.45" cy="66.2533" rx="7.58057" ry="7.37634" fill={tableSizeColor} />
               <rect y="8" width="123" height="57" fill={tableColor} />
             </svg>
           );
         }
-        if (table.capacity === 8) {
+        if (tableCapacity === 8) {
           return (
             <svg
               width="153"
@@ -212,7 +219,7 @@ export const TableReservationArea: React.FC<TableReservationAreaProps> = ({ sele
         break;
 
       case 'round':
-        if (table.capacity === 2) {
+        if (tableCapacity === 2) {
           return (
             <svg
               width="70"
@@ -228,7 +235,7 @@ export const TableReservationArea: React.FC<TableReservationAreaProps> = ({ sele
             </svg>
           );
         }
-        if (table.capacity === 4) {
+        if (tableCapacity === 4) {
           return (
             <svg
               width="86"
@@ -249,7 +256,7 @@ export const TableReservationArea: React.FC<TableReservationAreaProps> = ({ sele
         break;
 
       case 'square':
-        if (table.capacity === 2) {
+        if (tableCapacity === 2) {
           return (
             <svg
               width="70"
@@ -265,7 +272,7 @@ export const TableReservationArea: React.FC<TableReservationAreaProps> = ({ sele
             </svg>
           );
         }
-        if (table.capacity === 4) {
+        if (tableCapacity === 4) {
           return (
             <svg
               width="87"
@@ -279,7 +286,7 @@ export const TableReservationArea: React.FC<TableReservationAreaProps> = ({ sele
               <ellipse cx="7.5806" cy="44.3763" rx="7.5806" ry="7.37634" fill={tableSizeColor} />
               <ellipse cx="78.5811" cy="44.3763" rx="7.5806" ry="7.37634" fill={tableSizeColor} />
               <ellipse cx="43.5806" cy="78.3763" rx="7.5806" ry="7.37634" fill={tableSizeColor} />
-              <path d="M8 8L78 8L78 78L8 78L8 8Z" fill={tableColor} />
+              <rect x="8" y="8" width="70" height="70" fill={tableColor} />
             </svg>
           );
         }
@@ -292,13 +299,24 @@ export const TableReservationArea: React.FC<TableReservationAreaProps> = ({ sele
 
   return (
     <div
-      className="w-100 h-96 mx-auto border border-zinc-300 bg-zinc-50 dark:bg-dark-900 dark:border-dark-800 dark:text-black relative"
+      className="table-reservation-plan w-full h-96 mx-auto border border-zinc-300 bg-gray-800 dark:bg-gray-900 dark:border-dark-800 dark:text-black relative"
       style={{
         position: 'relative',
         overflow: 'hidden',
-        background: 'repeating-linear-gradient(0deg, transparent, transparent 19px, rgba(0,0,0,0.1) 20px), repeating-linear-gradient(-90deg, transparent, transparent 19px, rgba(0,0,0,0.1) 20px)',
+        background: showGrid
+          ? 'repeating-linear-gradient(0deg, transparent, transparent 19px, rgba(128, 128, 128, 0.5) 20px), repeating-linear-gradient(-90deg, transparent, transparent 19px, rgba(128, 128, 128, 0.5) 20px)'
+          : 'none', // Masquer le quadrillage si showGrid est false
       }}
     >
+      {/* Bouton de basculement du quadrillage */}
+      <button
+        onClick={() => setShowGrid(prev => !prev)}
+        className="absolute top-4 right-4 bg-gray-700 text-white p-2 rounded-full shadow-md hover:bg-gray-600 focus:outline-none"
+        aria-label={showGrid ? "Masquer le quadrillage" : "Afficher le quadrillage"}
+      >
+        {showGrid ? <FaEyeSlash /> : <FaEye />}
+      </button>
+
       {tables.map((table) => {
         const reservationsForTable = getReservationsForTable(table);
 
@@ -313,11 +331,10 @@ export const TableReservationArea: React.FC<TableReservationAreaProps> = ({ sele
                   {reservation.nbr_persons} {reservation.nbr_persons > 1 ? 'personnes' : 'personne'}<br />
                   {reservation.time_selected}<br />
                   {reservation.details && (
-  <>
-    {reservation.details}<br />
-  </>
-)}
-
+                    <>
+                      {reservation.details}<br />
+                    </>
+                  )}
                   Réservation {translateStatus(reservation.status)}
                 </div>
               ))
@@ -342,6 +359,7 @@ export const TableReservationArea: React.FC<TableReservationAreaProps> = ({ sele
                 position: 'absolute',
                 left: `${table.position_x}px`,
                 top: `${table.position_y}px`,
+                cursor: 'pointer',
               }}
             >
               {renderTableSVG(table)}
@@ -353,6 +371,5 @@ export const TableReservationArea: React.FC<TableReservationAreaProps> = ({ sele
         );
       })}
     </div>
-
   );
 };

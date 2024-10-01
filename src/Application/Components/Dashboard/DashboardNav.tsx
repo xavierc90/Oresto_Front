@@ -85,7 +85,7 @@ export const DashboardNav: React.FC<DashboardNavProps> = ({ restaurant }) => {
       </div>
       
       <div className="mt-2ss">
-        <CalendarShadcn mode="single" selected={dateSelected} onSelect={handleDateSelect} required />
+        <CalendarShadcn mode="single" selected={dateSelected} onSelect={handleDateSelect} interfaceType='restaurant' required />
       </div>
 
       <form className="flex flex-col justify-center">

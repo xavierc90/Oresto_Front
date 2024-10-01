@@ -103,19 +103,27 @@ export const Reservation: React.FC<ReservationProps> = ({ selectedDate, onReturn
     <div>
       {step === 'selectDate' && (
         <>
-          <h2 className="text-lg font-bold pb-9">Choisissez la date</h2>
+          <h2 className="text-lg font-bold mb-4">Choisissez la date</h2>
+
+          <p className=' pb-7'>
+            <h3 className='font-semibold'>Horaires du restaurant</h3>
+            <span className='w-20'>Ouvert du lundi au vendredi <br/>
+            11:30 - 14:30 / 19:30 - 23:00</span>
+
+            </p>
           <CalendarShadcn 
             mode="single" 
             selected={localDate}
             onSelect={handleDateSelect} 
             required={true}
+            interfaceType='client'
             className=''
           />
           {errorMessage && (
             <p className="text-red-600 font-semibold">{errorMessage}</p>
           )}
           <button
-            className={`bg-black text-white text-sm font-semibold py-2 px-4 rounded-lg mt-8 w-full ${
+            className={`bg-black text-white text-sm font-semibold py-2 px-4 rounded-lg mt-4 w-full ${
               !validateDate(localDate) ? 'opacity-50 cursor-not-allowed' : ''
             }`}
             onClick={handleDateConfirm}

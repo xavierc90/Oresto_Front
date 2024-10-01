@@ -192,43 +192,72 @@ input::placeholder {
 /* Calendrier */
 
 .calendar {
-    height: 255px;
-    overflow: hidden; /* Pour éviter tout débordement */
-    padding: 0;
+  height: 265px;
+  overflow: hidden; /* Pour éviter tout débordement */
+  padding: 0;
+}
+
+.calendar .caption {
+display: flex;
+justify-content: space-between; /* Pour que les flèches et le mois soient alignés sur une seule ligne */
+align-items: center; /* Centrage vertical */
+width: 100%;
+padding: 0 10px; /* Ajuster l'espacement si nécessaire */
 }
 
 .rdp-chevron {
-    color: #ffffff;
+  color: #ffffff;
 }
 
 .rdp-focused {
-    font-weight: bold;
+  font-weight: bold;
 }
 
 .rdp-month_caption {
-    padding-left: 9px;
-    text-transform: capitalize;
+  position: absolute;
+  left: 50%;
+  top: 0;
+  text-transform: capitalize;
+  font-weight: bold;
+  white-space: nowrap; /* Empêche le texte de passer à la ligne */
+  text-align: center; /* Centrer le texte du mois */
+  flex-grow: 1; /* Permet au mois de prendre l'espace central disponible */
 }
 
 .rdp-day_button {
-    border-radius: 10px;
+  border-radius: 10px;
 }
 
 .rdp-root {
-    position: relative;
+  position: relative;
 }
 
 .rdp-root td {
-    border-radius: 50px;
-    width: 30px;
-    height: 30px;
-    margin: 1px;
+  border-radius: 50px;
+  width: 30px;
+  height: 30px;
+  margin: 1px;
 }
 
 .rdp-nav {
-    position: absolute;
-    right: 0px;
+display: flex;
+justify-content: space-between;
+align-items: center;
+position: relative;
+width: 100%;
 }
+
+.rdp-button_previous,
+.rdp-button_next {
+width: 24px; /* Ajuste la taille des flèches pour être mieux proportionnée */
+height: 24px; 
+display: flex;
+align-items: center; /* Centre verticalement le contenu de la flèche */
+justify-content: center; /* Centre horizontalement la flèche */
+border: none; /* Retirer les bordures pour plus de propreté */
+background: none; /* Retirer l'arrière-plan */
+}
+
 
 .bg-primary {
   background-color: #3b82f6; /* Example primary color */
@@ -371,16 +400,6 @@ input::placeholder {
 
     .btn-light {
         padding: 14px 5px;
-    }
-
-    .calendar {
-        height: 200px;
-    }
-
-    .rdp-root td {
-        width: 20px;
-        height: 20px;
-        margin: 1px;
     }
 
     .widget-container {
