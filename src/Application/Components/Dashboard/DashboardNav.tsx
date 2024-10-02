@@ -146,7 +146,7 @@ export const DashboardNav: React.FC<DashboardNavProps> = ({ restaurant, setIsNav
       >
         {/* Logo et nom du restaurant */}
         {isOpen && (
-          <div className='mt-16 flex flex-col items-center'>
+          <div className='mt-10 flex flex-col items-center'>
             <Link to="/dashboard/reservations">
               <img src={logoSrc} width="220px" alt="Oresto - Gestion des réservations" />
             </Link>
@@ -179,7 +179,7 @@ export const DashboardNav: React.FC<DashboardNavProps> = ({ restaurant, setIsNav
         )}
 
         {/* Éléments du menu */}
-        <div className={`flex-grow flex ${isOpen ? 'grid grid-cols-2 gap-4 px-4' : 'flex flex-col justify-center items-center gap-5'} mt-6`}>
+        <div className={`flex-grow flex ${isOpen ? 'grid grid-cols-2 gap-4 px-4' : 'flex flex-col justify-center items-center gap-8'} mt-6`}>
           {/* Nouvel élément : Calendrier (Agenda) - Positionné au-dessus des autres icônes */}
           {!isOpen && (
             <Tippy content="Afficher le calendrier" placement="right">
