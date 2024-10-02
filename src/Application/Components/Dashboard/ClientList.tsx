@@ -127,7 +127,7 @@ export const ClientList = ({ users }: ClientListProps) => {
               <th className="text-left">Prénom</th>
               <th className="text-left">Téléphone</th>
               <th className="text-left">E-mail</th>
-              <th className="text-left hidden xl:block">Inscrit depuis le</th>
+              <th className="text-left hidden xl:table-cell">Inscrit depuis le</th>
             </tr>
           </thead>
           <tbody>

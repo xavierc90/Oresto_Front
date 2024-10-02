@@ -19,7 +19,7 @@ interface TableReservationAreaProps {
 export const TableReservationArea: React.FC<TableReservationAreaProps> = ({ selectedDate, restaurant, token, reservations, isOpen }) => {
   const [tables, setTables] = useState<Table[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [isDarkMode, setIsDarkMode] = useState<boolean>(true); // État pour gérer le mode clair/sombre
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(false); // État pour gérer le mode clair/sombre
 
   // Fonction pour basculer entre clair et sombre
   const toggleTheme = () => {
@@ -312,10 +312,10 @@ export const TableReservationArea: React.FC<TableReservationAreaProps> = ({ sele
       {/* Bouton pour basculer le thème */}
       <button
         onClick={toggleTheme}
-        className="absolute top-4 right-4 bg-white p-2 rounded-full shadow-md hover:bg-gray-300 focus:outline-none z-50"
+        className="absolute top-4 right-8 bg-white p-2 rounded-full shadow-md hover:bg-gray-800 focus:outline-none z-50"
         aria-label="Changer le thème"
       >
-        <FaLightbulb size={20} color={isDarkMode ? '#000' : '#000'} />
+        <FaLightbulb size={20} color={isDarkMode ? '#959595' : '#f8b94b'} />
       </button>
 
       {/* Conteneur avec défilement horizontal uniquement pour le plan de table */}

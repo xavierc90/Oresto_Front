@@ -121,7 +121,7 @@ export const ReservationsPage = () => {
   
         {/* Bloc de droite avec les filtres */}
         <div className="flex flex-col text-sm gap-2">
-          <span className='font-semibold'>Filtrer par statut</span>
+          <span className='font-semibold'>Filtrer par status</span>
           <div className='flex gap-3'>
             {/* Filtre pour "Annulées" */}
             <label className="hidden lg:inline-flex items-center cursor-pointer">

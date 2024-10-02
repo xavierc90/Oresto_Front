@@ -117,19 +117,19 @@ export const ReservationList: React.FC<ReservationListProps> = ({
         <table className="ml-10 w-full">
           <thead>
             <tr>
-              <th className="text-left min-w-[50px]" onClick={handleSortClick}>
+              <th className="text-left w-[100px]" onClick={handleSortClick}>
                 <span className="flex items-center gap-1 cursor-pointer">
                   Heure <FaSort />
                 </span>
               </th>
-              <th className="text-left max-w-[100px]">Nom</th>
-              <th className="text-left max-w-[100px]">Prénom</th>
-              <th className="text-center max-w-[150px]">Nbr de couverts</th>
+              <th className="text-left w-[100px]">Nom</th>
+              <th className="text-left w-[100px]">Prénom</th>
+              <th className="text-center w-[150px]">Nbr de couverts</th>
               <th className="text-center max-w-[180px]">Table</th>
               {/* Cacher la colonne "Détails" sur les petits écrans */}
               <th className="text-left max-w-[180px] hidden xl:table-cell">Détails</th>
               <th className="text-left max-w-[100px]">
-                <span className="flex justify-center items-center gap-1 cursor-pointer">
+                <span className="flex items-center gap-1 cursor-pointer">
                   Status <FaSort />
                 </span>
               </th>

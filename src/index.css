@@ -111,7 +111,7 @@
 
 .scrollable-list {
   width: 100%;
-  height: 610px;
+  height: 630px;
   overflow-x: hidden;
 }
 
@@ -381,8 +381,16 @@ background: none; /* Retirer l'arrière-plan */
   }
   
 
+  
+  
 
 /* Version responsive */
+
+@media screen and (max-width: 500px) {
+  .scrollable-list {
+    height: 10px;
+  }
+}
 
 @media screen and (max-width: 768px) {
     .main-title {
@@ -405,5 +413,4 @@ background: none; /* Retirer l'arrière-plan */
         height: 100vh;
         width: 100%;    
     }
-    
 }

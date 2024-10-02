@@ -140,7 +140,7 @@ export const DashboardNav: React.FC<DashboardNavProps> = ({ restaurant, setIsNav
     <div>
       {/* Conteneur principal du DashboardNav */}
       <div
-        className={`bg-light dark:bg-dark-900 dark:text-white h-screen flex flex-col items-center shadow-2xl fixed top-0 left-0 transition-all duration-300 ease-in-out z-50 ${
+        className={`bg-light dark:bg-dark-900 dark:text-white h-screen flex flex-col items-center shadow-2xl fixed top-0 left-0 transition-all duration-300 ease-in-out z-60 ${
           isOpen ? 'w-72' : 'w-16'
         }`}
       >

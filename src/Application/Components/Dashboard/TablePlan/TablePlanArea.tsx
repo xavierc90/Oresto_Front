@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import Draggable from 'react-draggable';
 import { http } from '../../../../Infrastructure/Http/axios.instance';
 import { Table } from '../../../../Module/Types/table.type';
-import { FaTrashAlt, FaEye, FaEyeSlash } from "react-icons/fa"; // Import des icônes
+import { FaTrashAlt, FaEye, FaEyeSlash, FaLightbulb } from "react-icons/fa"; // Import des icônes
 
 interface TableAreaProps {
   restaurant: { _id: string };
@@ -12,6 +12,8 @@ interface TableAreaProps {
 }
 
 export const TablePlanArea: React.FC<TableAreaProps> = ({ restaurant, token, tables, onTablesUpdate }) => {
+  // Coordonnées et dimensions de la poubelle
+const deleteZone = { width: 100, height: 100 };
   const [draggingTableId, setDraggingTableId] = useState<string | null>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [overTrash, setOverTrash] = useState(false);
@@ -21,9 +23,12 @@ export const TablePlanArea: React.FC<TableAreaProps> = ({ restaurant, token, tab
   const [clickStartedPosition, setClickStartedPosition] = useState<{ x: number; y: number } | null>(null);
   const [clickTime, setClickTime] = useState<number>(0);
   const [showGrid, setShowGrid] = useState<boolean>(true); // État pour la visibilité de la grille
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(false); // État pour gérer le mode clair/sombre
 
-  // Coordonnées et dimensions de la poubelle
-  const deleteZone = { width: 100, height: 100 };
+  // Fonction pour basculer entre clair et sombre
+  const toggleTheme = () => {
+    setIsDarkMode(!isDarkMode);
+  };
 
   // Fonction pour basculer la visibilité de la grille
   const toggleGrid = () => {
@@ -37,21 +42,14 @@ export const TablePlanArea: React.FC<TableAreaProps> = ({ restaurant, token, tab
     setDraggingTableId(null);
     setIsDragging(false);
 
-    // Vérifier si la table est déposée dans la zone de la poubelle
     const trashElement = trashRef.current;
     if (trashElement) {
       const trashRect = trashElement.getBoundingClientRect();
       const tableX = e.clientX;
       const tableY = e.clientY;
 
-      if (
-        tableX >= trashRect.left &&
-        tableX <= trashRect.right &&
-        tableY >= trashRect.top &&
-        tableY <= trashRect.bottom
-      ) {
+      if (tableX >= trashRect.left && tableX <= trashRect.right && tableY >= trashRect.top && tableY <= trashRect.bottom) {
         try {
-          // Appel pour archiver la table
           await http.put(`/archive_table/${table._id}`, {}, {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -61,7 +59,7 @@ export const TablePlanArea: React.FC<TableAreaProps> = ({ restaurant, token, tab
           setShowDeleteMessage(false);
           setTimeout(() => setShowDeleteMessage(true), 100); // Activer l'animation
           setTimeout(() => setShowDeleteMessage(false), 5000); // Masquer le message après 5 secondes
-          onTablesUpdate(); // Rafraîchir les tables après l'archivage
+          onTablesUpdate();
           return;
         } catch (error) {
           console.error('Erreur lors de l\'archivage de la table:', error);
@@ -69,7 +67,6 @@ export const TablePlanArea: React.FC<TableAreaProps> = ({ restaurant, token, tab
       }
     }
 
-    // Mettre à jour la position de la table si elle n'a pas été archivée
     try {
       await http.put(
         `/update_table/${table._id}`,
@@ -118,31 +115,24 @@ export const TablePlanArea: React.FC<TableAreaProps> = ({ restaurant, token, tab
       const tableX = e.clientX;
       const tableY = e.clientY;
 
-      if (
-        tableX >= trashRect.left &&
-        tableX <= trashRect.right &&
-        tableY >= trashRect.top &&
-        tableY <= trashRect.bottom
-      ) {
-        setOverTrash(true); // Change l'opacité si la table est au-dessus de la poubelle
+      if (tableX >= trashRect.left && tableX <= trashRect.right && tableY >= trashRect.top && tableY <= trashRect.bottom) {
+        setOverTrash(true);
       } else {
-        setOverTrash(false); // Rétablir l'opacité si elle est en dehors
+        setOverTrash(false);
       }
     }
   };
 
   const handleStop = (e: any, data: any, table: Table) => {
     const distanceMoved = Math.abs(data.x - clickStartedPosition!.x) + Math.abs(data.y - clickStartedPosition!.y);
-    const clickDuration = Date.now() - clickTime; // Calculer la durée du clic
+    const clickDuration = Date.now() - clickTime;
     setDraggingTableId(null);
-    setIsDragging(false);  // Désactiver le mode "dragging"
-    setOverTrash(false); // Réinitialiser l'opacité de la poubelle
+    setIsDragging(false);
+    setOverTrash(false);
 
     if (distanceMoved < 5 && clickDuration < 300) {
-      // Si le clic n'est pas un déplacement, déclencher la rotation
       handleTableClick(table);
     } else {
-      // Sinon, traiter cela comme un déplacement
       handleDragStop(e, data, table);
     }
   };
@@ -292,19 +282,28 @@ export const TablePlanArea: React.FC<TableAreaProps> = ({ restaurant, token, tab
 
   return (
     <div
-      className="table-reservation-plan w-full h-96 mx-auto border border-zinc-300 bg-gray-800 dark:bg-gray-900 dark:border-dark-800 dark:text-black relative"
+      className={`table-reservation-plan w-full h-96 mx-auto border border-zinc-300 relative ${
+        isDarkMode ? 'bg-gray-800 dark:bg-gray-900' : 'bg-white'
+      }`}
       style={{
         position: 'relative',
         overflow: 'hidden',
-        background: showGrid
-          ? 'repeating-linear-gradient(0deg, transparent, transparent 19px, rgba(128, 128, 128, 0.5) 20px), repeating-linear-gradient(-90deg, transparent, transparent 19px, rgba(128, 128, 128, 0.5) 20px)'
-          : 'none', // Masquer le quadrillage si showGrid est false
+        background: isDarkMode ? '#202937' : 'white',
       }}
     >
+      {/* Bouton pour basculer entre clair et sombre */}
+      <button
+        onClick={toggleTheme}
+        className="absolute top-4 right-4 bg-white p-2 rounded-full shadow-md hover:bg-gray-800 focus:outline-none z-50"
+        aria-label="Changer le thème"
+      >
+        <FaLightbulb size={20} color={isDarkMode ? '#959595' : '#f8b94b'} />
+      </button>
+
       {/* Bouton pour afficher/masquer la grille */}
       <button
         onClick={toggleGrid}
-        className="absolute top-4 right-4 bg-gray-700 text-white p-2 rounded-full shadow-md hover:bg-gray-600 focus:outline-none"
+        className="absolute top-16 right-4 bg-gray-700 text-white p-2 rounded-full shadow-md hover:bg-gray-600 focus:outline-none"
         aria-label={showGrid ? "Masquer la grille" : "Afficher la grille"}
       >
         {showGrid ? <FaEyeSlash /> : <FaEye />}
@@ -325,30 +324,30 @@ export const TablePlanArea: React.FC<TableAreaProps> = ({ restaurant, token, tab
             display: 'flex',
             flexDirection: 'column',
             position: 'absolute',
-            bottom: '20px', // Placer la corbeille en bas à droite
+            bottom: '20px',
             right: '20px',
             width: `${deleteZone.width}px`,
             height: `${deleteZone.height}px`,
             justifyContent: 'center',
             alignItems: 'center',
             zIndex: 1000,
-            opacity: overTrash ? 1 : 0.5, // Opacité variable
+            opacity: overTrash ? 1 : 0.5,
           }}
         >
-          <FaTrashAlt size={25} color="#ff0000" /> {/* Taille et couleur de l'icône de la corbeille */}
+          <FaTrashAlt size={25} color="#ff0000" />
           <span className='text-sm'>Supprimer</span>
         </div>
       )}
 
       {tables
-        .filter((table) => table.status !== 'archived') // Filtrer les tables avec le statut "available" seulement
+        .filter((table) => table.status !== 'archived')
         .map((table) => (
           <Draggable
             key={table._id}
             bounds="parent"
             defaultPosition={{ x: table.position_x, y: table.position_y }}
             onStart={(e, data) => {
-              setIsDragging(true); // La table commence à être déplacée
+              setIsDragging(true);
               handleStart(e, data);
             }}
             onDrag={(e, data) => handleDrag(e, data)}
