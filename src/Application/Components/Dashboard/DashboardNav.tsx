@@ -26,7 +26,7 @@ export const DashboardNav: React.FC<DashboardNavProps> = ({ restaurant, setIsNav
   const [dateSelected, setDateSelected] = useState<Date>(new Date());
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [darkMode, setDarkMode] = useState<boolean>(false);
-  const [isOpen, setIsOpen] = useState<boolean>(true); // État local pour gérer la visibilité
+  const [isOpen, setIsOpen] = useState<boolean>(window.innerWidth >= 1024); // Initialisé en fonction de la taille de la fenêtre
   const location = useLocation();
   const navigate = useNavigate();
   const { logout } = useAuth();
@@ -67,6 +67,30 @@ export const DashboardNav: React.FC<DashboardNavProps> = ({ restaurant, setIsNav
       setShouldFocusSearch(false); // Réinitialiser l'état après le focus
     }
   }, [isOpen, shouldFocusSearch]);
+
+  // Fonction pour gérer le redimensionnement de la fenêtre
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 1024) { // 'lg' breakpoint
+        setIsOpen(true);
+        setIsNavOpen(true);
+      } else {
+        setIsOpen(false);
+        setIsNavOpen(false);
+      }
+    };
+
+    // Appel initial pour définir l'état en fonction de la taille actuelle de la fenêtre
+    handleResize();
+
+    // Ajout de l'écouteur d'événements
+    window.addEventListener('resize', handleResize);
+
+    // Nettoyage de l'écouteur d'événements lors du démontage du composant
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, [setIsNavOpen]);
 
   const getLinkClass = (path: string) => {
     return location.pathname.startsWith(path)
@@ -231,15 +255,17 @@ export const DashboardNav: React.FC<DashboardNavProps> = ({ restaurant, setIsNav
       </div>
 
       {/* Bouton de bascule à l'extérieur du DashboardNav, positionné à droite comme une languette */}
-      <button
-        onClick={toggleNav}
-        className={clsx(
-          'fixed top-1/2 transform -translate-y-1/2 bg-white dark:bg-dark-800 p-2 dark:border-dark-700 rounded-md shadow-lg focus:outline-none transition-transform duration-300 ease-in-out bg-opacity-100 z-60',
-          isOpen ? 'top-5 left-[308px] -translate-x-1/2' : 'top-5 left-[83px] -translate-x-1/2'
-        )}
-      >
-        {isOpen ? <MdArrowLeft size={25} /> : <MdArrowRight size={25} />}
-      </button>
+      <Tippy content="Afficher / Masquer le menu" placement="right">
+        <button
+          onClick={toggleNav}
+          className={clsx(
+            'fixed top-1/2 transform -translate-y-1/2 bg-white dark:bg-dark-800 p-2 dark:border-dark-700 rounded-md shadow-lg focus:outline-none transition-transform duration-300 ease-in-out bg-opacity-100 z-50',
+            isOpen ? 'top-5 left-[308px] -translate-x-1/2' : 'top-5 left-[83px] -translate-x-1/2'
+          )}
+        >
+          {isOpen ? <MdArrowLeft size={25} /> : <MdArrowRight size={25} />}
+        </button>
+      </Tippy>
     </div>
   );
 };
