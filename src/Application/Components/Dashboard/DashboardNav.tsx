@@ -1,9 +1,9 @@
 // DashboardNav.tsx
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { BsListCheck } from "react-icons/bs";
-import { FaUsers } from "react-icons/fa";
+import { FaUsers, FaCalendarAlt, FaSearch } from "react-icons/fa"; // Import de FaCalendarAlt et FaSearch
 import { IoMdStats } from "react-icons/io";
 import { FaGear } from "react-icons/fa6";
 import { LuLayoutDashboard } from "react-icons/lu";
@@ -31,6 +31,12 @@ export const DashboardNav: React.FC<DashboardNavProps> = ({ restaurant, setIsNav
   const navigate = useNavigate();
   const { logout } = useAuth();
 
+  // Référence au champ de recherche
+  const searchInputRef = useRef<HTMLInputElement>(null);
+  
+  // État pour déterminer si le champ de recherche doit être mis au point
+  const [shouldFocusSearch, setShouldFocusSearch] = useState<boolean>(false);
+
   useEffect(() => {
     const savedTheme = localStorage.getItem('darkMode');
     if (savedTheme) {
@@ -54,6 +60,13 @@ export const DashboardNav: React.FC<DashboardNavProps> = ({ restaurant, setIsNav
       document.documentElement.classList.remove('dark');
     }
   }, [darkMode]);
+
+  useEffect(() => {
+    if (isOpen && shouldFocusSearch && searchInputRef.current) {
+      searchInputRef.current.focus();
+      setShouldFocusSearch(false); // Réinitialiser l'état après le focus
+    }
+  }, [isOpen, shouldFocusSearch]);
 
   const getLinkClass = (path: string) => {
     return location.pathname.startsWith(path)
@@ -81,8 +94,18 @@ export const DashboardNav: React.FC<DashboardNavProps> = ({ restaurant, setIsNav
   };
 
   const toggleNav = () => {
-    setIsOpen(!isOpen);
-    setIsNavOpen(!isOpen); // Met à jour l'état dans DashboardPage
+    const newIsOpen = !isOpen;
+    setIsOpen(newIsOpen);
+    setIsNavOpen(newIsOpen); // Met à jour l'état dans DashboardPage
+    if (!newIsOpen) {
+      setShouldFocusSearch(false); // Réinitialiser si le menu est fermé
+    }
+  };
+
+  const openNavAndFocusSearch = () => {
+    setIsOpen(true);
+    setIsNavOpen(true);
+    setShouldFocusSearch(true);
   };
 
   const logoSrc = darkMode 
@@ -116,8 +139,8 @@ export const DashboardNav: React.FC<DashboardNavProps> = ({ restaurant, setIsNav
 
         {/* Formulaire de recherche */}
         {isOpen && (
-          <form className="flex flex-col justify-center mt-4 px-4 w-full">
-            <label htmlFor="search" className="text-base font-bold mb-2">Recherche par nom</label>
+          <form className="flex flex-col items-center mt-4 px-4 w-full">
+            <label htmlFor="search" className="text-base text-left font-bold mb-2">Recherche par nom</label>
             <input
               type="text"
               name="name"
@@ -125,13 +148,38 @@ export const DashboardNav: React.FC<DashboardNavProps> = ({ restaurant, setIsNav
               placeholder="Saisir le nom du client"
               value={searchTerm}
               onChange={handleSearchChange}
-              className="border-2 border-gray-300 p-1 mb-4 font-bold w-full dark:text-white dark:bg-dark-800 dark:border-dark-800"
+              ref={searchInputRef} // Assignation de la référence
+              className="border-2 border-gray-300 p-1 mb-4 font-bold w-[220px] dark:text-white dark:bg-dark-800 dark:border-dark-800"
             />
           </form>
         )}
 
         {/* Éléments du menu */}
-        <div className={`flex-grow flex ${isOpen ? 'grid grid-cols-2 gap-4 px-4' : 'flex flex-col items-center gap-6'} mt-6`}>
+        <div className={`flex-grow flex ${isOpen ? 'grid grid-cols-2 gap-4 px-4' : 'flex flex-col justify-center items-center gap-5'} mt-6`}>
+          {/* Nouvel élément : Calendrier (Agenda) - Positionné au-dessus des autres icônes */}
+          {!isOpen && (
+            <Tippy content="Afficher le calendrier" placement="right">
+              <button
+                onClick={toggleNav} // Ouvre le DashboardNav
+                className="flex flex-col items-center text-gray-600 hover:text-red-500 dark:hover:text-white transition duration-300 focus:outline-none"
+              >
+                <FaCalendarAlt size={23} className="mb-1" />
+              </button>
+            </Tippy>
+          )}
+
+          {/* Nouvel élément : Loupe (Recherche) - Positionnée en dessous des autres icônes */}
+          {!isOpen && (
+            <Tippy content="Rechercher un client" placement="right">
+              <button
+                onClick={openNavAndFocusSearch} // Ouvre le DashboardNav et met le focus sur le champ de recherche
+                className="flex flex-col items-center text-gray-600 hover:text-red-500 dark:hover:text-white transition duration-300 focus:outline-none"
+              >
+                <FaSearch size={23} className="mb-1" />
+              </button>
+            </Tippy>
+          )}
+
           {/* Réservations */}
           <Tippy content="Réservations" placement="right" disabled={isOpen}>
             <Link to={`/dashboard/reservations?dayselected=${dateSelected.toISOString().split('T')[0]}`} className={getLinkClass('/dashboard/reservations')}>
@@ -186,11 +234,11 @@ export const DashboardNav: React.FC<DashboardNavProps> = ({ restaurant, setIsNav
       <button
         onClick={toggleNav}
         className={clsx(
-          'fixed top-1/2 transform -translate-y-1/2 bg-white dark:bg-dark-800 p-2 border border-gray-100 dark:border-dark-700 rounded-md shadow-lg focus:outline-none transition-transform duration-300 ease-in-out z-60',
-          isOpen ? 'left-[308px] -translate-x-1/2' : 'left-[83px] -translate-x-1/2'
+          'fixed top-1/2 transform -translate-y-1/2 bg-white dark:bg-dark-800 p-2 dark:border-dark-700 rounded-md shadow-lg focus:outline-none transition-transform duration-300 ease-in-out bg-opacity-100 z-60',
+          isOpen ? 'top-5 left-[308px] -translate-x-1/2' : 'top-5 left-[83px] -translate-x-1/2'
         )}
       >
-        {isOpen ? <MdArrowLeft size={20} /> : <MdArrowRight size={20} />}
+        {isOpen ? <MdArrowLeft size={25} /> : <MdArrowRight size={25} />}
       </button>
     </div>
   );
