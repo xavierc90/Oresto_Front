@@ -127,9 +127,9 @@ export const ReservationList: React.FC<ReservationListProps> = ({
               <th className="text-center max-w-[150px]">Nbr de couverts</th>
               <th className="text-center max-w-[180px]">Table</th>
               {/* Cacher la colonne "Détails" sur les petits écrans */}
-              <th className="text-left max-w-[180px] hidden lg:table-cell">Détails</th>
-              <th className="text-left max-w-[100px] hidden lg:table-cell">
-                <span className="flex items-center gap-1 cursor-pointer">
+              <th className="text-left max-w-[180px] hidden xl:table-cell">Détails</th>
+              <th className="text-left max-w-[100px]">
+                <span className="flex justify-center items-center gap-1 cursor-pointer">
                   Status <FaSort />
                 </span>
               </th>
@@ -157,8 +157,8 @@ export const ReservationList: React.FC<ReservationListProps> = ({
                     {(reservation.table && reservation.table_number) || 'N/A'}
                   </td>
                   {/* Cacher la colonne "Détails" sur les petits écrans */}
-                  <td className="text-left hidden lg:table-cell">{reservation.details || ''}</td>
-                  <td className="text-left hidden lg:table-cell">
+                  <td className="text-left hidden xl:table-cell">{reservation.details || ''}</td>
+                  <td className="text-left">
                     <StatusLabel status={reservation.status ? reservation.status : 'waiting'} />
                   </td>
                 </tr>

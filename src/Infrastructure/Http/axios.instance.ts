@@ -1,7 +1,12 @@
 import axios from 'axios';
 
+// Définir le hostname comme variable
+const hostname = '192.168.147.152';
+// const hostname = 'localhost';
+
+// Créer l'instance Axios
 export const http = axios.create({
-  baseURL: 'http://localhost:3001', // Assurez-vous que cela correspond à l'URL de votre backend
+  baseURL: `http://${hostname}:3001`, // Utiliser la variable hostname dans baseURL
   headers: {
     'Content-Type': 'application/json',
   },

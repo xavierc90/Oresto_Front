@@ -125,9 +125,9 @@ export const ClientList = ({ users }: ClientListProps) => {
             <tr>
               <th className="text-left"><span className='flex items-center'>Nom<FaSort onClick={handleSortToggle} className="cursor-pointer" /></span></th>
               <th className="text-left">Prénom</th>
-              <th className="text-left">N° de téléphone</th>
-              <th className="text-left">Adresse mail</th>
-              <th className="text-left">Inscrit depuis le</th>
+              <th className="text-left">Téléphone</th>
+              <th className="text-left">E-mail</th>
+              <th className="text-left hidden xl:block">Inscrit depuis le</th>
             </tr>
           </thead>
           <tbody>
@@ -141,7 +141,7 @@ export const ClientList = ({ users }: ClientListProps) => {
       <td>{user.firstname}</td>
       <td>{user.phone_number}</td>
       <td>{user.email}</td>
-      <td>{formatDateToFrench(user.created_at)}</td>
+      <td className='hidden xl:block'>{formatDateToFrench(user.created_at)}</td>
     </tr>
   ))}
 </tbody>

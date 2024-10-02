@@ -122,10 +122,10 @@ export const PersonalData: React.FC<PersonalDataProps> = ({ onReturnToAccount })
   };
 
   return (
-    <div className="flex flex-col items-center justify-center h-full bg-white p-4">
-      <h2 className="text-lg font-bold mb-8">Mes données personnelles</h2>
+    <div className="flex flex-col items-center justify-center h-full bg-white">
+      <h2 className="text-lg font-bold mb-4">Mes données personnelles</h2>
 
-      <form className="w-full max-w-md" onSubmit={handleSubmit}>
+      <form className="w-full" onSubmit={handleSubmit}>
 
                 {/* Nom de Famille */}
                 <div className="mb-4">
@@ -193,16 +193,16 @@ export const PersonalData: React.FC<PersonalDataProps> = ({ onReturnToAccount })
 
         {/* Messages de succès et d'erreur */}
         {successMessage && (
-          <p className="mb-4 text-sm font-bold text-green-700 text-center">{successMessage}</p>
+          <p className="mb-2 text-sm font-bold text-green-700 text-center">{successMessage}</p>
         )}
         {errorMessage && (
-          <p className="mb-4 text-sm font-bold text-red-700 text-center">{errorMessage}</p>
+          <p className="mb-2 text-sm font-bold text-red-700 text-center">{errorMessage}</p>
         )}
 
         {/* Bouton de soumission */}
         <button
           type="submit"
-          className="w-full bg-green-800 text-white py-2 px-4 rounded-lg text-sm font-semibold "
+          className="w-full bg-green-800 text-white py-2 px-4 rounded-lg text-sm mt-3 font-semibold "
         >
           Enregistrer les modifications
         </button>

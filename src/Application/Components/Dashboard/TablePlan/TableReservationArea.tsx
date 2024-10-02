@@ -1,5 +1,3 @@
-// TableReservationArea.tsx
-
 import React, { useEffect, useState } from 'react';
 import { http } from '../../../../Infrastructure/Http/axios.instance';
 import { Table } from '../../../../Module/Types/table.type';
@@ -8,19 +6,25 @@ import { Link } from 'react-router-dom';
 import { Reservation } from '../../../../Module/Types/reservation.type';
 import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
-import { FaEye, FaEyeSlash } from "react-icons/fa"; // Import des icônes pour le bouton
+import { FaLightbulb } from "react-icons/fa"; // Icône pour le bouton ampoule
 
 interface TableReservationAreaProps {
   selectedDate: Date | null;
   restaurant: { _id: string };
   token: string | null;
   reservations: Reservation[];
+  isOpen: boolean;
 }
 
-export const TableReservationArea: React.FC<TableReservationAreaProps> = ({ selectedDate, restaurant, token, reservations }) => {
+export const TableReservationArea: React.FC<TableReservationAreaProps> = ({ selectedDate, restaurant, token, reservations, isOpen }) => {
   const [tables, setTables] = useState<Table[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [showGrid, setShowGrid] = useState<boolean>(true); // Nouvel état pour la visibilité du quadrillage
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(true); // État pour gérer le mode clair/sombre
+
+  // Fonction pour basculer entre clair et sombre
+  const toggleTheme = () => {
+    setIsDarkMode(!isDarkMode);
+  };
 
   useEffect(() => {
     console.log('Tables dans TableReservation:', tables);
@@ -91,7 +95,6 @@ export const TableReservationArea: React.FC<TableReservationAreaProps> = ({ sele
     );
   }
 
-  // Gardez une seule déclaration de la fonction translateStatus
   const translateStatus = (status: string) => {
     switch (status.toLowerCase()) {
       case 'confirmed':
@@ -109,6 +112,7 @@ export const TableReservationArea: React.FC<TableReservationAreaProps> = ({ sele
     }
   };
 
+  // Ajuster les couleurs des tables en fonction du thème
   const getColorByStatus = (status: string) => {
     switch (status.toLowerCase()) {
       case 'waiting':
@@ -116,7 +120,9 @@ export const TableReservationArea: React.FC<TableReservationAreaProps> = ({ sele
       case 'confirmed':
         return { tableColor: '#76c87a', tableSizeColor: '#59a25d' };
       case 'available':
-        return { tableColor: '#EAE5E5', tableSizeColor: '#B8BCBA' };
+        return isDarkMode
+          ? { tableColor: '#fafafa', tableSizeColor: '#ffffff' } // Couleur pour mode sombre
+          : { tableColor: '#e0e0e0', tableSizeColor: '#d3d3d3' }; // Couleur pour mode clair
       case 'unavailable':
         return { tableColor: '#D3D3D3', tableSizeColor: '#A9A9A9' };
       default:
@@ -149,7 +155,6 @@ export const TableReservationArea: React.FC<TableReservationAreaProps> = ({ sele
     const status = getTableStatus(table);
     const { tableColor, tableSizeColor } = getColorByStatus(status);
 
-    // Accès direct aux propriétés de la table sans passer par table.table_id
     const rotation = table.rotate || 0;
     const tableNumber = table.number;
     const tableCapacity = table.capacity;
@@ -300,78 +305,90 @@ export const TableReservationArea: React.FC<TableReservationAreaProps> = ({ sele
 
   return (
     <div
-      className="table-reservation-plan w-full h-96 mx-auto border border-zinc-300 bg-gray-800 dark:bg-gray-900 dark:border-dark-800 dark:text-black relative"
-      style={{
-        position: 'relative',
-        overflow: 'hidden',
-        background: showGrid
-          ? 'repeating-linear-gradient(0deg, transparent, transparent 19px, rgba(128, 128, 128, 0.5) 20px), repeating-linear-gradient(-90deg, transparent, transparent 19px, rgba(128, 128, 128, 0.5) 20px)'
-          : 'none', // Masquer le quadrillage si showGrid est false
-      }}
+      className={`table-reservation-container relative h-96 w-full border border-zinc-300 ${
+        isDarkMode ? 'bg-gray-800 dark:bg-gray-900' : 'bg-white'
+      }`}
     >
-      {/* Bouton de basculement du quadrillage */}
+      {/* Bouton pour basculer le thème */}
       <button
-        onClick={() => setShowGrid(prev => !prev)}
-        className="absolute top-4 right-4 bg-gray-700 text-white p-2 rounded-full shadow-md hover:bg-gray-600 focus:outline-none"
-        aria-label={showGrid ? "Masquer le quadrillage" : "Afficher le quadrillage"}
+        onClick={toggleTheme}
+        className="absolute top-4 right-4 bg-white p-2 rounded-full shadow-md hover:bg-gray-300 focus:outline-none z-50"
+        aria-label="Changer le thème"
       >
-        {showGrid ? <FaEyeSlash /> : <FaEye />}
+        <FaLightbulb size={20} color={isDarkMode ? '#000' : '#000'} />
       </button>
 
-      {tables.map((table) => {
-        const reservationsForTable = getReservationsForTable(table);
-        const status = getTableStatus(table); // Obtenir le statut de la table
+      {/* Conteneur avec défilement horizontal uniquement pour le plan de table */}
+      <div
+        className="table-plan-wrapper  h-full w-full"
+        style={{
+          width: '830px',
+          overflowY: 'auto',
+          position: 'relative',
+        }}
+      >
+        <div
+          className="table-plan flex relative"
+          style={{
+            width: '1400px',
+            height: '100%',
+          }}
+        >
+          {tables.map((table) => {
+            const reservationsForTable = getReservationsForTable(table);
+            const status = getTableStatus(table);
 
-        // Contenu du tooltip
-        const content = (
-          <div>
-            <strong>Table n°{table.number}</strong>
-            {reservationsForTable.length > 0 ? (
-              reservationsForTable.map((reservation) => (
-                <div key={reservation._id} className="mb-2 mt-2">
-                  <strong>{reservation.user_id.firstname} {reservation.user_id.lastname}</strong><br />
-                  {reservation.nbr_persons} {reservation.nbr_persons > 1 ? 'personnes' : 'personne'}<br />
-                  {reservation.time_selected}<br />
-                  {reservation.details && (
-                    <>
-                      {reservation.details}<br />
-                    </>
-                  )}
-                  Réservation {translateStatus(reservation.status)}
-                </div>
-              ))
-            ) : (
-              <div>Aucune réservation</div>
-            )}
-          </div>
-        );
-
-        return (
-          <Tippy
-            key={table._id}
-            content={content}
-            placement="auto"
-            arrow={true}
-            delay={[0, 0]}
-            interactive={true}
-          >
-            <div
-              className={`table-container ${status === 'waiting' ? 'blink' : ''}`} // Ajouter la classe 'blink' si le statut est 'waiting'
-              style={{
-                position: 'absolute',
-                left: `${table.position_x}px`,
-                top: `${table.position_y}px`,
-                cursor: 'pointer',
-              }}
-            >
-              {renderTableSVG(table)}
-              <div className="number-circle">
-                <span>{table.number}</span>
+            const content = (
+              <div>
+                <strong>Table n°{table.number}</strong>
+                {reservationsForTable.length > 0 ? (
+                  reservationsForTable.map((reservation) => (
+                    <div key={reservation._id} className="mb-2 mt-2">
+                      <strong>{reservation.user_id.firstname} {reservation.user_id.lastname}</strong><br />
+                      {reservation.nbr_persons} {reservation.nbr_persons > 1 ? 'personnes' : 'personne'}<br />
+                      {reservation.time_selected}<br />
+                      {reservation.details && (
+                        <>
+                          {reservation.details}<br />
+                        </>
+                      )}
+                      Réservation {translateStatus(reservation.status)}
+                    </div>
+                  ))
+                ) : (
+                  <div>Aucune réservation</div>
+                )}
               </div>
-            </div>
-          </Tippy>
-        );
-      })}
+            );
+
+            return (
+              <Tippy
+                key={table._id}
+                content={content}
+                placement="auto"
+                arrow={true}
+                delay={[0, 0]}
+                interactive={true}
+              >
+                <div
+                  className={`table-container ${status === 'waiting' ? 'blink' : ''}`}
+                  style={{
+                    position: 'absolute',
+                    left: `${table.position_x}px`,
+                    top: `${table.position_y}px`,
+                    cursor: 'pointer',
+                  }}
+                >
+                  {renderTableSVG(table)}
+                  <div className="number-circle">
+                    <span>{table.number}</span>
+                  </div>
+                </div>
+              </Tippy>
+            );
+          })}
+        </div>
+      </div>
     </div>
   );
 };

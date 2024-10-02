@@ -97,15 +97,16 @@ export const ReservationsPage = () => {
 
   return (
     <div className="bg-light w-full">
-      <div className="flex justify-between items-center pt-10 pl-10 pr-12">
+      {/* Utilisation de flex pour aligner les blocs à gauche et à droite */}
+      <div className="flex justify-between items-start pt-10 pl-10 pr-12">
         {/* Bloc de gauche avec la date et le nombre de réservations */}
         <div>
-          <div className="text-xl font-bold">
+          <div className="text-sm md:text-xl font-bold">
             {selectedDate
               ? formatDateWithoutTime(selectedDate.toISOString())
               : 'Sélectionnez une date'}
           </div>
-          <div className="text-lg mt-1">
+          <div className="text-sm lg:text-lg mt-1">
             <span className="font-bold text-red-500 dark:text-white">
               {validReservations}
             </span>{' '}
@@ -117,61 +118,66 @@ export const ReservationsPage = () => {
             couvert{totalCovers > 1 ? 's ' : ' '}
           </div>
         </div>
+  
         {/* Bloc de droite avec les filtres */}
-        <div className="flex items-center gap-4">
-          <span>Filtrer par statut :</span>
-          {/* Filtre pour "Annulées" */}
-          <label className="inline-flex items-center cursor-pointer">
-            <input
-              type="checkbox"
-              checked={!hideCanceled}
-              onChange={() => setHideCanceled((prev) => !prev)}
-              className="sr-only peer"
-            />
-            <div className="relative w-9 h-5 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full 
-            rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] 
-            after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border 
-            after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-600 peer-checked:bg-red-500"></div>
-            <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">
-              Annulées
-            </span>
-          </label>
-
-          {/* Filtre pour "En attente" */}
-          <label className="inline-flex items-center cursor-pointer">
-            <input
-              type="checkbox"
-              checked={!hideWaiting}
-              onChange={() => setHideWaiting((prev) => !prev)}
-              className="sr-only peer"
-            />
-            <div className="relative w-9 h-5 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full 
-            rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] 
-            after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border 
-            after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-600 peer-checked:bg-amber-500"></div>
-            <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">
-              En attente
-            </span>
-          </label>
-
-          {/* Filtre pour "Confirmées" */}
-          <label className="inline-flex items-center cursor-pointer">
-            <input
-              type="checkbox"
-              checked={!hideConfirmed}
-              onChange={() => setHideConfirmed((prev) => !prev)}
-              className="sr-only peer"
-            />
-            <div className="relative w-9 h-5 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full 
-            rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] 
-            after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border 
-            after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"></div>
-            <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">
-              Confirmées
-            </span>
-          </label>
+        <div className="flex flex-col text-sm gap-2">
+          <span className='font-semibold'>Filtrer par statut</span>
+          <div className='flex gap-3'>
+            {/* Filtre pour "Annulées" */}
+            <label className="hidden lg:inline-flex items-center cursor-pointer">
+              <input
+                type="checkbox"
+                checked={!hideCanceled}
+                onChange={() => setHideCanceled((prev) => !prev)}
+                className="sr-only peer"
+              />
+              <div className="relative w-9 h-5 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full 
+              rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] 
+              after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border 
+              after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-600 peer-checked:bg-red-500"></div>
+              <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">
+                Annulées
+              </span>
+            </label>
+  
+            {/* Filtre pour "En attente" */}
+            <label className="hidden lg:inline-flex items-center cursor-pointer">
+              <input
+                type="checkbox"
+                checked={!hideWaiting}
+                onChange={() => setHideWaiting((prev) => !prev)}
+                className="sr-only peer"
+              />
+              <div className="relative w-9 h-5 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full 
+              rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] 
+              after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border 
+              after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-600 peer-checked:bg-amber-500"></div>
+              <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">
+                En attente
+              </span>
+            </label>
+  
+            {/* Filtre pour "Confirmées" */}
+            <label className="hidden lg:inline-flex items-center cursor-pointer">
+              <input
+                type="checkbox"
+                checked={!hideConfirmed}
+                onChange={() => setHideConfirmed((prev) => !prev)}
+                className="sr-only peer"
+              />
+              <div className="relative w-9 h-5 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full 
+              rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] 
+              after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border 
+              after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"></div>
+              <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">
+                Confirmées
+              </span>
+            </label>
+          </div>
         </div>
       </div>
+  
+      {/* Composants pour la liste des réservations et la gestion des tables */}
       <ReservationList
         reservations={filteredReservations}
         fetchReservations={fetchReservations}
@@ -182,7 +188,8 @@ export const ReservationsPage = () => {
         reservations={reservations}
         restaurant={restaurant}
         token={token}
+        isOpen={true}
       />
     </div>
   );
-};
+}
