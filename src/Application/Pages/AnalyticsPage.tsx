@@ -19,15 +19,16 @@ export const AnalyticsPage = () => {
   ];
 
   const popularCapacities = [
-    { capacity: '2 personnes', bookings: 50 },
-    { capacity: '4 personnes', bookings: 35 },
-    { capacity: '6 personnes', bookings: 15 },
+    { capacity: '2 couverts', bookings: 50 },
+    { capacity: '4 couverts', bookings: 35 },
+    { capacity: '6 couverts', bookings: 15 },
+    { capacity: '8 couverts', bookings: 7 },
   ];
 
   const peopleCounts = [
-    { people: '2 personnes', count: 40 },
-    { people: '4 personnes', count: 35 },
-    { people: '6 personnes', count: 25 },
+    { people: '2 couverts', count: 40 },
+    { people: '4 couverts', count: 35 },
+    { people: '6 couverts', count: 25 },
   ];
 
   useEffect(() => {
@@ -51,15 +52,13 @@ export const AnalyticsPage = () => {
   return (
     <div className="bg-light w-full min-h-screen pl-10">
       {/* En-tête des statistiques */}
-      <div className="pt-10">
+      <div className="pt-10 pb-7">
         <h1 className="text-xl font-bold">Statistiques</h1>
-        <span className="text-gray-500">
-          {isDataAvailable ? "" : "Retrouvez les statistiques de votre restaurant sur cette page"}
-        </span>
+        <h2 className="text-lg mt-1 mb-2">Consultez les statistiques de votre restaurant</h2>
       </div>
 
       {isDataAvailable ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {/* Statistiques des réservations */}
           <div className="p-6 bg-white rounded shadow-md">
             <h2 className="text-lg font-bold mb-2">Réservations</h2>
@@ -79,19 +78,19 @@ export const AnalyticsPage = () => {
 
           {/* Classement des tables les plus réservées */}
           <div className="p-6 bg-white rounded shadow-md">
-            <h2 className="text-lg font-bold mb-4">Les tables les plus réservées</h2>
+            <h2 className="text-lg font-bold mb-4">Tables les + réservées</h2>
             <table className="w-full text-left table-auto">
               <thead>
                 <tr className="bg-gray-200">
-                  <th className="px-4 py-2">Table</th>
-                  <th className="px-4 py-2">Nbr de réservations</th>
+                  <th className="px-4 py-2">Tables</th>
+                  <th className="px-4 py-2">Réservations</th>
                 </tr>
               </thead>
               <tbody>
                 {tableRankings.map((table, index) => (
                   <tr key={index} className={index % 2 === 0 ? "bg-gray-100" : ""}>
                     <td className="border px-4 py-2">{table.table}</td>
-                    <td className="border px-4 py-2">{table.timesBooked}</td>
+                    <td className="border px-4 py-2 text-center">{table.timesBooked}</td>
                   </tr>
                 ))}
               </tbody>
@@ -100,11 +99,11 @@ export const AnalyticsPage = () => {
 
           {/* Capacités les plus réservées */}
           <div className="p-6 bg-white rounded shadow-md">
-            <h2 className="text-lg font-bold mb-4">Capacités les plus réservées</h2>
+            <h2 className="text-lg font-bold mb-4">Capacités les + réservées</h2>
             <table className="w-full text-left table-auto">
               <thead>
                 <tr className="bg-gray-200">
-                  <th className="px-4 py-2">Capacité</th>
+                  <th className="px-4 py-2">Couverts</th>
                   <th className="px-4 py-2">Réservations</th>
                 </tr>
               </thead>
@@ -112,7 +111,7 @@ export const AnalyticsPage = () => {
                 {popularCapacities.map((capacity, index) => (
                   <tr key={index} className={index % 2 === 0 ? "bg-gray-100" : ""}>
                     <td className="border px-4 py-2">{capacity.capacity}</td>
-                    <td className="border px-4 py-2">{capacity.bookings}</td>
+                    <td className="border px-4 py-2 text-center">{capacity.bookings}</td>
                   </tr>
                 ))}
               </tbody>
@@ -121,19 +120,19 @@ export const AnalyticsPage = () => {
 
           {/* Nombre de personnes par réservation */}
           <div className="p-6 bg-white rounded shadow-md">
-            <h2 className="text-lg font-bold mb-4">Personnes par réservation</h2>
+            <h2 className="text-lg font-bold mb-4">Personnes / Réservation</h2>
             <table className="w-full text-left table-auto">
               <thead>
                 <tr className="bg-gray-200">
-                  <th className="px-4 py-2">Nombre de personnes</th>
-                  <th className="px-4 py-2">Nombre de réservations</th>
+                  <th className="px-4 py-2">Personnes</th>
+                  <th className="px-4 py-2">Réservations</th>
                 </tr>
               </thead>
               <tbody>
                 {peopleCounts.map((people, index) => (
                   <tr key={index} className={index % 2 === 0 ? "bg-gray-100" : ""}>
                     <td className="border px-4 py-2">{people.people}</td>
-                    <td className="border px-4 py-2">{people.count}</td>
+                    <td className="border px-4 py-2 text-center">{people.count}</td>
                   </tr>
                 ))}
               </tbody>

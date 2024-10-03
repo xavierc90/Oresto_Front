@@ -73,7 +73,15 @@ export const TableReservationArea: React.FC<TableReservationAreaProps> = ({ sele
   }, [selectedDate, restaurant, token]);
 
   if (loading) {
-    return <p>Chargement des tables...</p>;
+    return (
+      <div className="flex flex-col items-center justify-center h-screen">
+        <div
+          className="animate-spin rounded-full h-20 w-20 border-4 border-red-500"
+          style={{ borderTopColor: 'transparent' }}
+        ></div>
+        <div className="mt-4 text-lg">Chargement des tables</div>
+      </div>
+    );
   }
 
   if (tables.length === 0) {

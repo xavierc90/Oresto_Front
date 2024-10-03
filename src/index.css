@@ -192,7 +192,6 @@ input::placeholder {
 /* Calendrier */
 
 .calendar {
-  height: 265px;
   overflow: hidden; /* Pour éviter tout débordement */
   padding: 0;
 }
@@ -242,6 +241,10 @@ justify-content: space-between;
 align-items: center;
 position: relative;
 width: 100%;
+}
+
+.rdp-day_button {
+  font-weight: semi-bold;
 }
 
 .rdp-button_previous,
