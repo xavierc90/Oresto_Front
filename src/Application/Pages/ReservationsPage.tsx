@@ -8,6 +8,7 @@ import { dateService } from '../../Module/Utils/dateService';
 import { http } from '../../Infrastructure/Http/axios.instance';
 import { Reservation } from '../../Module/Types/reservation.type';
 import { TableReservationArea } from '../Components/Dashboard/TablePlan/TableReservationArea';
+import { Loader } from '../Components/Loader';
 
 interface OutletContextType {
   user: any;
@@ -21,6 +22,7 @@ export const ReservationsPage = () => {
   const restaurant = user?.restaurant?.[0];
   const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
   const [reservations, setReservations] = useState<Reservation[]>([]);
+  const [loading, setLoading] = useState<boolean>(true); // Gérer le chargement global
 
   // États des filtres
   const [hideCanceled, setHideCanceled] = useState(false);

@@ -61,19 +61,21 @@ export const AnalyticsPage = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {/* Statistiques des réservations */}
           <div className="p-6 bg-white rounded shadow-md">
-            <h2 className="text-lg font-bold mb-2">Réservations</h2>
-            <p className="text-gray-700">
+            <h2 className="text-lg font-bold mb-5">Réservations</h2>
+            <ul className="space-y-4">
+            <li className="text-gray-700">
               Total des réservations : <span className="font-semibold">{totalReservations}</span>
-            </p>
-            <p className="text-gray-700">
-              Confirmées : <span className="font-semibold text-green-500">{totalConfirmedReservations}</span>
-            </p>
-            <p className="text-gray-700">
-              En attente : <span className="font-semibold text-yellow-500">{totalWaitingReservations}</span>
-            </p>
-            <p className="text-gray-700">
+            </li>
+            <li className="text-gray-700">
+              Confirmées : <span className="font-semibold text-green-700">{totalConfirmedReservations}</span>
+            </li>
+            <li className="text-gray-700">
+              En attente : <span className="font-semibold text-orange-500">{totalWaitingReservations}</span>
+            </li>
+            <li className="text-gray-700">
               Annulées : <span className="font-semibold text-red-500">{totalCanceledReservations}</span>
-            </p>
+            </li>
+            </ul>
           </div>
 
           {/* Classement des tables les plus réservées */}
@@ -120,7 +122,7 @@ export const AnalyticsPage = () => {
 
           {/* Nombre de personnes par réservation */}
           <div className="p-6 bg-white rounded shadow-md">
-            <h2 className="text-lg font-bold mb-4">Personnes / Réservation</h2>
+            <h2 className="text-lg font-bold mb-4">Réservations par personnes</h2>
             <table className="w-full text-left table-auto">
               <thead>
                 <tr className="bg-gray-200">

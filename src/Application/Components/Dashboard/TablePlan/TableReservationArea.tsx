@@ -7,6 +7,7 @@ import { Reservation } from '../../../../Module/Types/reservation.type';
 import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
 import { FaLightbulb } from "react-icons/fa"; // Icône pour le bouton ampoule
+import { Loader } from '../../../Components/Loader';
 
 interface TableReservationAreaProps {
   selectedDate: Date | null;
@@ -74,15 +75,9 @@ export const TableReservationArea: React.FC<TableReservationAreaProps> = ({ sele
 
   if (loading) {
     return (
-      <div className="flex flex-col items-center justify-center h-screen">
-        <div
-          className="animate-spin rounded-full h-20 w-20 border-4 border-red-500"
-          style={{ borderTopColor: 'transparent' }}
-        ></div>
-        <div className="mt-4 text-lg">Chargement des tables</div>
-      </div>
-    );
-  }
+    <div className='absolute top-1 left-1/2'>
+      <Loader />
+    </div> )}
 
   if (tables.length === 0) {
     const getLinkClass = (path: string) => {

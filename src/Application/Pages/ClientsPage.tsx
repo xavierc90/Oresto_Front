@@ -5,6 +5,8 @@ import { User } from '../../Module/Auth/user.type';
 import { http } from '../../Infrastructure/Http/axios.instance';
 import { searchService } from '../../Module/Utils/searchService';
 import { BiErrorCircle } from "react-icons/bi";
+import {Loader} from '../Components/Loader'; // Importer le Loader
+
 
 type ContextType = { user: User | null };
 
@@ -49,13 +51,7 @@ export const ClientsPage = () => {
 
   if (loading) {
     return (
-      <div className="flex flex-col items-center justify-center h-screen">
-        <div
-          className="animate-spin rounded-full h-20 w-20 border-4 border-red-500"
-          style={{ borderTopColor: 'transparent' }}
-        ></div>
-        <div className="mt-4 text-lg">Chargement des clients</div>
-      </div>
+      <Loader />
     );
   }
 
