@@ -103,11 +103,12 @@ export const Reservation: React.FC<ReservationProps> = ({ selectedDate, onReturn
     <div>
       {step === 'selectDate' && (
         <>
-          <h2 className="text-lg font-bold mb-4">Choisissez la date</h2>
+        <div className='flex flex-col justify-center items-center gap-3 lg:gap-0 mt-12 lg:mt-0'>
+          <h2 className="text-3xl lg:text-lg font-bold mb-4">Choisissez la date</h2>
 
           <p className=' pb-7'>
-            <h3 className='font-semibold text-sm'>Horaires du restaurant</h3>
-            <span className='w-20 text-sm'>Ouvert du lundi au vendredi <br/>
+            <h3 className='font-semibold text-xl lg:text-sm'>Horaires du restaurant</h3>
+            <span className='w-20 text-xl lg:text-sm'>Ouvert du lundi au vendredi <br/>
             11:30 - 14:30 / 19:30 - 23:00</span>
 
             </p>
@@ -123,7 +124,7 @@ export const Reservation: React.FC<ReservationProps> = ({ selectedDate, onReturn
             <p className="text-red-600 font-semibold">{errorMessage}</p>
           )}
           <button
-            className={`bg-black text-white text-sm font-semibold py-2 px-4 rounded-lg mt-4 w-full ${
+            className={`bg-black text-white text-lg lg:text-sm font-semibold py-3 lg:py-2 lg:px-4 rounded-lg mt-4 w-full ${
               !validateDate(localDate) ? 'opacity-50 cursor-not-allowed' : ''
             }`}
             onClick={handleDateConfirm}
@@ -131,18 +132,20 @@ export const Reservation: React.FC<ReservationProps> = ({ selectedDate, onReturn
           >
             Sélectionner l'heure
           </button>
-          <div className="mt-4 text-center">
-            <button className="text-black underline" onClick={onReturnToAccount}>
+          <div className="mt-8 lg:mt-2  text-center">
+            <button className="text-black lg:text-sm text-xl font-semibold lg:font-normal" onClick={onReturnToAccount}>
               Retour à l'accueil
             </button>
+           </div>
           </div>
         </>
       )}
       
       {step === 'selectTime' && (
   <>
-    <h2 className="text-lg font-bold mb-4">Choisissez l'heure</h2>
-    <div className="flex items-center justify-center text-green-800 mb-1">
+  <div className='flex flex-col items-center justify-center mt-12 lg:mt-0'>
+    <h2 className="text-3xl pt-12 lg:pt-0 lg:text-lg font-bold mb-4">Choisissez l'heure</h2>
+    <div className="flex items-center justify-center text-green-800 mb-1 text-xl lg:text-lg">
       <AiOutlineCalendar 
         className="mr-2 cursor-pointer" 
         onClick={() => setStep('selectDate')}
@@ -151,33 +154,34 @@ export const Reservation: React.FC<ReservationProps> = ({ selectedDate, onReturn
         {localDate.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}
       </span>
     </div>
+  </div>
     {/* Ajouter un lien pour modifier la date */}
-    <div className="text-center mb-4">
+    <div className="text-center mb-2">
       <button
-        className="text-sm text-green-800 font-semibold"
+        className="text-lg lg:text-sm text-green-800 font-semibold"
         onClick={() => setStep('selectDate')}
       >
         Modifier la date
       </button>
     </div>
-    <h3 className="font-bold text-md mb-2">Repas du midi</h3>
+    <h3 className="font-bold text-2xl lg:text-lg mb-4 pt-4">Repas du midi</h3>
     <div className="grid grid-cols-4 lg:grid-cols-4 gap-2 mb-4 font-semibold">
       {['12:00', '12:15', '12:30', '12:45', '13:00', '13:15', '13:30', '13:45'].map(time => (
         <button
           key={time}
-          className={`flex justify-center items-center py-2 px-4 text-center rounded-lg text-sm lg:text-base lg:py-3 lg:px-5 ${timeSelected === time ? 'bg-green-800 text-white' : 'bg-gray-300 text-black'}`}
+          className={`flex justify-center items-center py-4 lg:py-2 lg:px-4 text-center rounded-lg text-xl lg:text-base lg:py-3 lg:px-5 ${timeSelected === time ? 'bg-green-800 text-white' : 'bg-gray-300 text-black'}`}
           onClick={() => handleTimeSelect(time)}
         >
           {time}
         </button>
       ))}
     </div>
-    <h3 className="font-bold text-md mb-2 mt-6">Repas du soir</h3>
+    <h3 className="font-bold text-2xl lg:text-lg mb-4 pt-4">Repas du soir</h3>
     <div className="grid grid-cols-4 lg:grid-cols-4 gap-2 font-semibold">
       {['20:00', '20:15', '20:30', '20:45', '21:00', '21:15', '21:30', '21:45'].map(time => (
         <button
           key={time}
-          className={`flex justify-center items-center py-2 px-4 text-center rounded-lg text-sm lg:text-base lg:py-3 lg:px-5 ${timeSelected === time ? 'bg-green-800 text-white' : 'bg-gray-300 text-black'}`}
+          className={`flex justify-center items-center py-4 px-4 lg:py-2 lg:px-4 text-center rounded-lg text-xl lg:text-base lg:py-3 lg:px-5 ${timeSelected === time ? 'bg-green-800 text-white' : 'bg-gray-300 text-black'}`}
           onClick={() => handleTimeSelect(time)}
         >
           {time}
@@ -185,7 +189,7 @@ export const Reservation: React.FC<ReservationProps> = ({ selectedDate, onReturn
       ))}
     </div>
     <button
-      className={`bg-black text-white text-sm py-2 px-4 mt-9 lg:py-3 lg:px-5 font-bold rounded-lg mt-4 ${
+      className={`bg-black text-white text-xl lg:text-sm py-4 px-4 lg:py-2 lg:px-4 mt-9 lg:py-3 lg:px-5 font-bold rounded-lg mt-4 ${
         !timeSelected ? 'opacity-50 cursor-not-allowed' : ''
       }`}
       onClick={handleConfirm}
@@ -193,8 +197,8 @@ export const Reservation: React.FC<ReservationProps> = ({ selectedDate, onReturn
     >
       Finaliser la réservation
     </button>
-    <div className="mt-4 text-center">
-      <button className="text-black underline" onClick={onReturnToAccount}>
+    <div className="mt-4 text-center text-xl lg:text-sm font-semibold">
+      <button className="text-black" onClick={onReturnToAccount}>
         Retour à l'accueil
       </button>
     </div>
@@ -204,60 +208,60 @@ export const Reservation: React.FC<ReservationProps> = ({ selectedDate, onReturn
 
       {step === 'confirm' && (
         <>
-          <h2 className="text-xl font-bold mb-4">Finaliser la réservation</h2>
+          <h2 className="text-2xl lg:text-xl font-bold mb-6 lg:mb-4 mt-10 lg:mt-0">Finaliser la réservation</h2>
           <div className="mb-4">
-            <p className="font-semibold">Nom de réservation:</p>
-            <p>{user?.firstname} {user?.lastname}</p>
+            <p className="font-semibold text-xl lg:text-base">Nom de réservation</p>
+            <p className='text-xl lg:text-lg'>{user?.firstname} {user?.lastname}</p>
           </div>
           <div className="mb-4">
-            <p className="font-semibold">Date et heure sélectionnées:</p>
-            <p>{localDate.toLocaleDateString()} à {timeSelected}</p>
+            <p className="font-semibold text-xl lg:text-base">Date et heure sélectionnées</p>
+            <p className='text-xl lg:text-lg'>{localDate.toLocaleDateString()} à {timeSelected}</p>
           </div>
           <div className="mb-4">
-            <p className="font-semibold">Nombre de couverts:</p>
+            <p className="font-semibold text-xl lg:text-base">Nombre de couverts:</p>
             <div className="flex items-center justify-center my-4 gap-2">
               <button 
                 onClick={decrementNbrPersons} 
-                className="bg-black text-lg font-bold text-white py-1 px-4 rounded-lg"
+                className="bg-black text-xl font-bold text-white px-6 py-4 lg:py-1 lg:px-4 rounded-lg"
               >
                 -
               </button>
-              <span className='text-lg font-bold px-2'>{nbrPersons}</span>
+              <span className='text-2xl px-8 lg:text-lg font-bold px-2'>{nbrPersons}</span>
               <button 
                 onClick={incrementNbrPersons} 
-                className="bg-green-800 text-lg font-bold text-white py-1 px-4 rounded-lg"
+                className="bg-green-800 text-xl font-bold text-white px-6 py-4 lg:py-1 lg:px-4 rounded-lg"
               >
                 +
               </button>
             </div>
           </div>
           <div className="my-7">
-            <p className="font-semibold">Infos complémentaires:</p>
+            <p className="font-semibold text-xl lg:text-base">Infos complémentaires:</p>
             <textarea
-              className="mt-4 w-full p-2 border border-gray-300 rounded-lg"
+              className="mt-4 w-full text-lg h-auto p-2 lg:p-2 border border-gray-300 rounded-lg"
               rows={4}
               value={additionalInfo}
               onChange={(e) => setAdditionalInfo(e.target.value)} 
               placeholder="Un anniversaire à fêter ? Une suggestion ? Faites-le nous savoir ici..."
             />
           </div>
-          <div className="flex gap-4 justify-center">
+          <div className="flex flex-col gap-4 justify-center">
             <button
-              className="bg-black text-white text-sm font-semibold py-2 px-4 rounded-lg"
+              className="bg-black text-white text-lg lg:text-sm font-semibold py-4 px-5 lg:py-2 lg:px-4 rounded-lg"
               onClick={() => setStep('selectDate')}
             >
-              Modifier
+              Modifier la réservation
             </button>
             <button
-              className="bg-green-800 text-white text-sm font-semibold py-2 px-4 rounded-lg"
+              className="bg-green-800 text-white text-base text-lg lg:text-sm font-semibold py-4 px-5 lg:py-2 lg:px-4 rounded-lg"
               onClick={handleFinalConfirmation}
             >
-              Confirmer
+              Confirmer la réservation
             </button>
           </div>
           {errorMessage && <p className="text-red-600 font-semibold mt-4">{errorMessage}</p>}
           <div className="mt-4 text-center">
-            <button className="text-black underline" onClick={onReturnToAccount}>
+            <button className="text-black text-xl lg:text-sm mt-2 lg:mt-0 font-semibold" onClick={onReturnToAccount}>
               Retour à l'accueil
             </button>
           </div>

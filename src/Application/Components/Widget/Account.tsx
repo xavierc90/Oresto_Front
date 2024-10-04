@@ -69,22 +69,24 @@ export const Account: React.FC<AccountProps> = ({
 
       {!showReservation && !showUserSettings && !showAllergens && !showPersonalData && !showReservationHistory && !showAccessibility ? (
         <>
-          <h1 className="text-center text-md font-bold pb-2">Bonjour {user?.firstname}</h1>
-          <h2 className="text-center text-md mb-4">Comment puis-je vous aider ?</h2>
+          <h1 className="text-center text-3xl lg:text-lg font-bold pb-2">Bonjour {user?.firstname}</h1>
+          <h2 className="text-center text-xl font-semibold lg:text-sm mb-4">Comment puis-je vous aider ?</h2>
+          <div className='flex flex-col gap-3 lg:gap-0'>
           <button
-            className="bg-green-800 text-white text-sm font-bold px-4 py-2 rounded-lg mt-4"
+            className="bg-green-800 text-white text-lg lg:text-sm font-bold px-6 py-4 lg;px-3 lg:py-2 rounded-lg mt-4"
             onClick={() => setShowReservation(true)}
           >
             Je souhaite réserver une table
           </button>
           <button
-            className="bg-black text-white text-sm font-bold px-4 py-2 rounded-lg mt-4"
+            className="bg-black text-white text-lg lg:text-sm font-bold px-6 py-4 lg;px-3 lg:py-2 rounded-lg mt-4"
             onClick={handleManageAccountClick}
           >
             Je souhaite gérer mon compte
           </button>
+          </div>
           <p className="pt-7 pb-3">
-            <a href="#" onClick={handleLogoutClick} className="font-semibold text-sm">Se déconnecter</a>
+            <a href="#" onClick={handleLogoutClick} className="font-semibold text-lg lg:text-sm">Se déconnecter</a>
           </p>
         </>
       ) : showReservation ? (

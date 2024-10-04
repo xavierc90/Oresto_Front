@@ -138,7 +138,7 @@ export const DashboardNav: React.FC<DashboardNavProps> = ({ restaurant, setIsNav
       >
         {/* Logo et nom du restaurant */}
         {isOpen && (
-          <div className='mt-10 flex flex-col gap-4 items-center'>
+          <div className='mt-12 flex flex-col gap-4 items-center'>
             <Link to="/dashboard/reservations">
               <img src={logoSrc} width="220px" alt="Oresto - Gestion des réservations" />
             </Link>

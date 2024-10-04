@@ -182,7 +182,7 @@ export const SettingsPage = () => {
       <h2 className="text-lg mt-1 mb-8">Gérer les paramètres principaux</h2>
 
       <div className="flex justify-between gap-10">
-        <div className="w-1/3">
+        <div className="w-1/2">
           <div className='border-2 border-gray-200 dark:bg-dark-900 dark:border-0 p-3 ml-0'>
             <div className='flex items-center pb-2'>
               <FaStore />
@@ -221,7 +221,7 @@ export const SettingsPage = () => {
         </div>
 
         {/* Deuxième colonne */}
-        <div className="w-1/3">
+        <div className="w-2/3">
           <div className='dark:bg-dark-900 dark:border-0 p-3'>
             <div className='w-96 flex items-center pb-2'>
               <FaRegClock />
@@ -289,7 +289,7 @@ export const SettingsPage = () => {
                   e.target.value
                 )
               }
-              className="border pl-2 rounded dark:bg-dark-900 dark:text-white border-dark-900 text-center w-18"
+              className="border pl-2 rounded dark:bg-dark-900 dark:text-white border-dark-900 text-center w-1/2"
               disabled={day.hours[0].status === 'closed'}
             />
             <input
@@ -303,7 +303,7 @@ export const SettingsPage = () => {
                   e.target.value
                 )
               }
-              className="border pl-2 rounded dark:bg-dark-900 dark:text-white border-dark-900 w-18"
+              className="border pl-2 rounded dark:bg-dark-900 dark:text-white border-dark-900 w-1/2"
               disabled={day.hours[0].status === 'closed'}
             />
           </div>
@@ -332,7 +332,7 @@ export const SettingsPage = () => {
                   e.target.value
                 )
               }
-              className="border ml-2 pl-2 rounded dark:bg-dark-900 dark:text-white border-dark-900 w-18"
+              className="border ml-2 pl-2 rounded dark:bg-dark-900 dark:text-white border-dark-900 w-1/2"
               disabled={day.hours[1].status === 'closed'}
             />
             <input

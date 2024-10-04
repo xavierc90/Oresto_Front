@@ -283,12 +283,12 @@ const deleteZone = { width: 100, height: 100 };
   return (
     <div
       className={`table-reservation-plan w-full h-96 mx-auto border border-zinc-300 relative ${
-        isDarkMode ? 'bg-gray-800 dark:bg-gray-900' : 'bg-white'
+        isDarkMode ? 'bg-gray-800 dark:bg-gray-900' : 'bg-transparent'
       }`}
       style={{
         position: 'relative',
         overflow: 'hidden',
-        background: isDarkMode ? '#202937' : 'white',
+        background: isDarkMode ? '#202937' : 'transparent',
       }}
     >
       {/* Bouton pour basculer entre clair et sombre */}

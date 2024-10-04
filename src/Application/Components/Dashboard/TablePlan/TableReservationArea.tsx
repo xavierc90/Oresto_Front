@@ -119,7 +119,7 @@ export const TableReservationArea: React.FC<TableReservationAreaProps> = ({ sele
   const getColorByStatus = (status: string) => {
     switch (status.toLowerCase()) {
       case 'waiting':
-        return { tableColor: '#ffd16d', tableSizeColor: '#eea404' };
+        return { tableColor: '#fcd469', tableSizeColor: '#eea404' };
       case 'confirmed':
         return { tableColor: '#76c87a', tableSizeColor: '#59a25d' };
       case 'available':
@@ -308,8 +308,8 @@ export const TableReservationArea: React.FC<TableReservationAreaProps> = ({ sele
 
   return (
     <div
-      className={`table-reservation-container relative h-96 w-full border border-zinc-300 ${
-        isDarkMode ? 'bg-gray-800 dark:bg-gray-900' : 'bg-white'
+      className={`table-reservation-container border-t-2 relative h-96 w-full overflow-y-hidden ${
+        isDarkMode ? 'bg-gray-800 dark:bg-gray-900' : 'bg-transparent'
       }`}
     >
       {/* Bouton pour basculer le thème */}
