@@ -3,16 +3,19 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import { http } from '../../Infrastructure/Http/axios.instance';
 import { useAuth } from '../../Module/Auth/useAuth';
 import { CookieBanner } from '../Components/CookieBanner';
+import { TermsOfService } from '../Components/TermsOfService';
+import { PrivacyPolicy } from '../Components/PrivacyPolicy';
 
 export const LoginPage = () => {
   
   useEffect(() => {
     document.title = 'Oresto - Page de connexion';
   }, []);
-
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
+  const [isPrivacyOpen, setIsPrivacyOpen] = useState<boolean>(false);
+  const [isTermsOpen, setIsTermsOpen] = useState<boolean>(false);
   const { login } = useAuth(); 
   const navigate = useNavigate();
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -83,16 +86,30 @@ export const LoginPage = () => {
               <NavLink to="/register" className="bg-red-600 text-white text-center p-4 rounded-lg font-bold uppercase no-underline hover:text-white">Créer un compte</NavLink>
             </div>
           </form>
-          <div className='mt-10'>
-            <NavLink to="/lostpassword" className={'underline'}>J'ai oublié mon mot de passe</NavLink>
+          <div className='mt-6'>
+            <NavLink to="/lostpassword" className="hover:underline">J'ai oublié mon mot de passe</NavLink>
           </div>
-          <div className='mt-4'>
-            <a href="/conditions" target='_blank' className='underline'>Conditions générales d'utilisation</a>
+          <div className='absolute bottom-10 mt-1 flex gap-4'>
+            <a 
+            onClick={() => setIsTermsOpen(true)}
+            className="hover:underline cursor-pointer">Conditions générales</a>
+                         - <a 
+            onClick={() => setIsPrivacyOpen(true)}
+            className="hover:underline cursor-pointer">Politique de confidentliaté</a>
           </div>
         </div>
       </div>
       <div className='cover-login w-6/12'></div>
       <CookieBanner />
+
+      {isPrivacyOpen && (
+      <PrivacyPolicy onClose={() => setIsPrivacyOpen(false)} />
+      )}
+
+      {isTermsOpen && (
+        <TermsOfService onClose={() => setIsTermsOpen(false)} />
+      )}
+
     </div>
   );
 };

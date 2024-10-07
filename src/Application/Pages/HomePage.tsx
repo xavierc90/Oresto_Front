@@ -2,9 +2,13 @@ import { useEffect, useState } from 'react';
 import { RxHamburgerMenu, RxCross1 } from "react-icons/rx"; // Importer les icônes
 import { Widget } from '../Components/Widget/Widget';
 import { CookieBanner } from '../Components/CookieBanner';
+import { PrivacyPolicy } from '../Components/PrivacyPolicy';
+import { TermsOfService } from '../Components/TermsOfService';
 
 export const HomePage = () => {
   const [isMenuVisible, setIsMenuVisible] = useState(false); // État pour la visibilité du menu
+  const [isPrivacyOpen, setIsPrivacyOpen] = useState<boolean>(false);
+  const [isTermsOpen, setIsTermsOpen] = useState<boolean>(false);
 
   const toggleMenuVisibility = () => {
     setIsMenuVisible(!isMenuVisible);
@@ -203,17 +207,26 @@ export const HomePage = () => {
       </div>
       <CookieBanner />
       <footer className="footer bottom-0 bg-black text-white w-full">
-        <p className="text-center text-white text-sm py-2">Site créé par &nbsp;
+      <ul className='flex flex-col lg:flex-row items-center justify-center text-sm gap-4 pt-4'>
+            <li><a href="https://accessibilite.numerique.gouv.fr/" target='_blank' className='underline'>Accessibilité conforme</a></li>
+            <li><a onClick={() => setIsPrivacyOpen(true)} className='underline'>Politique de confidentialité</a></li>
+            <li><a onClick={() => setIsTermsOpen(true)} className='underline'>Conditions d'utilisations</a></li>
+          </ul>
+        <p className="text-center text-white text-sm py-4">Site créé par &nbsp;
             <a href="mailto:xavier.colombel@google.com?subject=Oresto%20-%20Contacter le développeur"
               className='font-bold hover:no-underline hover:text-white'>
               Xavier Colombel</a>
           </p>
-          <ul className='flex justify-center text-sm gap-4'>
-            <li><a href="#" className='underline'>Accessibilité conforme</a></li>
-            <li><a href="#" className='underline'>Politique de confidentialité</a></li>
-            <li><a href="#" className='underline'>Conditions d'utilisations</a></li>
-          </ul>
       </footer>
+
+      {isPrivacyOpen && (
+      <PrivacyPolicy onClose={() => setIsPrivacyOpen(false)} />
+      )}
+
+      {isTermsOpen && (
+        <TermsOfService onClose={() => setIsTermsOpen(false)} />
+      )}
+
     </div>
   );
 };

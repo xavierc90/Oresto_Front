@@ -17,6 +17,7 @@ export const RegisterRestaurant = () => {
     restaurantCity: '',
     restaurantCountry: ''
   });
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const handleInputChange = (

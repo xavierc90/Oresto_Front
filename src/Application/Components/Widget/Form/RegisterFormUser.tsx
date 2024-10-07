@@ -1,6 +1,7 @@
 import React, { Dispatch, useState } from "react";
 import { FaEye, FaEyeSlash, FaCheckCircle, FaTimesCircle } from "react-icons/fa";
 import useRegister from "../../../../Module/Auth/register.hook"; // Assurez-vous d'importer le hook correctement
+import {TermsOfService} from "../../TermsOfService";
 import ArrowButton from './ArrowButton';
 import CloseButton from './CloseButton';
 
@@ -28,6 +29,9 @@ export const RegisterFormUser: React.FC<RegisterFormUserProps> = ({
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
+  // États pour gérer l'ouverture des modales
+  const [isTermsOpen, setIsTermsOpen] = useState<boolean>(false);
+  
   // État pour suivre l'étape actuelle
   const [step, setStep] = useState(1);
 
@@ -188,9 +192,8 @@ export const RegisterFormUser: React.FC<RegisterFormUserProps> = ({
               <span className="text-sm">
                 J'accepte les{" "}
                 <a
-                  href="/conditions"
-                  target="_blank"
-                  className="text-black font-bold hover:text-green-700 underline"
+                onClick={() => setIsTermsOpen(true)}
+                  className="text-black font-bold hover:text-green-700 underline cursor-pointer"
                 >
                   conditions d'utilisation
                 </a>
@@ -205,6 +208,10 @@ export const RegisterFormUser: React.FC<RegisterFormUserProps> = ({
               Créer un mot de passe
             </button>
           </form>
+                {/* Modal pour les Conditions Générales */}
+      {isTermsOpen && (
+        <TermsOfService onClose={() => setIsTermsOpen(false)} />
+      )}
           <div className="w-full text-center">
             <button
               onClick={() => setIsLoging(true)}

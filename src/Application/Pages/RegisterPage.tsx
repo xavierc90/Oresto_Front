@@ -3,6 +3,8 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../Module/Auth/useAuth';
 import { http } from '../../Infrastructure/Http/axios.instance';
 import { AxiosError } from 'axios';
+import { TermsOfService } from '../Components/TermsOfService';
+
 
 export const RegisterPage = () => {
   const { login } = useAuth();
@@ -16,6 +18,9 @@ export const RegisterPage = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [isCheckboxChecked, setIsCheckboxChecked] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [isTermsOpen, setIsTermsOpen] = useState<boolean>(false);
+
+
 
   useEffect(() => {
     document.title = 'Oresto - Inscription restaurateur';
@@ -196,10 +201,14 @@ export const RegisterPage = () => {
                   onChange={handleCheckboxChange}
                 />
                 J'accepte les{' '}
-                <a href="#" className="text-black font-bold underline hover:text-red-600">
-                  conditions d'utilisation
-                </a>
+                <a 
+            onClick={() => setIsTermsOpen(true)}
+            className="hover:underline cursor-pointer font-bold">Conditions générales</a>
               </div>
+              {isTermsOpen && (
+        <TermsOfService onClose={() => setIsTermsOpen(false)} />
+      )}
+
 
               <button
                 type="submit"
