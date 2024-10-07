@@ -396,7 +396,7 @@ background: none; /* Retirer l'arrière-plan */
 @media screen and (max-width: 1400px) {
 
   .number-circle {
-    font-size: 16px;
+    font-size: 14px;
 }
 
   .rdp-day_button {

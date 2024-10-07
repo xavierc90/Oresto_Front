@@ -135,7 +135,7 @@ export const TableForm: React.FC<TableFormProps> = ({ onTableCreated }) => {
           N° de la table :
           <input type="text" name="number" className='border-2 border-gray-300 ml-5 w-14 text-center dark:text-white dark:bg-dark-900 dark:border-2 dark:border-dark-900' value={tableData.number} onChange={handleChange} required />
         </label>
-        <button type="submit" className="mt-4 mb-4 mb-2 p-2 bg-black text-white text-xs w-[130px] "> Ajouter la table</button>
+        <button type="submit" className="mt-4 mb-4 mb-2 p-2 bg-black text-white text-xs w-[130px] font-bold "> Ajouter la table</button>
         </div>
         <div className="mt-4">
           Modèle de table :

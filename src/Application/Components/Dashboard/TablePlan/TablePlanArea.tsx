@@ -156,10 +156,10 @@ const deleteZone = { width: 100, height: 100 };
             xmlns="http://www.w3.org/2000/svg"
             style={{ transform: `rotate(${rotation}deg)` }}
           >
-            <ellipse cx="32.3326" cy="8.25806" rx="7.5806" ry="7.37635" fill="#7F7F7F" />
-            <ellipse cx="32.3326" cy="66.2533" rx="7.5806" ry="7.37634" fill="#7F7F7F" />
-            <ellipse cx="90.4502" cy="8.25806" rx="7.58057" ry="7.37635" fill="#7F7F7F" />
-            <ellipse cx="90.4502" cy="66.2533" rx="7.58057" ry="7.37634" fill="#7F7F7F" />
+            <ellipse cx="32.3326" cy="8.25806" rx="7.5806" ry="7.37635" fill="#c2c2c2" />
+            <ellipse cx="32.3326" cy="66.2533" rx="7.5806" ry="7.37634" fill="#c2c2c2" />
+            <ellipse cx="90.4502" cy="8.25806" rx="7.58057" ry="7.37635" fill="#c2c2c2" />
+            <ellipse cx="90.4502" cy="66.2533" rx="7.58057" ry="7.37634" fill="#c2c2c2" />
             <rect y="8" width="123" height="57" fill={tableColor} />
           </svg>
         );
@@ -174,12 +174,12 @@ const deleteZone = { width: 100, height: 100 };
             xmlns="http://www.w3.org/2000/svg"
             style={{ transform: `rotate(${rotation}deg)` }}
           >
-            <ellipse cx="22.3326" cy="8.25806" rx="7.5806" ry="7.37635" fill="#7F7F7F" />
-            <ellipse cx="22.3326" cy="66.2533" rx="7.5806" ry="7.37634" fill="#7F7F7F" />
-            <ellipse cx="63.4502" cy="8.25806" rx="7.58057" ry="7.37635" fill="#7F7F7F" />
-            <ellipse cx="63.4502" cy="66.2533" rx="7.58057" ry="7.37634" fill="#7F7F7F" />
-            <ellipse cx="101.45" cy="8.25806" rx="7.58057" ry="7.37635" fill="#7F7F7F" />
-            <ellipse cx="101.45" cy="66.2533" rx="7.58057" ry="7.37634" fill="#7F7F7F" />
+            <ellipse cx="22.3326" cy="8.25806" rx="7.5806" ry="7.37635" fill="#c2c2c2" />
+            <ellipse cx="22.3326" cy="66.2533" rx="7.5806" ry="7.37634" fill="#c2c2c2" />
+            <ellipse cx="63.4502" cy="8.25806" rx="7.58057" ry="7.37635" fill="#c2c2c2" />
+            <ellipse cx="63.4502" cy="66.2533" rx="7.58057" ry="7.37634" fill="#c2c2c2" />
+            <ellipse cx="101.45" cy="8.25806" rx="7.58057" ry="7.37635" fill="#c2c2c2" />
+            <ellipse cx="101.45" cy="66.2533" rx="7.58057" ry="7.37634" fill="#c2c2c2" />
             <rect y="8" width="123" height="57" fill={tableColor} />
           </svg>
         );
@@ -194,14 +194,14 @@ const deleteZone = { width: 100, height: 100 };
             xmlns="http://www.w3.org/2000/svg"
             style={{ transform: `rotate(${rotation}deg)` }}
           >
-            <ellipse cx="37.3326" cy="8.25806" rx="7.5806" ry="7.37635" fill="#7F7F7F" />
-            <ellipse cx="37.3326" cy="66.2533" rx="7.5806" ry="7.37634" fill="#7F7F7F" />
-            <ellipse cx="78.4502" cy="8.25806" rx="7.58057" ry="7.37635" fill="#7F7F7F" />
-            <ellipse cx="78.4502" cy="66.2533" rx="7.58057" ry="7.37634" fill="#7F7F7F" />
-            <ellipse cx="116.45" cy="8.25806" rx="7.58057" ry="7.37635" fill="#7F7F7F" />
-            <ellipse cx="116.45" cy="66.2533" rx="7.58057" ry="7.37634" fill="#7F7F7F" />
-            <ellipse cx="8.33255" cy="36.2533" rx="7.5806" ry="7.37634" fill="#7F7F7F" />
-            <ellipse cx="145.333" cy="36.2533" rx="7.5806" ry="7.37634" fill="#7F7F7F" />
+            <ellipse cx="37.3326" cy="8.25806" rx="7.5806" ry="7.37635" fill="#c2c2c2" />
+            <ellipse cx="37.3326" cy="66.2533" rx="7.5806" ry="7.37634" fill="#c2c2c2" />
+            <ellipse cx="78.4502" cy="8.25806" rx="7.58057" ry="7.37635" fill="#c2c2c2" />
+            <ellipse cx="78.4502" cy="66.2533" rx="7.58057" ry="7.37634" fill="#c2c2c2" />
+            <ellipse cx="116.45" cy="8.25806" rx="7.58057" ry="7.37635" fill="#c2c2c2" />
+            <ellipse cx="116.45" cy="66.2533" rx="7.58057" ry="7.37634" fill="#c2c2c2" />
+            <ellipse cx="8.33255" cy="36.2533" rx="7.5806" ry="7.37634" fill="#c2c2c2" />
+            <ellipse cx="145.333" cy="36.2533" rx="7.5806" ry="7.37634" fill="#c2c2c2" />
             <rect x="10" y="8" width="134" height="57" fill={tableColor} />
           </svg>
         );
@@ -217,8 +217,8 @@ const deleteZone = { width: 100, height: 100 };
             xmlns="http://www.w3.org/2000/svg"
             style={{ transform: `rotate(${rotation}deg)` }}
           >
-            <ellipse cx="35.5806" cy="7.37634" rx="7.5806" ry="7.37634" fill="#7F7F7F" />
-            <ellipse cx="35.5806" cy="77.3763" rx="7.5806" ry="7.37634" fill="#7F7F7F" />
+            <ellipse cx="35.5806" cy="7.37634" rx="7.5806" ry="7.37634" fill="#c2c2c2" />
+            <ellipse cx="35.5806" cy="77.3763" rx="7.5806" ry="7.37634" fill="#c2c2c2" />
             <rect y="7" width="70" height="70" rx="35" fill={tableColor} />
           </svg>
         );
@@ -233,10 +233,10 @@ const deleteZone = { width: 100, height: 100 };
             xmlns="http://www.w3.org/2000/svg"
             style={{ transform: `rotate(${rotation}deg)` }}
           >
-            <ellipse cx="43.5806" cy="7.37634" rx="7.5806" ry="7.37634" fill="#7F7F7F" />
-            <ellipse cx="43.5806" cy="77.3763" rx="7.5806" ry="7.37634" fill="#7F7F7F" />
-            <ellipse cx="7.5806" cy="42.3763" rx="7.5806" ry="7.37634" fill="#7F7F7F" />
-            <ellipse cx="77.5811" cy="42.3763" rx="7.5806" ry="7.37634" fill="#7F7F7F" />
+            <ellipse cx="43.5806" cy="7.37634" rx="7.5806" ry="7.37634" fill="#c2c2c2" />
+            <ellipse cx="43.5806" cy="77.3763" rx="7.5806" ry="7.37634" fill="#c2c2c2" />
+            <ellipse cx="7.5806" cy="42.3763" rx="7.5806" ry="7.37634" fill="#c2c2c2" />
+            <ellipse cx="77.5811" cy="42.3763" rx="7.5806" ry="7.37634" fill="#c2c2c2" />
             <rect x="8" y="7" width="70" height="70" rx="35" fill={tableColor} />
           </svg>
         );
@@ -252,8 +252,8 @@ const deleteZone = { width: 100, height: 100 };
             xmlns="http://www.w3.org/2000/svg"
             style={{ transform: `rotate(${rotation}deg)` }}
           >
-            <ellipse cx="35.5806" cy="7.37634" rx="7.5806" ry="7.37634" fill="#7F7F7F" />
-            <ellipse cx="35.5806" cy="82.3763" rx="7.5806" ry="7.37634" fill="#7F7F7F" />
+            <ellipse cx="35.5806" cy="7.37634" rx="7.5806" ry="7.37634" fill="#c2c2c2" />
+            <ellipse cx="35.5806" cy="82.3763" rx="7.5806" ry="7.37634" fill="#c2c2c2" />
             <rect y="10" width="70" height="70" fill={tableColor} />
           </svg>
         );
@@ -268,10 +268,10 @@ const deleteZone = { width: 100, height: 100 };
             xmlns="http://www.w3.org/2000/svg"
             style={{ transform: `rotate(${rotation}deg)` }}
           >
-            <ellipse cx="43.5806" cy="7.37634" rx="7.5806" ry="7.37634" fill="#7F7F7F" />
-            <ellipse cx="43.5806" cy="78.3763" rx="7.5806" ry="7.37634" fill="#7F7F7F" />
-            <ellipse cx="7.5806" cy="44.3763" rx="7.5806" ry="7.37634" fill="#7F7F7F" />
-            <ellipse cx="78.5811" cy="44.3763" rx="7.5806" ry="7.37634" fill="#7F7F7F" />
+            <ellipse cx="43.5806" cy="7.37634" rx="7.5806" ry="7.37634" fill="#c2c2c2" />
+            <ellipse cx="43.5806" cy="78.3763" rx="7.5806" ry="7.37634" fill="#c2c2c2" />
+            <ellipse cx="7.5806" cy="44.3763" rx="7.5806" ry="7.37634" fill="#c2c2c2" />
+            <ellipse cx="78.5811" cy="44.3763" rx="7.5806" ry="7.37634" fill="#c2c2c2" />
             <rect x="8" y="8" width="70" height="70" fill={tableColor} />
           </svg>
         );

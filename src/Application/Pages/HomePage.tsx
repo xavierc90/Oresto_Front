@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { RxHamburgerMenu, RxCross1 } from "react-icons/rx"; // Importer les icônes
 import { Widget } from '../Components/Widget/Widget';
+import { CookieBanner } from '../Components/CookieBanner';
 
 export const HomePage = () => {
   const [isMenuVisible, setIsMenuVisible] = useState(false); // État pour la visibilité du menu
@@ -200,7 +201,7 @@ export const HomePage = () => {
           </div>
         </div>
       </div>
-
+      <CookieBanner />
       <footer className="footer bottom-0 bg-black text-white w-full">
         <p className="text-center text-white text-sm py-2">Site créé par &nbsp;
             <a href="mailto:xavier.colombel@google.com?subject=Oresto%20-%20Contacter le développeur"

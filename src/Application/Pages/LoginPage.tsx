@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { http } from '../../Infrastructure/Http/axios.instance';
 import { useAuth } from '../../Module/Auth/useAuth';
+import { CookieBanner } from '../Components/CookieBanner';
 
 export const LoginPage = () => {
   
@@ -91,6 +92,7 @@ export const LoginPage = () => {
         </div>
       </div>
       <div className='cover-login w-6/12'></div>
+      <CookieBanner />
     </div>
   );
 };
