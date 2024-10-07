@@ -1,10 +1,9 @@
-// DashboardPage.tsx
-
 import { useEffect, useState } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { DashboardNav } from '../Components/Dashboard/DashboardNav';
 import { http } from '../../Infrastructure/Http/axios.instance';
 import { useAuth } from '../../Module/Auth/useAuth';
+import { CookieBanner } from '../Components/CookieBanner';
 
 export const DashboardPage = () => {
   const { user, restaurant, token } = useAuth();
@@ -48,6 +47,7 @@ export const DashboardPage = () => {
           <Outlet context={{ user, restaurant, token }} />
         </div>
       </div>
+      <CookieBanner />
     </div>
   );
 };

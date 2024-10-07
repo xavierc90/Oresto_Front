@@ -23,10 +23,11 @@ export const CookieBanner: React.FC = () => {
   return (
     <>
       {isBannerVisible && (
-        <div className="fixed bottom-0 left-0 right-0 bg-white text-black p-4 flex flex-col md:flex-row items-center justify-between shadow-md z-50">
-          <div className="text-sm flex flex-col md:flex-row gap-2">
+        <div className="fixed bottom-0 left-0 right-0 bg-white text-black p-4 flex flex-col md:flex-row items-center justify-between shadow-md z-50 border-2 shadow-xl">
+          <div className="text-sm flex flex-col md:flex-row gap-2 ">
             <p className='text-center'>
-              Nous utilisons des cookies pour améliorer votre expérience. En continuant à utiliser ce site, vous acceptez nos{' '}
+              Nous utilisons des cookies pour améliorer votre expérience. 
+              En continuant à utiliser ce site, vous acceptez nos{' '}
               <button
                 onClick={() => setIsTermsOpen(true)}
                 className="underline font-bold hover:text-green-800"
@@ -45,7 +46,7 @@ export const CookieBanner: React.FC = () => {
           <div className="mt-4 md:mt-0 ml-0 md:ml-4 flex gap-4">
             <button
               onClick={handleAccept}
-              className="w-[150px] bg-black text-white font-semibold py-2 px-4 rounded-md hover:bg-green-800 transition duration-300 text-sm"
+              className="w-[150px] bg-black text-white font-semibold py-2 px-4 rounded-md hover:bg-green-800 transition duration-300 text-sm "
             >
               J'ai compris
             </button>

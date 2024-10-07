@@ -4,6 +4,7 @@ import { useAuth } from '../../Module/Auth/useAuth';
 import { http } from '../../Infrastructure/Http/axios.instance';
 import { AxiosError } from 'axios';
 import { TermsOfService } from '../Components/TermsOfService';
+import { CookieBanner } from '../Components/CookieBanner';
 
 
 export const RegisterPage = () => {
@@ -205,6 +206,7 @@ export const RegisterPage = () => {
             onClick={() => setIsTermsOpen(true)}
             className="hover:underline cursor-pointer font-bold">Conditions générales</a>
               </div>
+              <CookieBanner />
               {isTermsOpen && (
         <TermsOfService onClose={() => setIsTermsOpen(false)} />
       )}

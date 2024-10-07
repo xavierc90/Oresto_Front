@@ -51,7 +51,7 @@ export const LoginPage = () => {
 
   return (
     <div className='w-full h-screen flex'>
-      <div className='w-6/12 bg-light'>
+      <div className='w-full lg:w-6/12 bg-light '>
         <div className="flex flex-col w-400 items-center justify-center h-screen">
           <img src="../../../public/img/logo-oresto-red.png" width="350px" alt="Logo Oresto" className='mb-10' />
           {error && (
@@ -99,7 +99,7 @@ export const LoginPage = () => {
           </div>
         </div>
       </div>
-      <div className='cover-login w-6/12'></div>
+      <div className='cover-login w-6/12 hidden md:block'></div>
       <CookieBanner />
 
       {isPrivacyOpen && (
