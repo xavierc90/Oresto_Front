@@ -1,9 +1,9 @@
 import axios from 'axios';
 
 // Définir le hostname comme variable
-// const hostname = '192.168.147.152';
+const hostname = '192.168.147.152';
 // const hostname = '192.168.0.23';
-const hostname = 'localhost';
+// const hostname = 'localhost';
 
 // Créer l'instance Axios
 export const http = axios.create({
