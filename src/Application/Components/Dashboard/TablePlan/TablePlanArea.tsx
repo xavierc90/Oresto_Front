@@ -11,7 +11,7 @@ interface TableAreaProps {
   onTablesUpdate: () => void; // Fonction de rappel pour notifier le parent des mises à jour
 }
 
-export const TablePlanArea: React.FC<TableAreaProps> = ({token, tables, onTablesUpdate }) => {
+export const TablePlanArea: React.FC<TableAreaProps> = ({ token, tables, onTablesUpdate }) => {
   // Coordonnées et dimensions de la poubelle
 const deleteZone = { width: 100, height: 100 };
   const [draggingTableId, setDraggingTableId] = useState<string | null>(null);
@@ -346,11 +346,11 @@ const deleteZone = { width: 100, height: 100 };
             key={table._id}
             bounds="parent"
             defaultPosition={{ x: table.position_x, y: table.position_y }}
-            onStart={(e) => {
+            onStart={(e, data) => {
               setIsDragging(true);
               handleStart(e);
             }}
-            onDrag={(e) => handleDrag(e)}
+            onDrag={(e, data) => handleDrag(e)}
             onStop={(e, data) => handleStop(e, data, table)}
           >
             <div className="table-container" style={{ position: 'absolute', cursor: 'pointer' }}>

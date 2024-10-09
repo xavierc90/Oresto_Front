@@ -86,22 +86,22 @@ export const HomePage = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl w-full">
           
           <div className="rounded-lg shadow-lg bg-white">
-            <img src="../../../public/img/entree.jpg" alt="Entrées" className="w-full h-90 object-cover rounded-t-lg mb-4"/>
+            <img src="img/entree.jpg" alt="Entrées" className="w-full h-90 object-cover rounded-t-lg mb-4"/>
             <h2 className='text-center font-bold mb-4'>Entrées</h2>
           </div>
 
           <div className="bg-white rounded-lg shadow-lg">
-            <img src="../../../public/img/plats.jpg" alt="Plats" className="w-full h-50 object-cover rounded-t-lg mb-4"/>
+            <img src="/img/plats.jpg" alt="Plats" className="w-full h-50 object-cover rounded-t-lg mb-4"/>
             <h2 className='font-bold mb-4 text-center'>Plats</h2>
           </div>
 
           <div className="bg-white rounded-lg shadow-lg">
-            <img src="../../../public/img/dessert.jpg" alt="Desserts" className="w-full h-[295px] object-cover rounded-t-lg mb-4"/>
+            <img src="/img/dessert.jpg" alt="Desserts" className="w-full h-[295px] object-cover rounded-t-lg mb-4"/>
             <h2 className='font-bold mb-4 text-center'>Desserts</h2>
           </div>
 
           <div className="bg-white rounded-lg shadow-lg">
-            <img src="../../../public/img/boisson.jpg" alt="Boissons" className="w-full h-[300px] object-cover rounded-t-lg mb-4"/>
+            <img src="/img/boisson.jpg" alt="Boissons" className="w-full h-[300px] object-cover rounded-t-lg mb-4"/>
             <h2 className='font-bold mb-4 text-center'>Boissons</h2>
           </div>
 
