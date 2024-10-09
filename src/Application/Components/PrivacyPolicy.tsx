@@ -33,7 +33,7 @@ export const PrivacyPolicy: React.FC<PrivacyPolicyProps> = ({ onClose }) => {
             Entreprise : Oresto<br/>
             Fondateur : Xavier Colombel<br/>
             Adresse : 18, rue Hubert Metzger, Belfort 90000<br/>
-            Email : <a href="mailto:contact@oresto.io" className="underline hover:text-orange-500">contact@oresto.io</a>
+            Email : <a href="mailto:contact@oresto.io" className="underline hover:text-green-700">contact@oresto.io</a>
           </p>
           
           <h3 className="text-xl font-bold">2. Données personnelles collectées :</h3>
@@ -88,7 +88,7 @@ export const PrivacyPolicy: React.FC<PrivacyPolicyProps> = ({ onClose }) => {
             <li>Droit à la limitation du traitement.</li>
           </ul>
           <p className='text-lg lg:text-base'>
-            Pour exercer vos droits, vous pouvez nous contacter par email à : <a href="mailto:contact@oresto.io" className='hover:text-orange-500 underline'>contact@oresto.io</a>
+            Pour exercer vos droits, vous pouvez nous contacter par email à : <a href="mailto:contact@oresto.io" className='hover:text-green-700 underline'>contact@oresto.io</a>
           </p>
           
           <h3 className="text-xl font-bold">8. Modifications de la politique de confidentialité :</h3>
@@ -101,7 +101,7 @@ export const PrivacyPolicy: React.FC<PrivacyPolicyProps> = ({ onClose }) => {
         <div className="text-center mt-6">
           <button
             onClick={onClose}
-            className="text-lg xl:text-sm bg-black text-white font-semibold py-4 lg:py-4 px-6 rounded-md hover:bg-orange-400 transition duration-300"
+            className="text-lg xl:text-sm bg-black text-white font-semibold py-4 lg:py-4 px-6 rounded-md hover:bg-green-800 transition duration-300"
           >
             Revenir sur le site
           </button>

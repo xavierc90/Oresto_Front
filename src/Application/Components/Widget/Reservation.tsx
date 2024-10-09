@@ -222,14 +222,14 @@ export const Reservation: React.FC<ReservationProps> = ({ selectedDate, onReturn
             <div className="flex items-center justify-center my-4 gap-2">
               <button 
                 onClick={decrementNbrPersons} 
-                className="bg-black text-xl font-bold text-white px-6 py-4 lg:py-1 lg:px-4 rounded-lg"
+                className="bg-black text-xl font-bold text-white px-4 py-2 lg:py-1 lg:px-4 rounded-lg"
               >
                 -
               </button>
               <span className='text-2xl px-8 lg:text-lg font-bold px-2'>{nbrPersons}</span>
               <button 
                 onClick={incrementNbrPersons} 
-                className="bg-green-800 text-xl font-bold text-white px-6 py-4 lg:py-1 lg:px-4 rounded-lg"
+                className="bg-green-800 text-xl font-bold text-white px-4 py-2 lg:py-1 lg:px-4 rounded-lg"
               >
                 +
               </button>
@@ -238,7 +238,7 @@ export const Reservation: React.FC<ReservationProps> = ({ selectedDate, onReturn
           <div className="my-7">
             <p className="font-semibold text-xl lg:text-base">Infos complémentaires:</p>
             <textarea
-              className="mt-4 w-full text-lg h-auto p-2 lg:p-2 border border-gray-300 rounded-lg"
+              className="mt-4 w-full text-lg h-[100px] p-2 lg:p-2 border border-gray-300 rounded-lg"
               rows={4}
               value={additionalInfo}
               onChange={(e) => setAdditionalInfo(e.target.value)} 
@@ -270,10 +270,10 @@ export const Reservation: React.FC<ReservationProps> = ({ selectedDate, onReturn
 
 {step === 'success' && reservationDetails && (
   <>
-    <h2 className="text-xl font-bold mb-4">Réservation effectuée</h2>
-    <p className="mb-4">Vous recevrez un mail de confirmation dès que le restaurant aura confirmé la réservation.</p>
-    <div className="mb-2 text-left">
-      <ul className='my-7 pl-2'>
+    <h2 className="text-3xl lg:text-lg font-bold mb-4">Réservation effectuée</h2>
+    <p className="mb-4 text-xl lg:text-sm font-semibold lg:font-normal">Vous recevrez un mail de confirmation dès que le restaurant aura confirmé la réservation.</p>
+    <div className="text-left">
+      <ul className='my-10 lg:my-5 pl-2 text-xl lg:text-sm'>
         <li className="font-semibold mb-2">Nom de réservation :
           <span className='font-normal'> {user?.lastname}</span>
         </li>
@@ -300,7 +300,7 @@ export const Reservation: React.FC<ReservationProps> = ({ selectedDate, onReturn
       </ul>
     </div>
     <div className="my-4 text-center ">   
-      <button className="bg-black mt-2 p-2 text-white text-sm font-semibold rounded-lg w-full" onClick={onReturnToAccount}>
+      <button className="bg-black mt-2 p-4 lg:p-2 text-white text-xl lg:text-sm font-semibold rounded-lg w-full" onClick={onReturnToAccount}>
         Retour à l'accueil
       </button>
     </div>

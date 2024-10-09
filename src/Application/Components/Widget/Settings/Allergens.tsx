@@ -68,17 +68,17 @@ export const Allergens: React.FC<AllergensProps> = ({ onReturnToAccount }) => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center h-full bg-white">
-      <h2 className="text-xl font-bold mb-4">Mes préférences</h2>
+    <div className="flex flex-col mt-12 lg:mt-0 justify-center items-center overflow-y-auto h-full bg-white">
+      <h2 className="text-3xl mt-12 lg:mt-0 lg:text-xl font-bold mb-4">Mes préférences</h2>
 
-      <p className="text-gray-600 text-center mb-4">
+      <p className="text-gray-600 text-center text-lg font-semibold lg:font-normal lg:text-base mb-4">
         Mentionner vos allergies permet une meilleure prise en charge de vos réservations
       </p>
 
       <div className="w-full lg:max-h-60 my-0 lg:my-4 lg:m-2 overflow-y-auto px-4">
-        <ul className="text-left w-full">
+        <ul className="text-left w-full lg:text-base">
           {allergensList.map(allergen => (
-            <li key={allergen.id} className="mb-4">
+            <li key={allergen.id} className="mb-4 lg:text-base">
               <label className="flex items-center">
                 <input
                   type="checkbox"
@@ -87,8 +87,8 @@ export const Allergens: React.FC<AllergensProps> = ({ onReturnToAccount }) => {
                   onChange={() => handleAllergenChange(allergen.id)}
                 />
                 <span>
-                  <span className="font-semibold">{allergen.label}</span> <br />
-                  <span className="text-sm text-gray-500">{allergen.description}</span>
+                  <span className="font-semibold text-xl lg:text-base">{allergen.label}</span> <br />
+                  <span className="text-sm text-gray-500 text-xl lg:text-sm">{allergen.description}</span>
                 </span>
               </label>
             </li>
@@ -98,11 +98,11 @@ export const Allergens: React.FC<AllergensProps> = ({ onReturnToAccount }) => {
 
 
       {successMessage && (
-        <p className="mt-4 lg:mt-0 text-sm font-bold text-green-800 lg:w-[300px] mb-4 lg:mb-0 text-center">{successMessage}</p>
+        <p className="mt-4 lg:mt-0 text-lg lg:text-sm font-bold text-green-800 lg:w-[300px] mb-4 lg:mb-0 text-center">{successMessage}</p>
       )}
       
       <button 
-        className="bg-green-800 text-white py-2 px-4 rounded-lg text-sm font-semibold lg:mt-4"
+        className="bg-green-800 text-white py-2 px-4 rounded-lg text-lg lg:text-sm font-semibold lg:mt-4"
         onClick={handleSaveChanges}
       >
         Enregistrer les modifications
@@ -110,7 +110,7 @@ export const Allergens: React.FC<AllergensProps> = ({ onReturnToAccount }) => {
 
       <div className="mt-2 w-full text-center">
         <button
-          className="bg-black text-white py-2 px-4 rounded-lg text-sm font-semibold"
+          className="bg-black text-white py-2 px-4 rounded-lg text-lg lg:text-sm font-semibold"
           onClick={onReturnToAccount}
         >
           Retour à l’accueil

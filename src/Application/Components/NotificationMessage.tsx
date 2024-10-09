@@ -16,17 +16,19 @@ export const NotificationMessage: React.FC<NotificationMessageProps> = ({ messag
         setShowMessage(false);
       }, duration);
 
+      // Nettoyage du timer lorsque le message change ou au démontage
       return () => clearTimeout(timer);
     }
   }, [message, duration]);
 
+  // Si aucun message n'est fourni, ne rien rendre
   if (!message) return null;
 
   return (
-    <div className={`fixed top-4 left-1/2 transform -translate-x-1/2 p-4 rounded-lg shadow-md z-[1000]
-      ${type === 'success' ? 'bg-green-600 text-white font-semibold' : 'bg-red-500 text-white'}
-      ${showMessage ? 'opacity-100' : 'opacity-0'}
-      transition-opacity duration-500 ease-in-out`}>
+    <div
+      className={`fixed top-4 left-1/2 transform -translate-x-1/2 p-4 rounded-lg shadow-md z-[1000] transition-opacity duration-500 ease-in-out
+        ${showMessage ? 'opacity-100' : 'opacity-0'} 
+        ${type === 'success' ? 'bg-green-600 text-white font-semibold' : 'bg-red-500 text-white'}`}>
       {message}
     </div>
   );

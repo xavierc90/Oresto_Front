@@ -91,7 +91,7 @@ export const TermsOfService: React.FC<TermsOfServiceProps> = ({ onClose }) => {
         <div className="text-center mt-6">
         <button
             onClick={onClose}
-            className="text-lg xl:text-sm bg-black text-white font-semibold py-4 lg:py-4 px-6 rounded-md hover:bg-orange-400 transition duration-300"
+            className="text-lg xl:text-sm bg-black text-white font-semibold py-4 lg:py-4 px-6 rounded-md hover:bg-green-800 transition duration-300"
           >
             Revenir sur le site
           </button>

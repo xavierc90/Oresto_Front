@@ -122,8 +122,8 @@ export const ReservationList: React.FC<ReservationListProps> = ({
                   Heure <FaSort />
                 </span>
               </th>
-              <th className="text-left w-[100px]">Nom</th>
-              <th className="text-left w-[100px]">Prénom</th>
+              <th className="text-left w-[150px]">Nom</th>
+              <th className="text-left w-[150px]">Prénom</th>
               <th className="text-center w-[150px]">Nbr de couverts</th>
               <th className="text-center max-w-[180px]">Table</th>
               {/* Cacher la colonne "Détails" sur les petits écrans */}

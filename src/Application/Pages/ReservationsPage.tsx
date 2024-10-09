@@ -9,6 +9,7 @@ import { http } from '../../Infrastructure/Http/axios.instance';
 import { Reservation } from '../../Module/Types/reservation.type';
 import { TableReservationArea } from '../Components/Dashboard/TablePlan/TableReservationArea';
 import { Loader } from '../Components/Loader';
+import { MdArrowBackIosNew, MdArrowForwardIos } from "react-icons/md";
 
 interface OutletContextType {
   user: any;
@@ -58,6 +59,8 @@ export const ReservationsPage = () => {
         if (error.response && error.response.status === 401) {
           console.error("Non autorisé. Redirection vers la page de connexion...");
         }
+      } finally {
+        setLoading(false);
       }
     },
     [token, user, restaurant]
@@ -82,6 +85,25 @@ export const ReservationsPage = () => {
     };
   }, [token, user, restaurant, fetchReservations]);
 
+  // Fonctions de navigation
+  const goToPreviousDay = () => {
+    if (selectedDate) {
+      const prevDate = new Date(selectedDate);
+      prevDate.setDate(selectedDate.getDate() - 1);
+      console.log('Navigating to previous day:', prevDate);
+      dateService.setDate(prevDate); // Utiliser dateService pour émettre la nouvelle date
+    }
+  };
+
+  const goToNextDay = () => {
+    if (selectedDate) {
+      const nextDate = new Date(selectedDate);
+      nextDate.setDate(selectedDate.getDate() + 1);
+      console.log('Navigating to next day:', nextDate);
+      dateService.setDate(nextDate); // Utiliser dateService pour émettre la nouvelle date
+    }
+  };
+
   // Calculer les réservations en fonction des filtres
   const filteredReservations = reservations.filter((reservation) => {
     if (hideCanceled && reservation.status === 'canceled') return false;
@@ -97,30 +119,61 @@ export const ReservationsPage = () => {
 
   const validReservations = filteredReservations.length;
 
+  // Fonction pour vérifier si la date est aujourd'hui
+  const isToday = (date: Date) => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Réinitialiser l'heure pour la comparaison
+    return (
+      date.getDate() === today.getDate() &&
+      date.getMonth() === today.getMonth() &&
+      date.getFullYear() === today.getFullYear()
+    );
+  };
+
   return (
     <div className="bg-light w-full">
       {/* Utilisation de flex pour aligner les blocs à gauche et à droite */}
       <div className="flex justify-between items-start pt-10 pl-10 pr-12">
-        {/* Bloc de gauche avec la date et le nombre de réservations */}
-        <div>
-          <div className="text-sm md:text-xl font-bold">
-            {selectedDate
-              ? formatDateWithoutTime(selectedDate.toISOString())
-              : 'Sélectionnez une date'}
+        {/* Bloc de navigation des dates */}
+        <div className='flex items-center'>
+          {/* Flèche gauche */}
+          <button
+            onClick={goToPreviousDay}
+            aria-label="Jour précédent"
+            // Désactiver si une condition spécifique est nécessaire
+          >
+            <MdArrowBackIosNew size={20} />
+          </button>
+
+          {/* Bloc central avec la date et le nombre de réservations */}
+          <div className="ml-4 mr-4">
+            <div className="text-sm md:text-lg font-bold">
+              {selectedDate
+                ? formatDateWithoutTime(selectedDate.toISOString())
+                : 'Sélectionnez une date'}
+            </div>
+            <div className="text-sm lg:text-lg mt-1">
+              <span className="font-bold text-red-500 dark:text-white">
+                {validReservations}
+              </span>{' '}
+              réservation{validReservations > 1 ? 's ' : ' '}
+              |{' '}
+              <span className="font-bold text-red-500 dark:text-white">
+                {totalCovers}
+              </span>{' '}
+              couvert{totalCovers > 1 ? 's ' : ' '}
+            </div>
           </div>
-          <div className="text-sm lg:text-lg mt-1">
-            <span className="font-bold text-red-500 dark:text-white">
-              {validReservations}
-            </span>{' '}
-            réservation{validReservations > 1 ? 's ' : ' '}
-            |{' '}
-            <span className="font-bold text-red-500 dark:text-white">
-              {totalCovers}
-            </span>{' '}
-            couvert{totalCovers > 1 ? 's ' : ' '}
-          </div>
+
+          {/* Flèche droite */}
+          <button
+            onClick={goToNextDay}
+            aria-label="Jour suivant"
+          >
+            <MdArrowForwardIos size={20} />
+          </button>
         </div>
-  
+
         {/* Bloc de droite avec les filtres */}
         <div className="flex flex-col text-sm gap-2">
           <span className='font-semibold'>Filtrer par status</span>
@@ -141,7 +194,7 @@ export const ReservationsPage = () => {
                 Annulées
               </span>
             </label>
-  
+
             {/* Filtre pour "En attente" */}
             <label className="hidden lg:inline-flex items-center cursor-pointer">
               <input
@@ -158,7 +211,7 @@ export const ReservationsPage = () => {
                 En attente
               </span>
             </label>
-  
+
             {/* Filtre pour "Confirmées" */}
             <label className="hidden lg:inline-flex items-center cursor-pointer">
               <input
@@ -178,20 +231,26 @@ export const ReservationsPage = () => {
           </div>
         </div>
       </div>
-  
+
       {/* Composants pour la liste des réservations et la gestion des tables */}
-      <ReservationList
-        reservations={filteredReservations}
-        fetchReservations={fetchReservations}
-        selectedDate={selectedDate}
-      />
-      <TableReservationArea
-        selectedDate={selectedDate}
-        reservations={reservations}
-        restaurant={restaurant}
-        token={token}
-        isOpen={true}
-      />
+      {loading ? (
+        <Loader />
+      ) : (
+        <>
+          <ReservationList
+            reservations={filteredReservations}
+            fetchReservations={fetchReservations}
+            selectedDate={selectedDate}
+          />
+          <TableReservationArea
+            selectedDate={selectedDate}
+            reservations={reservations}
+            restaurant={restaurant}
+            token={token}
+            isOpen={true}
+          />
+        </>
+      )}
     </div>
   );
-}
+};
