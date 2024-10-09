@@ -346,11 +346,11 @@ const deleteZone = { width: 100, height: 100 };
             key={table._id}
             bounds="parent"
             defaultPosition={{ x: table.position_x, y: table.position_y }}
-            onStart={(e, data) => {
+            onStart={(e) => {
               setIsDragging(true);
               handleStart(e);
             }}
-            onDrag={(e, data) => handleDrag(e)}
+            onDrag={(e) => handleDrag(e)}
             onStop={(e, data) => handleStop(e, data, table)}
           >
             <div className="table-container" style={{ position: 'absolute', cursor: 'pointer' }}>

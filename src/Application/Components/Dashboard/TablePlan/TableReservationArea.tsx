@@ -17,7 +17,7 @@ interface TableReservationAreaProps {
   isOpen: boolean;
 }
 
-export const TableReservationArea: React.FC<TableReservationAreaProps> = ({ selectedDate, restaurant, token, reservations, isOpen }) => {
+export const TableReservationArea: React.FC<TableReservationAreaProps> = ({ selectedDate, restaurant, token, reservations}) => {
   const [tables, setTables] = useState<Table[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [isDarkMode, setIsDarkMode] = useState<boolean>(false); // État pour gérer le mode clair/sombre
