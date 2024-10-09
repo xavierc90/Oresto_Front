@@ -11,7 +11,7 @@ interface TableAreaProps {
   onTablesUpdate: () => void; // Fonction de rappel pour notifier le parent des mises à jour
 }
 
-export const TablePlanArea: React.FC<TableAreaProps> = ({ restaurant, token, tables, onTablesUpdate }) => {
+export const TablePlanArea: React.FC<TableAreaProps> = ({token, tables, onTablesUpdate }) => {
   // Coordonnées et dimensions de la poubelle
 const deleteZone = { width: 100, height: 100 };
   const [draggingTableId, setDraggingTableId] = useState<string | null>(null);
@@ -102,13 +102,13 @@ const deleteZone = { width: 100, height: 100 };
     }
   };
 
-  const handleStart = (e: any, data: any) => {
+  const handleStart = (data: any) => {
     setIsDragging(true); // Activer le dragging
     setClickStartedPosition({ x: data.x, y: data.y });
     setClickTime(Date.now()); // Enregistrer le temps de départ
   };
 
-  const handleDrag = (e: any, data: any) => {
+  const handleDrag = (e: any) => {
     const trashElement = trashRef.current;
     if (trashElement) {
       const trashRect = trashElement.getBoundingClientRect();
@@ -346,11 +346,11 @@ const deleteZone = { width: 100, height: 100 };
             key={table._id}
             bounds="parent"
             defaultPosition={{ x: table.position_x, y: table.position_y }}
-            onStart={(e, data) => {
+            onStart={(e) => {
               setIsDragging(true);
-              handleStart(e, data);
+              handleStart(e);
             }}
-            onDrag={(e, data) => handleDrag(e, data)}
+            onDrag={(e) => handleDrag(e)}
             onStop={(e, data) => handleStop(e, data, table)}
           >
             <div className="table-container" style={{ position: 'absolute', cursor: 'pointer' }}>
