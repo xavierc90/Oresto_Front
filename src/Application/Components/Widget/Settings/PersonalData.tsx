@@ -39,7 +39,7 @@ export const PersonalData: React.FC<PersonalDataProps> = ({ onReturnToAccount })
         lastname: user.lastname || '',
         email: user.email || '',
         phone_number: user.phone_number || '',
-        password: user.password || '',
+        password: '', // Ne pré-remplir pas le mot de passe pour des raisons de sécurité
       });
     }
   }, [user]);
@@ -86,7 +86,7 @@ export const PersonalData: React.FC<PersonalDataProps> = ({ onReturnToAccount })
     }
 
     try {
-      const response = await http.put(
+      await http.put(
         `/update_user/${user._id}`, // Utilisation dynamique de l'ID de l'utilisateur
         { 
           firstname: formData.firstname,
@@ -127,8 +127,8 @@ export const PersonalData: React.FC<PersonalDataProps> = ({ onReturnToAccount })
 
       <form className="w-full" onSubmit={handleSubmit}>
 
-                {/* Nom de Famille */}
-                <div className="mb-4">
+        {/* Nom de Famille */}
+        <div className="mb-4">
           <label htmlFor="lastname" className="block font-semibold text-left text-sm mb-2">
             Nom de famille
           </label>
@@ -145,7 +145,7 @@ export const PersonalData: React.FC<PersonalDataProps> = ({ onReturnToAccount })
 
         {/* Prénom */}
         <div className="mb-4">
-          <label htmlFor="firstName" className="block font-semibold text-left text-sm mb-2">
+          <label htmlFor="firstname" className="block font-semibold text-left text-sm mb-2">
             Prénom
           </label>
           <input
@@ -177,13 +177,13 @@ export const PersonalData: React.FC<PersonalDataProps> = ({ onReturnToAccount })
 
         {/* Téléphone */}
         <div className="mb-4">
-          <label htmlFor="phone" className="block font-semibold text-left text-sm mb-2">
+          <label htmlFor="phone_number" className="block font-semibold text-left text-sm mb-2">
             Téléphone
           </label>
           <input
             type="tel"
-            id="phone"
-            name="phone"
+            id="phone_number"
+            name="phone_number" // Aligné avec formData
             value={formData.phone_number}
             onChange={handleChange}
             className="w-full px-3 py-2 border-2 border-gray-400 rounded-lg focus:outline-none focus:border-green-700 text-sm"
@@ -207,7 +207,6 @@ export const PersonalData: React.FC<PersonalDataProps> = ({ onReturnToAccount })
           Enregistrer les modifications
         </button>
       </form>
-
 
       {/* Bouton de retour */}
       <div className="mt-4 w-full text-center">

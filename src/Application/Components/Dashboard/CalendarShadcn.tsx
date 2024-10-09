@@ -1,5 +1,4 @@
 import * as React from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
 import { DayPicker } from "react-day-picker";
 import { fr } from "date-fns/locale";
 import { cn } from "../../../Infrastructure/ShadcnUi/Utils";
@@ -61,14 +60,6 @@ function CalendarShadcn({
           "aria-selected:bg-accent aria-selected:text-accent-foreground",
         day_hidden: "invisible",
         ...classNames,
-      }}
-      components={{
-        IconLeft: ({ ...props }) => (
-          <ChevronLeft className="h-5 w-5 dark:text-white" {...props} />
-        ),
-        IconRight: ({ ...props }) => (
-          <ChevronRight className="h-5 w-5 dark:text-white" {...props} />
-        ),
       }}
       {...props}
     />
