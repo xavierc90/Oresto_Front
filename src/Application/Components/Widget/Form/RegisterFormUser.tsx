@@ -361,7 +361,7 @@ export const RegisterFormUser: React.FC<RegisterFormUserProps> = ({
 
       {registrationSuccess && (
         <div className="flex flex-col justify-center items-center pt-5 pb-5 px-6 bg-white w-full h-auto">
-          <img src="../../../public/img/logo-oresto-orange.png" width="250px" alt="Logo Oresto" />
+          <img src="../../../publicimg/logo-oresto-orange.png" width="250px" alt="Logo Oresto" />
           <p className="text-green-800 font-bold text-base mt-8">Inscription réussie !</p>
           <h2 className="w-full text-center pt-5">
             Connectez-vous ou inscrivez-vous, c'est simple et rapide.

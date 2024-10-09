@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import squareSvg from '../../../../../public/svg/square.svg';
-import square4Svg from '../../../../../public/svg/square4.svg';
-import circleSvg from '../../../../../public/svg/rounded.svg';
-import circle4Svg from '../../../../../public/svg/rounded4.svg';
-import rectangleSvg from '../../../../../public/svg/rectangle.svg';
-import rectangle6Svg from '../../../../../public/svg/rectangle6.svg';
-import rectangle8Svg from '../../../../../public/svg/rectangle8.svg';
+import squareSvg from '/svg/square.svg';
+import square4Svg from '/svg/square4.svg';
+import circleSvg from '/svg/rounded.svg';
+import circle4Svg from '/svg/rounded4.svg';
+import rectangleSvg from '/svg/rectangle.svg';
+import rectangle6Svg from '/svg/rectangle6.svg';
+import rectangle8Svg from '/svg/rectangle8.svg';
 import { http } from '../../../../Infrastructure/Http/axios.instance';
 import { useAuth } from '../../../../Module/Auth/useAuth';
 

@@ -76,7 +76,7 @@ export const HomePage = () => {
             </p>
           </div>
           <div className='md:w-1/2 mt-8 md:mt-0 md:pl-8'>
-            <img src="../../../public/img/cover-about.jpg" alt="Image du restaurant" className='w-full rounded-lg shadow-lg'/>
+            <img src="/img/cover-about.jpg" alt="Image du restaurant" className='w-full rounded-lg shadow-lg'/>
           </div>
         </div>
       </div>

@@ -80,7 +80,7 @@ export const RegisterRestaurant = () => {
       <div className='w-6/12 bg-light'>
         <div className="flex flex-col items-center justify-center h-screen">
           <a href="/login">
-            <img src="../../../public/img/logo-oresto-red.png" width="300px" alt="Logo Oresto" />
+            <img src="/img/logo-oresto-red.png" width="300px" alt="Logo Oresto" />
           </a>
           <form method="POST" className="flex flex-col mt-10" onSubmit={handleRestaurantCreation}>
             <div className='flex flex-col w-[390px] justify-center items-center'>

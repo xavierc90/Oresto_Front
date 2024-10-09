@@ -53,7 +53,7 @@ export const LoginPage = () => {
     <div className='w-full h-screen flex'>
       <div className='w-full lg:w-6/12 bg-light '>
         <div className="flex flex-col w-400 items-center justify-center h-screen">
-          <img src="../../../public/img/logo-oresto-red.png" width="350px" alt="Logo Oresto" className='mb-10' />
+          <img src="/img/logo-oresto-red.png" width="350px" alt="Logo Oresto" className='mb-10' />
           {error && (
             <div
               className="text-red-500 mb-8 text-center font-bold"

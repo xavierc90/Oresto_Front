@@ -100,7 +100,7 @@ export const RegisterPage = () => {
       <div className='w-6/12 bg-light'>
         <div className="flex flex-col items-center justify-center h-screen">
           <a href="/login">
-            <img src="../../../public/img/logo-oresto-red.png" width="300px" alt="Logo Oresto" />
+            <img src="/img/logo-oresto-red.png" width="300px" alt="Logo Oresto" />
           </a>
           
           {errorMessage && (

@@ -68,7 +68,7 @@ export const LoginFormUser: React.FC<LoginFormUserProps> = ({
         <ArrowButton isContentVisible={isContentVisible} onClick={toggleContentVisibility} />
         <CloseButton onClick={handleClose} />
       </div>
-      <img src="../../../public/img/logo-oresto-orange.png" className='w-[300px] lg:w-[230px]' alt="Logo Oresto" />
+      <img src="/img/logo-oresto-orange.png" className='w-[300px] lg:w-[230px]' alt="Logo Oresto" />
 
       {errorMessage && (
         <div className="text-red-600 text-sm mt-5 font-bold">{errorMessage}</div>
