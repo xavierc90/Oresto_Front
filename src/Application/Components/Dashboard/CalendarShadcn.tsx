@@ -62,14 +62,6 @@ function CalendarShadcn({
         day_hidden: "invisible",
         ...classNames,
       }}
-      components={{
-        IconLeft: ({ ...props }) => (
-          <ChevronLeft className="h-5 w-5 dark:text-white" {...props} />
-        ),
-        IconRight: ({ ...props }) => (
-          <ChevronRight className="h-5 w-5 dark:text-white" {...props} />
-        ),
-      }}
       {...props}
     />
   );
