@@ -17,7 +17,7 @@ interface TableReservationAreaProps {
   isOpen: boolean;
 }
 
-export const TableReservationArea: React.FC<TableReservationAreaProps> = ({ selectedDate, restaurant, token, reservations}) => {
+export const TableReservationArea: React.FC<TableReservationAreaProps> = ({ selectedDate, restaurant, token, reservations, isOpen }) => {
   const [tables, setTables] = useState<Table[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [isDarkMode, setIsDarkMode] = useState<boolean>(false); // État pour gérer le mode clair/sombre
@@ -30,7 +30,7 @@ export const TableReservationArea: React.FC<TableReservationAreaProps> = ({ sele
   useEffect(() => {
     console.log('Tables dans TableReservation:', tables);
     console.log('Réservations dans TableReservation:', reservations);
-    
+
     const fetchTables = async () => {
       if (!restaurant?._id || !token) {
         console.error('Restaurant ID ou token non trouvés');
@@ -393,5 +393,4 @@ export const TableReservationArea: React.FC<TableReservationAreaProps> = ({ sele
         </div>
       </div>
     </div>
-  );
-};
+)}
