@@ -25,7 +25,7 @@ export const ReservationList: React.FC<ReservationListProps> = ({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [notification, setNotification] = useState<{
     message: string | null;
-    type: 'success' | 'error';
+    type: 'success' | 'error' | 'warning';
   }>({ message: null, type: 'success' });
 
   const handleSortClick = () => {
@@ -79,7 +79,7 @@ export const ReservationList: React.FC<ReservationListProps> = ({
         const response = await http.post(`/cancel_reservation/${selectedReservation._id}`);
         if (response.status === 200) {
           setNotification({
-            message: 'La réservation a été annulée avec succès.',
+            message: `La réservation au nom de ${selectedReservation.user_id.lastname} a été annulée`,
             type: 'success',
           });
           // Recharger les réservations

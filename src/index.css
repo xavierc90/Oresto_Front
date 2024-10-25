@@ -97,7 +97,7 @@
     margin-top: 10px;
     margin-bottom: 10px;
     width: 100%;
-    height: 250px;
+    height: 360px;
     overflow-x: hidden;
 }
 
@@ -211,8 +211,9 @@ padding: 0 10px; /* Ajuster l'espacement si nécessaire */
 
 .rdp-focused {
   background-color: #ff1e00; /* Example primary color */
+  color: #ffffff;
   font-weight: bold;
-  font-size: 20px;
+  font-size: 10px;
 }
 
 .rdp-month_caption {
@@ -318,7 +319,7 @@ background: none; /* Retirer l'arrière-plan */
 
 .table-container {
     /* width: 85px; */
-    height: 55px;
+    height: 60px;
     position: relative;
     display: inline-block;
     margin: 7px;
@@ -388,7 +389,31 @@ background: none; /* Retirer l'arrière-plan */
   }
   
 
-  
+  .table-plan-wrapper {
+    overflow-x: auto; /* Activer le défilement horizontal */
+    overflow-y: hidden; /* Désactiver le défilement vertical */
+    scrollbar-width: none; /* Masquer la scrollbar pour Firefox */
+    -ms-overflow-style: none; /* Masquer la scrollbar pour Internet Explorer */
+}
+
+.table-plan-wrapper::-webkit-scrollbar {
+    width: 0; /* Masquer la scrollbar pour Chrome, Safari et Opera */
+    height: 0;
+}
+
+.table-plan-wrapper:hover::-webkit-scrollbar {
+    width: 8px; /* Largeur de la scrollbar lorsqu'on survole la zone */
+    height: 8px;
+}
+
+.table-plan-wrapper::-webkit-scrollbar-thumb {
+    background-color: #c1c1c1; /* Couleur de la scrollbar */
+    border-radius: 4px;
+}
+
+.table-plan-wrapper::-webkit-scrollbar-track {
+    background-color: #f0f0f0; /* Couleur de fond de la scrollbar */
+}
   
 
 /* Version responsive */

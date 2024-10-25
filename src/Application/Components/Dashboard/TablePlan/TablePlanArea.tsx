@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Draggable from 'react-draggable';
 import { http } from '../../../../Infrastructure/Http/axios.instance';
 import { Table } from '../../../../Module/Types/table.type';
@@ -13,7 +13,7 @@ interface TableAreaProps {
 
 export const TablePlanArea: React.FC<TableAreaProps> = ({ restaurant, token, tables, onTablesUpdate }) => {
   // Coordonnées et dimensions de la poubelle
-const deleteZone = { width: 100, height: 100 };
+  const deleteZone = { width: 100, height: 100 };
   const [draggingTableId, setDraggingTableId] = useState<string | null>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [overTrash, setOverTrash] = useState(false);
@@ -27,8 +27,18 @@ const deleteZone = { width: 100, height: 100 };
 
   // Fonction pour basculer entre clair et sombre
   const toggleTheme = () => {
-    setIsDarkMode(!isDarkMode);
+    const newIsDarkMode = !isDarkMode;
+    setIsDarkMode(newIsDarkMode);
+    localStorage.setItem('isDarkMode', String(newIsDarkMode)); // Enregistrer le choix dans localStorage
   };
+
+  // Récupérer le choix du thème lors du montage du composant
+  useEffect(() => {
+    const storedTheme = localStorage.getItem('isDarkMode');
+    if (storedTheme) {
+      setIsDarkMode(storedTheme === 'true');
+    }
+  }, []);
 
   // Fonction pour basculer la visibilité de la grille
   const toggleGrid = () => {
@@ -138,12 +148,17 @@ const deleteZone = { width: 100, height: 100 };
   };
 
   const getTableColor = (tableId: string): string => {
-    return draggingTableId === tableId ? '#848485' : '#EAE5E5';
+    if (draggingTableId === tableId) {
+      return isDarkMode ? '#6c6c6c' : '#848485';
+    }
+    return isDarkMode ? '#ffffff' : '#EAE5E5';
   };
 
   const renderTableSVG = (table: Table) => {
     const tableColor = getTableColor(table._id);
     const rotation = table.rotate || 0;
+
+    const seatColor = isDarkMode ? '#ffffff' : '#c2c2c2';
 
     if (table.shape === 'rectangle') {
       if (table.capacity === 4) {
@@ -156,10 +171,10 @@ const deleteZone = { width: 100, height: 100 };
             xmlns="http://www.w3.org/2000/svg"
             style={{ transform: `rotate(${rotation}deg)` }}
           >
-            <ellipse cx="32.3326" cy="8.25806" rx="7.5806" ry="7.37635" fill="#c2c2c2" />
-            <ellipse cx="32.3326" cy="66.2533" rx="7.5806" ry="7.37634" fill="#c2c2c2" />
-            <ellipse cx="90.4502" cy="8.25806" rx="7.58057" ry="7.37635" fill="#c2c2c2" />
-            <ellipse cx="90.4502" cy="66.2533" rx="7.58057" ry="7.37634" fill="#c2c2c2" />
+            <ellipse cx="32.3326" cy="8.25806" rx="7.5806" ry="7.37635" fill={seatColor} />
+            <ellipse cx="32.3326" cy="66.2533" rx="7.5806" ry="7.37634" fill={seatColor} />
+            <ellipse cx="90.4502" cy="8.25806" rx="7.58057" ry="7.37635" fill={seatColor} />
+            <ellipse cx="90.4502" cy="66.2533" rx="7.58057" ry="7.37634" fill={seatColor} />
             <rect y="8" width="123" height="57" fill={tableColor} />
           </svg>
         );
@@ -174,12 +189,12 @@ const deleteZone = { width: 100, height: 100 };
             xmlns="http://www.w3.org/2000/svg"
             style={{ transform: `rotate(${rotation}deg)` }}
           >
-            <ellipse cx="22.3326" cy="8.25806" rx="7.5806" ry="7.37635" fill="#c2c2c2" />
-            <ellipse cx="22.3326" cy="66.2533" rx="7.5806" ry="7.37634" fill="#c2c2c2" />
-            <ellipse cx="63.4502" cy="8.25806" rx="7.58057" ry="7.37635" fill="#c2c2c2" />
-            <ellipse cx="63.4502" cy="66.2533" rx="7.58057" ry="7.37634" fill="#c2c2c2" />
-            <ellipse cx="101.45" cy="8.25806" rx="7.58057" ry="7.37635" fill="#c2c2c2" />
-            <ellipse cx="101.45" cy="66.2533" rx="7.58057" ry="7.37634" fill="#c2c2c2" />
+            <ellipse cx="22.3326" cy="8.25806" rx="7.5806" ry="7.37635" fill={seatColor} />
+            <ellipse cx="22.3326" cy="66.2533" rx="7.5806" ry="7.37634" fill={seatColor} />
+            <ellipse cx="63.4502" cy="8.25806" rx="7.58057" ry="7.37635" fill={seatColor} />
+            <ellipse cx="63.4502" cy="66.2533" rx="7.58057" ry="7.37634" fill={seatColor} />
+            <ellipse cx="101.45" cy="8.25806" rx="7.58057" ry="7.37635" fill={seatColor} />
+            <ellipse cx="101.45" cy="66.2533" rx="7.58057" ry="7.37634" fill={seatColor} />
             <rect y="8" width="123" height="57" fill={tableColor} />
           </svg>
         );
@@ -194,14 +209,14 @@ const deleteZone = { width: 100, height: 100 };
             xmlns="http://www.w3.org/2000/svg"
             style={{ transform: `rotate(${rotation}deg)` }}
           >
-            <ellipse cx="37.3326" cy="8.25806" rx="7.5806" ry="7.37635" fill="#c2c2c2" />
-            <ellipse cx="37.3326" cy="66.2533" rx="7.5806" ry="7.37634" fill="#c2c2c2" />
-            <ellipse cx="78.4502" cy="8.25806" rx="7.58057" ry="7.37635" fill="#c2c2c2" />
-            <ellipse cx="78.4502" cy="66.2533" rx="7.58057" ry="7.37634" fill="#c2c2c2" />
-            <ellipse cx="116.45" cy="8.25806" rx="7.58057" ry="7.37635" fill="#c2c2c2" />
-            <ellipse cx="116.45" cy="66.2533" rx="7.58057" ry="7.37634" fill="#c2c2c2" />
-            <ellipse cx="8.33255" cy="36.2533" rx="7.5806" ry="7.37634" fill="#c2c2c2" />
-            <ellipse cx="145.333" cy="36.2533" rx="7.5806" ry="7.37634" fill="#c2c2c2" />
+            <ellipse cx="37.3326" cy="8.25806" rx="7.5806" ry="7.37635" fill={seatColor} />
+            <ellipse cx="37.3326" cy="66.2533" rx="7.5806" ry="7.37634" fill={seatColor} />
+            <ellipse cx="78.4502" cy="8.25806" rx="7.58057" ry="7.37635" fill={seatColor} />
+            <ellipse cx="78.4502" cy="66.2533" rx="7.58057" ry="7.37634" fill={seatColor} />
+            <ellipse cx="116.45" cy="8.25806" rx="7.58057" ry="7.37635" fill={seatColor} />
+            <ellipse cx="116.45" cy="66.2533" rx="7.58057" ry="7.37634" fill={seatColor} />
+            <ellipse cx="8.33255" cy="36.2533" rx="7.5806" ry="7.37634" fill={seatColor} />
+            <ellipse cx="145.333" cy="36.2533" rx="7.5806" ry="7.37634" fill={seatColor} />
             <rect x="10" y="8" width="134" height="57" fill={tableColor} />
           </svg>
         );
@@ -217,8 +232,8 @@ const deleteZone = { width: 100, height: 100 };
             xmlns="http://www.w3.org/2000/svg"
             style={{ transform: `rotate(${rotation}deg)` }}
           >
-            <ellipse cx="35.5806" cy="7.37634" rx="7.5806" ry="7.37634" fill="#c2c2c2" />
-            <ellipse cx="35.5806" cy="77.3763" rx="7.5806" ry="7.37634" fill="#c2c2c2" />
+            <ellipse cx="35.5806" cy="7.37634" rx="7.5806" ry="7.37634" fill={seatColor} />
+            <ellipse cx="35.5806" cy="77.3763" rx="7.5806" ry="7.37634" fill={seatColor} />
             <rect y="7" width="70" height="70" rx="35" fill={tableColor} />
           </svg>
         );
@@ -233,10 +248,10 @@ const deleteZone = { width: 100, height: 100 };
             xmlns="http://www.w3.org/2000/svg"
             style={{ transform: `rotate(${rotation}deg)` }}
           >
-            <ellipse cx="43.5806" cy="7.37634" rx="7.5806" ry="7.37634" fill="#c2c2c2" />
-            <ellipse cx="43.5806" cy="77.3763" rx="7.5806" ry="7.37634" fill="#c2c2c2" />
-            <ellipse cx="7.5806" cy="42.3763" rx="7.5806" ry="7.37634" fill="#c2c2c2" />
-            <ellipse cx="77.5811" cy="42.3763" rx="7.5806" ry="7.37634" fill="#c2c2c2" />
+            <ellipse cx="43.5806" cy="7.37634" rx="7.5806" ry="7.37634" fill={seatColor} />
+            <ellipse cx="43.5806" cy="77.3763" rx="7.5806" ry="7.37634" fill={seatColor} />
+            <ellipse cx="7.5806" cy="42.3763" rx="7.5806" ry="7.37634" fill={seatColor} />
+            <ellipse cx="77.5811" cy="42.3763" rx="7.5806" ry="7.37634" fill={seatColor} />
             <rect x="8" y="7" width="70" height="70" rx="35" fill={tableColor} />
           </svg>
         );
@@ -252,8 +267,8 @@ const deleteZone = { width: 100, height: 100 };
             xmlns="http://www.w3.org/2000/svg"
             style={{ transform: `rotate(${rotation}deg)` }}
           >
-            <ellipse cx="35.5806" cy="7.37634" rx="7.5806" ry="7.37634" fill="#c2c2c2" />
-            <ellipse cx="35.5806" cy="82.3763" rx="7.5806" ry="7.37634" fill="#c2c2c2" />
+            <ellipse cx="35.5806" cy="7.37634" rx="7.5806" ry="7.37634" fill={seatColor} />
+            <ellipse cx="35.5806" cy="82.3763" rx="7.5806" ry="7.37634" fill={seatColor} />
             <rect y="10" width="70" height="70" fill={tableColor} />
           </svg>
         );
@@ -268,10 +283,10 @@ const deleteZone = { width: 100, height: 100 };
             xmlns="http://www.w3.org/2000/svg"
             style={{ transform: `rotate(${rotation}deg)` }}
           >
-            <ellipse cx="43.5806" cy="7.37634" rx="7.5806" ry="7.37634" fill="#c2c2c2" />
-            <ellipse cx="43.5806" cy="78.3763" rx="7.5806" ry="7.37634" fill="#c2c2c2" />
-            <ellipse cx="7.5806" cy="44.3763" rx="7.5806" ry="7.37634" fill="#c2c2c2" />
-            <ellipse cx="78.5811" cy="44.3763" rx="7.5806" ry="7.37634" fill="#c2c2c2" />
+            <ellipse cx="43.5806" cy="7.37634" rx="7.5806" ry="7.37634" fill={seatColor} />
+            <ellipse cx="43.5806" cy="78.3763" rx="7.5806" ry="7.37634" fill={seatColor} />
+            <ellipse cx="7.5806" cy="44.3763" rx="7.5806" ry="7.37634" fill={seatColor} />
+            <ellipse cx="78.5811" cy="44.3763" rx="7.5806" ry="7.37634" fill={seatColor} />
             <rect x="8" y="8" width="70" height="70" fill={tableColor} />
           </svg>
         );
@@ -282,7 +297,7 @@ const deleteZone = { width: 100, height: 100 };
 
   return (
     <div
-      className={`table-reservation-plan w-full h-96 mx-auto border border-zinc-300 relative ${
+      className={`table-reservation-plan w-full h-96 mx-auto border-t border-zinc-300 relative ${
         isDarkMode ? 'bg-gray-800 dark:bg-gray-900' : 'bg-transparent'
       }`}
       style={{
@@ -362,4 +377,5 @@ const deleteZone = { width: 100, height: 100 };
           </Draggable>
         ))}
     </div>
-)}
+  );
+};

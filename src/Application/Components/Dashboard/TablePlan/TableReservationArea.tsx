@@ -17,15 +17,31 @@ interface TableReservationAreaProps {
   isOpen: boolean;
 }
 
-export const TableReservationArea: React.FC<TableReservationAreaProps> = ({ selectedDate, restaurant, token, reservations, isOpen }) => {
+export const TableReservationArea: React.FC<TableReservationAreaProps> = ({
+  selectedDate,
+  restaurant,
+  token,
+  reservations,
+  isOpen,
+}) => {
   const [tables, setTables] = useState<Table[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [isDarkMode, setIsDarkMode] = useState<boolean>(false); // État pour gérer le mode clair/sombre
 
   // Fonction pour basculer entre clair et sombre
   const toggleTheme = () => {
-    setIsDarkMode(!isDarkMode);
+    const newIsDarkMode = !isDarkMode;
+    setIsDarkMode(newIsDarkMode);
+    localStorage.setItem('isDarkMode', String(newIsDarkMode)); // Enregistrer le choix dans localStorage
   };
+
+  useEffect(() => {
+    // Récupérer le choix de l'utilisateur depuis localStorage lors du montage du composant
+    const storedTheme = localStorage.getItem('isDarkMode');
+    if (storedTheme) {
+      setIsDarkMode(storedTheme === 'true');
+    }
+  }, []);
 
   useEffect(() => {
     console.log('Tables dans TableReservation:', tables);
@@ -45,12 +61,15 @@ export const TableReservationArea: React.FC<TableReservationAreaProps> = ({ sele
           formattedDate = localDate.toISOString().split('T')[0];
         }
 
-        const response = await http.get(`/table_plan/${formattedDate}?restaurant_id=${restaurant._id}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Cache-Control': 'no-cache',
-          },
-        });
+        const response = await http.get(
+          `/table_plan/${formattedDate}?restaurant_id=${restaurant._id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Cache-Control': 'no-cache',
+            },
+          }
+        );
 
         if (response.data && Array.isArray(response.data.tables)) {
           setTables(response.data.tables);
@@ -59,7 +78,10 @@ export const TableReservationArea: React.FC<TableReservationAreaProps> = ({ sele
           setTables([]);
         }
       } catch (error: any) {
-        console.error('Erreur lors de la récupération des tables:', error.response?.data || error.message);
+        console.error(
+          'Erreur lors de la récupération des tables:',
+          error.response?.data || error.message
+        );
         setTables([]);
       } finally {
         setLoading(false);
@@ -75,9 +97,11 @@ export const TableReservationArea: React.FC<TableReservationAreaProps> = ({ sele
 
   if (loading) {
     return (
-    <div className='absolute top-1 left-1/2'>
-      <Loader />
-    </div> )}
+      <div className="absolute top-1 left-1/2">
+        <Loader />
+      </div>
+    );
+  }
 
   if (tables.length === 0) {
     const getLinkClass = (path: string) => {
@@ -87,9 +111,11 @@ export const TableReservationArea: React.FC<TableReservationAreaProps> = ({ sele
     };
 
     return (
-      <div className='flex flex-col justify-center items-center'>
-        <h1 className='font-semibold text-xl pb-2'>Bienvenue sur l'application Oresto</h1>
-        <p className='pb-5'>Afin de rendre la réservation en ligne fonctionnelle, créez votre plan de table</p>
+      <div className="flex flex-col justify-center items-center">
+        <h1 className="font-semibold text-xl pb-2">Bienvenue sur l'application Oresto</h1>
+        <p className="pb-5">
+          Afin de rendre la réservation en ligne fonctionnelle, créez votre plan de table
+        </p>
         <Link to="/dashboard/table_plan" className={getLinkClass('/dashboard/table_plan')}>
           <LuLayoutDashboard size={23} className="mb-1" />
           <h2 className="text-xs font-bold dark:text-grey-700">Plan de table</h2>
@@ -135,13 +161,15 @@ export const TableReservationArea: React.FC<TableReservationAreaProps> = ({ sele
 
   const getTableStatus = (table: Table) => {
     const tableIdToMatch = table.table_id ? table.table_id._id : table._id;
-    const tableReservations = reservations.filter(r => r.table_id === tableIdToMatch && r.status !== 'canceled');
+    const tableReservations = reservations.filter(
+      (r) => r.table_id === tableIdToMatch && r.status !== 'canceled'
+    );
 
     if (tableReservations.length > 0) {
-      if (tableReservations.some(r => r.status.toLowerCase() === 'waiting')) {
+      if (tableReservations.some((r) => r.status.toLowerCase() === 'waiting')) {
         return 'waiting';
       }
-      if (tableReservations.some(r => r.status.toLowerCase() === 'confirmed')) {
+      if (tableReservations.some((r) => r.status.toLowerCase() === 'confirmed')) {
         return 'confirmed';
       }
     }
@@ -150,7 +178,9 @@ export const TableReservationArea: React.FC<TableReservationAreaProps> = ({ sele
 
   const getReservationsForTable = (table: Table) => {
     const tableIdToMatch = table.table_id ? table.table_id._id : table._id;
-    const tableReservations = reservations.filter(r => r.table_id === tableIdToMatch && r.status !== 'canceled');
+    const tableReservations = reservations.filter(
+      (r) => r.table_id === tableIdToMatch && r.status !== 'canceled'
+    );
     return tableReservations;
   };
 
@@ -175,10 +205,34 @@ export const TableReservationArea: React.FC<TableReservationAreaProps> = ({ sele
               xmlns="http://www.w3.org/2000/svg"
               style={{ transform: `rotate(${rotation}deg)` }}
             >
-              <ellipse cx="32.3326" cy="8.25806" rx="7.5806" ry="7.37635" fill={tableSizeColor} />
-              <ellipse cx="32.3326" cy="66.2533" rx="7.5806" ry="7.37634" fill={tableSizeColor} />
-              <ellipse cx="90.4502" cy="8.25806" rx="7.58057" ry="7.37635" fill={tableSizeColor} />
-              <ellipse cx="90.4502" cy="66.2533" rx="7.58057" ry="7.37634" fill={tableSizeColor} />
+              <ellipse
+                cx="32.3326"
+                cy="8.25806"
+                rx="7.5806"
+                ry="7.37635"
+                fill={tableSizeColor}
+              />
+              <ellipse
+                cx="32.3326"
+                cy="66.2533"
+                rx="7.5806"
+                ry="7.37634"
+                fill={tableSizeColor}
+              />
+              <ellipse
+                cx="90.4502"
+                cy="8.25806"
+                rx="7.58057"
+                ry="7.37635"
+                fill={tableSizeColor}
+              />
+              <ellipse
+                cx="90.4502"
+                cy="66.2533"
+                rx="7.58057"
+                ry="7.37634"
+                fill={tableSizeColor}
+              />
               <rect y="8" width="123" height="57" fill={tableColor} />
             </svg>
           );
@@ -193,12 +247,48 @@ export const TableReservationArea: React.FC<TableReservationAreaProps> = ({ sele
               xmlns="http://www.w3.org/2000/svg"
               style={{ transform: `rotate(${rotation}deg)` }}
             >
-              <ellipse cx="22.3326" cy="8.25806" rx="7.5806" ry="7.37635" fill={tableSizeColor} />
-              <ellipse cx="22.3326" cy="66.2533" rx="7.5806" ry="7.37634" fill={tableSizeColor} />
-              <ellipse cx="63.4502" cy="8.25806" rx="7.58057" ry="7.37635" fill={tableSizeColor} />
-              <ellipse cx="63.4502" cy="66.2533" rx="7.58057" ry="7.37634" fill={tableSizeColor} />
-              <ellipse cx="101.45" cy="8.25806" rx="7.58057" ry="7.37635" fill={tableSizeColor} />
-              <ellipse cx="101.45" cy="66.2533" rx="7.58057" ry="7.37634" fill={tableSizeColor} />
+              <ellipse
+                cx="22.3326"
+                cy="8.25806"
+                rx="7.5806"
+                ry="7.37635"
+                fill={tableSizeColor}
+              />
+              <ellipse
+                cx="22.3326"
+                cy="66.2533"
+                rx="7.5806"
+                ry="7.37634"
+                fill={tableSizeColor}
+              />
+              <ellipse
+                cx="63.4502"
+                cy="8.25806"
+                rx="7.58057"
+                ry="7.37635"
+                fill={tableSizeColor}
+              />
+              <ellipse
+                cx="63.4502"
+                cy="66.2533"
+                rx="7.58057"
+                ry="7.37634"
+                fill={tableSizeColor}
+              />
+              <ellipse
+                cx="101.45"
+                cy="8.25806"
+                rx="7.58057"
+                ry="7.37635"
+                fill={tableSizeColor}
+              />
+              <ellipse
+                cx="101.45"
+                cy="66.2533"
+                rx="7.58057"
+                ry="7.37634"
+                fill={tableSizeColor}
+              />
               <rect y="8" width="123" height="57" fill={tableColor} />
             </svg>
           );
@@ -213,14 +303,62 @@ export const TableReservationArea: React.FC<TableReservationAreaProps> = ({ sele
               xmlns="http://www.w3.org/2000/svg"
               style={{ transform: `rotate(${rotation}deg)` }}
             >
-              <ellipse cx="37.3326" cy="8.25806" rx="7.5806" ry="7.37635" fill={tableSizeColor} />
-              <ellipse cx="37.3326" cy="66.2533" rx="7.5806" ry="7.37634" fill={tableSizeColor} />
-              <ellipse cx="8.33255" cy="36.2533" rx="7.5806" ry="7.37634" fill={tableSizeColor} />
-              <ellipse cx="145.333" cy="36.2533" rx="7.5806" ry="7.37634" fill={tableSizeColor} />
-              <ellipse cx="116.45" cy="8.25806" rx="7.58057" ry="7.37635" fill={tableSizeColor} />
-              <ellipse cx="116.45" cy="66.2533" rx="7.58057" ry="7.37634" fill={tableSizeColor} />
-              <ellipse cx="78.4502" cy="8.25806" rx="7.58057" ry="7.37635" fill={tableSizeColor} />
-              <ellipse cx="78.4502" cy="66.2533" rx="7.58057" ry="7.37634" fill={tableSizeColor} />
+              <ellipse
+                cx="37.3326"
+                cy="8.25806"
+                rx="7.5806"
+                ry="7.37635"
+                fill={tableSizeColor}
+              />
+              <ellipse
+                cx="37.3326"
+                cy="66.2533"
+                rx="7.5806"
+                ry="7.37634"
+                fill={tableSizeColor}
+              />
+              <ellipse
+                cx="8.33255"
+                cy="36.2533"
+                rx="7.5806"
+                ry="7.37634"
+                fill={tableSizeColor}
+              />
+              <ellipse
+                cx="145.333"
+                cy="36.2533"
+                rx="7.5806"
+                ry="7.37634"
+                fill={tableSizeColor}
+              />
+              <ellipse
+                cx="116.45"
+                cy="8.25806"
+                rx="7.58057"
+                ry="7.37635"
+                fill={tableSizeColor}
+              />
+              <ellipse
+                cx="116.45"
+                cy="66.2533"
+                rx="7.58057"
+                ry="7.37634"
+                fill={tableSizeColor}
+              />
+              <ellipse
+                cx="78.4502"
+                cy="8.25806"
+                rx="7.58057"
+                ry="7.37635"
+                fill={tableSizeColor}
+              />
+              <ellipse
+                cx="78.4502"
+                cy="66.2533"
+                rx="7.58057"
+                ry="7.37634"
+                fill={tableSizeColor}
+              />
               <rect x="10" y="8" width="134" height="57" fill={tableColor} />
             </svg>
           );
@@ -238,8 +376,20 @@ export const TableReservationArea: React.FC<TableReservationAreaProps> = ({ sele
               xmlns="http://www.w3.org/2000/svg"
               style={{ transform: `rotate(${rotation}deg)` }}
             >
-              <ellipse cx="35.5806" cy="7.37634" rx="7.5806" ry="7.37634" fill={tableSizeColor} />
-              <ellipse cx="35.5806" cy="77.3763" rx="7.5806" ry="7.37634" fill={tableSizeColor} />
+              <ellipse
+                cx="35.5806"
+                cy="7.37634"
+                rx="7.5806"
+                ry="7.37634"
+                fill={tableSizeColor}
+              />
+              <ellipse
+                cx="35.5806"
+                cy="77.3763"
+                rx="7.5806"
+                ry="7.37634"
+                fill={tableSizeColor}
+              />
               <rect y="7" width="70" height="70" rx="35" fill={tableColor} />
             </svg>
           );
@@ -254,10 +404,34 @@ export const TableReservationArea: React.FC<TableReservationAreaProps> = ({ sele
               xmlns="http://www.w3.org/2000/svg"
               style={{ transform: `rotate(${rotation}deg)` }}
             >
-              <ellipse cx="43.5806" cy="7.37634" rx="7.5806" ry="7.37634" fill={tableSizeColor} />
-              <ellipse cx="43.5806" cy="77.3763" rx="7.5806" ry="7.37634" fill={tableSizeColor} />
-              <ellipse cx="7.5806" cy="42.3763" rx="7.5806" ry="7.37634" fill={tableSizeColor} />
-              <ellipse cx="77.5811" cy="42.3763" rx="7.5806" ry="7.37634" fill={tableSizeColor} />
+              <ellipse
+                cx="43.5806"
+                cy="7.37634"
+                rx="7.5806"
+                ry="7.37634"
+                fill={tableSizeColor}
+              />
+              <ellipse
+                cx="43.5806"
+                cy="77.3763"
+                rx="7.5806"
+                ry="7.37634"
+                fill={tableSizeColor}
+              />
+              <ellipse
+                cx="7.5806"
+                cy="42.3763"
+                rx="7.5806"
+                ry="7.37634"
+                fill={tableSizeColor}
+              />
+              <ellipse
+                cx="77.5811"
+                cy="42.3763"
+                rx="7.5806"
+                ry="7.37634"
+                fill={tableSizeColor}
+              />
               <rect x="8" y="7" width="70" height="70" rx="35" fill={tableColor} />
             </svg>
           );
@@ -275,8 +449,20 @@ export const TableReservationArea: React.FC<TableReservationAreaProps> = ({ sele
               xmlns="http://www.w3.org/2000/svg"
               style={{ transform: `rotate(${rotation}deg)` }}
             >
-              <ellipse cx="35.5806" cy="7.37634" rx="7.5806" ry="7.37634" fill={tableSizeColor} />
-              <ellipse cx="35.5806" cy="82.3763" rx="7.5806" ry="7.37634" fill={tableSizeColor} />
+              <ellipse
+                cx="35.5806"
+                cy="7.37634"
+                rx="7.5806"
+                ry="7.37634"
+                fill={tableSizeColor}
+              />
+              <ellipse
+                cx="35.5806"
+                cy="82.3763"
+                rx="7.5806"
+                ry="7.37634"
+                fill={tableSizeColor}
+              />
               <rect y="10" width="70" height="70" fill={tableColor} />
             </svg>
           );
@@ -291,10 +477,34 @@ export const TableReservationArea: React.FC<TableReservationAreaProps> = ({ sele
               xmlns="http://www.w3.org/2000/svg"
               style={{ transform: `rotate(${rotation}deg)` }}
             >
-              <ellipse cx="43.5806" cy="7.37634" rx="7.5806" ry="7.37634" fill={tableSizeColor} />
-              <ellipse cx="7.5806" cy="44.3763" rx="7.5806" ry="7.37634" fill={tableSizeColor} />
-              <ellipse cx="78.5811" cy="44.3763" rx="7.5806" ry="7.37634" fill={tableSizeColor} />
-              <ellipse cx="43.5806" cy="78.3763" rx="7.5806" ry="7.37634" fill={tableSizeColor} />
+              <ellipse
+                cx="43.5806"
+                cy="7.37634"
+                rx="7.5806"
+                ry="7.37634"
+                fill={tableSizeColor}
+              />
+              <ellipse
+                cx="7.5806"
+                cy="44.3763"
+                rx="7.5806"
+                ry="7.37634"
+                fill={tableSizeColor}
+              />
+              <ellipse
+                cx="78.5811"
+                cy="44.3763"
+                rx="7.5806"
+                ry="7.37634"
+                fill={tableSizeColor}
+              />
+              <ellipse
+                cx="43.5806"
+                cy="78.3763"
+                rx="7.5806"
+                ry="7.37634"
+                fill={tableSizeColor}
+              />
               <rect x="8" y="8" width="70" height="70" fill={tableColor} />
             </svg>
           );
@@ -325,7 +535,6 @@ export const TableReservationArea: React.FC<TableReservationAreaProps> = ({ sele
       <div
         className="table-plan-wrapper  h-full w-full"
         style={{
-          width: '830px',
           overflowY: 'auto',
           position: 'relative',
         }}
@@ -333,7 +542,6 @@ export const TableReservationArea: React.FC<TableReservationAreaProps> = ({ sele
         <div
           className="table-plan flex relative"
           style={{
-            width: '1400px',
             height: '100%',
           }}
         >
@@ -347,12 +555,19 @@ export const TableReservationArea: React.FC<TableReservationAreaProps> = ({ sele
                 {reservationsForTable.length > 0 ? (
                   reservationsForTable.map((reservation) => (
                     <div key={reservation._id} className="mb-2 mt-2">
-                      <strong>{reservation.user_id.firstname} {reservation.user_id.lastname}</strong><br />
-                      {reservation.nbr_persons} {reservation.nbr_persons > 1 ? 'personnes' : 'personne'}<br />
-                      {reservation.time_selected}<br />
+                      <strong>
+                        {reservation.user_id.firstname} {reservation.user_id.lastname}
+                      </strong>
+                      <br />
+                      {reservation.nbr_persons}{' '}
+                      {reservation.nbr_persons > 1 ? 'personnes' : 'personne'}
+                      <br />
+                      {reservation.time_selected}
+                      <br />
                       {reservation.details && (
                         <>
-                          {reservation.details}<br />
+                          {reservation.details}
+                          <br />
                         </>
                       )}
                       Réservation {translateStatus(reservation.status)}
@@ -393,4 +608,5 @@ export const TableReservationArea: React.FC<TableReservationAreaProps> = ({ sele
         </div>
       </div>
     </div>
-)}
+  );
+};

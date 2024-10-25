@@ -130,15 +130,15 @@ export const DashboardNav: React.FC<DashboardNavProps> = ({ restaurant, setIsNav
     : "/img/logo-oresto-red.png";
 
   return (
-    <div>
-      <div
-        className={`bg-light dark:bg-dark-900 dark:text-white h-screen flex flex-col items-center justify-center gap-4 shadow-2xl fixed top-0 left-0 transition-all duration-300 ease-in-out z-60 ${
-          isOpen ? 'w-72' : 'w-16'
-        }`}
-      >
+    <div className='flex justify-center pt-12'>
+<div
+  className={`bg-light dark:bg-dark-900 dark:text-white h-screen flex flex-col items-center justify-center gap-12 shadow-2xl fixed top-0 left-0 transition-all duration-300 ease-in-out z-60 ${
+    isOpen ? 'w-72' : 'w-16'
+  }`}
+>
         {/* Logo et nom du restaurant */}
         {isOpen && (
-          <div className='mt-12 flex flex-col gap-4 items-center'>
+          <div className='flex flex-col gap-8 pt-10 justify-center items-center'>
             <Link to="/dashboard/reservations">
               <img src={logoSrc} width="220px" alt="Oresto - Gestion des réservations" />
             </Link>
@@ -148,16 +148,19 @@ export const DashboardNav: React.FC<DashboardNavProps> = ({ restaurant, setIsNav
 
         {/* Calendrier */}
         {isOpen && (
-          <div className="mt-4 px-4">
+          <div className="px-4">
             <CalendarShadcn mode="single" selected={dateSelected} onSelect={handleDateSelect} interfaceType='restaurant' required />
           </div>
         )}
 
         {/* Formulaire de recherche */}
         {isOpen && (
-          <form className="flex flex-col items-center mt-4 px-4 w-full">
-            <label htmlFor="search" className="text-base text-left font-bold mb-2">Recherche par nom</label>
-            <input
+          <form className="flex flex-col items-center px-4 w-full">
+            <div>
+              <div>
+                <label htmlFor="search" className="text-base text-left font-bold mb-2">Recherche par nom</label>
+              </div>
+              <input
               type="text"
               name="name"
               id="search"
@@ -165,15 +168,14 @@ export const DashboardNav: React.FC<DashboardNavProps> = ({ restaurant, setIsNav
               value={searchTerm}
               onChange={handleSearchChange}
               ref={searchInputRef}
-              className="border-2 border-gray-300 p-1 mb-4 font-bold w-[220px] dark:text-white dark:bg-dark-800 dark:border-dark-800"
+              className="border-2 border-gray-300 p-1 ont-bold w-[220px] dark:text-white dark:bg-dark-800 dark:border-dark-800"
             />
+            </div>
           </form>
         )}
 
-        
-
         {/* Éléments du menu */}
-        <div className="flex-grow flex flex-col items-center justify-center gap-4">
+        <div className="flex-grow flex flex-col items-center justify-center">
           {isOpen ? (
             <div className="grid grid-cols-2 gap-5">
               {/* Réservations */}
