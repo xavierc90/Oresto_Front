@@ -111,7 +111,7 @@
 
 .scrollable-list {
   width: 100%;
-  height: 630px;
+  height: 730px;
   overflow-x: hidden;
 }
 
@@ -209,8 +209,13 @@ padding: 0 10px; /* Ajuster l'espacement si nécessaire */
   color: #ffffff;
 }
 
+.rdp-weekday {  
+  background-color: transparent
+  
+}
+
 .rdp-focused {
-  background-color: #ff1e00; /* Example primary color */
+  background-color: #0a662d; /* Example primary color */
   color: #ffffff;
   font-weight: bold;
   font-size: 10px;

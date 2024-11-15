@@ -1,5 +1,3 @@
-// DashboardNav.tsx
-
 import { useEffect, useState, useRef } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { BsListCheck } from "react-icons/bs";
@@ -7,7 +5,7 @@ import { FaUsers, FaCalendarAlt, FaSearch } from "react-icons/fa";
 import { IoMdStats } from "react-icons/io";
 import { FaGear } from "react-icons/fa6";
 import { LuLayoutDashboard } from "react-icons/lu";
-import { MdLogout, MdArrowLeft, MdArrowRight } from "react-icons/md";
+import { MdLogout, MdArrowLeft, MdArrowRight, MdOutlineDarkMode, MdLightMode } from "react-icons/md";
 import { CalendarShadcn } from "./CalendarShadcn";
 import { Restaurant } from '../../../Module/Types/restaurant.type';
 import { useAuth } from '../../../Module/Auth/useAuth';
@@ -58,32 +56,21 @@ export const DashboardNav: React.FC<DashboardNavProps> = ({ restaurant, setIsNav
     }
   }, [darkMode]);
 
-  useEffect(() => {
-    if (isOpen && shouldFocusSearch && searchInputRef.current) {
-      searchInputRef.current.focus();
-      setShouldFocusSearch(false);
+  const toggleTheme = () => {
+    const newTheme = !darkMode;
+    setDarkMode(newTheme);
+    localStorage.setItem('darkMode', JSON.stringify(newTheme));
+    document.documentElement.classList.toggle('dark', newTheme);
+  };
+
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+    setSearchTerm(value);
+    searchService.setSearch(value);
+    if (value.length > 0) {
+      navigate('/dashboard/clients');
     }
-  }, [isOpen, shouldFocusSearch]);
-
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth >= 1024) {
-        setIsOpen(true);
-        setIsNavOpen(true);
-      } else {
-        setIsOpen(false);
-        setIsNavOpen(false);
-      }
-    };
-
-    handleResize();
-
-    window.addEventListener('resize', handleResize);
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, [setIsNavOpen]);
+  };
 
   const getLinkClass = (path: string) => {
     return location.pathname.startsWith(path)
@@ -99,15 +86,6 @@ export const DashboardNav: React.FC<DashboardNavProps> = ({ restaurant, setIsNav
   const handleDateSelect = (date: Date) => {
     console.log("DashboardNav - Date selected in calendar:", date);
     dateService.setDate(date);
-  };
-
-  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
-    setSearchTerm(value);
-    searchService.setSearch(value);
-    if (value.length > 0) {
-      navigate('/dashboard/clients');
-    }
   };
 
   const toggleNav = () => {
@@ -131,11 +109,11 @@ export const DashboardNav: React.FC<DashboardNavProps> = ({ restaurant, setIsNav
 
   return (
     <div className='flex justify-center pt-12'>
-<div
-  className={`bg-light dark:bg-dark-900 dark:text-white h-screen flex flex-col items-center justify-center gap-12 shadow-2xl fixed top-0 left-0 transition-all duration-300 ease-in-out z-60 ${
-    isOpen ? 'w-72' : 'w-16'
-  }`}
->
+      <div
+        className={`bg-light dark:bg-dark-900 dark:text-white h-screen flex flex-col items-center justify-center gap-12 shadow-2xl fixed top-0 left-0 transition-all duration-300 ease-in-out z-60 ${
+          isOpen ? 'w-72' : 'w-16'
+        }`}
+      >
         {/* Logo et nom du restaurant */}
         {isOpen && (
           <div className='flex flex-col gap-8 pt-10 justify-center items-center'>
@@ -153,24 +131,32 @@ export const DashboardNav: React.FC<DashboardNavProps> = ({ restaurant, setIsNav
           </div>
         )}
 
-        {/* Formulaire de recherche */}
-        {isOpen && (
+     {/* Formulaire de recherche */}
+     {isOpen && (
           <form className="flex flex-col items-center px-4 w-full">
-            <div>
-              <div>
-                <label htmlFor="search" className="text-base text-left font-bold mb-2">Recherche par nom</label>
-              </div>
+            <div className='w-full flex flex-col items-center mb-8'>
+              <label htmlFor="search" className="text-base font-bold mb-2">Recherche par nom</label>
               <input
-              type="text"
-              name="name"
-              id="search"
-              placeholder="Saisir le nom du client"
-              value={searchTerm}
-              onChange={handleSearchChange}
-              ref={searchInputRef}
-              className="border-2 border-gray-300 p-1 ont-bold w-[220px] dark:text-white dark:bg-dark-800 dark:border-dark-800"
-            />
+                type="text"
+                name="name"
+                id="search"
+                placeholder="Saisir le nom du client"
+                value={searchTerm}
+                onChange={handleSearchChange}
+                ref={searchInputRef}
+                className="border-2 border-gray-300 p-1 w-[220px] text-center dark:text-white dark:bg-dark-800 dark:border-dark-800"
+              />
             </div>
+
+            {/* Bouton de bascule de thème sous le champ de recherche */}
+            <button 
+              onClick={toggleTheme}
+              className="flex items-center mt-4 text-md font-semibold space-x-2"
+              aria-label="Toggle Dark Mode"
+            >
+              {darkMode ? <MdLightMode /> : <MdOutlineDarkMode />}
+              <span>{darkMode ? "Thème clair" : "Thème sombre"}</span>
+            </button>
           </form>
         )}
 

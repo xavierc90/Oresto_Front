@@ -1,16 +1,13 @@
 import { useState } from 'react';
 import { http } from '../../../Infrastructure/Http/axios.instance';
-import { FaSort } from "react-icons/fa";
-import { FaUser } from "react-icons/fa";
-import { FaRegCalendarAlt } from "react-icons/fa";
+import { FaSort, FaUser, FaRegCalendarAlt, FaInfoCircle } from "react-icons/fa";
 import { User } from '../../../Module/Auth/user.type';
 import { formatDateToFrench } from '../../../Module/Utils/dateFormatter';
 import moment from 'moment';
 import { RxCross1 } from 'react-icons/rx';
 import { Reservation } from '../../../Module/Types/reservation.type';
 import { StatusLabel } from './StatusLabel';
-import { FaInfoCircle } from "react-icons/fa";
-import { NotificationMessage } from '../NotificationMessage';  // Import du composant
+import { NotificationMessage } from '../NotificationMessage'; // Import du composant
 
 interface ClientListProps {
   users: User[];
@@ -30,7 +27,7 @@ export const ClientList = ({ users }: ClientListProps) => {
   const [editableUser, setEditableUser] = useState<User | null>(null);
   const [selectedAllergens, setSelectedAllergens] = useState<string[]>([]);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);  // Ajout du message d'erreur
+  const [errorMessage, setErrorMessage] = useState<string | null>(null); // Ajout du message d'erreur
 
   const handleSortToggle = () => {
     setSortOrder(prevOrder => prevOrder === 'asc' ? 'desc' : 'asc');
@@ -121,43 +118,45 @@ export const ClientList = ({ users }: ClientListProps) => {
         <div className="ml-10 mt-8 text-sm">Aucun client trouvé</div>
       ) : (
         <table className="ml-10 w-full">
-          <thead>
+          <thead className='dark:bg-gray-900"'>
             <tr>
-              <th className="text-left"><span className='flex items-center'>Nom<FaSort onClick={handleSortToggle} className="cursor-pointer" /></span></th>
-              <th className="text-left">Prénom</th>
-              <th className="text-left">Téléphone</th>
-              <th className="text-left">E-mail</th>
-              <th className="text-left hidden xl:table-cell">Inscrit depuis le</th>
+              <th className="text-left dark:bg-gray-900"><span className='flex items-center'>Nom<FaSort onClick={handleSortToggle} className="cursor-pointer" /></span></th>
+              <th className="text-left dark:bg-gray-900">Prénom</th>
+              <th className="text-left dark:bg-gray-900">Téléphone</th>
+              <th className="text-left dark:bg-gray-900">E-mail</th>
+              <th className="text-left hidden xl:table-cell dark:bg-gray-900">Inscrit depuis le</th>
             </tr>
           </thead>
           <tbody>
-  {sortedUsers.map((user: User, index) => (
-    <tr
-      key={user._id}
-      onClick={() => handleUserClick(user)}
-      className={`hover:bg-gray-200 hover:cursor-pointer dark:hover:bg-dark-900 dark:hover:text-white ${index % 2 === 0 ? 'bg-gray-100 ' : ''}`}
-    >
-      <td className="py-1">{user.lastname}</td>
-      <td>{user.firstname}</td>
-      <td>{user.phone_number}</td>
-      <td>{user.email}</td>
-      <td className='hidden xl:block'>{formatDateToFrench(user.created_at)}</td>
-    </tr>
-  ))}
-</tbody>
+            {sortedUsers.map((user: User, index) => (
+              <tr
+                key={user._id}
+                onClick={() => handleUserClick(user)}
+                className={`hover:bg-gray-200 hover:cursor-pointer 
+                  ${index % 2 === 0 ? 'bg-gray-100 dark:bg-gray-900' : 'bg-white dark:bg-gray-800'} 
+                  dark:hover:bg-gray-600 dark:text-white`}
+              >
+                <td className="py-1">{user.lastname}</td>
+                <td>{user.firstname}</td>
+                <td>{user.phone_number}</td>
+                <td>{user.email}</td>
+                <td className='hidden xl:block'>{formatDateToFrench(user.created_at)}</td>
+              </tr>
+            ))}
+          </tbody>
         </table>
       )}
 
       {isModalOpen && selectedUser && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-80" onClick={handleCloseModal}>
-          <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg w-full max-w-lg relative" onClick={e => e.stopPropagation()}>
-            <button className="absolute top-4 right-4 text-gray-700 hover:text-black" onClick={handleCloseModal}>
+          <div className="bg-white dark:bg-gray-900 dark:text-white p-6 rounded-lg shadow-lg w-full max-w-lg relative" onClick={e => e.stopPropagation()}>
+            <button className="absolute top-4 right-4 text-gray-700 dark:text-gray-300 hover:text-black dark:hover:text-white" onClick={handleCloseModal}>
               <RxCross1 size={25} />
             </button>
            
             <h2 className="font-bold mb-2 flex items-center">
-            <FaUser />
-            <span className='pl-2'>Informations du client</span>
+              <FaUser />
+              <span className='pl-2'>Informations du client</span>
             </h2>
             <h3 className='font-normal text-sm mb-2'>Inscrit depuis le <span className='font-normal'>{formatDateToFrench(selectedUser.created_at)}</span></h3>
 
@@ -165,11 +164,11 @@ export const ClientList = ({ users }: ClientListProps) => {
               <li className='font-semibold'>
                 Nom : 
                 {isEditing ? (
-                   <input 
+                  <input 
                     type="text" 
                     value={editableUser?.lastname || ''} 
                     onChange={(e) => handleInputChange('lastname', e.target.value)}
-                    className="ml-2 border-2 border-gray-300 pl-2 rounded font-normal"
+                    className="ml-2 border-2 border-gray-300 dark:border-gray-700 dark:bg-gray-800 pl-2 rounded font-normal p-2"
                   />
                 ) : (
                   <span className='font-normal'> {selectedUser.lastname}</span>
@@ -182,7 +181,7 @@ export const ClientList = ({ users }: ClientListProps) => {
                     type="text" 
                     value={editableUser?.firstname || ''} 
                     onChange={(e) => handleInputChange('firstname', e.target.value)}
-                    className="ml-2 border-2 border-gray-300 font-normal pl-2 rounded"
+                    className="ml-2 border-2 border-gray-300 dark:border-gray-700 dark:bg-gray-800 pl-2 rounded font-normal p-2"
                   />
                 ) : (
                   <span className='font-normal'> {selectedUser.firstname}</span>
@@ -195,7 +194,7 @@ export const ClientList = ({ users }: ClientListProps) => {
                     type="text" 
                     value={editableUser?.email || ''} 
                     onChange={(e) => handleInputChange('email', e.target.value)}
-                    className="ml-2 border-2 border-gray-300 font-normal pl-2 rounded w-72"
+                    className="ml-2 border-2 border-gray-300 dark:border-gray-700 dark:bg-gray-800 pl-2 rounded font-normal p-2 w-72"
                   />
                 ) : (
                   <span className='font-normal'> {selectedUser.email}</span>
@@ -208,7 +207,7 @@ export const ClientList = ({ users }: ClientListProps) => {
                     type="text" 
                     value={editableUser?.phone_number || ''} 
                     onChange={(e) => handleInputChange('phone_number', e.target.value)}
-                    className="ml-2 border-2 border-gray-300 font-normal pl-2 rounded"
+                    className="ml-2 border-2 border-gray-300 dark:border-gray-700 dark:bg-gray-800 pl-2 rounded font-normal p-2"
                   />
                 ) : (
                   <span className='font-normal'> {selectedUser.phone_number}</span>
@@ -217,46 +216,46 @@ export const ClientList = ({ users }: ClientListProps) => {
               <li className='font-semibold'>
                 Allergènes :
                 {isEditing ? (
-              <div className="grid grid-cols-3 gap-2 mt-2"> {/* Modifier grid-cols-2 en grid-cols-3 */}
-                {availableAllergens.map(allergen => (
-                  <label key={allergen} className="inline-flex items-center">
-                    <input
-                      type="checkbox"
-                      checked={selectedAllergens.includes(allergen)}
-                      onChange={() => handleAllergenChange(allergen)}
-                    />
-                    <span className="ml-2"> {allergen}</span>
-                  </label>
-                ))}
-              </div>
-            ) : (
-              <span className='font-normal'> {selectedUser.allergens && selectedUser.allergens.length > 0 ? selectedUser.allergens.join(', ') : 'Aucune allergie renseignée'}</span>
-            )}
+                  <div className="grid grid-cols-3 gap-2 mt-2">
+                    {availableAllergens.map(allergen => (
+                      <label key={allergen} className="inline-flex items-center">
+                        <input
+                          type="checkbox"
+                          checked={selectedAllergens.includes(allergen)}
+                          onChange={() => handleAllergenChange(allergen)}
+                        />
+                        <span className="ml-2"> {allergen}</span>
+                      </label>
+                    ))}
+                  </div>
+                ) : (
+                  <span className='font-normal'> {selectedUser.allergens && selectedUser.allergens.length > 0 ? selectedUser.allergens.join(', ') : 'Aucune allergie renseignée'}</span>
+                )}
               </li>
             </ul>
             <h2 className="font-bold mt-4 mb-2 flex items-center">
-            <FaRegCalendarAlt />
-            <span className='pl-2'>Historique des réservations</span>
+              <FaRegCalendarAlt />
+              <span className='pl-2'>Historique des réservations</span>
             </h2>
             <div className='reservation-list'>
-            {reservations.length > 0 ? (
-              <ul className='list-none'>
-                {reservations.map(reservation => (
-                  <ul key={reservation._id} className='mb-3 text-sm space-y-1'>
-                    <li className='font-semibold flex gap-2'>{moment(reservation.date_selected).format('DD/MM/YYYY')} à {reservation.time_selected}
-                      <StatusLabel status={reservation.status || 'waiting'} />
-                    </li>
-                    <li>Table {reservation.table?.number || 'N/A'} pour {reservation.nbr_persons || '0'} personnes</li>
-                    <li className='flex items-center'>
-                      {reservation.details && <FaInfoCircle className="mr-2" />}
-                      {reservation.details ? reservation.details : ''}
-                    </li>
-                  </ul>
-                ))}
-              </ul>
-            ) : (
-              <p className='text-sm'>Aucune réservation trouvée pour cette personne.</p>
-            )}
+              {reservations.length > 0 ? (
+                <ul className='list-none'>
+                  {reservations.map(reservation => (
+                    <ul key={reservation._id} className='mb-3 text-sm space-y-1'>
+                      <li className='font-semibold flex gap-2'>{moment(reservation.date_selected).format('DD/MM/YYYY')} à {reservation.time_selected}
+                        <StatusLabel status={reservation.status || 'waiting'} />
+                      </li>
+                      <li>Table {reservation.table?.number || 'N/A'} pour {reservation.nbr_persons || '0'} personnes</li>
+                      <li className='flex items-center'>
+                        {reservation.details && <FaInfoCircle className="mr-2" />}
+                        {reservation.details ? reservation.details : ''}
+                      </li>
+                    </ul>
+                  ))}
+                </ul>
+              ) : (
+                <p className='text-sm'>Aucune réservation trouvée pour cette personne.</p>
+              )}
             </div>
             <div className='flex gap-3 pt-5 items-center justify-center'>
               {isEditing ? (

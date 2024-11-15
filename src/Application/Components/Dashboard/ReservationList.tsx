@@ -117,19 +117,19 @@ export const ReservationList: React.FC<ReservationListProps> = ({
         <table className="ml-10 w-full">
           <thead>
             <tr>
-              <th className="text-left w-[100px]" onClick={handleSortClick}>
+              <th className="text-left w-[100px] dark:bg-gray-900" onClick={handleSortClick}>
                 <span className="flex items-center gap-1 cursor-pointer">
                   Heure <FaSort />
                 </span>
               </th>
-              <th className="text-left w-[150px]">Nom</th>
-              <th className="text-left w-[150px]">Prénom</th>
-              <th className="text-center w-[150px]">Nbr de couverts</th>
-              <th className="text-center max-w-[180px]">Table</th>
+              <th className="text-left w-[150px] dark:bg-gray-900">Nom</th>
+              <th className="text-left w-[150px] dark:bg-gray-900">Prénom</th>
+              <th className="text-center w-[150px] dark:bg-gray-900">Nbr de couverts</th>
+              <th className="text-center max-w-[180px] dark:bg-gray-900">Table</th>
               {/* Cacher la colonne "Détails" sur les petits écrans */}
-              <th className="text-left max-w-[180px] hidden xl:table-cell">Détails</th>
-              <th className="text-left max-w-[100px]">
-                <span className="flex items-center gap-1 cursor-pointer">
+              <th className="text-left max-w-[180px] hidden xl:table-cell dark:bg-gray-900">Détails</th>
+              <th className="text-left max-w-[100px] dark:bg-gray-900">
+                <span className="flex items-center gap-1 cursor-pointer dark:bg-gray-900">
                   Status <FaSort />
                 </span>
               </th>
@@ -143,7 +143,7 @@ export const ReservationList: React.FC<ReservationListProps> = ({
               return (
                 <tr
                   key={reservation._id}
-                  className={`hover:bg-gray-200 hover:cursor-pointer dark:hover:bg-dark-900 dark:hover:text-white ${rowBackground}`}
+                  className={`hover:bg-gray-200 hover:cursor-pointer dark:hover:bg-dark-900 dark:hover:text-white dark:bg-gray-900 ${rowBackground}`}
                   onClick={() => handleReservationClick(reservation)}
                 >
                   <td className="text-left">{reservation.time_selected}</td>
@@ -174,7 +174,7 @@ export const ReservationList: React.FC<ReservationListProps> = ({
             onClick={handleCloseModal}
           >
             <div
-              className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg w-full max-w-md relative"
+              className="bg-white dark:bg-gray-900 p-6 rounded-lg shadow-lg w-full max-w-md relative"
               onClick={(e) => e.stopPropagation()}
             >
               {/* Icône de fermeture */}

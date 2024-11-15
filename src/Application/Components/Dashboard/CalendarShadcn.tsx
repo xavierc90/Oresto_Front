@@ -12,14 +12,13 @@ function CalendarShadcn({
   className,
   classNames,
   showOutsideDays = false,
-  interfaceType = "client", // Par défaut, l'interface est pour le client
+  interfaceType = "client",
   ...props
 }: CalendarProps) {
-  // Définir une classe conditionnelle en fonction de l'interface
   const selectedClass =
     interfaceType === "client"
-      ? "bg-green-800 text-white font-bold" // Couleur spécifique pour le client
-      : "bg-red-500 text-white font-bold"; // Couleur spécifique pour le restaurant
+      ? "bg-green-800 text-white font-bold"
+      : "bg-red-500 text-white font-bold";
 
   return (
     <DayPicker
@@ -30,21 +29,21 @@ function CalendarShadcn({
       classNames={{
         months: "flex flex-col text-sm",
         month: "space-y-4",
-        caption: "relative flex items-center justify-between w-full", // Conteneur des flèches et du mois
-        caption_label: "absolute left-1/2 transform -translate-x-1/2 text-center font-medium", // Centrage du mois avec position absolue
-        nav_button_previous: "absolute left-0 top-1/2 transform -translate-y-1/2 ml-2", // Flèche gauche centrée verticalement
-        nav_button_next: "absolute right-0 top-1/2 transform -translate-y-1/2 mr-2", // Flèche droite centrée verticalement
-        selected: selectedClass, // Appliquer la classe spécifique en fonction de l'interface
+        caption: "relative flex items-center justify-between w-full",
+        caption_label: "absolute left-1/2 transform -translate-x-1/2 text-center font-medium",
+        nav_button_previous: "absolute left-0 top-1/2 transform -translate-y-1/2 ml-2",
+        nav_button_next: "absolute right-0 top-1/2 transform -translate-y-1/2 mr-2",
+        selected: selectedClass,
         nav_button: cn(
           buttonVariants({ variant: "outline" }),
           "h-5 w-5 bg-transparent p-0 opacity-50 hover:opacity-100"
         ),
         weekdays: "flex justify-around",
-        table: "w-full border-collapse space-y-1",
+        table: "w-full border-collapse space-y-1 dark:bg-dark-800", // Ajouter un fond sombre pour le tableau en mode sombre
         head_row: "flex",
         head_cell: "text-muted-foreground rounded-md w-9 font-normal text-[0.8rem]",
         row: "flex w-full mt-2",
-        cell: "h-9 w-9 text-center text-sm p-0 relative [&:has([aria-selected].day-range-end)]:rounded-r-md [&:has([aria-selected].day-outside)]:bg-accent/50 [&:has([aria-selected])]:bg-accent first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20",
+        cell: "h-9 w-9 text-center text-sm p-0 relative dark:bg-dark-900", // Couleur de fond pour les cellules en mode sombre
         day: cn(
           buttonVariants({ variant: "ghost" }),
           "h-9 w-9 p-0 font-normal aria-selected:opacity-100"
@@ -65,6 +64,7 @@ function CalendarShadcn({
     />
   );
 }
+
 
 CalendarShadcn.displayName = "Calendar";
 

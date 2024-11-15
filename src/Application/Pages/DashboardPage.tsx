@@ -8,7 +8,7 @@ import { CookieBanner } from '../Components/CookieBanner';
 export const DashboardPage = () => {
   const { user, restaurant, token } = useAuth();
   const navigate = useNavigate();
-  const [isNavOpen, setIsNavOpen] = useState(true); // État pour gérer l'ouverture du menu
+  const [isNavOpen, setIsNavOpen] = useState(true);
 
   useEffect(() => {
     if (!user || !token) {
@@ -33,17 +33,15 @@ export const DashboardPage = () => {
   }, [user, token, restaurant, navigate]);
 
   return (
-    <div className="flex dark:bg-dark-800 dark:text-white h-screen">
-      {/* Composant DashboardNav avec passage du setter de l'état */}
+    <div className="flex h-screen dark:bg-gray-900 dark:text-white">
       <DashboardNav restaurant={restaurant} setIsNavOpen={setIsNavOpen} />
 
-      {/* Contenu principal avec marge conditionnelle */}
       <div
         className={`transition-all duration-300 h-full w-full ${
           isNavOpen ? 'ml-72' : 'ml-16'
         }`}
       >
-        <div className="w-full h-full">
+        <div className="w-full h-full relative">
           <Outlet context={{ user, restaurant, token }} />
         </div>
       </div>

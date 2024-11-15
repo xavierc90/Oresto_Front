@@ -131,15 +131,15 @@ export const TableForm: React.FC<TableFormProps> = ({ onTableCreated }) => {
       )}
       <form onSubmit={handleSubmit} className='flex flex-col mt-7 mb-12 h-[310px] pl-10'>
        <div className='flex gap-5'>
-        <label className='flex items-center'>
+        <label className='flex items-center text-lg'>
           N° de la table :
-          <input type="text" name="number" className='border-2 border-gray-300 ml-5 w-14 text-center dark:text-white dark:bg-dark-900 dark:border-2 dark:border-dark-900' value={tableData.number} onChange={handleChange} required />
+          <input type="text" name="number" className='border-2 border-gray-300 ml-5 w-14 text-center dark:text-white dark:bg-dark-800 dark:border-2 dark:border-dark-900 w-100 py-1' value={tableData.number} onChange={handleChange} required />
         </label>
-        <button type="submit" className="mt-4 mb-4 mb-2 p-2 bg-black text-white text-xs w-[130px] font-bold "> Ajouter la table</button>
+        <button type="submit" className="mt-4 mb-4 mb-2 p-2 bg-black text-white text-md px-3 "> Ajouter la table</button>
         </div>
-        <div className="mt-4">
+        <div className="mt-8 text-lg">
           Modèle de table :
-          <div className="flex gap-4 ml-4">
+          <div className="flex gap-4 ml-4 mt-8">
             {tableShapes.map(({ shape, capacity, svg }) => {
               const isSelected = tableData.shape === shape && tableData.capacity === capacity;
               return (
